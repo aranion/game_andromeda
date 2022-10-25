@@ -1,5 +1,8 @@
-import { useEffect } from 'react'
 import './App.css'
+import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { Router } from './router'
+import { RouterList } from './router/routerList'
 
 function App() {
   useEffect(() => {
@@ -12,7 +15,24 @@ function App() {
 
     fetchServerData()
   }, [])
-  return <div className="App">Вот тут будет жить ваше приложение :)</div>
+
+  return (
+    <>
+      {/* Links для проверки роутера, при добавлении страниц можно удалить */}
+      <Link to={RouterList.HOME}>HOME</Link> -
+      <Link to={RouterList.SIGN_IN}>SIGN_IN</Link> -
+      <Link to={RouterList.SIGN_UP}>SIGN_UP</Link> -
+      <Link to={RouterList.SERVER_ERROR}>SERVER_ERROR</Link> -
+      <Link to={RouterList.NOT_FOUND}>NOT_FOUND</Link> -
+      <Link to={RouterList.GAME}>GAME</Link> -
+      <Link to={RouterList.FORUM}>FORUM</Link> -
+      <Link to={RouterList.LEADER_BOARD}>LEADER_BOARD</Link> -
+      <Link to={RouterList.PROFILE}>PROFILE</Link> -
+      <main>
+        <Router />
+      </main>
+    </>
+  )
 }
 
 export default App
