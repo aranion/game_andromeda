@@ -29,6 +29,7 @@ function App() {
         <Link to={RouterList.FORUM}>FORUM</Link> -
         <Link to={RouterList.LEADER_BOARD}>LEADER_BOARD</Link> -
         <Link to={RouterList.PROFILE}>PROFILE</Link> -
+        <Link to={RouterList.PROFILE_EDIT}>PROFILE_EDIT</Link> -
       </nav>
 
       <section>
