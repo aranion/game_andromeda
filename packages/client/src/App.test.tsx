@@ -1,4 +1,5 @@
 import App from './App';
+import { Route } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 
 const appContent = 'Вот тут будет жить ваше приложение :)';
@@ -9,6 +10,10 @@ global.fetch = jest.fn(() =>
 );
 
 test('Example test', async () => {
-  render(<App />);
+  render(
+    <Route>
+      <App />
+    </Route>
+  );
   expect(screen.getByText(appContent)).toBeDefined();
 });
