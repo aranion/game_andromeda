@@ -4,5 +4,5 @@ export default function Game() {
       Game
       <div>Вот тут будет жить ваше приложение :)</div>
     </>
-  )
+  );
 }

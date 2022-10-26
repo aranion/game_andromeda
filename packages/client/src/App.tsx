@@ -1,23 +1,23 @@
-import './App.css'
-import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { Router } from './router'
-import { RouterList } from './router/routerList'
+import './App.css';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Router } from './router';
+import { RouterList } from './router/routerList';
 
 function App() {
   useEffect(() => {
     const fetchServerData = async () => {
-      const url = `http://localhost:${__SERVER_PORT__}`
-      const response = await fetch(url)
-      const data = await response.json()
-      console.log(data)
-    }
+      const url = `http://localhost:${__SERVER_PORT__}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log(data);
+    };
 
-    fetchServerData()
-  }, [])
+    fetchServerData();
+  }, []);
 
   return (
-    <>
+    <main>
       {/* Links для проверки роутера, при добавлении страниц можно удалить */}
       <Link to={RouterList.HOME}>HOME</Link> -
       <Link to={RouterList.SIGN_IN}>SIGN_IN</Link> -
@@ -28,11 +28,11 @@ function App() {
       <Link to={RouterList.FORUM}>FORUM</Link> -
       <Link to={RouterList.LEADER_BOARD}>LEADER_BOARD</Link> -
       <Link to={RouterList.PROFILE}>PROFILE</Link> -
-      <main>
+      <section>
         <Router />
-      </main>
-    </>
-  )
+      </section>
+    </main>
+  );
 }
 
-export default App
+export default App;
