@@ -6,12 +6,8 @@ const checkAuth = (): boolean => {
   return true;
 };
 
-export function PrivateRoute({ children }: Props) {
+export function withPrivateRoute(children: JSX.Element) {
   const isAuth = checkAuth();
 
   return !isAuth ? <Navigate to={RouterList.SIGN_IN} replace /> : children;
 }
-
-type Props = {
-  children: JSX.Element;
-};

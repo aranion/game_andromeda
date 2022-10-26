@@ -1,7 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Loader } from '../components';
-import { PrivateRoute } from './PrivateRoute';
+import { withPrivateRoute } from './withPrivateRoute';
 import { RouterList } from './routerList';
 
 const GamePage = lazy(() => import('../pages/Game'));
@@ -24,45 +24,26 @@ export function Router() {
           <Route path={RouterList.NOT_FOUND} element={<NotFoundPage />} />
           <Route path={RouterList.FORUM} element={<ForumPage />} />
           <Route path={RouterList.FORUM_ID} element={<ForumPage />} />
-          <Route
-            index
-            element={
-              <PrivateRoute>
-                <GamePage />
-              </PrivateRoute>
-            }
-          />
+          <Route index element={withPrivateRoute(<GamePage />)} />
           <Route
             path={RouterList.GAME}
-            element={
-              <PrivateRoute>
-                <GamePage />
-              </PrivateRoute>
-            }
+            element={withPrivateRoute(<GamePage />)}
           />
           <Route
             path={RouterList.PROFILE}
-            element={
-              <PrivateRoute>
-                <ProfilePage />
-              </PrivateRoute>
-            }
+            element={withPrivateRoute(<ProfilePage />)}
+          />
+          <Route
+            path={RouterList.PROFILE_ID}
+            element={withPrivateRoute(<ProfilePage />)}
           />
           <Route
             path={RouterList.PROFILE_EDIT}
-            element={
-              <PrivateRoute>
-                <ProfilePage />
-              </PrivateRoute>
-            }
+            element={withPrivateRoute(<ProfilePage />)}
           />
           <Route
             path={RouterList.LEADER_BOARD}
-            element={
-              <PrivateRoute>
-                <LeaderBoardPage />
-              </PrivateRoute>
-            }
+            element={withPrivateRoute(<LeaderBoardPage />)}
           />
         </Route>
       </Routes>

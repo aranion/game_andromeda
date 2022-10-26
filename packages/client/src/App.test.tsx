@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import SignIn from './pages/SignIn';
+import Game from './pages/Game';
 
-const appContent = 'SignIn';
+const appContent = 'Вот тут будет жить ваше приложение :)';
 
 // @ts-ignore
 global.fetch = jest.fn(() =>
@@ -9,6 +9,6 @@ global.fetch = jest.fn(() =>
 );
 
 test('Example test', async () => {
-  render(<SignIn />);
+  render(<Game />);
   expect(screen.getByText(appContent)).toBeDefined();
 });
