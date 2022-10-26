@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import SignIn from './pages/SignIn';
 
-const appContent = 'Вот тут будет жить ваше приложение :)';
+const appContent = 'SignIn';
 
 // @ts-ignore
 global.fetch = jest.fn(() =>
