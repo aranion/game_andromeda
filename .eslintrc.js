@@ -15,6 +15,13 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
-    '@typescript-eslint/ban-ts-comment': 1,
+    eqeqeq: 2,
+    quotes: ['warn', 'single'],
+    semi: ['warn', 'always'],
+    'no-debugger': 'warn',
+    'prefer-const': 'warn',
+    'jsx-quotes': ['warn', 'prefer-single'],
+    'comma-dangle': ['warn', 'only-multiline'],
+    '@typescript-eslint/ban-ts-comment': 0,
   },
-}
+};
