@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
 import './App.css';
+import { useEffect } from 'react';
+import { Router } from './router';
 
 function App() {
   useEffect(() => {
@@ -9,10 +10,16 @@ function App() {
       const data = await response.json();
       console.log(data);
     };
-
     fetchServerData();
   }, []);
-  return <div className='App'>Вот тут будет жить ваше приложение :)</div>;
+
+  return (
+    <main>
+      <section>
+        <Router />
+      </section>
+    </main>
+  );
 }
 
 export default App;
