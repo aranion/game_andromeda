@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from 'react';
 import { Game } from './core';
-import styles from './game.module.css';
+import './game.css';
 
 export default function GamePage() {
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -15,5 +15,5 @@ export default function GamePage() {
     return () => game?.current?.unmount();
   }, [canvas]);
 
-  return <canvas className={styles.canvas} ref={canvas}></canvas>;
+  return <canvas className={'canvas'} ref={canvas}></canvas>;
 }
