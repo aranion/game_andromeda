@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import { RouterList } from '../../router/routerList'
+import { Link } from 'react-router-dom';
+import { RouterList } from '../../router/routerList';
 
 export default function ServerError() {
   return (
@@ -9,5 +9,5 @@ export default function ServerError() {
       <p>Скоро все поправим</p>
       <Link to={RouterList.HOME}>На главную</Link>
     </>
-  )
+  );
 }

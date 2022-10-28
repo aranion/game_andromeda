@@ -1,11 +1,11 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 export default function NotFound() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(-1)
-  }
+    navigate(-1);
+  };
 
   return (
     <>
@@ -14,5 +14,5 @@ export default function NotFound() {
       <p>К сожалению, запрашиваемая страница не найдена</p>
       <button onClick={handleGoBack}>Назад</button>
     </>
-  )
+  );
 }

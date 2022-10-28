@@ -1,6 +1,6 @@
-import './App.css'
-import { useEffect } from 'react'
-import { Router } from './router'
+import './App.css';
+import { useEffect } from 'react';
+import { Router } from './router';
 
 function App() {
   useEffect(() => {
@@ -10,8 +10,8 @@ function App() {
       const data = await response.json();
       console.log(data);
     };
-    fetchServerData()
-  }, [])
+    fetchServerData();
+  }, []);
 
   return (
     <main>
@@ -19,7 +19,7 @@ function App() {
         <Router />
       </section>
     </main>
-  )
+  );
 }
 
 export default App;
