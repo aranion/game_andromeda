@@ -1,6 +1,4 @@
 .input {
-    width: 200px;
-    height: 30px;
     background: var(--color-light);
     box-shadow: inset 0px 4px 4px rgba(37, 27, 55, 0.57);
     border-radius: 30px;
