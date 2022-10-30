@@ -18,7 +18,7 @@ export function Router() {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route path={RouterList.HOME}>
-          <Route index element={withPrivateRoute(<GamePage />)} />
+          <Route index element={<SignInPage />} />
           <Route path={RouterList.SIGN_IN} element={<SignInPage />} />
           <Route path={RouterList.SIGN_UP} element={<SignUpPage />} />
           <Route path={RouterList.SERVER_ERROR} element={<ServerErrorPage />} />
