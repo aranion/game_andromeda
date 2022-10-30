@@ -1,13 +1,11 @@
-import { Link } from 'react-router-dom';
-import { RouterList } from '../../router/routerList';
+import { ErrorSample } from '../../components';
 
 export default function ServerError() {
   return (
-    <>
-      <h1>500</h1>
-      <p>Внутренняя ошибка сервера</p>
-      <p>Скоро все поправим</p>
-      <Link to={RouterList.HOME}>На главную</Link>
-    </>
+    <ErrorSample
+      code='500'
+      message='Внутренняя ошибка сервера. Скоро все поправим!'
+      typeButton='home'
+    />
   );
 }
