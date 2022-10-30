@@ -13,7 +13,7 @@ export class DirectionsInput {
     this.canvas = config.canvas;
     this.mousePosition = {
       x: this.canvas.width / 2,
-      y: this.canvas.height / 2
+      y: this.canvas.height / 2,
     };
   }
 
