@@ -40,18 +40,18 @@
     gap: 10px;
 }
 
-.login__input {
+.input.login__input {
     width: 320px;
     height: 30px;
 }
 
-.login__button__signin {
+.button.login__button__signin {
     width: 230px;
     height: 35px;
     font-size: 20px;
 }
 
-.login__button__signup {
+.button.login__button__signup {
     width: 140px;
     height: 21px;
     font-size: 13px;

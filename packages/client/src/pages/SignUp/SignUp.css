@@ -40,18 +40,18 @@
     gap: 10px;
 }
 
-.registration__input {
+.input.registration__input {
     width: 320px;
     height: 30px;
 }
 
-.registration__button__signin {
+.button.registration__button__signin {
     width: 230px;
     height: 35px;
     font-size: 20px;
 }
 
-.registration__button__signup {
+.button.registration__button__signup {
     width: 140px;
     height: 21px;
     font-size: 13px;
