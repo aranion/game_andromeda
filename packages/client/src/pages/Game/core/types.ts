@@ -10,3 +10,9 @@ export type GameMapConfig = {
     resource: number;
   };
 };
+
+export type CanvasProperties = {
+  ctx: CanvasRenderingContext2D;
+  width: number;
+  height: number;
+}

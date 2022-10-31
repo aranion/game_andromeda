@@ -3,7 +3,7 @@ import { DirectionsInput } from './overworld/directions-input';
 import { Player } from './entities/player';
 import { defaultPlayerStats } from './entities/player/stats';
 import { mapConfig } from './map.config';
-import { FPS, styles } from './constants';
+import { FPS } from './constants';
 import type { GameMapConfig } from './types';
 
 type GameConfig = {
@@ -14,68 +14,43 @@ type GameConfig = {
  * Основной класс, управляет циклом игры, меняет карту уровней.
  * */
 export class Game {
-  /** Синглтон, чтобы не создавалось несколько копий из-за реакта */
-  private static gameInstance: Game;
-  /** HTML-элемент канваса */
-  private readonly canvas: HTMLCanvasElement;
-  /** Контекст канваса */
-  private readonly ctx: CanvasRenderingContext2D | null = null;
-  /** Текущая карта/уровень */
+  private static singleton: Game;
+  private canvas: HTMLCanvasElement | null = null;
+  private ctx: CanvasRenderingContext2D | null = null;
   private map: GameMap | null = null;
-  /** Модуль считывания пользовательского ввода для игрока */
   private directions: DirectionsInput;
-  /** Объект игрока */
   private readonly player: Player;
-  /** Текущий отрисованный кадр */
   private frame = 0;
 
   constructor(config: GameConfig) {
-    this.canvas = config.canvas;
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
-    this.ctx = this.canvas.getContext('2d');
-
-    if (!this.ctx) {
-      throw new Error('The canvas context has not been created. The game cannot be initialized!');
-    }
-
-    this.directions = new DirectionsInput({ canvas: this.canvas });
+    const canvas = this.initCanvas(config.canvas);
+    this.directions = new DirectionsInput({ width: canvas.width, height: canvas.height });
     this.player = new Player({
-      canvas: this.canvas,
-      ctx: this.ctx,
       position: {
-        x: this.canvas.width / 2,
-        y: this.canvas.height + defaultPlayerStats.radius * 2
+        x: canvas.width / 2,
+        y: canvas.height + defaultPlayerStats.radius * 2
       },
       ...defaultPlayerStats
     });
   }
 
-  /** Возвращает инстанс игры */
-  static getInstance(config: GameConfig): Game {
-    if (!this.gameInstance) {
-      this.gameInstance = new Game(config);
+  static getSingleton(config: GameConfig): Game {
+    if (!this.singleton) {
+      this.singleton = new Game(config);
     }
-    return this.gameInstance;
+    return this.singleton;
   }
 
-  /** Начинает игровой цикл рендеринга */
   private startGameLoop() {
     let last = performance.now();
     const framesDelta = 1000 / FPS;
 
-    /** Функция одного цикла рендера */
     const step = (now: number) => {
       const delay = now - last;
 
-      if (this.ctx && delay >= framesDelta) {
+      if (delay >= framesDelta) {
         last = now;
-
-        this.ctx.fillStyle = styles.canvasBackground;
-        this.ctx.font = styles.font;
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        this.player.update(this.directions.getDirections);
-        this.map?.updateObjects({ player: this.player });
+        this.render();
         this.frame++;
       }
 
@@ -85,38 +60,61 @@ export class Game {
     step(performance.now());
   }
 
-  /** Устанавливает текущую карту/уровень */
   private startMap(gameMapConfig: GameMapConfig) {
-    if (this.ctx) {
+    if (this.canvas && this.ctx) {
       this.map = new GameMap({
         ...gameMapConfig,
-        canvas: this.canvas,
-        ctx: this.ctx
+        player: this.player
       });
-      this.map.updateObjects({ player: this.player });
     }
   }
 
-  /** Следит за изменением размеров экрана */
   private resize = (evt: Event) => {
     const target = evt.target as Window;
-    this.canvas.width = target.innerWidth;
-    this.canvas.height = target.innerHeight;
+    if (this.canvas) {
+      this.canvas.width = target.innerWidth;
+      this.canvas.height = target.innerHeight;
+    }
   };
 
-  /** Установка всех обработчиков событий */
+  private initCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
+    this.canvas = canvas;
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+    this.ctx = this.canvas.getContext('2d');
+
+    if (!this.ctx) {
+      throw new Error('The canvas context has not been created. The game cannot be initialized!');
+    }
+
+    return this.canvas;
+  }
+
+  private render() {
+    if (this.canvas && this.ctx) {
+      this.map?.update({
+        ctx: this.ctx,
+        width: this.canvas.width,
+        height: this.canvas.height,
+        playerDirections: this.directions.getDirections
+      });
+    }
+  }
+
   private mount() {
-    this.directions.mount();
-    window.addEventListener('resize', this.resize);
+    if (this.canvas) {
+      this.directions.mount(this.canvas);
+      window.addEventListener('resize', this.resize);
+    }
   }
 
-  /** Удаление всех обработчиков событий */
   unmount() {
-    this.directions.unmount();
-    window.removeEventListener('resize', this.resize);
+    if (this.canvas) {
+      this.directions.unmount(this.canvas);
+      window.removeEventListener('resize', this.resize);
+    }
   }
 
-  /** Инициализация игры */
   init() {
     this.mount();
     this.startMap(mapConfig.level_1);

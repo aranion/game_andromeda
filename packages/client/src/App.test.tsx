@@ -6,7 +6,7 @@ global.fetch = jest.fn(() =>
   Promise.resolve({ json: () => Promise.resolve('hey') })
 );
 
-test('Example test', async () => {
+test('Canvas initialization test', async () => {
   const { container } = render(<Game />);
   const canvas = container.querySelector('canvas');
   expect(canvas).toBeDefined();

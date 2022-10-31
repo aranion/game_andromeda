@@ -2,7 +2,6 @@ import type { GameMapConfig } from './types';
 
 type MapConfig = Record<string, GameMapConfig>;
 
-/** Конфигурация уровней игры */
 export const mapConfig: MapConfig = {
   level_1: {
     spawnInterval: {

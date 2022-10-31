@@ -1,3 +1,3 @@
-export type DirectionsInputConfig = {
-  canvas: HTMLCanvasElement;
-};
+import { CanvasProperties } from '../../types';
+
+export type DirectionsInputConfig = Pick<CanvasProperties, 'width' | 'height'>;

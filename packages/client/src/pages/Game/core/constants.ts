@@ -5,3 +5,6 @@ export const styles = {
 };
 
 export const FPS = 60;
+
+export const INITIAL_SPEED = 100;
+export const INITIAL_RADIUS = 16;

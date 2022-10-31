@@ -8,7 +8,7 @@ export default function GamePage() {
 
   useLayoutEffect(() => {
     if (canvas?.current) {
-      game.current = Game.getInstance({ canvas: canvas.current });
+      game.current = Game.getSingleton({ canvas: canvas.current });
       game.current.init();
     }
 

@@ -1,11 +1,13 @@
 import { Player } from '../../entities/player';
-import { GameMapConfig } from '../../types';
+import { CanvasProperties, Coordinates, GameMapConfig } from '../../types';
 
 export type GameMapConstrConfig = GameMapConfig & {
-  canvas: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D;
-};
-
-export type UpdateObjectsParams = {
   player: Player;
 };
+
+export type UpdateParams = {
+  frame?: number;
+  playerDirections: Coordinates;
+} & CanvasProperties;
+
+export type DrawParams = CanvasProperties;

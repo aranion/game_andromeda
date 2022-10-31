@@ -1,16 +1,12 @@
 import { GameObject } from '../game-object';
-import type { Coordinates } from '../../types';
-import { PlayerConfig } from './types';
+import { PlayerConfig, UpdateParams } from './types';
 
 /**
  * Класс игрока. Главная сущность игры в виде космического корабля.
  * */
 export class Player extends GameObject {
-  /** Количество текущих жизней */
   private lives: number;
-  /** Максимальное количество жизней */
   private maxLives: number;
-  /** Флаг активности щита */
   private shielded: boolean;
 
   constructor(config: PlayerConfig) {
@@ -21,17 +17,14 @@ export class Player extends GameObject {
     this.shielded = config.shielded ?? false;
   }
 
-  /** Получить текущее кол-во жизней игрока */
   get getLives(): number {
     return this.lives;
   }
 
-  /** Получить наличие щита у игрока */
   get isShielded(): boolean {
     return this.shielded;
   }
 
-  /** Метод обновляет кол-во жизней игрока */
   updateLives(num: number) {
     const newLives = this.lives + num;
 
@@ -43,31 +36,30 @@ export class Player extends GameObject {
     this.lives = newLives > this.maxLives ? this.maxLives : newLives;
   }
 
-  /** Метод держит игрока в пределах канваса */
-  private keepInsideCanvas() {
+  private keepInsideCanvas(canvasWidth: number, canvasHeight: number) {
     if (this.position.x <= this.radius) {
       this.position.x = this.radius;
     }
-    if (this.position.x >= this.canvas.width - this.radius) {
-      this.position.x = this.canvas.width - this.radius;
+    if (this.position.x >= canvasWidth - this.radius) {
+      this.position.x = canvasWidth - this.radius;
     }
     if (this.position.y <= this.radius) {
       this.position.y = this.radius;
     }
-    if (this.position.y >= this.canvas.height - this.radius) {
-      this.position.y = this.canvas.height - this.radius;
+    if (this.position.y >= canvasHeight - this.radius) {
+      this.position.y = canvasHeight - this.radius;
     }
   }
 
-  protected draw() {
-    this.ctx.fillStyle = 'red';
-    this.ctx.beginPath();
-    this.ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
-    this.ctx.fill();
-    this.ctx.closePath();
+  protected draw(ctx: CanvasRenderingContext2D) {
+    ctx.fillStyle = 'red';
+    ctx.beginPath();
+    ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.closePath();
   }
 
-  update(direction: Coordinates) {
+  update({ direction, ctx, width, height }: UpdateParams) {
     const distanceX = this.position.x - direction.x;
     const distanceY = this.position.y - direction.y;
 
@@ -79,7 +71,7 @@ export class Player extends GameObject {
       this.position.y -= distanceY / this.speed;
     }
 
-    this.keepInsideCanvas();
-    this.draw();
+    this.keepInsideCanvas(width, height);
+    this.draw(ctx);
   }
 }

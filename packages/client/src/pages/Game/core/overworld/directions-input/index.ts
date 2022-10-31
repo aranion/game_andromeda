@@ -6,37 +6,29 @@ import { Coordinates } from '../../types';
  * Используется для управления объектом игрока.
  * */
 export class DirectionsInput {
-  /** HTML-элемент канваса */
-  private canvas: HTMLCanvasElement;
-  /** Координаты курсора мышки */
   private readonly mousePosition: Coordinates;
 
   constructor(config: DirectionsInputConfig) {
-    this.canvas = config.canvas;
     this.mousePosition = {
-      x: this.canvas.width / 2,
-      y: this.canvas.height / 2
+      x: config.width / 2,
+      y: config.height / 2
     };
   }
 
-  /** Получить новые координаты движения игрока */
   get getDirections(): Coordinates {
     return this.mousePosition;
   }
 
-  /** Функция-обработчик события mousemove, обновляет координаты курсора */
   private handleMouseMove = (evt: MouseEvent) => {
     this.mousePosition.x = evt.x;
     this.mousePosition.y = evt.y;
   };
 
-  /** Установка обработчиков событий */
-  mount() {
-    this.canvas.addEventListener('mousemove', this.handleMouseMove);
+  mount(canvas: HTMLCanvasElement) {
+    canvas.addEventListener('mousemove', this.handleMouseMove);
   }
 
-  /** Удаление обработчиков событий */
-  unmount() {
-    this.canvas.removeEventListener('mousemove', this.handleMouseMove);
+  unmount(canvas: HTMLCanvasElement) {
+    canvas.removeEventListener('mousemove', this.handleMouseMove);
   }
 }

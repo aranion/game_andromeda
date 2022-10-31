@@ -1,38 +1,40 @@
 import { styles } from '../../constants';
-import { GameMapConstrConfig, UpdateObjectsParams } from './types';
+import { Player } from '../../entities/player';
+import { DrawParams, GameMapConstrConfig, UpdateParams } from './types';
 
 /**
  * Карта текущего уровня, настраивается через конфиг. Управляет текущим уровнем и его логикой.
  * */
 export class GameMap {
-  /** HTML-элемент канваса */
-  private canvas: HTMLCanvasElement;
-  /** Контекст канваса */
-  private ctx: CanvasRenderingContext2D;
-  /** Интервал спавна объектов, кол-во кадров */
   private spawnInterval: {
+    // интервал - количество кадров
     alien: number;
     asteroid: number;
     resource: number;
   };
-  /** Заработанные очки уровня */
   private score = 0;
+  private player: Player;
 
   constructor(config: GameMapConstrConfig) {
-    this.canvas = config.canvas;
-    this.ctx = config.ctx;
     this.spawnInterval = config.spawnInterval;
+    this.player = config.player;
   }
 
-  /** Получить заработанные очки уровня */
   get getScore(): number {
     return this.score;
   }
 
-  /** Метод обновляет модели всех сущностей и UI на карте */
-  updateObjects({ player }: UpdateObjectsParams) {
-    this.ctx.fillStyle = styles.fontColor;
-    this.ctx.fillText(`Score: ${this.score}`, 10, 50);
-    this.ctx.fillText(`Lives: ${player.getLives}`, 10, 100);
+  draw({ ctx, width, height }: DrawParams) {
+    ctx.fillStyle = styles.canvasBackground;
+    ctx.font = styles.font;
+    ctx.fillRect(0, 0, width, height);
+    ctx.fillStyle = styles.fontColor;
+    ctx.fillText(`Score: ${this.score}`, 10, 50);
+    ctx.fillText(`Lives: ${this.player.getLives}`, 10, 100);
+  }
+
+  update({ playerDirections, ctx, width, height }: UpdateParams) {
+    this.draw({ ctx, width, height });
+    this.player.update({ direction: playerDirections, ctx, width, height });
   }
 }
