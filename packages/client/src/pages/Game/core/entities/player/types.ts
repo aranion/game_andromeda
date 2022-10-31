@@ -1,7 +1,7 @@
 import { GameObjectConfig } from '../game-object/types';
 import { Coordinates } from '../../types';
 
-export type PlayerSkins = {
+export type PlayerSkin = {
   healthy: string;
   battered: string;
   damaged: string;
@@ -14,5 +14,5 @@ export type PlayerConfig = Omit<GameObjectConfig, 'imageSrc'> & {
   lives: number;
   maxLives: number;
   shielded?: boolean;
-  imageSrc: PlayerSkins;
+  imageSrc: PlayerSkin;
 };

@@ -1,5 +1,5 @@
 import { GameObject } from '../game-object';
-import { PlayerConfig, PlayerSkins } from './types';
+import { PlayerConfig, PlayerSkin } from './types';
 import { Coordinates } from '../../types';
 
 /**
@@ -10,7 +10,7 @@ export class Player extends GameObject {
   private lives: number;
   private maxLives: number;
   private shielded: boolean;
-  private skin: PlayerSkins;
+  private skin: PlayerSkin;
 
   constructor(config: PlayerConfig) {
     super({ ...config, imageSrc: config.imageSrc.healthy });
@@ -40,6 +40,7 @@ export class Player extends GameObject {
     }
 
     this.lives = newLives > this.maxLives ? this.maxLives : newLives;
+    this.updateSkin();
   }
 
   private updateSkin() {
