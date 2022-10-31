@@ -37,8 +37,8 @@ export class GameMap {
     this.ctx.fillText(`Lives: ${this.player.getLives}`, 10, 100);
   }
 
-  update({ playerDirections }: UpdateParams) {
+  update({ frame }: UpdateParams) {
     this.draw();
-    this.player.update({ direction: playerDirections });
+    this.player.update();
   }
 }
