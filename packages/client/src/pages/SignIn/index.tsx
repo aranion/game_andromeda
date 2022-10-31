@@ -1,69 +1,26 @@
 import { Link } from 'react-router-dom';
-import { useActions } from '../../hooks/useActions';
-import { useTypeSelector } from '../../hooks/useTypeSelector';
 import { RouterList } from '../../router/routerList';
-import {
-  useLazyCheckAuthUserQuery,
-  useLogoutMutation,
-  useSignInMutation,
-} from '../../store/auth/api';
-import { useLazyFetchUserDataQuery } from '../../store/user/api';
+import { useAuth } from '../../hooks/usuAuth';
 import type { RequestSignIn } from '../../store/auth/type';
-import type { RequestUserData } from '../../store/user/type';
+
+const mockParams: RequestSignIn = {
+  login: 'Xxxxx',
+  password: '123XXXxxx',
+};
 
 export default function SignIn() {
-  const { isAuth } = useTypeSelector(state => state.auth);
-  const { userData } = useTypeSelector(state => state.user);
-
-  const [fetchAuthUser] = useLazyCheckAuthUserQuery();
-  const [fetchUserData] = useLazyFetchUserDataQuery();
-  const [fetchLogout] = useLogoutMutation();
-  const [fetchSignIn] = useSignInMutation();
-
-  const { setIsAuth, resetUserState, setUserData } = useActions();
+  const { logout, signIn, checkIsAuth } = useAuth();
 
   const handleCheckIsAuth = () => {
-    fetchAuthUser(null).then(res => {
-      setIsAuth(res.isSuccess);
-    });
+    checkIsAuth();
   };
 
   const handleSignIn = () => {
-    if (!isAuth) {
-      const params: RequestSignIn = {
-        login: 'Xxxxx',
-        password: '123XXXxxx',
-      };
-
-      fetchSignIn(params).then(() => {
-        setIsAuth(true);
-
-        if (userData?.id) {
-          const params: RequestUserData = { id: userData.id };
-
-          fetchUserData(params).then(res => {
-            if ('data' in res && res.data) {
-              setUserData(res.data);
-            } else {
-              console.error(res.error);
-            }
-          });
-        }
-      });
-    }
+    signIn(mockParams);
   };
 
   const handleLogout = () => {
-    if (isAuth) {
-      fetchLogout(null).then(res => {
-        if ('data' in res) {
-          setIsAuth(false);
-          resetUserState();
-        } else {
-          console.error(res.error);
-        }
-      });
-    }
+    logout();
   };
 
   return (

@@ -1,6 +1,6 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { BASE_URL } from '../../constants/vars'
-import type { RequestUserData, ResponseUserData } from './type'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { BASE_URL } from '../../constants/vars';
+import type { RequestUserData, ResponseUserData } from './type';
 
 export const userApi = createApi({
   reducerPath: 'user/api',
@@ -16,6 +16,6 @@ export const userApi = createApi({
       transformResponse: (res: ResponseUserData) => res,
     }),
   }),
-})
+});
 
-export const { useLazyFetchUserDataQuery } = userApi
+export const { useLazyFetchUserDataQuery } = userApi;

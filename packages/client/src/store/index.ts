@@ -1,4 +1,4 @@
-import { authActions, authReducer } from './auth/slice';
+import { authActions, authReducer } from './auth';
 import { userActions, userReducer } from './user/slice';
 import { userApi } from './user/api';
 import { configureStore } from '@reduxjs/toolkit';

@@ -1,5 +1,5 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { BASE_URL } from '../../constants/vars'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { BASE_URL } from '../../constants/vars';
 import type {
   RequestSignIn,
   RequestSignUp,
@@ -7,7 +7,7 @@ import type {
   ResponseSignIn,
   ResponseSignUp,
   ResponseAuthUser,
-} from './type'
+} from './type';
 
 export const authApi = createApi({
   reducerPath: 'auth/api',
@@ -48,12 +48,11 @@ export const authApi = createApi({
       }),
     }),
   }),
-})
+});
 
 export const {
   useLazyCheckAuthUserQuery,
-  useCheckAuthUserQuery,
   useLogoutMutation,
   useSignInMutation,
   useSignUpMutation,
-} = authApi
+} = authApi;

@@ -1,9 +1,14 @@
 import { Navigate } from 'react-router-dom';
-import { useTypeSelector } from '../hooks/useTypeSelector';
+import { NoAccess } from '../components';
+import { useAuth } from '../hooks/usuAuth';
 import { RouterList } from './routerList';
 
 export function withPrivateRoute(children: JSX.Element) {
-  const { isAuth } = useTypeSelector(state => state.auth);
+  const { isAuth, isLoadingAuth } = useAuth();
+
+  if (isLoadingAuth) {
+    return <NoAccess />;
+  }
 
   return isAuth ? children : <Navigate to={RouterList.SIGN_IN} replace />;
 }

@@ -1,18 +1,13 @@
 import './App.css';
 import { useEffect } from 'react';
 import { Router } from './router';
-import { useLazyCheckAuthUserQuery } from './store/auth/api';
-import { useActions } from './hooks/useActions';
+import { useAuth } from './hooks/usuAuth';
 
 function App() {
-  const { setIsAuth } = useActions();
-
-  const [checkAuthUser] = useLazyCheckAuthUserQuery();
+  const { checkIsAuth } = useAuth();
 
   useEffect(() => {
-    checkAuthUser(null).then(res => {
-      setIsAuth(res.isSuccess);
-    });
+    checkIsAuth();
 
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`;
