@@ -33,6 +33,7 @@
     "cssnext": "1.8.5",
     "eslint": "^8.23.0",
     "jest": "^28",
+    "jest-canvas-mock": "^2.4.0",
     "jest-environment-jsdom": "^29.0.1",
     "lefthook": "^1.1.1",
     "postcss-cli": "10.0.0",
