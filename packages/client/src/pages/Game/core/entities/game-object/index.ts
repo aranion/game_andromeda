@@ -6,12 +6,16 @@ import { GameObjectConfig } from './types';
  * Абстракция над игровыми объектами.
  * */
 export abstract class GameObject {
+  protected readonly canvas: HTMLCanvasElement;
+  protected readonly ctx: CanvasRenderingContext2D;
   protected position: Coordinates;
   /** Скорость перемещения объекта. Чем выше значение, тем медленнее. */
   protected speed: number;
   protected radius: number;
 
   protected constructor(config: GameObjectConfig) {
+    this.canvas = config.canvas;
+    this.ctx = config.ctx;
     this.position = config.position ?? { x: 0, y: 0 };
     this.speed = config.speed ?? INITIAL_SPEED;
     this.radius = config.radius ?? INITIAL_RADIUS;

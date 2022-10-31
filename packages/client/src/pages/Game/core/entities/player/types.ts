@@ -1,5 +1,5 @@
 import { GameObjectConfig } from '../game-object/types';
-import { CanvasProperties, Coordinates } from '../../types';
+import { Coordinates } from '../../types';
 
 export type PlayerConfig = GameObjectConfig & {
   radius: number;
@@ -10,4 +10,4 @@ export type PlayerConfig = GameObjectConfig & {
 
 export type UpdateParams = {
   direction: Coordinates;
-} & CanvasProperties;
+};

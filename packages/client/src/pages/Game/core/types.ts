@@ -12,7 +12,6 @@ export type GameMapConfig = {
 };
 
 export type CanvasProperties = {
+  canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
-  width: number;
-  height: number;
-}
+};

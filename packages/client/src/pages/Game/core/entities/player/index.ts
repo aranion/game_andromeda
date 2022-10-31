@@ -36,30 +36,30 @@ export class Player extends GameObject {
     this.lives = newLives > this.maxLives ? this.maxLives : newLives;
   }
 
-  private keepInsideCanvas(canvasWidth: number, canvasHeight: number) {
+  private keepInsideCanvas() {
     if (this.position.x <= this.radius) {
       this.position.x = this.radius;
     }
-    if (this.position.x >= canvasWidth - this.radius) {
-      this.position.x = canvasWidth - this.radius;
+    if (this.position.x >= this.canvas.width - this.radius) {
+      this.position.x = this.canvas.width - this.radius;
     }
     if (this.position.y <= this.radius) {
       this.position.y = this.radius;
     }
-    if (this.position.y >= canvasHeight - this.radius) {
-      this.position.y = canvasHeight - this.radius;
+    if (this.position.y >= this.canvas.height - this.radius) {
+      this.position.y = this.canvas.height - this.radius;
     }
   }
 
-  protected draw(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = 'red';
-    ctx.beginPath();
-    ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.closePath();
+  protected draw() {
+    this.ctx.fillStyle = 'red';
+    this.ctx.beginPath();
+    this.ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
+    this.ctx.fill();
+    this.ctx.closePath();
   }
 
-  update({ direction, ctx, width, height }: UpdateParams) {
+  update({ direction }: UpdateParams) {
     const distanceX = this.position.x - direction.x;
     const distanceY = this.position.y - direction.y;
 
@@ -71,7 +71,7 @@ export class Player extends GameObject {
       this.position.y -= distanceY / this.speed;
     }
 
-    this.keepInsideCanvas(width, height);
-    this.draw(ctx);
+    this.keepInsideCanvas();
+    this.draw();
   }
 }

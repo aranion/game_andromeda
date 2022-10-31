@@ -3,11 +3,9 @@ import { CanvasProperties, Coordinates, GameMapConfig } from '../../types';
 
 export type GameMapConstrConfig = GameMapConfig & {
   player: Player;
-};
+} & CanvasProperties;
 
 export type UpdateParams = {
   frame?: number;
   playerDirections: Coordinates;
-} & CanvasProperties;
-
-export type DrawParams = CanvasProperties;
+};

@@ -5,6 +5,7 @@ import { defaultPlayerStats } from './entities/player/stats';
 import { mapConfig } from './map.config';
 import { FPS } from './constants';
 import type { GameMapConfig } from './types';
+import { CanvasProperties } from './types';
 
 type GameConfig = {
   canvas: HTMLCanvasElement;
@@ -23,9 +24,11 @@ export class Game {
   private frame = 0;
 
   constructor(config: GameConfig) {
-    const canvas = this.initCanvas(config.canvas);
-    this.directions = new DirectionsInput({ width: canvas.width, height: canvas.height });
+    const { canvas, ctx } = this.initCanvas(config.canvas);
+    this.directions = new DirectionsInput({ canvas });
     this.player = new Player({
+      canvas,
+      ctx,
       position: {
         x: canvas.width / 2,
         y: canvas.height + defaultPlayerStats.radius * 2
@@ -64,6 +67,8 @@ export class Game {
     if (this.canvas && this.ctx) {
       this.map = new GameMap({
         ...gameMapConfig,
+        canvas: this.canvas,
+        ctx: this.ctx,
         player: this.player
       });
     }
@@ -77,7 +82,7 @@ export class Game {
     }
   };
 
-  private initCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
+  private initCanvas(canvas: HTMLCanvasElement): CanvasProperties {
     this.canvas = canvas;
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
@@ -87,32 +92,25 @@ export class Game {
       throw new Error('The canvas context has not been created. The game cannot be initialized!');
     }
 
-    return this.canvas;
+    return { canvas: this.canvas, ctx: this.ctx };
   }
 
   private render() {
     if (this.canvas && this.ctx) {
       this.map?.update({
-        ctx: this.ctx,
-        width: this.canvas.width,
-        height: this.canvas.height,
         playerDirections: this.directions.getDirections
       });
     }
   }
 
   private mount() {
-    if (this.canvas) {
-      this.directions.mount(this.canvas);
-      window.addEventListener('resize', this.resize);
-    }
+    this.directions.mount();
+    window.addEventListener('resize', this.resize);
   }
 
   unmount() {
-    if (this.canvas) {
-      this.directions.unmount(this.canvas);
-      window.removeEventListener('resize', this.resize);
-    }
+    this.directions.unmount();
+    window.removeEventListener('resize', this.resize);
   }
 
   init() {
