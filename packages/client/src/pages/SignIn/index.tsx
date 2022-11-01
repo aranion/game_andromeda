@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { RouterList } from '../../router/routerList';
-import { useAuth } from '../../hooks/usuAuth';
+import { useAuth } from '../../hooks/useAuth';
 import type { RequestSignIn } from '../../store/auth/type';
 
 const mockParams: RequestSignIn = {

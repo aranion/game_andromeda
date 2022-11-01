@@ -1,7 +1,7 @@
 import './App.css';
 import { useEffect } from 'react';
 import { Router } from './router';
-import { useAuth } from './hooks/usuAuth';
+import { useAuth } from './hooks/useAuth';
 
 function App() {
   const { checkIsAuth } = useAuth();

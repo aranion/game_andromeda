@@ -7,7 +7,7 @@ export const mapConfig: MapConfig = {
     spawnInterval: {
       alien: 0,
       asteroid: 500,
-      resource: 200
-    }
-  }
+      resource: 200,
+    },
+  },
 };
