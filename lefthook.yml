@@ -3,8 +3,6 @@ pre-commit:
   commands:
     test:
       run: yarn test
-    format:
-      run: yarn format
     lint:
       glob: '*.{ts,tsx}'
-      run: yarn eslint {staged_files}
+      run: yarn eslint --fix {staged_files} && yarn format && git add {staged_files}
