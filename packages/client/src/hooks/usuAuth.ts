@@ -1,4 +1,4 @@
-import { RouterList } from './../router/routerList';
+import { RouterList } from '../router/routerList';
 import { useNavigate } from 'react-router-dom';
 import { authSelectors } from '../store/auth';
 import {
