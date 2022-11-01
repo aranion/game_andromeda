@@ -1,5 +1,5 @@
 import { GameObject } from '../game-object';
-import { PlayerConfig, UpdateParams } from './types';
+import type { PlayerConfig, UpdateParams } from './types';
 
 /**
  * Класс игрока. Главная сущность игры в виде космического корабля.
