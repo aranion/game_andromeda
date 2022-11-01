@@ -28,10 +28,7 @@ export const useAuth = () => {
     setIsLoadingAuth(true);
 
     fetchIsAuth(null)
-      .then(res => {
-        const { isSuccess } = res;
-
-        setIsAuth(isSuccess);
+      .then(({ isSuccess }) => setIsAuth(isSuccess))
       })
       .catch(console.log)
       .finally(() => {
