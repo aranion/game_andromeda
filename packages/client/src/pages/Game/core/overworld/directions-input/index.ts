@@ -1,5 +1,5 @@
-import { DirectionsInputConfig } from './types';
-import { Coordinates } from '../../types';
+import type { DirectionsInputConfig } from './types';
+import type { Coordinates } from '../../types';
 
 /**
  * Класс для считывания пользовательского ввода: движения мыши, тача, нажатия клавиш клавиатуры.

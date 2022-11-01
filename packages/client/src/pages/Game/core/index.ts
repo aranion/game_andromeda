@@ -5,7 +5,7 @@ import { defaultPlayerStats } from './entities/player/stats';
 import { mapConfig } from './map.config';
 import { FPS } from './constants';
 import type { GameMapConfig } from './types';
-import { CanvasProperties } from './types';
+import type { CanvasProperties } from './types';
 
 type GameConfig = {
   canvas: HTMLCanvasElement;
