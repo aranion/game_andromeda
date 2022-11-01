@@ -13,8 +13,9 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 11,
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'prettier'],
   rules: {
+    'prettier/prettier': 'error',
     eqeqeq: 2,
     quotes: ['warn', 'single'],
     semi: ['warn', 'always'],

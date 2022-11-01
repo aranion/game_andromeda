@@ -1,5 +1,5 @@
 import { INITIAL_SPEED } from '../../constants';
-import { PlayerConfig } from './types';
+import type { PlayerConfig } from './types';
 
 export const defaultPlayerStats: Omit<PlayerConfig, 'canvas' | 'ctx'> = {
   speed: INITIAL_SPEED,
