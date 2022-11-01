@@ -5,7 +5,7 @@ import { defaultPlayerStats } from './entities/player/stats';
 import { mapConfig } from './map.config';
 import { FPS } from './constants';
 import type { GameMapConfig } from './types';
-import { CanvasProperties } from './types';
+import type { CanvasProperties } from './types';
 
 type GameConfig = {
   canvas: HTMLCanvasElement;
@@ -31,9 +31,9 @@ export class Game {
       ctx,
       position: {
         x: canvas.width / 2,
-        y: canvas.height + defaultPlayerStats.radius * 2
+        y: canvas.height + defaultPlayerStats.radius * 2,
       },
-      ...defaultPlayerStats
+      ...defaultPlayerStats,
     });
   }
 
@@ -69,7 +69,7 @@ export class Game {
         ...gameMapConfig,
         canvas: this.canvas,
         ctx: this.ctx,
-        player: this.player
+        player: this.player,
       });
     }
   }
@@ -89,7 +89,9 @@ export class Game {
     this.ctx = this.canvas.getContext('2d');
 
     if (!this.ctx) {
-      throw new Error('The canvas context has not been created. The game cannot be initialized!');
+      throw new Error(
+        'The canvas context has not been created. The game cannot be initialized!'
+      );
     }
 
     return { canvas: this.canvas, ctx: this.ctx };
@@ -98,7 +100,7 @@ export class Game {
   private render() {
     if (this.canvas && this.ctx) {
       this.map?.update({
-        playerDirections: this.directions.getDirections
+        playerDirections: this.directions.getDirections,
       });
     }
   }

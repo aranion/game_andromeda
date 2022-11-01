@@ -1,6 +1,6 @@
 import { styles } from '../../constants';
 import { Player } from '../../entities/player';
-import { GameMapConstrConfig, UpdateParams } from './types';
+import type { GameMapConstrConfig, UpdateParams } from './types';
 
 /**
  * Карта текущего уровня, настраивается через конфиг. Управляет текущим уровнем и его логикой.
