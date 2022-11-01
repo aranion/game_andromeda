@@ -79,14 +79,14 @@ export class Sprite {
 
     this.ctx.drawImage(
       this.image,
-      frameX * this.width, // left cut
-      frameY * this.height, // top cut
-      this.width, // width of cut
-      this.height, // height of cut
-      x, // positionX
-      y, // positionY
-      this.width, // scaleX
-      this.height // scaleY
+      frameX * this.width,
+      frameY * this.height,
+      this.width,
+      this.height,
+      x,
+      y,
+      this.width,
+      this.height
     );
 
     if (this.isAnimated) {
