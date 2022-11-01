@@ -1,4 +1,4 @@
-import { useAuth } from '../../hooks/usuAuth';
+import { useAuth } from '../../hooks/useAuth';
 import type { RequestSignUp } from '../../store/auth/type';
 
 const mockParams: RequestSignUp = {
