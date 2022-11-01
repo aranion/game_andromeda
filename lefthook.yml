@@ -5,4 +5,4 @@ pre-commit:
       run: yarn test
     lint:
       glob: '*.{ts,tsx}'
-      run: yarn eslint --fix {staged_files} && yarn format && git add {staged_files}
+      run: yarn eslint --fix {staged_files} && yarn format && git add .
