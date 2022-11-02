@@ -98,7 +98,7 @@ export class Sprite {
     if (this.image && this.isLoaded) {
       this.drawImage({
         x: this.position.x - this.width / 2,
-        y: this.position.y - this.height / 2
+        y: this.position.y - this.height / 2,
       });
     }
   }
@@ -108,11 +108,12 @@ export class Sprite {
       this.ctx.setTransform(1, 0, 0, 1, this.position.x, this.position.y);
       // + 90deg по часовой стрелке, чтобы выровнять изображение
       this.ctx.rotate(
-        Math.atan2(target.y - this.position.y, target.x - this.position.x) + Math.PI / 2
+        Math.atan2(target.y - this.position.y, target.x - this.position.x) +
+          Math.PI / 2
       );
       this.drawImage({
         x: -this.width / 2,
-        y: -this.height / 2
+        y: -this.height / 2,
       });
       this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     }

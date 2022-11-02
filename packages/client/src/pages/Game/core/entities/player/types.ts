@@ -9,7 +9,7 @@ export type PlayerSkin = {
 };
 
 export type PlayerConfig = Omit<GameObjectConfig, 'imageSrc'> & {
-  direction: Coordinates,
+  direction: Coordinates;
   radius: number;
   lives: number;
   maxLives: number;

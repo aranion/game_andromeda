@@ -1,6 +1,8 @@
 pre-commit:
   parallel: true
   commands:
+    test:
+      run: yarn test
     lint:
       glob: '*.{ts,tsx}'
-      run: yarn eslint {staged_files}
+      run: yarn eslint --fix {staged_files} && yarn format && git add .

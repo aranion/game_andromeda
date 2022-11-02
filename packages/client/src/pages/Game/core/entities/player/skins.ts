@@ -8,6 +8,6 @@ export const playerSkins = {
     healthy: baseSpaceshipHealthy,
     battered: baseSpaceshipBattered,
     damaged: baseSpaceshipDamaged,
-    wrecked: baseSpaceshipWrecked
-  }
+    wrecked: baseSpaceshipWrecked,
+  },
 };

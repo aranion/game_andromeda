@@ -28,7 +28,7 @@ export abstract class GameObject {
       radius: this.radius,
       width: config.width,
       height: config.height,
-      isAnimated: config.isAnimated
+      isAnimated: config.isAnimated,
     });
   }
 

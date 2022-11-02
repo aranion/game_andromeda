@@ -8,5 +8,5 @@ export type AnimationType = { [key in AnimationKey]: [number, number][] };
  * разбивкой по кадрам `fly: [[0,0], [1,0], [2,0], [3,0]]`.
  * */
 export const animationsConfig: AnimationType = {
-  ...playerAnimations
+  ...playerAnimations,
 };
