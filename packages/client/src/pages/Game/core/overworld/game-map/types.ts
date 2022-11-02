@@ -1,5 +1,5 @@
 import { Player } from '../../entities/player';
-import { CanvasProperties, Coordinates, GameMapConfig } from '../../types';
+import type { CanvasProperties, GameMapConfig } from '../../types';
 
 export type GameMapConstrConfig = GameMapConfig & {
   player: Player;
@@ -7,5 +7,4 @@ export type GameMapConstrConfig = GameMapConfig & {
 
 export type UpdateParams = {
   frame?: number;
-  playerDirections: Coordinates;
 };

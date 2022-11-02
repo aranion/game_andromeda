@@ -1,20 +1,26 @@
 import { GameObject } from '../game-object';
 import type { PlayerConfig, UpdateParams } from './types';
+import type { Coordinates } from '../../types';
 
 /**
  * Класс игрока. Главная сущность игры в виде космического корабля.
  * */
 export class Player extends GameObject {
+  private direction: Coordinates;
   private lives: number;
   private maxLives: number;
   private shielded: boolean;
+  private skin: PlayerSkin;
 
   constructor(config: PlayerConfig) {
-    super(config);
+    super({ ...config, imageSrc: config.imageSrc.healthy });
 
+    this.direction = config.direction;
     this.lives = config.lives;
     this.maxLives = config.maxLives;
     this.shielded = config.shielded ?? false;
+    this.skin = config.imageSrc;
+    this.updateSkin();
   }
 
   get getLives(): number {
@@ -34,6 +40,22 @@ export class Player extends GameObject {
     }
 
     this.lives = newLives > this.maxLives ? this.maxLives : newLives;
+    this.updateSkin();
+  }
+
+  private updateSkin() {
+    if (this.lives === 1) {
+      this.sprite.imageSrc = this.skin.wrecked;
+    }
+    if (this.lives === 2) {
+      this.sprite.imageSrc = this.skin.damaged;
+    }
+    if (this.lives === 3) {
+      this.sprite.imageSrc = this.skin.battered;
+    }
+    if (this.lives > 3) {
+      this.sprite.imageSrc = this.skin.healthy;
+    }
   }
 
   private keepInsideCanvas() {
@@ -52,22 +74,18 @@ export class Player extends GameObject {
   }
 
   protected draw() {
-    this.ctx.fillStyle = 'red';
-    this.ctx.beginPath();
-    this.ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
-    this.ctx.fill();
-    this.ctx.closePath();
+    this.sprite.drawImageLookAt(this.direction);
   }
 
-  update({ direction }: UpdateParams) {
-    const distanceX = this.position.x - direction.x;
-    const distanceY = this.position.y - direction.y;
+  update() {
+    const distanceX = this.position.x - this.direction.x;
+    const distanceY = this.position.y - this.direction.y;
 
-    if (direction.x !== this.position.x) {
+    if (this.direction.x !== this.position.x) {
       this.position.x -= distanceX / this.speed;
     }
 
-    if (direction.y !== this.position.y) {
+    if (this.direction.y !== this.position.y) {
       this.position.y -= distanceY / this.speed;
     }
 
