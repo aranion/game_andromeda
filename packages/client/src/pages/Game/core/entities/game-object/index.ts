@@ -1,7 +1,7 @@
 import { INITIAL_RADIUS, INITIAL_SPEED } from '../../constants';
 import { Sprite } from '../sprite';
 import type { Coordinates } from '../../types';
-import typr { GameObjectConfig } from './types';
+import type { GameObjectConfig } from './types';
 
 /**
  * Абстракция над игровыми объектами.
