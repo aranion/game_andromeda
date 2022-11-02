@@ -4,8 +4,7 @@ import { Player } from './entities/player';
 import { defaultPlayerStats } from './entities/player/stats';
 import { mapConfig } from './map.config';
 import { FPS } from './constants';
-import type { GameMapConfig } from './types';
-import type { CanvasProperties } from './types';
+import type { CanvasProperties, GameMapConfig } from './types';
 
 type GameConfig = {
   canvas: HTMLCanvasElement;
@@ -29,6 +28,7 @@ export class Game {
     this.player = new Player({
       canvas,
       ctx,
+      direction: this.directions.getDirections,
       position: {
         x: canvas.width / 2,
         y: canvas.height + defaultPlayerStats.radius * 2,
@@ -98,11 +98,7 @@ export class Game {
   }
 
   private render() {
-    if (this.canvas && this.ctx) {
-      this.map?.update({
-        playerDirections: this.directions.getDirections,
-      });
-    }
+    this.map?.update({ frame: this.frame });
   }
 
   private mount() {
