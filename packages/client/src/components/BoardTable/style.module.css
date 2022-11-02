@@ -1,0 +1,26 @@
+.boardTable {
+  border-collapse: collapse;
+  width: 100%;
+
+  &__td,
+  &__th {
+    text-align: center;
+    padding: 8px;
+
+    &_avatar {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  &__tr:nth-child(even) {
+    background-color: var(--selectColor);
+    color: var(--bgColor);
+  }
+
+  &__tr:hover:not(:first-child) {
+    background-color: var(--secondaryColor);
+    cursor: pointer;
+    color: var(--bgColor);
+  }
+}
