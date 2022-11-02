@@ -1,0 +1,10 @@
+@tailwind apply;
+
+.app {
+  @apply --flexgit;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--backgroundMain);
+  color: var(--secondaryColor);
+}

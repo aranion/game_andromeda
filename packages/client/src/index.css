@@ -1,2 +1,7 @@
 @import '../../../node_modules/modern-normalize/modern-normalize.css';
 @import './constants/_vars.css';
+
+a {
+  text-decoration: none;
+  color: var(--secondaryColor);
+}

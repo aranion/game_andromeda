@@ -1,5 +1,29 @@
 :root {
   --fontSize: 1rem;
-  --mainColor: #fff;
-  --secondaryColor: #000;
+}
+
+:root {
+  --lightColor: #fff;
+  --darkColor: #000;
+  --spaceColor: #10021e;
+  --mainColor: #251b37;
+  --bgColor: #372948;
+  --secondaryColor: #ffffca;
+  --neutralColor: #626262;
+}
+
+:root {
+  --backgroundMain: radial-gradient(
+    ellipse at center,
+    var(--mainColor),
+    var(--spaceColor)
+  );
+}
+
+:root {
+  --flex: {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
