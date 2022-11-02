@@ -19,6 +19,7 @@ export class Sprite {
   private currentAnimationFrame = 0;
   private animationFrameLimit = ANIM_FRAME_LIMIT;
   private animationFrameProgress = ANIM_FRAME_LIMIT;
+  private sizeRatio: number;
   private readonly isAnimated: boolean;
 
   constructor(config: SpriteConfig) {
@@ -30,6 +31,7 @@ export class Sprite {
     this.width = config.width ?? this.radius * 2;
     this.height = config.height ?? this.radius * 2;
     this.isAnimated = config.isAnimated ?? true;
+    this.sizeRatio = config.sizeRatio ?? 1;
 
     if (this.isAnimated) {
       this.setAnimation(config.currentAnimation ?? AnimationKey.SpaceshipFly);
@@ -79,10 +81,10 @@ export class Sprite {
 
     this.ctx.drawImage(
       this.image,
-      frameX * this.width,
-      frameY * this.height,
-      this.width,
-      this.height,
+      frameX * this.width * this.sizeRatio,
+      frameY * this.height * this.sizeRatio,
+      this.width * this.sizeRatio,
+      this.height * this.sizeRatio,
       x,
       y,
       this.width,

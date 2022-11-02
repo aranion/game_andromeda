@@ -29,6 +29,7 @@ export abstract class GameObject {
       width: config.width,
       height: config.height,
       isAnimated: config.isAnimated,
+      sizeRatio: config.sizeRatio,
     });
   }
 

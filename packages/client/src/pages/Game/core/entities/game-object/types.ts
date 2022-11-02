@@ -8,4 +8,5 @@ export type GameObjectConfig = {
   height?: number;
   imageSrc: string;
   isAnimated?: boolean;
+  sizeRatio?: number;
 } & CanvasProperties;
