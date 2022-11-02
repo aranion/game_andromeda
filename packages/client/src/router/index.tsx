@@ -8,6 +8,8 @@ const GamePage = lazy(() => import('../pages/Game'));
 const SignInPage = lazy(() => import('../pages/SignIn'));
 const SignUpPage = lazy(() => import('../pages/SignUp'));
 const ForumPage = lazy(() => import('../pages/Forum'));
+const ForumItemPage = lazy(() => import('../pages/ForumItem'));
+const TopicPage = lazy(() => import('../pages/Topic'));
 const ProfilePage = lazy(() => import('../pages/Profile'));
 const LeaderBoardPage = lazy(() => import('../pages/LeaderBoard'));
 const ServerErrorPage = lazy(() => import('../pages/ServerError'));
@@ -25,7 +27,13 @@ export function Router() {
           <Route path={RouterList.NOT_FOUND} element={<NotFoundPage />} />
           <Route path={RouterList.FORUM}>
             <Route index element={<ForumPage />} />
-            <Route path={RouterList.FORUM_ID_PARAM} element={<ForumPage />} />
+            <Route
+              path={RouterList.FORUM_ID_PARAM}
+              element={<ForumItemPage />}
+            />
+          </Route>
+          <Route path={RouterList.FORUM_TOPIC}>
+            <Route path={RouterList.TOPIC_ID_PARAM} element={<TopicPage />} />
           </Route>
           <Route path={RouterList.PROFILE}>
             <Route index element={withPrivateRoute(<ProfilePage />)} />
