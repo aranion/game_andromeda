@@ -6,9 +6,11 @@
   width: 100vw;
   height: 100vh;
   color: #ffffca;
-  background: radial-gradient(ellipse at center,
-      rgba(8, 25, 42, 1) 19%,
-      rgba(1, 4, 6, 1) 100%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(8, 25, 42, 1) 19%,
+    rgba(1, 4, 6, 1) 100%
+  );
   overflow: hidden;
   position: relative;
   text-align: center;
@@ -16,9 +18,11 @@
 
 .errorSample__star {
   position: absolute;
-  background: radial-gradient(ellipse at center,
-      rgba(177, 198, 219, 1) 2%,
-      rgba(5, 63, 118, 1) 100%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(177, 198, 219, 1) 2%,
+    rgba(5, 63, 118, 1) 100%
+  );
   border-radius: 100%;
   animation: shine infinite alternate;
 }

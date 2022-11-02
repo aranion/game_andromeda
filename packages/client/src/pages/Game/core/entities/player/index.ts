@@ -1,5 +1,5 @@
 import { GameObject } from '../game-object';
-import type { PlayerConfig, UpdateParams } from './types';
+import type { PlayerConfig, PlayerSkin } from './types';
 import type { Coordinates } from '../../types';
 
 /**
