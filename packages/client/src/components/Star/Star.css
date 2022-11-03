@@ -1,21 +1,21 @@
 .star {
-    position: absolute;
-    fill: var(--color-light);
-    height: 73px;
-    width: 55px;
-    filter: drop-shadow(0px 0px 8px rgba(255, 255, 237, 0.8));
+  position: absolute;
+  fill: var(--color-light);
+  height: 73px;
+  width: 55px;
+  filter: drop-shadow(0px 0px 8px rgba(255, 255, 237, 0.8));
 }
 
 .star__big {
-    height: 101px;
-    width: 76px;
+  height: 101px;
+  width: 76px;
 }
 
 .star__small {
-    height: 41px;
-    width: 31px;
+  height: 41px;
+  width: 31px;
 }
 
 .star__relative {
-    position: relative;
+  position: relative;
 }

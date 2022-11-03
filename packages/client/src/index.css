@@ -1,21 +1,14 @@
+@import '../../../node_modules/modern-normalize/modern-normalize.css';
+@import './constants/_vars.css';
 
 :root {
-    --color-bg: #251b37;
-    --color-normal: #372948;
-    --color-light: #ffffca;
-    --color-highlight: #ffffed;
-    --color-grey: #626262;
-    font-family: 'Audiowide';
-    font-style: normal;
-    font-weight: 400;
-}
-
-body {
-    margin: 0;
+  font-family: 'Audiowide';
+  font-style: normal;
+  font-weight: 400;
 }
 
 @media only screen and (max-width: 600px) {
-    .mobile__hide {
-        display: none;
-    }
+  .mobile__hide {
+    display: none;
+  }
 }
