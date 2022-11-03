@@ -1,7 +1,5 @@
 import { GameObjectConfig } from '../game-object/types';
-import { resourceConfig } from './resource.config';
-
-type ResourceType = keyof typeof resourceConfig;
+import { ResourceType } from './resource.config';
 
 export type ResourceConfig = Omit<GameObjectConfig, 'imageSrc' | 'position'> & {
   type?: ResourceType;

@@ -1,19 +1,26 @@
 import { AnimationKey } from '../../constants';
 
+export enum ResourceType {
+  Iron = 'iron',
+  Nickel = 'nickel',
+  Titan = 'titan',
+  Platinum = 'platinum',
+}
+
 export const resourceConfig = {
-  iron: {
+  [ResourceType.Iron]: {
     value: 1,
     animation: AnimationKey.IronOreFly,
   },
-  nickel: {
+  [ResourceType.Nickel]: {
     value: 2,
     animation: AnimationKey.NickelOreFly,
   },
-  titan: {
+  [ResourceType.Titan]: {
     value: 3,
     animation: AnimationKey.TitanOreFly,
   },
-  platinum: {
+  [ResourceType.Platinum]: {
     value: 5,
     animation: AnimationKey.PlatinumOreFly,
   },

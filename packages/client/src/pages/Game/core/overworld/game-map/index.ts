@@ -70,7 +70,6 @@ export class GameMap {
         i--;
       }
     }
-    //console.log(this.resources);
   }
 
   private drawUI() {

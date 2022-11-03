@@ -1,12 +1,12 @@
 import resourceSprite from '../../assets/resource/resource.png';
 import { GameObject } from '../game-object';
 import { randomInteger } from '../../utils/random-integer';
-import { resourceConfig } from './resource.config';
+import { resourceConfig, ResourceType } from './resource.config';
 import { ResourceConfig } from './types';
 
 const RADIUS = 23;
 const RANDOM_SPEED = Math.random() + 1;
-const DEFAULT_RESOURCE = 'iron';
+const resourceKeys = Object.keys(resourceConfig) as ResourceType[];
 
 export class Resource extends GameObject {
   private distance = 0;
@@ -14,6 +14,8 @@ export class Resource extends GameObject {
   private readonly points: number;
 
   constructor(config: ResourceConfig) {
+    const randomType = resourceKeys[randomInteger(0, resourceKeys.length - 1)];
+
     super({
       ...config,
       imageSrc: resourceSprite,
@@ -25,11 +27,10 @@ export class Resource extends GameObject {
         y: 0 - RADIUS * 2,
       },
       speed: config.speed ?? RANDOM_SPEED,
-      currentAnimation:
-        resourceConfig[config.type ?? DEFAULT_RESOURCE].animation,
+      currentAnimation: resourceConfig[config.type ?? randomType].animation,
     });
 
-    this.points = resourceConfig[config.type ?? DEFAULT_RESOURCE].value;
+    this.points = resourceConfig[config.type ?? randomType].value;
   }
 
   get getDistance() {
