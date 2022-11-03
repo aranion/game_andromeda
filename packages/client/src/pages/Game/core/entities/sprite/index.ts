@@ -119,7 +119,7 @@ export class Sprite {
     }
   }
 
-drawImageRotate(rotateAngle: number) {
+  drawImageRotate(rotateAngle: number) {
     if (this.image && this.isLoaded) {
       this.ctx.setTransform(1, 0, 0, 1, this.position.x, this.position.y);
       this.ctx.rotate(Math.atan2(Math.sin(rotateAngle), Math.cos(rotateAngle)));

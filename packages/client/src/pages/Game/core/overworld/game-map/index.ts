@@ -20,7 +20,6 @@ export class GameMap {
   private player: Player;
   private asteroids: Asteroid[] = [];
 
-
   constructor(config: GameMapConstrConfig) {
     this.canvas = config.canvas;
     this.ctx = config.ctx;

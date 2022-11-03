@@ -12,4 +12,3 @@ export type UpdateParams = {
 export type handleResourcesParams = UpdateParams & {
   player: Player;
 };
-

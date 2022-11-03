@@ -41,7 +41,6 @@ export abstract class GameObject {
     return this.radius;
   }
 
-
   protected draw(...args: unknown[]) {
     throw new Error('The draw method was not implemented');
   }
