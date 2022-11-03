@@ -1,9 +1,7 @@
 import { AnimationKey } from '../../constants';
-import { AnimationType } from '../../animations.config';
+import { PlayerAnimation } from './types';
 
-type PlayerAnimationType = AnimationKey.SpaceshipFly;
-
-export const playerAnimations: Pick<AnimationType, PlayerAnimationType> = {
+export const playerAnimations: PlayerAnimation = {
   [AnimationKey.SpaceshipFly]: [
     [0, 0],
     [1, 0],

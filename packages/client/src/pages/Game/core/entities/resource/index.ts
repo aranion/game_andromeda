@@ -5,7 +5,7 @@ import { resourceConfig, ResourceType } from './resource.config';
 import { ResourceConfig } from './types';
 
 const RADIUS = 23;
-const RANDOM_SPEED = Math.random() + 1;
+const RANDOM_SPEED = Math.random() * 2 + 1;
 const resourceKeys = Object.keys(resourceConfig) as ResourceType[];
 
 export class Resource extends GameObject {

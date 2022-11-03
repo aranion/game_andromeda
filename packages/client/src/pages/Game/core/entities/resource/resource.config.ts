@@ -4,6 +4,7 @@ export enum ResourceType {
   Iron = 'iron',
   Nickel = 'nickel',
   Titan = 'titan',
+  Gold = 'gold',
   Platinum = 'platinum',
 }
 
@@ -19,6 +20,10 @@ export const resourceConfig = {
   [ResourceType.Titan]: {
     value: 3,
     animation: AnimationKey.TitanOreFly,
+  },
+  [ResourceType.Gold]: {
+    value: 4,
+    animation: AnimationKey.GoldOreFly,
   },
   [ResourceType.Platinum]: {
     value: 5,
