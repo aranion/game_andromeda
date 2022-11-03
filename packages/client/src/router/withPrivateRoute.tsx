@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { Loader } from '../components/Loader';
+import { Loader } from '../components';
 import { useAuth } from '../hooks/useAuth';
 import { RouterList } from './routerList';
 
