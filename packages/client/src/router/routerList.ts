@@ -5,7 +5,7 @@ export enum RouterList {
   SIGN_UP = '/sign-up',
   FORUM = '/forum',
   FORUM_ID_PARAM = ':forumId',
-  TOPIC_ID_PARAM = '/topic/:topicId',
+  FORUM_TOPIC = '/topic/:topicId',
   GAME = '/game',
   LEADER_BOARD = '/leader-board',
   SERVER_ERROR = '/server-error',
