@@ -1,14 +1,15 @@
 @import '../../../node_modules/modern-normalize/modern-normalize.css';
 @import './constants/_vars.css';
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 
-:root {
-  font-family: 'Audiowide';
+div#root {
+  font-family: 'Audiowide', Helvetica, sans-serif;
   font-style: normal;
   font-weight: 400;
 }
 
 @media only screen and (max-width: 600px) {
-  .mobile__hide {
+  .mobile_hidden {
     display: none;
   }
 }

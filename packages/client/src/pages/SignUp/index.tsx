@@ -1,67 +1,100 @@
-/* 
-
-import Button from '../../components/Button';
-import Input from '../../components/Input';
-import Star from '../../components/Star';
+import { Button, Star, Input, AuthForm } from '../../components';
 import './SignUp.css';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from '../../router/routerList';
-import React from 'react';
+import { useAuth } from '../../hooks/useAuth';
+import type { RequestSignUp } from '../../store/auth/type';
 
+const configStar = [
+  { top: '3%', left: '10%' },
+  { top: '22%', left: '21%' },
+  { top: '39%', left: '4%' },
+  { top: '52%', left: '19%' },
+  { top: '67%', left: '10%' },
+  { top: '80%', left: '4%' },
+  { top: '85%', left: '18%' },
+  { top: '4%', left: '76%' },
+  { top: '11%', left: '91%' },
+  { top: '29%', left: '82%' },
+  { top: '38%', left: '93%' },
+  { top: '64%', left: '74%' },
+  { top: '58%', left: '92%' },
+  { top: '77%', left: '88%' },
+];
 
 export default function SignUp() {
-  const navigate = useNavigate();
-  const navigateSignIn = useCallback(() => navigate(RouterList.SIGN_IN), [navigate]);
-  const handleSignUp = (e: Event) => {
+  const { signUp } = useAuth();
+
+  const handleSignUp = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Registration hasnt been implemented yet');
-    navigateSignIn();
+    const formParams: Record<string, string> = {};
+    const formData = new FormData(e.target as HTMLFormElement);
+    Array.from(formData.entries()).forEach(([key, value]) => {
+      formParams[key] = value as string;
+    });
+    signUp(formParams as RequestSignUp);
   };
 
-  return (
-  <>
-  <div className='registration'>
-    <div className='mobile__hide'>
-      <Star top='3%' left='10%' />
-      <Star top='22%' left='21%' />
-      <Star top='39%' left='4%' />
-      <Star top='52%' left='19%' />
-      <Star top='67%' left='10%' />
-      <Star top='80%' left='4%' />
-      <Star top='85%' left='18%' />
-      <Star top='4%' left='76%' />
-      <Star top='11%' left='91%' />
-      <Star top='29%' left='82%' />
-      <Star top='38%' left='93%' />
-      <Star top='64%' left='74%' />
-      <Star top='58%' left='92%' />
-      <Star top='77%' left='88%' />
-    </div>
-
-    <h1 className='registration__title'>
-      Journey<br />
-      to the<br />
-      Andromeda
-    </h1>
-
-    <form className='registration__signin'>
-      <Input placeholder='Email' className='registration__input' />
-      <Input placeholder='Login' className='registration__input' />
-      <Input placeholder='First Name' className='registration__input' />
-      <Input placeholder='Last Name' className='registration__input' />
-      <Input placeholder='Phone' className='registration__input' />
-      <Input placeholder='Password' className='registration__input' />
-      <Input placeholder='Password (Again)' className='registration__input' />
-      <Button className='registration__button__signin' onClick={handleSignUp}>Sign Up</Button>
-    </form>
-
-    <div className='registration__signup'>
-      <Star size='small' className='star__relative' />
-      <Button className='registration__button__signup' onClick={navigateSignIn}>Sign In</Button>
-      <Star size='small' className='star__relative' />
-    </div>
-  </div>
-  </>
+  const navigate = useNavigate();
+  const navigateSignIn = useCallback(
+    () => navigate(RouterList.SIGN_IN),
+    [navigate]
   );
-} */
+
+  return (
+    <>
+      <div className='registration'>
+        <div className='mobile mobile_hidden'>
+          {configStar.map((item, idx) => (
+            <Star key={idx} top={item.top} left={item.left} />
+          ))}
+        </div>
+
+        <h1 className='registration__title'>
+          Journey
+          <br />
+          to the
+          <br />
+          Andromeda
+        </h1>
+
+        <AuthForm onSubmit={handleSignUp} title='Sign Up'>
+          <AuthForm.Input name='email' type='email' placeholder='Email' />
+          <AuthForm.Input name='login' type='text' placeholder='Login' />
+          <AuthForm.Input
+            name='first_name'
+            type='text'
+            placeholder='First Name'
+          />
+          <AuthForm.Input
+            name='second_name'
+            type='text'
+            placeholder='Last Name'
+          />
+          <AuthForm.Input name='phone' type='text' placeholder='Phone' />
+          <AuthForm.Input
+            name='password'
+            type='password'
+            placeholder='Password'
+          />
+          <AuthForm.Input
+            name='password'
+            type='password'
+            placeholder='Password (Again)'
+          />
+        </AuthForm>
+
+        <div className='registration__signin'>
+          <Star size='small' relative={true} />
+          <Button
+            className='registration__signin-button'
+            onClick={navigateSignIn}>
+            Sign In
+          </Button>
+          <Star size='small' relative={true} />
+        </div>
+      </div>
+    </>
+  );
+}

@@ -4,8 +4,7 @@
   height: 100vh;
   background: var(--color-bg);
   color: var(--color-light);
-  font-family: 'Audiowide';
-  font-style: normal;
+  font-family: 'Audiowide', Helvetica, sans-serif;
   font-weight: 400;
   font-size: 52px;
   text-align: center;

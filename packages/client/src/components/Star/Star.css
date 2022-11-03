@@ -6,16 +6,16 @@
   filter: drop-shadow(0px 0px 8px rgba(255, 255, 237, 0.8));
 }
 
-.star__big {
+.star_size_big {
   height: 101px;
   width: 76px;
 }
 
-.star__small {
+.star_size_small {
   height: 41px;
   width: 31px;
 }
 
-.star__relative {
+.star_position_relative {
   position: relative;
 }
