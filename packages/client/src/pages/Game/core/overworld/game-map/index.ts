@@ -1,8 +1,8 @@
 import { styles } from '../../constants';
 import { Player } from '../../entities/player';
-import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
 import { Resource } from '../../entities/resource';
 import { GameObject } from '../../entities/game-object';
+import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
 
 /**
  * Карта текущего уровня, настраивается через конфиг. Управляет текущим уровнем и его логикой.
@@ -70,6 +70,7 @@ export class GameMap {
         i--;
       }
     }
+    //console.log(this.resources);
   }
 
   private drawUI() {

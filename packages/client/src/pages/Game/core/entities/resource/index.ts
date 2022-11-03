@@ -1,9 +1,12 @@
+import resourceSprite from '../../assets/resource/resource.png';
 import { GameObject } from '../game-object';
 import { randomInteger } from '../../utils/random-integer';
+import { resourceConfig } from './resource.config';
 import { ResourceConfig } from './types';
 
-const DEFAULT_RADIUS = 30;
-const RANDOM_SPEED = Math.random() * 3 + 1;
+const RADIUS = 23;
+const RANDOM_SPEED = Math.random() + 1;
+const DEFAULT_RESOURCE = 'iron';
 
 export class Resource extends GameObject {
   private distance = 0;
@@ -11,15 +14,22 @@ export class Resource extends GameObject {
   private readonly points: number;
 
   constructor(config: ResourceConfig) {
-    super({ ...config, imageSrc: '' });
+    super({
+      ...config,
+      imageSrc: resourceSprite,
+      radius: RADIUS,
+      width: 64,
+      height: 64,
+      position: {
+        x: randomInteger(RADIUS, config.canvas.width - RADIUS),
+        y: 0 - RADIUS * 2,
+      },
+      speed: config.speed ?? RANDOM_SPEED,
+      currentAnimation:
+        resourceConfig[config.type ?? DEFAULT_RESOURCE].animation,
+    });
 
-    this.speed = config.speed ?? RANDOM_SPEED;
-    this.radius = config.radius ?? DEFAULT_RADIUS;
-    this.position = {
-      x: randomInteger(this.radius, this.canvas.width - this.radius),
-      y: 0 - this.radius * 2,
-    };
-    this.points = Math.floor(Math.random() * 10 + 1);
+    this.points = resourceConfig[config.type ?? DEFAULT_RESOURCE].value;
   }
 
   get getDistance() {
@@ -36,11 +46,7 @@ export class Resource extends GameObject {
   }
 
   protected draw() {
-    this.ctx.fillStyle = 'blue';
-    this.ctx.beginPath();
-    this.ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
-    this.ctx.fill();
-    this.ctx.closePath();
+    this.sprite.draw();
   }
 
   update(target: GameObject) {
