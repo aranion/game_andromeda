@@ -2,4 +2,5 @@
   --fontSize: 1rem;
   --mainColor: #fff;
   --secondaryColor: #000;
+  --translucentColor: rgba(0, 0, 0, 0.7);
 }
