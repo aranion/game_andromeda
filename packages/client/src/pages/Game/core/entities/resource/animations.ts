@@ -1,12 +1,7 @@
-import { AnimationType } from '../../animations.config';
 import { AnimationKey } from '../../constants';
+import { AnimationType } from '../../animations.config';
 import { mapXSequence } from '../../utils/map-x-sequence';
-
-type ResourceAnimationType =
-  | AnimationKey.IronOreFly
-  | AnimationKey.NickelOreFly
-  | AnimationKey.TitanOreFly
-  | AnimationKey.PlatinumOreFly;
+import { ResourceAnimationType } from './types';
 
 const mapAnimation = mapXSequence([0, 1, 1, 2, 2, 1, 1, 0]);
 
