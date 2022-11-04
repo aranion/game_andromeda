@@ -19,7 +19,7 @@ export class Sprite {
   private currentAnimationFrame = 0;
   private animationFrameLimit = ANIM_FRAME_LIMIT;
   private animationFrameProgress = ANIM_FRAME_LIMIT;
-  private sizeRatio: number;
+  private readonly sizeRatio: number;
   private readonly isAnimated: boolean;
 
   constructor(config: SpriteConfig) {
