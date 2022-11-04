@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 
-import './Star.css';
+import './styles.css';
 
 type StarProps = {
   top?: string;

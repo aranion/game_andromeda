@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import './Input.css';
+import './styles.css';
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 

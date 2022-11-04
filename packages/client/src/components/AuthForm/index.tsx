@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import { Input, InputProps, Button, Star } from '../';
 
-import './AuthForm.css';
+import './styles.css';
 
 type AuthFormProps = React.FormHTMLAttributes<HTMLFormElement>;
 

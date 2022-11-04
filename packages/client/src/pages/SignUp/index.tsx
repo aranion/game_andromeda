@@ -1,5 +1,5 @@
-import { Button, Star, Input, AuthForm } from '../../components';
-import './SignUp.css';
+import { Button, Star, AuthForm } from '../../components';
+import './styles.css';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from '../../router/routerList';
