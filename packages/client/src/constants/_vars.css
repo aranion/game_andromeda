@@ -3,18 +3,10 @@
 }
 
 :root {
-  --lightColor: #ffffff;
-  --darkColor: #000000;
-  --spaceColor: #10021e;
-  --mainColor: #251b37;
-  --bgColor: #372948;
-  --secondaryColor: #ffffca;
-  --neutralColor: #626262;
-  --selectColor: rgb(216, 201, 235, 0.2);
-  
-  --mainColor: #fff;
-  --secondaryColor: #000;
-
+  --mainColor: #ffffff;
+  --secondaryColor: #000000;
+  --color-space: #10021e;
+  --color-select: rgb(216, 201, 235, 0.2);
   --color-bg: #251b37;
   --color-normal: #372948;
   --color-light: #ffffca;
@@ -25,8 +17,8 @@
 :root {
   --backgroundMain: radial-gradient(
     ellipse at center,
-    var(--mainColor),
-    var(--spaceColor)
+    var(--color-bg),
+    var(--color-space)
   );
   --inputShadow: 0px 0px 7px rgba(255, 255, 202, 0.8);
 }

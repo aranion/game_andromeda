@@ -43,8 +43,8 @@
     &_highScore {
       font-size: 1.5rem;
       margin: 5px;
-      background: var(--secondaryColor);
-      color: var(--mainColor);
+      background: var(--color-light);
+      color: var(--color-bg);
       padding: 2px 10px;
       border-radius: 15px;
     }

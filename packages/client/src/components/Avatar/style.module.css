@@ -2,8 +2,8 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background-color: var(--secondaryColor);
-  border: 3px solid var(--lightColor);
+  background-color: var(--color-light);
+  border: 3px solid var(--mainColor);
   overflow: hidden;
 
   &__img {
