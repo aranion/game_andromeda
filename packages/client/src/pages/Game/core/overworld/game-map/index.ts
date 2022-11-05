@@ -1,8 +1,9 @@
-import { AnimationKey, styles } from '../../constants';
+import { styles } from '../../constants';
 import { Player } from '../../entities/player';
 import type { GameMapConstrConfig, UpdateParams } from './types';
 import { Asteroid } from '../../entities/asteroid';
-import { createAsteroid } from '../../entities/asteroid/stats';
+import { createAsteroidConfig } from '../../entities/asteroid/stats';
+import { GameObject } from '../../entities/game-object';
 
 /**
  * Карта текущего уровня, настраивается через конфиг. Управляет текущим уровнем и его логикой.
@@ -31,24 +32,13 @@ export class GameMap {
     return this.score;
   }
 
-  public handleAsteroids({ frame = 0 }: UpdateParams) {
+  public handleAsteroids(frame = 0) {
     if (frame && frame % this.spawnInterval.asteroid === 0) {
-      const asteroidConfig = createAsteroid();
+      const asteroidConfig = createAsteroidConfig();
       this.asteroids.push(
         new Asteroid({
           canvas: this.canvas,
           ctx: this.ctx,
-          currentAnimation: AnimationKey.Asteroid,
-          position: {
-            x:
-              Math.cos(asteroidConfig.moveAngle) > 0
-                ? -20
-                : this.canvas.width + asteroidConfig.radius,
-            y:
-              Math.sin(asteroidConfig.moveAngle) > 0
-                ? -20
-                : this.canvas.height + asteroidConfig.radius,
-          },
           ...asteroidConfig,
         })
       );
@@ -56,23 +46,17 @@ export class GameMap {
 
     this.asteroids.forEach((asteroid, i) => {
       asteroid.update(this.player);
-      if (
-        (asteroid.getPosition.x > this.canvas.width + asteroid.getRadius &&
-          asteroid.speedDirection.x > 0) ||
-        (asteroid.getPosition.x < -asteroid.getRadius &&
-          asteroid.speedDirection.x < 0)
-      ) {
-        this.asteroids.splice(i, 1);
-        i--;
+      if (this.isOutsideCanvas(asteroid)) {
+        setTimeout(() => {
+          this.asteroids.splice(i, 1);
+        }, 0);
       }
 
-      if (
-        asteroid &&
-        asteroid.distance < asteroid.getRadius + this.player.getRadius
-      ) {
-        this.player.updateLives(-1);
-        this.asteroids.splice(i, 1);
-        i--;
+      if (this.isCollided(asteroid)) {
+        setTimeout(() => {
+          this.player.updateLives(-1);
+          this.asteroids.splice(i, 1);
+        }, 0);
       }
     });
   }
@@ -89,6 +73,21 @@ export class GameMap {
   update({ frame }: UpdateParams) {
     this.draw();
     this.player.update();
-    this.handleAsteroids({ frame });
+    this.handleAsteroids(frame);
+  }
+
+  private isCollided(object: GameObject & { getDistance: number }): boolean {
+    return (
+      object && object.getDistance < object.getRadius + this.player.getRadius
+    );
+  }
+
+  private isOutsideCanvas(object: GameObject): boolean {
+    return (
+      object.getPosition.y > this.canvas.height + object.getRadius * 2 ||
+      object.getPosition.y < -object.getRadius * 2 ||
+      object.getPosition.x < object.getRadius ||
+      object.getPosition.x > this.canvas.width + object.getRadius
+    );
   }
 }

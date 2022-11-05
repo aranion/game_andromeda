@@ -3,13 +3,26 @@ import { AsteroidConfig } from './types';
 
 export class Asteroid extends GameObject {
   private rotateAngle: number;
-  private rotateVector: -1 | 1;
-  private rotateSpeed: number;
-  public distance = 0;
+  private readonly rotateVector: -1 | 1;
+  private readonly rotateSpeed: number;
   private readonly moveAngle: number;
+  private distance = 0;
 
   constructor(config: AsteroidConfig) {
-    super(config);
+    super({
+      isAnimated: false,
+      position: {
+        x:
+          Math.cos(config.moveAngle) > 0
+            ? config.radius
+            : config.canvas.width + config.radius,
+        y:
+          Math.sin(config.moveAngle) > 0
+            ? -config.radius
+            : config.canvas.height + config.radius,
+      },
+      ...config,
+    });
     this.rotateAngle = 0;
     this.moveAngle = config.moveAngle; // от 0 до 2PI
     this.rotateVector = config.rotateVector; // направление вращения астероида
@@ -23,7 +36,11 @@ export class Asteroid extends GameObject {
     };
   }
 
-  draw() {
+  get getDistance() {
+    return this.distance;
+  }
+
+  protected draw() {
     this.sprite.drawImageRotate(this.rotateAngle);
   }
 

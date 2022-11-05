@@ -8,7 +8,3 @@ export type GameMapConstrConfig = GameMapConfig & {
 export type UpdateParams = {
   frame?: number;
 };
-
-export type handleResourcesParams = UpdateParams & {
-  player: Player;
-};

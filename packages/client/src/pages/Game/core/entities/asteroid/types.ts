@@ -5,4 +5,4 @@ export type AsteroidConfig = {
   rotateVector: -1 | 1;
   moveAngle: number;
   radius: number;
-} & GameObjectConfig;
+} & Omit<GameObjectConfig, 'position'>;

@@ -12,5 +12,4 @@ export const ANIM_FRAME_LIMIT = 4;
 
 export enum AnimationKey {
   SpaceshipFly = 'spaceship-fly',
-  Asteroid = 'asteroid',
 }
