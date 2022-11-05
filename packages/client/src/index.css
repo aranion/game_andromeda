@@ -17,3 +17,7 @@ a {
 *::-webkit-scrollbar-thumb {
   border: 3px solid var(--mainColor);
 }
+
+input {
+  outline: none;
+}

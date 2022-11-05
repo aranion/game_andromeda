@@ -1,12 +1,7 @@
 import { Link } from 'react-router-dom';
 import { RouterList } from '../../router/routerList';
 import { useAuth } from '../../hooks/useAuth';
-import type { RequestSignIn } from '../../store/auth/type';
-
-const mockParams: RequestSignIn = {
-  login: 'Xxxxx',
-  password: '123XXXxxx',
-};
+import { mockParamsSignIn } from '../../constants/mockData';
 
 export default function SignIn() {
   const { logout, signIn, checkIsAuth } = useAuth();
@@ -16,7 +11,7 @@ export default function SignIn() {
   };
 
   const handleSignIn = () => {
-    signIn(mockParams);
+    signIn(mockParamsSignIn);
   };
 
   const handleLogout = () => {
@@ -30,7 +25,7 @@ export default function SignIn() {
       <button onClick={handleSignIn}>Авторизоваться</button>
       <button onClick={handleLogout}>Выход</button>
       <Link to={RouterList.GAME}>game</Link>-
-      <Link to={RouterList.PROFILE}>PROFILE</Link>-
+      <Link to={`${RouterList.PROFILE}/${91209}`}>PROFILE</Link>-
       <Link to={RouterList.LEADER_BOARD}>LEADER_BOARD</Link> -
       <Link to={RouterList.NOT_FOUND}>NOT_FOUND</Link> -
       <Link to={RouterList.FORUM}>FORUM</Link> -

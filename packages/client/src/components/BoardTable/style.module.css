@@ -1,26 +1,43 @@
 .boardTable {
-  border-collapse: collapse;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+  padding: 30px;
+  background: var(--bgColor);
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.22),
+    0px 0px 40px rgba(255, 255, 237, 0.1);
+  border-radius: 30px;
+  flex-basis: calc(50% - 50px);
+  flex-grow: 1;
+  height: calc(100% - 25px);
+  min-width: calc(400px - 50px);
+  margin: 0 25px 25px 25px;
 
-  &__td,
-  &__th {
-    text-align: center;
-    padding: 8px;
+  &__table {
+    border-collapse: collapse;
+    width: 100%;
+    height: calc(100% - 60px);
+
+    &_td,
+    &_th {
+      text-align: center;
+      padding: 8px;
+    }
 
     &_avatar {
       width: 30px;
       height: 30px;
     }
-  }
 
-  &__tr:nth-child(even) {
-    background-color: var(--selectColor);
-    color: var(--bgColor);
-  }
+    &_tr:nth-child(even) {
+      background-color: var(--selectColor);
+    }
 
-  &__tr:hover:not(:first-child) {
-    background-color: var(--secondaryColor);
-    cursor: pointer;
-    color: var(--bgColor);
+    &_tr:hover:not(:first-child) {
+      background-color: var(--secondaryColor);
+      cursor: pointer;
+      color: var(--bgColor);
+    }
   }
 }

@@ -3,14 +3,14 @@
 }
 
 :root {
-  --lightColor: #fff;
-  --darkColor: #000;
+  --lightColor: #ffffff;
+  --darkColor: #000000;
   --spaceColor: #10021e;
   --mainColor: #251b37;
   --bgColor: #372948;
   --secondaryColor: #ffffca;
   --neutralColor: #626262;
-  --selectColor: #d8c9eb;
+  --selectColor: rgb(216, 201, 235, 0.2);
 }
 
 :root {
@@ -19,6 +19,7 @@
     var(--mainColor),
     var(--spaceColor)
   );
+  --inputShadow: 0px 0px 7px rgba(255, 255, 202, 0.8);
 }
 
 :root {
