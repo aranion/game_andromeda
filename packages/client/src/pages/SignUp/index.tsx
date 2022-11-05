@@ -1,6 +1,5 @@
 import { Button, Star, AuthForm } from '../../components';
 import './styles.css';
-import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from '../../router/routerList';
 import { useAuth } from '../../hooks/useAuth';
@@ -37,21 +36,18 @@ export default function SignUp() {
   };
 
   const navigate = useNavigate();
-  const navigateSignIn = useCallback(
-    () => navigate(RouterList.SIGN_IN),
-    [navigate]
-  );
+  const navigateSignIn = () => navigate(RouterList.SIGN_IN);
 
   return (
     <>
-      <div className='registration'>
+      <div className='main-menu registration'>
         <div className='mobile mobile_hidden'>
           {configStar.map((item, idx) => (
             <Star key={idx} top={item.top} left={item.left} />
           ))}
         </div>
 
-        <h1 className='registration__title'>
+        <h1 className='main-menu__title'>
           Journey
           <br />
           to the

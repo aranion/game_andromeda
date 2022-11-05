@@ -23,12 +23,9 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .login__signin-button {
+  .button.authform__submit-button {
     width: 170px;
     height: 30px;
     font-size: 18px;
-  }
-  .login__signup-button {
-    width: 120px;
   }
 }

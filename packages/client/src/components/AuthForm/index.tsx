@@ -1,5 +1,6 @@
 import classnames from 'classnames';
-import { Input, InputProps, Button, Star } from '../';
+import { Input, InputProps } from '../Input';
+import { Button } from '../Button';
 
 import './styles.css';
 
