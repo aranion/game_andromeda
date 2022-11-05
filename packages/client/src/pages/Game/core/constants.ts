@@ -8,3 +8,8 @@ export const FPS = 60;
 
 export const INITIAL_SPEED = 100;
 export const INITIAL_RADIUS = 16;
+export const ANIM_FRAME_LIMIT = 4;
+
+export enum AnimationKey {
+  SpaceshipFly = 'spaceship-fly',
+}

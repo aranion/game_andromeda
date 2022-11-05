@@ -7,7 +7,7 @@ export default {
   testEnvironment: 'jsdom',
   testMatch: ['<rootDir>/src/**/*.test.{ts,tsx}'],
   moduleNameMapper: {
-    '\\.(css|scss)$': '<rootDir>/test/jest/__mocks__/styleMock.js',
+    '\\.(css|scss|png)$': '<rootDir>/test/jest/__mocks__/styleMock.js',
   },
   setupFiles: ['jest-canvas-mock'],
   globals: {

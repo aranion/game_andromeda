@@ -16,3 +16,4 @@ export type User = {
 export type ResponseUserData = User;
 
 export type RequestUserData = string;
+
