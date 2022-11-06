@@ -11,4 +11,3 @@ export type KeyAndValueUserData =
   | [keyof Omit<User, 'avatar' | 'display_name' | 'id'>, string]
   | [keyof Pick<User, 'id'>, number | null]
   | [keyof Pick<User, 'avatar' | 'display_name'>, string | null];
-
