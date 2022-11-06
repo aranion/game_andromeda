@@ -1,5 +1,5 @@
-import { GameObjectConfig } from '../game-object/types';
-import { Coordinates } from '../../types';
+import type { GameObjectConfig } from '../game-object/types';
+import type { Coordinates } from '../../types';
 
 export type PlayerSkin = {
   healthy: string;

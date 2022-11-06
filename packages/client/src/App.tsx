@@ -19,7 +19,7 @@ function App() {
   }, []);
 
   return (
-    <main className='app danger'>
+    <main className='app'>
       <Router />
     </main>
   );
