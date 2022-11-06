@@ -3,3 +3,7 @@ export * from './Input';
 export * from './Button';
 export * from './Star';
 export * from './AuthForm';
+export * from './Card';
+export * from './Modal';
+export * from './Table';
+export * from './Textarea';
