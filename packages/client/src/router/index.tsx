@@ -6,6 +6,7 @@ import {
   RouterParamsForum,
   RouterParamsProfile,
   RouterList,
+  RouterParamsTopic,
 } from './routerList';
 
 const GamePage = lazy(() => import('../pages/Game'));
@@ -31,11 +32,14 @@ export function Router() {
           <Route path={RouterList.NOT_FOUND} element={<NotFoundPage />} />
           <Route path={RouterList.FORUM}>
             <Route index element={<ForumPage />} />
-            <Route path={RouterParamsForum.forumId} element={<ForumItemPage />} />
+            <Route
+              path={RouterParamsForum.forumId}
+              element={<ForumItemPage />}
+            />
           </Route>
-          <Route 
-            path={`${RouterList.FORUM_TOPIC}/${RouterParamsTopic.topicId}`} 
-            element={<TopicPage />} 
+          <Route
+            path={`${RouterList.FORUM_TOPIC}/${RouterParamsTopic.topicId}`}
+            element={<TopicPage />}
           />
           <Route
             path={`${RouterList.PROFILE}/${RouterParamsProfile.userId}`}
