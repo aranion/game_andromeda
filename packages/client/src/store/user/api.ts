@@ -9,9 +9,9 @@ export const userApi = createApi({
   }),
   endpoints: build => ({
     fetchUserData: build.query<ResponseUserData, RequestUserData>({
-      query: params => ({
-        url: '',
-        params,
+      query: userId => ({
+        url: `/${userId}`,
+        credentials: 'include',
       }),
       transformResponse: (res: ResponseUserData) => res,
     }),
