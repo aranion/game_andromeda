@@ -31,7 +31,10 @@ export function Router() {
           <Route path={RouterList.NOT_FOUND} element={<NotFoundPage />} />
           <Route path={RouterList.FORUM}>
             <Route index element={<ForumPage />} />
-            <Route path={RouterParamsForum.forumId} element={<ForumItemPage />} />
+            <Route
+              path={RouterParamsForum.forumId}
+              element={<ForumItemPage />}
+            />
           </Route>
           <Route path={RouterList.FORUM_TOPIC} element={<TopicPage />} />
           <Route
