@@ -12,6 +12,8 @@ const ProfilePage = lazy(() => import('src/pages/Profile'));
 const LeaderBoardPage = lazy(() => import('src/pages/LeaderBoard'));
 const ServerErrorPage = lazy(() => import('src/pages/ServerError'));
 const NotFoundPage = lazy(() => import('src/pages/NotFound'));
+const ForumItemPage = lazy(() => import('src/pages/ForumItem'));
+const TopicPage = lazy(() => import('src/pages/Topic'));
 
 export function Router() {
   return (
@@ -25,8 +27,12 @@ export function Router() {
           <Route path={RouterList.NOT_FOUND} element={<NotFoundPage />} />
           <Route path={RouterList.FORUM}>
             <Route index element={<ForumPage />} />
-            <Route path={RouterList.FORUM_ID_PARAM} element={<ForumPage />} />
+            <Route
+              path={RouterList.FORUM_ID_PARAM}
+              element={<ForumItemPage />}
+            />
           </Route>
+          <Route path={RouterList.FORUM_TOPIC} element={<TopicPage />} />
           <Route path={RouterList.PROFILE}>
             <Route index element={withPrivateRoute(<ProfilePage />)} />
             <Route

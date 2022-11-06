@@ -1,6 +1,6 @@
 import { GameObject } from '../game-object';
-import { PlayerConfig, PlayerSkin } from './types';
-import { Coordinates } from '../../types';
+import type { PlayerConfig, PlayerSkin } from './types';
+import type { Coordinates } from '../../types';
 
 /**
  * Класс игрока. Главная сущность игры в виде космического корабля.

@@ -1,11 +1,13 @@
-@import '../../../node_modules/modern-normalize/modern-normalize.css';
-@import './constants/_vars.css';
 @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+@import '../../../node_modules/modern-normalize/modern-normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+@import './constants/_vars.css';
 
-div#root {
+#root {
   font-family: 'Audiowide', Helvetica, sans-serif;
   font-style: normal;
   font-weight: 400;
+  font-size: 1rem;
 }
 
 @media only screen and (max-width: 600px) {
