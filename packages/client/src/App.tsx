@@ -1,9 +1,14 @@
 import './App.css';
 import { useEffect } from 'react';
 import { Router } from './router';
+import { useAuth } from './hooks/useAuth';
 
 function App() {
+  const { checkIsAuth } = useAuth();
+
   useEffect(() => {
+    checkIsAuth();
+
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`;
       const response = await fetch(url);
@@ -15,9 +20,7 @@ function App() {
 
   return (
     <main>
-      <section>
-        <Router />
-      </section>
+      <Router />
     </main>
   );
 }

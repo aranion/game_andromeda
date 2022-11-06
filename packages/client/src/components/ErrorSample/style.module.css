@@ -1,0 +1,78 @@
+.errorSample {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  color: var(--color-light);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(8, 25, 42, 1) 19%,
+    rgba(1, 4, 6, 1) 100%
+  );
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+
+  &__title {
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  &__star {
+    position: absolute;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(177, 198, 219, 1) 2%,
+      rgba(5, 63, 118, 1) 100%
+    );
+    border-radius: 100%;
+    animation: shine infinite alternate;
+  }
+
+  &__content {
+    z-index: 1;
+  }
+
+  &__code {
+    font-size: 6rem;
+  }
+}
+
+@keyframes shine {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  20% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+
+  40% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+
+  40% {
+    transform: scale(0.2);
+    opacity: 0.2;
+  }
+
+  60% {
+    transform: scale(0.2);
+    opacity: 0.1;
+  }
+
+  80% {
+    transform: scale(0.5);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+}
