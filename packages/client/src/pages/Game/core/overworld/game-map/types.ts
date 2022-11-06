@@ -1,5 +1,5 @@
 import { Player } from '../../entities/player';
-import { CanvasProperties, GameMapConfig } from '../../types';
+import type { CanvasProperties, GameMapConfig } from '../../types';
 
 export type GameMapConstrConfig = GameMapConfig & {
   player: Player;
