@@ -1,21 +1,10 @@
-import './style.css';
+import cls from './style.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import { RouterList } from '../../router/routerList';
+import { Button } from '../';
+import { CONFIG_PARAMS } from './constants';
 import type { To } from 'react-router-dom';
-
-const CONFIG_PARAMS = {
-  amount: 200,
-  size: {
-    min: 1,
-    max: 5,
-    giant: 9,
-  },
-  duration: {
-    min: 5,
-    max: 25,
-  },
-} as const;
 
 export function ErrorSample(props: Props) {
   const { code, message, typeButton } = props;
@@ -41,7 +30,7 @@ export function ErrorSample(props: Props) {
             ? giant
             : randomBetween(min, max);
 
-        starElem.classList.add('errorSample__star');
+        starElem.classList.add(cls.errorSample__star);
 
         starElem.style.width = `${sizeElem}px`;
         starElem.style.height = `${sizeElem}px`;
@@ -69,14 +58,14 @@ export function ErrorSample(props: Props) {
   };
 
   return (
-    <div className='errorSample' ref={refWrapper}>
-      <section className='errorSample__content'>
-        <h1>ERROR</h1>
-        <span className='errorSample__code'>{code}</span>
+    <div className={cls.errorSample} ref={refWrapper}>
+      <section className={cls.errorSample__content}>
+        <h1 className={cls.errorSample__title}>ERROR</h1>
+        <span className={cls.errorSample__code}>{code}</span>
         <p>{message}</p>
-        <button onClick={handleGoBack} className='errorSample__buttonBack'>
-          {typeButton === 'back' ? 'Назад' : 'На главную'}
-        </button>
+        <Button onClick={handleGoBack} className={cls.errorSample__buttonBack}>
+          {typeButton === 'back' ? 'Back' : 'Go Home'}
+        </Button>
       </section>
     </div>
   );
