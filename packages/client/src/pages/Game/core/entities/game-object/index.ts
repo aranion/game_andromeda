@@ -1,7 +1,7 @@
 import { INITIAL_RADIUS, INITIAL_SPEED } from '../../constants';
 import { Sprite } from '../sprite';
-import { Coordinates } from '../../types';
-import { GameObjectConfig } from './types';
+import type { Coordinates } from '../../types';
+import type { GameObjectConfig } from './types';
 
 /**
  * Абстракция над игровыми объектами.
@@ -21,6 +21,7 @@ export abstract class GameObject {
     this.position = config.position ?? { x: 0, y: 0 };
     this.speed = config.speed ?? INITIAL_SPEED;
     this.radius = config.radius ?? INITIAL_RADIUS;
+
     this.sprite = new Sprite({
       ctx: this.ctx,
       src: config.imageSrc,
