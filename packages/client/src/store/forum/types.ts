@@ -19,6 +19,8 @@ export type TopicProps = {
 
 export type FetchTopics = (forumId?: string) => TopicProps[];
 
+export type FetchForumName = (forumId?: string) => string;
+
 export type CommentProps = {
   id: string;
   content: string;

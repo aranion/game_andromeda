@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { TopicItem } from '../../components/Forum/TopicItem';
 import { NewTopicButton } from '../../components/Forum/NewTopicButton';
-import { TopicProps, FetchTopics } from '../../store/forum/types';
+import {
+  TopicProps,
+  FetchTopics,
+  FetchForumName,
+} from '../../store/forum/types';
 import { Button, Table, Star } from '../../components';
 
 const configStar = [
@@ -19,6 +23,12 @@ export default function ForumItemPage() {
   const navigate = useNavigate();
 
   const [topics, setTopics] = useState<TopicProps[]>([]);
+  const [forumName, setforumName] = useState<string>('');
+
+  const fetchForumName: FetchForumName = forumId => {
+    console.log(forumId);
+    return 'Game Devlog - News';
+  };
 
   const fetchTopics: FetchTopics = forumId => {
     console.log(forumId);
@@ -42,6 +52,8 @@ export default function ForumItemPage() {
 
   useEffect(() => {
     if (forumId) {
+      const forumName = fetchForumName(forumId);
+      setforumName(forumName);
       const topics = fetchTopics(forumId);
       setTopics(topics);
     }
@@ -57,7 +69,7 @@ export default function ForumItemPage() {
         🠔
       </Button>
 
-      <h1 className='main-title'>Community</h1>
+      <h1 className='main-title'>{forumName}</h1>
       <Table>
         <thead>
           <tr>
