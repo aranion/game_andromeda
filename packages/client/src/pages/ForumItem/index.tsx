@@ -2,8 +2,17 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { TopicItem } from '../../components/Forum/TopicItem';
 import { NewTopicButton } from '../../components/Forum/NewTopicButton';
-import { TopicProps, FetchTopics } from '../../components/Forum/types';
-import { Button, Table } from '../../components';
+import { TopicProps, FetchTopics } from '../../store/forum/types';
+import { Button, Table, Star } from '../../components';
+
+const configStar = [
+  { top: '7%', left: '3%' },
+  { top: '2%', left: '15%' },
+  { top: '3%', left: '80%' },
+  { top: '13%', left: '89%' },
+  { top: '87%', left: '3%' },
+  { top: '76%', left: '89%' },
+];
 
 export default function ForumItemPage() {
   const { forumId } = useParams<{ forumId?: string }>();
@@ -40,9 +49,14 @@ export default function ForumItemPage() {
 
   return (
     <div className='forum'>
+      {configStar.map((item, idx) => (
+        <Star key={idx} top={item.top} left={item.left} />
+      ))}
+
       <Button className='button__back' onClick={() => navigate(-1)}>
         🠔
       </Button>
+
       <h1 className='main-title'>Community</h1>
       <Table>
         <thead>

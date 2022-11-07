@@ -12,10 +12,12 @@
   pointer-events: none;
   transition: 0.5s;
 }
+
 .modal.active {
   opacity: 1;
   pointer-events: all;
 }
+
 .modal__content {
   min-width: 400px;
   transform: scale(0.8);
@@ -32,6 +34,13 @@
   justify-content: center;
   gap: 20px;
 }
+
 .modal__content.active {
   transform: scale(1);
+}
+
+@media only screen and (max-width: 640px) {
+  .modal__content {
+    width: 80%;
+  }
 }

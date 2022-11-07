@@ -2,13 +2,22 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { NewCommentButton } from '../../components/Forum/NewCommentButton';
 import { Comment } from '../../components/Forum/Comment';
-import { Card, Button } from '../../components';
+import { Card, Button, Star } from '../../components';
 import './style.css';
 import {
   TopicProps,
   CommentProps,
   FetchComments,
-} from '../../components/Forum/types';
+} from '../../store/forum/types';
+
+const configStar = [
+  { top: '7%', left: '3%' },
+  { top: '2%', left: '15%' },
+  { top: '3%', left: '80%' },
+  { top: '13%', left: '89%' },
+  { top: '87%', left: '3%' },
+  { top: '76%', left: '89%' },
+];
 
 export default function TopicPage() {
   const { topicId } = useParams<{ topicId?: string }>();
@@ -66,9 +75,14 @@ export default function TopicPage() {
 
   return (
     <div className='forum'>
+      {configStar.map((item, idx) => (
+        <Star key={idx} top={item.top} left={item.left} />
+      ))}
+
       <Button className='button__back' onClick={() => navigate(-1)}>
         🠔
       </Button>
+
       <h1 className='main-title'>Community</h1>
       <Card className='topic__info'>
         <div className='topic__title'>{topic?.title}</div>

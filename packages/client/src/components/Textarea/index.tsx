@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 import classnames from 'classnames';
 import './styles.css';
 
-type Props = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+export type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
-export const Textarea: FC<Props> = props => {
+export const Textarea: FC<TextareaProps> = props => {
   const { placeholder, onChange, className, value } = props;
   const classNames = classnames('textarea', className);
 

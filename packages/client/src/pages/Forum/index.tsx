@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ForumProps, FetchForums } from '../../components/Forum/types';
+import { ForumProps, FetchForums } from '../../store/forum/types';
 import { ForumItem } from '../../components/Forum/ForumItem';
 import { NewForumButton } from '../../components/Forum/NewForumButton';
 import { Button, Table, Star } from '../../components';
@@ -9,9 +9,9 @@ const configStar = [
   { top: '7%', left: '3%' },
   { top: '2%', left: '15%' },
   { top: '3%', left: '80%' },
-  { top: '13%', left: '94%' },
+  { top: '13%', left: '89%' },
   { top: '87%', left: '3%' },
-  { top: '76%', left: '94%' },
+  { top: '76%', left: '89%' },
 ];
 
 export default function ForumPage() {
@@ -24,105 +24,24 @@ export default function ForumPage() {
       {
         forumId: '111',
         title: 'Game Devlog - News',
-        description: 'Test forum111 description',
-        topicsCount: '12',
+        topicsCount: '1',
         commentsCount: '12',
       },
       {
         forumId: '222',
         title: 'Feedback Forum',
-        description: 'Test forum222 description',
-        topicsCount: '12',
+        topicsCount: '126',
         commentsCount: '12',
       },
       {
         forumId: '333',
         title: 'Cavern',
-        description: 'Test forum222 description',
         topicsCount: '12',
         commentsCount: '12',
       },
       {
-        forumId: '111',
-        title: 'Game Devlog - News',
-        description: 'Test forum111 description',
-        topicsCount: '12',
-        commentsCount: '12',
-      },
-      {
-        forumId: '222',
-        title: 'Feedback Forum',
-        description: 'Test forum222 description',
-        topicsCount: '12',
-        commentsCount: '12',
-      },
-      {
-        forumId: '111',
-        title: 'Game Devlog - News',
-        description: 'Test forum111 description',
-        topicsCount: '12',
-        commentsCount: '12',
-      },
-      {
-        forumId: '222',
-        title: 'Feedback Forum',
-        description: 'Test forum222 description',
-        topicsCount: '12',
-        commentsCount: '12',
-      },
-      {
-        forumId: '111',
-        title: 'Game Devlog - News',
-        description: 'Test forum111 description',
-        topicsCount: '12',
-        commentsCount: '12',
-      },
-      {
-        forumId: '222',
-        title: 'Feedback Forum',
-        description: 'Test forum222 description',
-        topicsCount: '12',
-        commentsCount: '12',
-      },
-      {
-        forumId: '111',
-        title: 'Game Devlog - News',
-        description: 'Test forum111 description',
-        topicsCount: '12',
-        commentsCount: '12',
-      },
-      {
-        forumId: '222',
-        title: 'Feedback Forum',
-        description: 'Test forum222 description',
-        topicsCount: '12',
-        commentsCount: '12',
-      },
-      {
-        forumId: '111',
-        title: 'Game Devlog - News',
-        description: 'Test forum111 description',
-        topicsCount: '12',
-        commentsCount: '12',
-      },
-      {
-        forumId: '222',
-        title: 'Feedback Forum',
-        description: 'Test forum222 description',
-        topicsCount: '12',
-        commentsCount: '12',
-      },
-      {
-        forumId: '111',
-        title: 'Game Devlog - News',
-        description: 'Test forum111 description',
-        topicsCount: '12',
-        commentsCount: '12',
-      },
-      {
-        forumId: '222',
-        title: 'Feedback Forum',
-        description: 'Test forum222 description',
+        forumId: '444',
+        title: 'Game Devlog - test forum',
         topicsCount: '12',
         commentsCount: '12',
       }

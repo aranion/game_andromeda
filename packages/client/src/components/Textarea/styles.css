@@ -7,8 +7,9 @@
   font-weight: 400;
   color: var(--color-normal);
   border: 0;
-  padding-left: 20px;
+  padding: 10px 15px;
   width: 100%;
+  min-height: 100px;
 }
 
 .textarea::placeholder {

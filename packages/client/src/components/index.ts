@@ -7,3 +7,4 @@ export * from './Card';
 export * from './Modal';
 export * from './Table';
 export * from './Textarea';
+export * from './Form';
