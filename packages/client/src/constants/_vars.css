@@ -1,5 +1,6 @@
 :root {
   --fontSize: 1rem;
+  --fontFamily: 'Audiowide', Helvetica, sans-serif;
 }
 
 :root {
@@ -20,5 +21,7 @@
     var(--color-bg),
     var(--color-space)
   );
-  --inputShadow: 0px 0px 7px rgba(255, 255, 202, 0.8);
+  --boxShadow: 0px 0px 7px rgba(255, 255, 202, 0.8);
+  --textShadow: 0px 0px 7px rgba(255, 255, 237, 0.8),
+    2px 2px 2px rgba(0, 0, 0, 0.91);
 }

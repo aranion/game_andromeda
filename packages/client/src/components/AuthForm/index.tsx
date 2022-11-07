@@ -7,11 +7,11 @@ import './styles.css';
 type AuthFormProps = React.FormHTMLAttributes<HTMLFormElement>;
 
 export function AuthForm(props: AuthFormProps) {
-  const { onSubmit, className, children, title } = props;
+  const { className, children, title } = props;
   const classNames = classnames('authform', className);
   return (
     <>
-      <form {...props} onSubmit={onSubmit} className={classNames}>
+      <form {...props} className={classNames}>
         {children}
         <Button className='authform__submit-button'>{title}</Button>
       </form>

@@ -1,22 +1,15 @@
 import cls from './style.module.css';
 import classNames from 'classnames';
-import { Loader, Button } from '../';
+import { Loader, Button, Input } from '../';
 import type { FormEvent } from 'react';
 import type { Fields } from '../../pages/Profile';
 
 export function ProfileFields(props: Props) {
   const { isEdit, isLoading, fields } = props;
 
-  const clsFieldTitle = classNames(
-    cls['profileFields__field_bg'],
-    cls['profileFields__field_title']
-  );
-
-  const clsFieldValue = classNames(
-    cls['profileFields__field_bg'],
-    cls['profileFields__field_value'],
-    { [cls.profileFields__field_edit]: isEdit }
-  );
+  const clsFieldValue = classNames(cls.profileFields__field_value, {
+    [cls.profileFields__field_edit]: isEdit,
+  });
 
   if (isLoading) {
     return <Loader />;
@@ -30,19 +23,19 @@ export function ProfileFields(props: Props) {
   return (
     <form className={cls.profileFields} onSubmit={handleSubmitForm}>
       {fields.map(field => {
-        const { label, key, value, ...other } = field;
+        const { label, key, value, ...otherProps } = field;
 
         return (
           <div key={key} className={cls.profileFields__field}>
-            <label className={clsFieldTitle} htmlFor={key}>
+            <label className={cls.profileFields__field_title} htmlFor={key}>
               {label}
             </label>
-            <input
+            <Input
+              {...otherProps}
               name={key}
               readOnly={!isEdit}
               className={clsFieldValue}
               defaultValue={value || ''}
-              {...other}
             />
           </div>
         );
