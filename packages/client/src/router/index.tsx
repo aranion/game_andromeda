@@ -1,23 +1,23 @@
 import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Loader } from '../components';
 import { withPrivateRoute } from './withPrivateRoute';
 import {
   RouterParamsForum,
   RouterParamsProfile,
   RouterList,
 } from './routerList';
+import { Loader } from 'src/components';
 
-const GamePage = lazy(() => import('../pages/Game'));
-const SignInPage = lazy(() => import('../pages/SignIn'));
-const SignUpPage = lazy(() => import('../pages/SignUp'));
-const ForumPage = lazy(() => import('../pages/Forum'));
-const ForumItemPage = lazy(() => import('../pages/ForumItem'));
-const TopicPage = lazy(() => import('../pages/Topic'));
-const ProfilePage = lazy(() => import('../pages/Profile'));
-const LeaderBoardPage = lazy(() => import('../pages/LeaderBoard'));
-const ServerErrorPage = lazy(() => import('../pages/ServerError'));
-const NotFoundPage = lazy(() => import('../pages/NotFound'));
+const GamePage = lazy(() => import('src/pages/Game'));
+const SignInPage = lazy(() => import('src/pages/SignIn'));
+const SignUpPage = lazy(() => import('src/pages/SignUp'));
+const ForumPage = lazy(() => import('src/pages/Forum'));
+const ProfilePage = lazy(() => import('src/pages/Profile'));
+const LeaderBoardPage = lazy(() => import('src/pages/LeaderBoard'));
+const ServerErrorPage = lazy(() => import('src/pages/ServerError'));
+const NotFoundPage = lazy(() => import('src/pages/NotFound'));
+const ForumItemPage = lazy(() => import('src/pages/ForumItem'));
+const TopicPage = lazy(() => import('src/pages/Topic'));
 
 export function Router() {
   return (

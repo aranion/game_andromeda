@@ -6,7 +6,8 @@
 :root {
   --mainColor: #ffffff;
   --secondaryColor: #000000;
-
+  --translucentColor: rgba(0, 0, 0, 0.7);
+  
   --color-space: #10021e;
   --color-bg: #251b37;
   --color-normal: #372948;

@@ -5,13 +5,22 @@ import App from './App';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { store } from './store';
+import { ErrorBoundary } from './components';
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </BrowserRouter>
-  </React.StrictMode>
-);
+const rootElement = document.getElementById('root');
+
+if (rootElement) {
+  ReactDOM.createRoot(rootElement).render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <Provider store={store}>
+          <ErrorBoundary>
+            <App />
+          </ErrorBoundary>
+        </Provider>
+      </BrowserRouter>
+    </React.StrictMode>
+  );
+} else {
+  throw new Error('HTML element with id = "root" not found');
+}
