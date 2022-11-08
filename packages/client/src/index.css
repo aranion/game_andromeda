@@ -5,6 +5,10 @@
 a {
   text-decoration: none;
   color: var(--color-light);
+
+  &:hover {
+    color: var(--mainColor);
+  }
 }
 
 *::-webkit-scrollbar {

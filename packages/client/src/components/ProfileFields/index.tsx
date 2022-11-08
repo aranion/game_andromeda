@@ -33,6 +33,7 @@ export function ProfileFields(props: Props) {
             <Input
               {...otherProps}
               name={key}
+              id={key}
               readOnly={!isEdit}
               className={clsFieldValue}
               defaultValue={value || ''}

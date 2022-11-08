@@ -27,8 +27,7 @@ export default function Profile() {
   const isCorrectUserId = userId && !isNaN(+userId);
   const isEditPassword = pathname === RouterList.PROFILE_EDIT_PASSWORD;
   const isEditProfile = pathname === RouterList.PROFILE_EDIT || isEditPassword;
-  const isNotMyProfile =
-    userId && profileData?.id && profileData.id !== +userId;
+  const isNotMyProfile = userId && !!userData.id && userData.id !== +userId;
 
   useEffect(() => {
     if (isEditProfile) {
@@ -97,11 +96,24 @@ export default function Profile() {
           fields={fields}
         />
 
-        {isEditProfile && (
+        {(isEditProfile || !isNotMyProfile) && (
           <div className={cls.profile__buttons}>
-            <Button onClick={handleEditProfile}>Edit profile</Button>
-            <Button onClick={handleEditPassword}>Edit password</Button>
-            <Button onClick={logout}>Exit profile</Button>
+            <Button
+              onClick={handleEditProfile}
+              className={cls.profile__buttons_width}>
+              Edit profile
+            </Button>
+            <Button
+              onClick={handleEditPassword}
+              className={cls.profile__buttons_width}>
+              Edit password
+            </Button>
+            <Button
+              typeButton='danger'
+              onClick={logout}
+              className={cls.profile__buttons_width}>
+              Exit game
+            </Button>
           </div>
         )}
 
