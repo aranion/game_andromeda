@@ -1,9 +1,8 @@
-import cls from './style.module.css';
-import classnames from 'classnames';
-import { Avatar } from '../Avatar';
+import cls from './styles.module.css';
+import { Avatar } from '../';
 import { useNavigate } from 'react-router-dom';
-import { RouterList } from '../../router/routerList';
-import type { Leader } from '../../pages/LeaderBoard';
+import { RouterList } from 'src/router/routerList';
+import type { Leader } from 'src/pages/LeaderBoard';
 
 const headersColumns = ['Avatar', 'Position', 'Nickname', 'HighScore'];
 
@@ -30,11 +29,6 @@ export function BoardTable(props: Props) {
             const startPosition = 4;
             const position = i + startPosition;
 
-            const clsAvatar = classnames(
-              cls.boardTable__table_td,
-              cls.boardTable__table_avatar
-            );
-
             const handleNavigate = () => {
               navigate(`${RouterList.PROFILE}/${userId}`);
             };
@@ -44,8 +38,10 @@ export function BoardTable(props: Props) {
                 key={i}
                 className={cls.boardTable__table_tr}
                 onClick={handleNavigate}>
-                <td className={clsAvatar}>
-                  <Avatar />
+                <td className={cls.boardTable__table_td}>
+                  <div className={cls.boardTable__table_avatar}>
+                    <Avatar />
+                  </div>
                 </td>
                 <td className={cls.boardTable__table_td}>{position}</td>
                 <td className={cls.boardTable__table_td}>{nickname}</td>

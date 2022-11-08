@@ -1,4 +1,4 @@
-import cls from './errorBoundary.module.css';
+import cls from './styles.module.css';
 import { Component } from 'react';
 import type { ErrorInfo, ReactNode } from 'react';
 

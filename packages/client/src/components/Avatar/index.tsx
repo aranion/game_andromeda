@@ -1,10 +1,9 @@
-import cls from './style.module.css';
-import defaultAvatarSrc from 'src/assets/imgs/mockAvatar.jpg';
+import cls from './styles.module.css';
 import { useEffect, useState } from 'react';
 import { Loader } from '../';
 
 export function Avatar(props: Props) {
-  const { path = defaultAvatarSrc, isEditAvatar = false } = props;
+  const { path, isEditAvatar = false } = props;
 
   const [isLoading, setIsLoading] = useState(false);
   const [avatar, setAvatar] = useState<string | null>(null);
@@ -48,11 +47,11 @@ export function Avatar(props: Props) {
     <div className={cls.avatar}>
       {isLoading && <Loader />}
       {isEditAvatar && (
-        <button className='avatar__edit' onClick={handleEditAvatar}>
+        <button className={cls.avatar__edit} onClick={handleEditAvatar}>
           Изменить аватар
         </button>
       )}
-      {avatar && <img className={cls.avatar__img} src={defaultAvatarSrc} alt='avatar'/>}
+      {avatar && <img className={cls.avatar__img} src={path} alt='avatar' />}
     </div>
   );
 }

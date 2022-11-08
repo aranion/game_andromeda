@@ -1,7 +1,7 @@
-import cls from './style.module.css';
-import { BoardTable, TitlePage, TopLeader } from '../../components';
+import cls from './styles.module.css';
+import { BoardTable, TitlePage, TopLeader } from 'src/components';
 import { useEffect, useState } from 'react';
-import { mockLeader } from '../../constants/mockData';
+import { mockLeader } from 'src/constants/mockData';
 
 export default function LeaderBoard() {
   const [topLeader, setTopLeader] = useState<Leader[]>([]);

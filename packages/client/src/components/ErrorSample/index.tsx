@@ -1,4 +1,4 @@
-import cls from './style.module.css';
+import cls from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import { RouterList } from '../../router/routerList';

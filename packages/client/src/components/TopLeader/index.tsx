@@ -1,9 +1,9 @@
-import cls from './style.module.css';
+import cls from './styles.module.css';
 import classNames from 'classnames';
 import { Avatar } from '../';
 import { Link } from 'react-router-dom';
-import { RouterList } from '../../router/routerList';
-import type { Leader } from '../../pages/LeaderBoard';
+import { RouterList } from 'src/router/routerList';
+import type { Leader } from 'src/pages/LeaderBoard';
 
 export function TopLeader(props: Props) {
   const { position, leaderInfo } = props;
