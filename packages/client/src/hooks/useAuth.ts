@@ -1,14 +1,14 @@
-import { RouterList } from '../router/routerList';
 import { useNavigate } from 'react-router-dom';
-import { authSelectors } from '../store/auth';
 import {
   useLazyCheckAuthUserQuery,
   useLogoutMutation,
   useSignInMutation,
   useSignUpMutation,
-} from '../store/auth/api';
+} from 'src/store/auth/api';
 import { useActions } from './useActions';
+import { authSelectors } from 'src/store/auth';
 import { useTypeSelector } from './useTypeSelector';
+import { RouterList } from 'src/router/routerList';
 import type { RequestSignIn, RequestSignUp } from '../store/auth/type';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import type { SerializedError } from '@reduxjs/toolkit';

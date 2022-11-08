@@ -3,6 +3,7 @@ export * from './TopLeader';
 export * from './Avatar';
 export * from './BoardTable';
 export * from './TitlePage';
+export * from './ErrorBoundary';
 export * from './ErrorSample';
 export * from './Input';
 export * from './Button';
