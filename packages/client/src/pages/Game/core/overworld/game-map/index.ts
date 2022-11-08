@@ -44,21 +44,20 @@ export class GameMap {
       );
     }
 
-    this.asteroids.forEach((asteroid, i) => {
+    for (let i = 0; i < this.asteroids.length; i++) {
+      const asteroid = this.asteroids[i];
       asteroid.update(this.player);
       if (this.isOutsideCanvas(asteroid)) {
-        setTimeout(() => {
-          this.asteroids.splice(i, 1);
-        }, 0);
+        this.asteroids.splice(i, 1);
+        i--;
       }
 
       if (this.isCollided(asteroid)) {
-        setTimeout(() => {
-          this.player.updateLives(-1);
-          this.asteroids.splice(i, 1);
-        }, 0);
+        this.player.updateLives(-1);
+        this.asteroids.splice(i, 1);
+        i--;
       }
-    });
+    }
   }
 
   draw() {
