@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
-import { Loader } from '../components';
-import { useAuth } from '../hooks/useAuth';
+import { Loader } from 'src/components';
+import { useAuth } from 'src/hooks/useAuth';
 import { RouterList } from './routerList';
 
 export function withPrivateRoute(children: JSX.Element) {
