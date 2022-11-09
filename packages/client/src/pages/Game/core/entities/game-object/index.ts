@@ -10,7 +10,6 @@ export abstract class GameObject {
   protected readonly canvas: HTMLCanvasElement;
   protected readonly ctx: CanvasRenderingContext2D;
   protected position: Coordinates;
-  /** Скорость перемещения объекта. Чем выше значение, тем медленнее. */
   protected speed: number;
   protected radius: number;
   protected sprite: Sprite;
@@ -30,11 +29,16 @@ export abstract class GameObject {
       width: config.width,
       height: config.height,
       isAnimated: config.isAnimated,
+      currentAnimation: config.currentAnimation,
     });
   }
 
   get getPosition(): Coordinates {
     return this.position;
+  }
+
+  get getRadius(): number {
+    return this.radius;
   }
 
   protected draw(...args: unknown[]) {
