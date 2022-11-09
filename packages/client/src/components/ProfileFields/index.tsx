@@ -1,11 +1,15 @@
-import cls from './style.module.css';
+import cls from './styles.module.css';
 import classNames from 'classnames';
-import { Loader, Button, Input } from '../';
+import { useNavigate } from 'react-router-dom';
+import { Loader, Button, Input } from 'src/components';
+import { RouterList } from 'src/router/routerList';
 import type { FormEvent } from 'react';
-import type { Fields } from '../../pages/Profile';
+import type { Fields } from 'src/pages/Profile';
 
 export function ProfileFields(props: Props) {
-  const { isEdit, isLoading, fields } = props;
+  const { isEdit, isLoading, fields, userId } = props;
+
+  const navigate = useNavigate();
 
   const clsFieldValue = classNames(cls.profileFields__field_value, {
     [cls.profileFields__field_edit]: isEdit,
@@ -18,6 +22,10 @@ export function ProfileFields(props: Props) {
   const handleSubmitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (userId) {
+      navigate(`${RouterList.PROFILE}/${userId}`);
+    }
   };
 
   return (
@@ -50,4 +58,5 @@ type Props = {
   isLoading: boolean;
   isEdit: boolean;
   fields: Fields[];
+  userId: number | null;
 };

@@ -1,6 +1,5 @@
 import classnames from 'classnames';
-import { Input, InputProps } from '../Input';
-import { Button } from '../Button';
+import { Input, InputProps, Button } from 'src/components';
 
 import './styles.css';
 

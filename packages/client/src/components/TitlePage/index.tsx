@@ -1,4 +1,4 @@
-import cls from './style.module.css';
+import cls from './styles.module.css';
 
 export function TitlePage(props: Props) {
   const { title } = props;

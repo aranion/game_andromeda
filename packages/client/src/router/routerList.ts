@@ -4,8 +4,7 @@ export enum RouterList {
   SIGN_IN = '/sign-in',
   SIGN_UP = '/sign-up',
   FORUM = '/forum',
-  FORUM_ID_PARAM = ':forumId',
-  FORUM_TOPIC = '/topic/:topicId',
+  FORUM_TOPIC = '/topic',
   GAME = '/game',
   LEADER_BOARD = '/leader-board',
   SERVER_ERROR = '/server-error',
@@ -20,4 +19,8 @@ export enum RouterParamsProfile {
 
 export enum RouterParamsForum {
   forumId = ':forumId',
+}
+
+export enum RouterParamsTopic {
+  topicId = ':topicId',
 }

@@ -5,6 +5,7 @@ import {
   RouterParamsForum,
   RouterParamsProfile,
   RouterList,
+  RouterParamsTopic,
 } from './routerList';
 import { Loader } from 'src/components';
 
@@ -36,7 +37,10 @@ export function Router() {
               element={<ForumItemPage />}
             />
           </Route>
-          <Route path={RouterList.FORUM_TOPIC} element={<TopicPage />} />
+          <Route
+            path={`${RouterList.FORUM_TOPIC}/${RouterParamsTopic.topicId}`}
+            element={<TopicPage />}
+          />
           <Route
             path={`${RouterList.PROFILE}/${RouterParamsProfile.userId}`}
             element={withPrivateRoute(<ProfilePage />)}

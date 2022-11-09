@@ -1,3 +1,4 @@
+import { AnimationKey } from '../../constants';
 import { CanvasProperties, Coordinates } from '../../types';
 
 export type GameObjectConfig = {
@@ -8,4 +9,5 @@ export type GameObjectConfig = {
   height?: number;
   imageSrc: string;
   isAnimated?: boolean;
+  currentAnimation?: AnimationKey;
 } & CanvasProperties;

@@ -1,14 +1,14 @@
-import cls from './style.module.css';
+import cls from './styles.module.css';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Avatar, Button, ProfileFields, TitlePage } from '../../components';
-import { useLazyFetchUserDataQuery } from '../../store/user/api';
-import { useTypeSelector } from '../../hooks/useTypeSelector';
-import { userSelectors } from '../../store/user';
-import { RouterList, RouterParamsProfile } from '../../router/routerList';
-import { useAuth } from '../../hooks/useAuth';
+import { Avatar, Button, ProfileFields, TitlePage } from 'src/components';
+import { useLazyFetchUserDataQuery } from 'src/store/user/api';
+import { useTypeSelector } from 'src/hooks/useTypeSelector';
+import { userSelectors } from 'src/store/user';
+import { RouterList, RouterParamsProfile } from 'src/router/routerList';
+import { useAuth } from 'src/hooks/useAuth';
 import { prepareAllProfileFields, preparePasswordProfileFields } from './utils';
-import type { User } from '../../store/user/type';
+import type { User } from 'src/store/user/type';
 import type { InputHTMLAttributes } from 'react';
 
 export default function Profile() {
@@ -20,6 +20,7 @@ export default function Profile() {
   const navigate = useNavigate();
 
   const { userData } = useTypeSelector(userSelectors.allUser);
+  const { id, avatar } = userData;
 
   const [fetchUserData, { isLoading, isError }] = useLazyFetchUserDataQuery();
 
@@ -27,7 +28,7 @@ export default function Profile() {
   const isCorrectUserId = userId && !isNaN(+userId);
   const isEditPassword = pathname === RouterList.PROFILE_EDIT_PASSWORD;
   const isEditProfile = pathname === RouterList.PROFILE_EDIT || isEditPassword;
-  const isNotMyProfile = userId && !!userData.id && userData.id !== +userId;
+  const isNotMyProfile = userId && !!id && id !== +userId;
 
   useEffect(() => {
     if (isEditProfile) {
@@ -85,7 +86,7 @@ export default function Profile() {
 
       <div className={cls.profile}>
         <div className={cls.profile__avatar}>
-          <Avatar />
+          <Avatar isEditAvatar={true} path={avatar} />
         </div>
 
         <span className={cls.profile__nickname}>{nickname}</span>
@@ -94,6 +95,7 @@ export default function Profile() {
           isEdit={isEditProfile}
           isLoading={isLoading}
           fields={fields}
+          userId={id}
         />
 
         {(isEditProfile || !isNotMyProfile) && (
@@ -118,9 +120,7 @@ export default function Profile() {
         )}
 
         {!isEditProfile && isNotMyProfile && (
-          <Link to={`${RouterList.PROFILE}/${userData.id}`}>
-            Go to my profile
-          </Link>
+          <Link to={`${RouterList.PROFILE}/${id}`}>Go to my profile</Link>
         )}
       </div>
     </>
