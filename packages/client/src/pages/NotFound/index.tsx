@@ -1,18 +1,13 @@
-import { useNavigate } from 'react-router-dom';
+import { ErrorSample } from '../../components';
+import { LANGUAGE } from '../../constants/vars';
+import { text } from './constants';
 
 export default function NotFound() {
-  const navigate = useNavigate();
-
-  const handleGoBack = () => {
-    navigate(-1);
-  };
-
   return (
-    <>
-      <h1>404</h1>
-      <p>Ошибка</p>
-      <p>К сожалению, запрашиваемая страница не найдена</p>
-      <button onClick={handleGoBack}>Назад</button>
-    </>
+    <ErrorSample
+      code='404'
+      message={text[LANGUAGE].message}
+      typeButton='back'
+    />
   );
 }

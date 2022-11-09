@@ -1,4 +1,4 @@
-import { RootState } from './../index';
+import type { RootState } from '..';
 
 export const allAuth = (state: RootState) => state.auth;
 

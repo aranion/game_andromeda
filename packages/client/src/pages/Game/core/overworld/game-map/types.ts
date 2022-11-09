@@ -1,6 +1,6 @@
 import { Player } from '../../entities/player';
-import { Resource } from '../../entities/resource';
-import { CanvasProperties, GameMapConfig } from '../../types';
+import { GameObject } from '../../entities/game-object';
+import type { CanvasProperties, GameMapConfig } from '../../types';
 
 export type GameMapConstrConfig = GameMapConfig & {
   player: Player;
@@ -10,4 +10,4 @@ export type UpdateParams = {
   frame: number;
 };
 
-export type Collide = Resource;
+export type Collide = GameObject & { getDistance: number };

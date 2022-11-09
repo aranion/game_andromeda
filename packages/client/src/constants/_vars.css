@@ -2,4 +2,10 @@
   --fontSize: 1rem;
   --mainColor: #fff;
   --secondaryColor: #000;
+  --translucentColor: rgba(0, 0, 0, 0.7);
+  --color-bg: #251b37;
+  --color-normal: #372948;
+  --color-light: #ffffca;
+  --color-highlight: #ffffed;
+  --color-grey: #626262;
 }
