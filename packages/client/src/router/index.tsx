@@ -50,6 +50,10 @@ export function Router() {
             element={withPrivateRoute(<ProfilePage />)}
           />
           <Route
+            path={RouterList.PROFILE_EDIT_PASSWORD}
+            element={withPrivateRoute(<ProfilePage />)}
+          />
+          <Route
             path={RouterList.GAME}
             element={withPrivateRoute(<GamePage />)}
           />

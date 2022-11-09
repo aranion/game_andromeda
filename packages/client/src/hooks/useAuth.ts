@@ -6,10 +6,10 @@ import {
   useSignUpMutation,
 } from 'src/store/auth/api';
 import { useActions } from './useActions';
-import { authSelectors } from 'src/store/auth';
 import { useTypeSelector } from './useTypeSelector';
+import { authSelectors } from 'src/store/auth';
 import { RouterList } from 'src/router/routerList';
-import type { RequestSignIn, RequestSignUp } from '../store/auth/type';
+import type { RequestSignIn, RequestSignUp } from 'src/store/auth/type';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import type { SerializedError } from '@reduxjs/toolkit';
 

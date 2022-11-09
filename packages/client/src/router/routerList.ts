@@ -10,6 +10,7 @@ export enum RouterList {
   SERVER_ERROR = '/server-error',
   PROFILE = '/profile',
   PROFILE_EDIT = '/profile/edit',
+  PROFILE_EDIT_PASSWORD = '/profile/edit-password',
 }
 
 export enum RouterParamsProfile {

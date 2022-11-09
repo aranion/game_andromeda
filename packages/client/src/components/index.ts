@@ -15,3 +15,4 @@ export * from './Modal';
 export * from './Textarea';
 export * from './Form';
 export * from './Forum';
+export * from './ProfileFields';

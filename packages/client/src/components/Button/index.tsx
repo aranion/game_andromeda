@@ -2,13 +2,18 @@ import classnames from 'classnames';
 
 import './styles.css';
 
-export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
+export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  typeButton?: 'danger';
+};
 
 export function Button(props: ButtonProps) {
-  const { onClick, className, children } = props;
-  const classNames = classnames('button', className);
+  const { className, children, typeButton, ...otherProps } = props;
+  const classNames = classnames('button', className, {
+    ['button__danger']: typeButton === 'danger',
+  });
+
   return (
-    <button {...props} onClick={onClick} className={classNames}>
+    <button {...otherProps} className={classNames}>
       {children}
     </button>
   );

@@ -1,16 +1,15 @@
 .registration {
   gap: 10px;
-}
 
-.registration__signin {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  &__signin {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 }
 
 .button.registration__signin-button {
   width: 140px;
-  height: 21px;
   font-size: 13px;
 }
 

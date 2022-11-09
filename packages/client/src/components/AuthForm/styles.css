@@ -13,19 +13,16 @@
 
 .input.authform__input {
   width: 320px;
-  height: 30px;
 }
 
 .button.authform__submit-button {
   width: 230px;
-  height: 35px;
   font-size: 20px;
 }
 
 @media only screen and (max-width: 600px) {
   .button.authform__submit-button {
     width: 170px;
-    height: 30px;
     font-size: 18px;
   }
 }
