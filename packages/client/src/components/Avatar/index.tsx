@@ -61,6 +61,6 @@ export function Avatar(props: Props) {
 }
 
 type Props = {
-  path?: string;
+  path?: string | null;
   isEditAvatar?: boolean;
 };

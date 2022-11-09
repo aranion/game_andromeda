@@ -1,5 +1,6 @@
 :root {
   --fontSize: 1rem;
+  --fontFamily: 'Audiowide', Helvetica, sans-serif;
 }
 
 :root {
@@ -14,6 +15,7 @@
   --color-light: #ffffca;
   --color-highlight: #ffffed;
   --color-grey: #626262;
+  --color-danger: #c64b4b;
 }
 
 :root {
@@ -23,12 +25,7 @@
     var(--color-space)
   );
   --inputShadow: 0px 0px 7px rgba(255, 255, 202, 0.8);
-}
-
-:root {
-  --flex: {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  --boxShadow: 0px 0px 7px rgba(255, 255, 202, 0.8);
+  --textShadow: 0px 0px 7px rgba(255, 255, 237, 0.8),
+    2px 2px 2px rgba(0, 0, 0, 0.91);
 }

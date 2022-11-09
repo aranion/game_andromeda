@@ -1,8 +1,7 @@
 import cls from './styles.module.css';
 import { Component } from 'react';
+import { TitlePage, Button } from 'src/components';
 import type { ErrorInfo, ReactNode } from 'react';
-import { TitlePage } from '../TitlePage';
-import { Button } from '../Button';
 
 export class ErrorBoundary extends Component<Props, State> {
   private messageError?: string = undefined;

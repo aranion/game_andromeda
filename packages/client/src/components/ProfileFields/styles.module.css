@@ -1,0 +1,47 @@
+.profileFields {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__field {
+    display: flex;
+    width: 100%;
+    flex: 10;
+    gap: 25px;
+    margin-bottom: 25px;
+
+    &_title {
+      flex: 3;
+      background: var(--color-light);
+      box-shadow: inset 0px 4px 4px rgba(37, 27, 55, 0.57);
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+      border-radius: 30px;
+      color: var(--color-normal);
+      line-height: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 20px;
+    }
+
+    &_value {
+      flex: 7;
+    }
+
+    &_edit {
+      background: var(--color-highlight);
+    }
+  }
+}
+
+@media only screen and (max-width: 490px) {
+  .profileFields {
+    &__field {
+      gap: 5px;
+      margin-bottom: 5px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+  }
+}

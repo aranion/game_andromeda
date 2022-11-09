@@ -5,6 +5,10 @@
 a {
   text-decoration: none;
   color: var(--color-light);
+
+  &:hover {
+    color: var(--mainColor);
+  }
 }
 
 *::-webkit-scrollbar {
@@ -12,11 +16,11 @@ a {
 }
 
 *::-webkit-scrollbar-track {
-  background: var(--color-grey);
+  background: none;
 }
 
 *::-webkit-scrollbar-thumb {
-  border: 3px solid var(--color-bg);
+  border: none;
 }
 
 input {
@@ -24,9 +28,7 @@ input {
 }
 
 #root {
-  font-family: 'Audiowide', Helvetica, sans-serif;
-  font-style: normal;
-  font-weight: 400;
+  font-family: var(--fontFamily);
   font-size: 1rem;
 }
 
@@ -40,17 +42,16 @@ input {
   justify-content: center;
   align-items: center;
   gap: 20px;
-}
 
-.main-menu__title {
-  font-weight: 400;
-  font-size: 52px;
-  text-align: center;
-  text-transform: uppercase;
-  color: var(--color-light);
-  text-shadow: 0px 0px 7px rgba(255, 255, 237, 0.8),
-    2px 2px 2px rgba(0, 0, 0, 0.91);
-  margin: 0;
+  &__title {
+    font-weight: 400;
+    font-size: 52px;
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--color-light);
+    text-shadow: var(--textShadow);
+    margin: 0;
+  }
 }
 
 @media only screen and (max-width: 600px) {
