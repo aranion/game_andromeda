@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import type { ForumProps, FetchForums } from '../../store/forum/types';
-import { ButtonBack, Star, ForumItem, NewForumButton } from '../../components';
+import type { ForumProps, FetchForums } from 'src/store/forum/types';
+import { ButtonBack, Star, ForumItem, NewForumButton } from 'src/components';
 import './styles.css';
 
 const configStar = [

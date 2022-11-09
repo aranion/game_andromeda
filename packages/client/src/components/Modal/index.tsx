@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import classnames from 'classnames';
-import './styles.css';
+import './styles.modules.css';
 
 type Props = React.HTMLAttributes<HTMLElement> & {
   active: boolean;

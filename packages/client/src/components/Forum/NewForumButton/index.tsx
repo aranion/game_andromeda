@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FetchForums } from '../../../store/forum/types';
+import { FetchForums } from 'src/store/forum/types';
 import { Modal, Form, ForumButton } from '../..';
 
 type Props = {
@@ -8,8 +8,7 @@ type Props = {
 
 export function NewForumButton(props: Props) {
   const [title, setTitle] = useState('');
-  const [description, setContent] = useState('');
-
+  const [description, setDescription] = useState('');
   const [isModalActive, setModalActive] = useState(false);
   const handleOpen = () => setModalActive(true);
   const handleClose = () => setModalActive(false);
@@ -21,7 +20,7 @@ export function NewForumButton(props: Props) {
     console.log(title, description);
 
     setTitle('');
-    setContent('');
+    setDescription('');
 
     handleClose();
     fetchForums();
@@ -46,7 +45,7 @@ export function NewForumButton(props: Props) {
             placeholder='Forum description'
             name='description'
             value={description}
-            onChange={e => setContent(e.target.value)}
+            onChange={e => setDescription(e.target.value)}
           />
         </Form>
       </Modal>

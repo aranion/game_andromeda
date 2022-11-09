@@ -11,12 +11,6 @@
   gap: 20px;
 }
 
-.forum__button {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
 .main-table {
   width: 70%;
   border-spacing: 15px 20px;

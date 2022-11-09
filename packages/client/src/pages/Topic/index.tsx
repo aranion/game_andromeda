@@ -6,13 +6,13 @@ import {
   Star,
   NewCommentButton,
   Comment,
-} from '../../components';
+} from 'src/components';
 import './style.css';
 import type {
   TopicProps,
   CommentProps,
   FetchComments,
-} from '../../store/forum/types';
+} from 'src/store/forum/types';
 
 const configStar = [
   { top: '7%', left: '3%' },

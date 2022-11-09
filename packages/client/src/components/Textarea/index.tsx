@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import classnames from 'classnames';
-import './styles.css';
+import './styles.modules.css';
 
 export type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 

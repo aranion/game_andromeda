@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FetchComments } from '../../../store/forum/types';
+import { FetchComments } from 'src/store/forum/types';
 import { Modal, Form, ForumButton } from '../..';
 
 type Props = {
@@ -10,9 +10,9 @@ type Props = {
 export function NewCommentButton(props: Props) {
   const [content, setContent] = useState('');
 
-  const [isModalActive, setModalActive] = useState(false);
-  const handleOpen = () => setModalActive(true);
-  const handleClose = () => setModalActive(false);
+  const [isModalActive, setisModalActive] = useState(false);
+  const handleOpen = () => setisModalActive(true);
+  const handleClose = () => setisModalActive(false);
 
   function submitComment(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -32,7 +32,7 @@ export function NewCommentButton(props: Props) {
 
       <Modal
         active={isModalActive}
-        setActive={setModalActive}
+        setActive={setisModalActive}
         title='New Comment'>
         <Form title='Submit' onSubmit={submitComment}>
           <Form.Textarea

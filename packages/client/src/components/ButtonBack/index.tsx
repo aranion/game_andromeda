@@ -1,13 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { Button } from '../Button';
-import './styles.css';
+import styles from './styles.module.css';
 
 export function ButtonBack() {
   const navigate = useNavigate();
   const backNavigate = () => navigate(-1);
   return (
-    <Button className='button__back' onClick={backNavigate}>
+    <button className={styles['button-back']} onClick={backNavigate}>
       🠔
-    </Button>
+    </button>
   );
 }

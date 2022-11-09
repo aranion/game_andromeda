@@ -1,14 +1,14 @@
-import { CommentProps } from '../../../store/forum/types';
+import { CommentProps } from 'src/store/forum/types';
 import { Card } from '../../';
-import './styles.css';
+import styles from './styles.module.css';
 
 export const Comment = (props: CommentProps) => {
   const { id, content, author } = props;
 
   return (
-    <Card className='comment' id={id}>
-      <div className='comment__content'>{content}</div>
-      <div className='comment__author'>{author}</div>
+    <Card className={styles.comment} id={id}>
+      <div className={styles['comment__content']}>{content}</div>
+      <div className={styles['comment__author']}>{author}</div>
     </Card>
   );
 };

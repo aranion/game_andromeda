@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { TopicProps } from '../../../store/forum/types';
-import { RouterList } from '../../../router/routerList';
+import { TopicProps } from 'src/store/forum/types';
+import { RouterList } from 'src/router/routerList';
 
 export function TopicItem(props: TopicProps) {
   const { topicId, title, commentCount } = props;

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FetchTopics } from '../../../store/forum/types';
+import { FetchTopics } from 'src/store/forum/types';
 import { Modal, Form, ForumButton } from '../..';
 
 type Props = {

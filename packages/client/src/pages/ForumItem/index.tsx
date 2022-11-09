@@ -4,8 +4,8 @@ import type {
   TopicProps,
   FetchTopics,
   FetchForumName,
-} from '../../store/forum/types';
-import { ButtonBack, Star, TopicItem, NewTopicButton } from '../../components';
+} from 'src/store/forum/types';
+import { ButtonBack, Star, TopicItem, NewTopicButton } from 'src/components';
 
 const configStar = [
   { top: '7%', left: '3%' },
