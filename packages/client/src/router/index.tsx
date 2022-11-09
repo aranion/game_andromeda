@@ -1,7 +1,12 @@
 import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { withPrivateRoute } from './withPrivateRoute';
-import { RouterList } from './routerList';
+import {
+  RouterParamsForum,
+  RouterParamsProfile,
+  RouterList,
+  RouterParamsTopic,
+} from './routerList';
 import { Loader } from 'src/components';
 
 const GamePage = lazy(() => import('src/pages/Game'));
@@ -28,20 +33,18 @@ export function Router() {
           <Route path={RouterList.FORUM}>
             <Route index element={<ForumPage />} />
             <Route
-              path={RouterList.FORUM_ID_PARAM}
+              path={RouterParamsForum.forumId}
               element={<ForumItemPage />}
             />
           </Route>
-          <Route path={RouterList.FORUM_TOPIC}>
-            <Route path={RouterList.TOPIC_ID_PARAM} element={<TopicPage />} />
-          </Route>
-          <Route path={RouterList.PROFILE}>
-            <Route index element={withPrivateRoute(<ProfilePage />)} />
-            <Route
-              path={RouterList.PROFILE_ID_PARAM}
-              element={withPrivateRoute(<ProfilePage />)}
-            />
-          </Route>
+          <Route
+            path={`${RouterList.FORUM_TOPIC}/${RouterParamsTopic.topicId}`}
+            element={<TopicPage />}
+          />
+          <Route
+            path={`${RouterList.PROFILE}/${RouterParamsProfile.userId}`}
+            element={withPrivateRoute(<ProfilePage />)}
+          />
           <Route
             path={RouterList.PROFILE_EDIT}
             element={withPrivateRoute(<ProfilePage />)}

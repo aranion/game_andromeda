@@ -1,13 +1,13 @@
 export type InitialState = {
-  userData: User | null;
+  userData: User;
 };
 
 export type User = {
-  avatar: string;
-  display_name: string;
+  avatar: string | null;
+  display_name: string | null;
   email: string;
   first_name: string;
-  id: number;
+  id: number | null;
   login: string;
   phone: string;
   second_name: string;
@@ -15,4 +15,4 @@ export type User = {
 
 export type ResponseUserData = User;
 
-export type RequestUserData = Pick<User, 'id'>;
+export type RequestUserData = string;

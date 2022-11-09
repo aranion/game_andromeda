@@ -1,9 +1,9 @@
-import { Button, Star, AuthForm } from '../../components';
+import { Button, Star, AuthForm } from 'src/components';
 import './styles.css';
 import { useNavigate } from 'react-router-dom';
-import { RouterList } from '../../router/routerList';
-import { useAuth } from '../../hooks/useAuth';
-import type { RequestSignIn } from '../../store/auth/type';
+import { RouterList } from 'src/router/routerList';
+import { useAuth } from 'src/hooks/useAuth';
+import type { RequestSignIn } from 'src/store/auth/type';
 
 const configStar = [
   { top: '10%', left: '13%' },
