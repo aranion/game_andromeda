@@ -10,16 +10,18 @@ type GameConfig = {
   canvas: HTMLCanvasElement;
 };
 
+type GameStatus = 'unmounted' | 'paused' | 'running';
+
 /**
  * Основной класс, управляет циклом игры, меняет карту уровней.
  * */
 export class Game {
-  private static singleton: Game;
   private canvas: HTMLCanvasElement | null = null;
   private ctx: CanvasRenderingContext2D | null = null;
   private map: GameMap | null = null;
   private directions: DirectionsInput;
   private readonly player: Player;
+  private status: GameStatus = 'unmounted';
   private frame = 0;
 
   constructor(config: GameConfig) {
@@ -37,18 +39,16 @@ export class Game {
     });
   }
 
-  static getSingleton(config: GameConfig): Game {
-    if (!this.singleton) {
-      this.singleton = new Game(config);
-    }
-    return this.singleton;
-  }
-
   private startGameLoop() {
+    this.status = 'running';
     let last = performance.now();
     const framesDelta = 1000 / FPS;
 
     const step = (now: number) => {
+      if (this.status === 'unmounted') {
+        return;
+      }
+
       const delay = now - last;
 
       if (delay >= framesDelta) {
@@ -107,6 +107,7 @@ export class Game {
   }
 
   unmount() {
+    this.status = 'unmounted';
     this.directions.unmount();
     window.removeEventListener('resize', this.resize);
   }

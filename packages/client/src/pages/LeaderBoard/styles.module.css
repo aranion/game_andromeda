@@ -1,0 +1,18 @@
+.leaderBoard {
+  height: calc(100vh - 80px);
+  display: flex;
+  flex-wrap: wrap;
+
+  &__topLeader {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-basis: 50%;
+    flex-grow: 1;
+    min-width: 400px;
+    background-image: url('../../assets/imgs/leaderFon.webp');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}

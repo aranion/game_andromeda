@@ -1,17 +1,24 @@
 import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Loader } from '../components';
 import { withPrivateRoute } from './withPrivateRoute';
-import { RouterList } from './routerList';
+import {
+  RouterParamsForum,
+  RouterParamsProfile,
+  RouterList,
+  RouterParamsTopic,
+} from './routerList';
+import { Loader } from 'src/components';
 
-const GamePage = lazy(() => import('../pages/Game'));
-const SignInPage = lazy(() => import('../pages/SignIn'));
-const SignUpPage = lazy(() => import('../pages/SignUp'));
-const ForumPage = lazy(() => import('../pages/Forum'));
-const ProfilePage = lazy(() => import('../pages/Profile'));
-const LeaderBoardPage = lazy(() => import('../pages/LeaderBoard'));
-const ServerErrorPage = lazy(() => import('../pages/ServerError'));
-const NotFoundPage = lazy(() => import('../pages/NotFound'));
+const GamePage = lazy(() => import('src/pages/Game'));
+const SignInPage = lazy(() => import('src/pages/SignIn'));
+const SignUpPage = lazy(() => import('src/pages/SignUp'));
+const ForumPage = lazy(() => import('src/pages/Forum'));
+const ProfilePage = lazy(() => import('src/pages/Profile'));
+const LeaderBoardPage = lazy(() => import('src/pages/LeaderBoard'));
+const ServerErrorPage = lazy(() => import('src/pages/ServerError'));
+const NotFoundPage = lazy(() => import('src/pages/NotFound'));
+const ForumItemPage = lazy(() => import('src/pages/ForumItem'));
+const TopicPage = lazy(() => import('src/pages/Topic'));
 
 export function Router() {
   return (
@@ -25,17 +32,25 @@ export function Router() {
           <Route path={RouterList.NOT_FOUND} element={<NotFoundPage />} />
           <Route path={RouterList.FORUM}>
             <Route index element={<ForumPage />} />
-            <Route path={RouterList.FORUM_ID_PARAM} element={<ForumPage />} />
-          </Route>
-          <Route path={RouterList.PROFILE}>
-            <Route index element={withPrivateRoute(<ProfilePage />)} />
             <Route
-              path={RouterList.PROFILE_ID_PARAM}
-              element={withPrivateRoute(<ProfilePage />)}
+              path={RouterParamsForum.forumId}
+              element={<ForumItemPage />}
             />
           </Route>
           <Route
+            path={`${RouterList.FORUM_TOPIC}/${RouterParamsTopic.topicId}`}
+            element={<TopicPage />}
+          />
+          <Route
+            path={`${RouterList.PROFILE}/${RouterParamsProfile.userId}`}
+            element={withPrivateRoute(<ProfilePage />)}
+          />
+          <Route
             path={RouterList.PROFILE_EDIT}
+            element={withPrivateRoute(<ProfilePage />)}
+          />
+          <Route
+            path={RouterList.PROFILE_EDIT_PASSWORD}
             element={withPrivateRoute(<ProfilePage />)}
           />
           <Route

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BASE_URL } from '../../constants/vars';
+import { BASE_URL } from 'src/constants/vars';
 import type { RequestUserData, ResponseUserData } from './type';
 
 export const userApi = createApi({
@@ -9,9 +9,9 @@ export const userApi = createApi({
   }),
   endpoints: build => ({
     fetchUserData: build.query<ResponseUserData, RequestUserData>({
-      query: params => ({
-        url: '',
-        params,
+      query: userId => ({
+        url: `/${userId}`,
+        credentials: 'include',
       }),
       transformResponse: (res: ResponseUserData) => res,
     }),

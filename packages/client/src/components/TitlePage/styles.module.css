@@ -1,0 +1,9 @@
+.titlePage {
+  margin: 20px 0;
+  text-align: center;
+  font-size: 2rem;
+  height: 40px;
+  font-weight: 400;
+  text-transform: uppercase;
+  text-shadow: var(--textShadow);
+}

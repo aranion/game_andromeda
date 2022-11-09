@@ -1,22 +1,22 @@
-import { RouterList } from '../router/routerList';
 import { useNavigate } from 'react-router-dom';
-import { authSelectors } from '../store/auth';
 import {
   useLazyCheckAuthUserQuery,
   useLogoutMutation,
   useSignInMutation,
   useSignUpMutation,
-} from '../store/auth/api';
+} from 'src/store/auth/api';
 import { useActions } from './useActions';
 import { useTypeSelector } from './useTypeSelector';
-import type { RequestSignIn, RequestSignUp } from '../store/auth/type';
+import { authSelectors } from 'src/store/auth';
+import { RouterList } from 'src/router/routerList';
+import type { RequestSignIn, RequestSignUp } from 'src/store/auth/type';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import type { SerializedError } from '@reduxjs/toolkit';
 
 export const useAuth = () => {
   const { isAuth, isLoadingAuth } = useTypeSelector(authSelectors.allAuth);
 
-  const { setIsAuth, resetUserState, setIsLoadingAuth, setUserId } =
+  const { setIsAuth, resetUserState, setIsLoadingAuth, setUserData } =
     useActions();
 
   const navigate = useNavigate();
@@ -38,7 +38,13 @@ export const useAuth = () => {
     setIsLoadingAuth(true);
 
     fetchIsAuth(null)
-      .then(({ isSuccess }) => setIsAuth(isSuccess))
+      .then(({ isSuccess, data }) => {
+        setIsAuth(isSuccess);
+
+        if (isSuccess) {
+          setUserData(data);
+        }
+      })
       .catch(console.error)
       .finally(() => {
         setIsLoadingAuth(false);
@@ -51,6 +57,7 @@ export const useAuth = () => {
         .then(res => {
           if ('data' in res) {
             setIsAuth(true);
+            navigate(RouterList.GAME);
           } else {
             error(res.error);
           }
@@ -64,7 +71,9 @@ export const useAuth = () => {
       fetchSignUp(params)
         .then(res => {
           if ('data' in res) {
-            setUserId(res.data.id);
+            const { id } = res.data;
+
+            setUserData({ id });
             checkIsAuth();
             navigate(RouterList.GAME);
           } else {

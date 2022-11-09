@@ -1,7 +1,7 @@
 import { INITIAL_RADIUS, INITIAL_SPEED } from '../../constants';
 import { Sprite } from '../sprite';
-import { Coordinates } from '../../types';
-import { GameObjectConfig } from './types';
+import type { Coordinates } from '../../types';
+import type { GameObjectConfig } from './types';
 
 /**
  * Абстракция над игровыми объектами.
@@ -10,7 +10,6 @@ export abstract class GameObject {
   protected readonly canvas: HTMLCanvasElement;
   protected readonly ctx: CanvasRenderingContext2D;
   protected position: Coordinates;
-  /** Скорость перемещения объекта. Чем выше значение, тем медленнее. */
   protected speed: number;
   protected radius: number;
   protected sprite: Sprite;
@@ -21,6 +20,7 @@ export abstract class GameObject {
     this.position = config.position ?? { x: 0, y: 0 };
     this.speed = config.speed ?? INITIAL_SPEED;
     this.radius = config.radius ?? INITIAL_RADIUS;
+
     this.sprite = new Sprite({
       ctx: this.ctx,
       src: config.imageSrc,
@@ -29,11 +29,16 @@ export abstract class GameObject {
       width: config.width,
       height: config.height,
       isAnimated: config.isAnimated,
+      currentAnimation: config.currentAnimation,
     });
   }
 
   get getPosition(): Coordinates {
     return this.position;
+  }
+
+  get getRadius(): number {
+    return this.radius;
   }
 
   protected draw(...args: unknown[]) {

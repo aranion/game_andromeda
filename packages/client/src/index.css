@@ -1,2 +1,65 @@
 @import '../../../node_modules/modern-normalize/modern-normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 @import './constants/_vars.css';
+
+a {
+  text-decoration: none;
+  color: var(--color-light);
+
+  &:hover {
+    color: var(--mainColor);
+  }
+}
+
+*::-webkit-scrollbar {
+  width: 3px;
+}
+
+*::-webkit-scrollbar-track {
+  background: none;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: none;
+}
+
+input {
+  outline: none;
+}
+
+#root {
+  font-family: var(--fontFamily);
+  font-size: 1rem;
+}
+
+.main-menu {
+  background: var(--color-bg);
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  &__title {
+    font-weight: 400;
+    font-size: 52px;
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--color-light);
+    text-shadow: var(--textShadow);
+    margin: 0;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .mobile_hidden {
+    display: none;
+  }
+
+  .main-menu__title {
+    font-size: 40px;
+  }
+}

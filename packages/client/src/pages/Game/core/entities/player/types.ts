@@ -1,5 +1,11 @@
 import { GameObjectConfig } from '../game-object/types';
 import { Coordinates } from '../../types';
+import { AnimationKey } from '../../constants';
+import { AnimationType } from '../../animations.config';
+
+export type PlayerAnimationKey = AnimationKey.SpaceshipFly;
+
+export type PlayerAnimation = Pick<AnimationType, PlayerAnimationKey>;
 
 export type PlayerSkin = {
   healthy: string;
