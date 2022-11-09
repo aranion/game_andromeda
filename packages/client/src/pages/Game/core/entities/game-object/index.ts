@@ -14,13 +14,15 @@ export abstract class GameObject {
   protected speed: number;
   protected radius: number;
   protected sprite: Sprite;
+  protected sizeRatio: number;
 
   protected constructor(config: GameObjectConfig) {
     this.canvas = config.canvas;
     this.ctx = config.ctx;
     this.position = config.position ?? { x: 0, y: 0 };
     this.speed = config.speed ?? INITIAL_SPEED;
-    this.radius = config.radius ?? INITIAL_RADIUS;
+    this.sizeRatio = config.sizeRatio ?? 1;
+    this.radius = (config.radius ?? INITIAL_RADIUS) * this.sizeRatio;
     this.sprite = new Sprite({
       ctx: this.ctx,
       src: config.imageSrc,

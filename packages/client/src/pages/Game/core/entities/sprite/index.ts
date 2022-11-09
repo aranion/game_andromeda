@@ -26,12 +26,14 @@ export class Sprite {
     this.ctx = config.ctx;
     this.image = new Image();
     this.imageSrc = config.src;
+    this.sizeRatio = config.sizeRatio ?? 1;
     this.position = config.position;
     this.radius = config.radius;
-    this.width = config.width ?? this.radius * 2;
-    this.height = config.height ?? this.radius * 2;
+    this.width = config.width ? config.width * this.sizeRatio : this.radius * 2;
+    this.height = config.height
+      ? config.height * this.sizeRatio
+      : this.radius * 2;
     this.isAnimated = config.isAnimated ?? true;
-    this.sizeRatio = config.sizeRatio ?? 1;
 
     if (this.isAnimated) {
       this.setAnimation(config.currentAnimation ?? AnimationKey.SpaceshipFly);
@@ -81,10 +83,10 @@ export class Sprite {
 
     this.ctx.drawImage(
       this.image,
-      frameX * this.width * this.sizeRatio,
-      frameY * this.height * this.sizeRatio,
-      this.width * this.sizeRatio,
-      this.height * this.sizeRatio,
+      frameX * (this.width / this.sizeRatio),
+      frameY * (this.height / this.sizeRatio),
+      this.width / this.sizeRatio,
+      this.height / this.sizeRatio,
       x,
       y,
       this.width,
