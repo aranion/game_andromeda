@@ -12,4 +12,9 @@ export const ANIM_FRAME_LIMIT = 4;
 
 export enum AnimationKey {
   SpaceshipFly = 'spaceship-fly',
+  IronOreFly = 'iron-ore-fly',
+  NickelOreFly = 'nickel-ore-fly',
+  TitanOreFly = 'titan-ore-fly',
+  GoldOreFly = 'gold-ore-fly',
+  PlatinumOreFly = 'platinum-ore-fly',
 }

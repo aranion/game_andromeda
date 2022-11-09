@@ -10,7 +10,6 @@ export abstract class GameObject {
   protected readonly canvas: HTMLCanvasElement;
   protected readonly ctx: CanvasRenderingContext2D;
   protected position: Coordinates;
-  /** Скорость перемещения объекта. Чем выше значение, тем медленнее. */
   protected speed: number;
   protected radius: number;
   protected sprite: Sprite;

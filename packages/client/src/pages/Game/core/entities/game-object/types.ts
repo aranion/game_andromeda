@@ -1,5 +1,5 @@
-import { CanvasProperties, Coordinates } from '../../types';
 import { AnimationKey } from '../../constants';
+import { CanvasProperties, Coordinates } from '../../types';
 
 export type GameObjectConfig = {
   position?: Coordinates;
