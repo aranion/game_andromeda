@@ -1,0 +1,6 @@
+.button__back {
+  position: absolute;
+  left: 20px;
+  top: 30px;
+  min-width: 45px;
+}

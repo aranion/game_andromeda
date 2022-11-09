@@ -5,14 +5,14 @@ import { Button } from '../Button';
 
 import './styles.css';
 
-type FormProps = React.FormHTMLAttributes<HTMLFormElement>;
+type Props = React.FormHTMLAttributes<HTMLFormElement>;
 
-export function Form(props: FormProps) {
-  const { onSubmit, className, children, title } = props;
+export function Form(props: Props) {
+  const { className, children, title, ...otherProps } = props;
   const classNames = classnames('form', className);
 
   return (
-    <form {...props} onSubmit={onSubmit} className={classNames}>
+    <form {...otherProps} className={classNames}>
       {children}
       <Button className='form__button'>{title}</Button>
     </form>

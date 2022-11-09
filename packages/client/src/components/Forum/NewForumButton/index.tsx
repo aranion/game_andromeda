@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FetchForums } from '../../../store/forum/types';
-import { Button, Modal, Star, Form } from '../..';
+import { Modal, Form, ForumButton } from '../..';
 
 type Props = {
   fetchForums: FetchForums;
@@ -10,7 +10,7 @@ export function NewForumButton(props: Props) {
   const [title, setTitle] = useState('');
   const [description, setContent] = useState('');
 
-  const [madalActive, setModalActive] = useState(false);
+  const [isModalActive, setModalActive] = useState(false);
   const handleOpen = () => setModalActive(true);
   const handleClose = () => setModalActive(false);
 
@@ -29,17 +29,12 @@ export function NewForumButton(props: Props) {
 
   return (
     <>
-      <div className='forum__button'>
-        <Star size='small' relative={true} />
-        <Button
-          className='button_center'
-          onClick={handleOpen}
-          children={'New Forum'}
-        />
-        <Star size='small' relative={true} />
-      </div>
+      <ForumButton onClick={handleOpen}>New Forum</ForumButton>
 
-      <Modal active={madalActive} setActive={setModalActive} title='New forum'>
+      <Modal
+        active={isModalActive}
+        setActive={setModalActive}
+        title='New forum'>
         <Form title='Submit' onSubmit={submitForum}>
           <Form.Input
             placeholder='Forum title'

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { FetchComments } from '../../../store/forum/types';
-import { Button, Modal, Textarea, Star } from '../..';
-import { Form } from '../../Form';
+import { Modal, Form, ForumButton } from '../..';
 
 type Props = {
   topicId: string | undefined;
@@ -11,7 +10,7 @@ type Props = {
 export function NewCommentButton(props: Props) {
   const [content, setContent] = useState('');
 
-  const [madalActive, setModalActive] = useState(false);
+  const [isModalActive, setModalActive] = useState(false);
   const handleOpen = () => setModalActive(true);
   const handleClose = () => setModalActive(false);
 
@@ -29,18 +28,10 @@ export function NewCommentButton(props: Props) {
 
   return (
     <>
-      <div className='forum__button'>
-        <Star size='small' relative={true} />
-        <Button
-          className='button_center'
-          onClick={handleOpen}
-          children={'New Comment'}
-        />
-        <Star size='small' relative={true} />
-      </div>
+      <ForumButton onClick={handleOpen}>New Comment</ForumButton>
 
       <Modal
-        active={madalActive}
+        active={isModalActive}
         setActive={setModalActive}
         title='New Comment'>
         <Form title='Submit' onSubmit={submitComment}>

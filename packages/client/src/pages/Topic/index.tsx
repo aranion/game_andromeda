@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { NewCommentButton } from '../../components/Forum/NewCommentButton';
-import { Comment } from '../../components/Forum/Comment';
-import { Card, Button, Star } from '../../components';
-import './style.css';
+import { useParams } from 'react-router-dom';
 import {
+  Card,
+  ButtonBack,
+  Star,
+  NewCommentButton,
+  Comment,
+} from '../../components';
+import './style.css';
+import type {
   TopicProps,
   CommentProps,
   FetchComments,
@@ -21,7 +25,6 @@ const configStar = [
 
 export default function TopicPage() {
   const { topicId } = useParams<{ topicId?: string }>();
-  const navigate = useNavigate();
 
   const [topic, setTopic] = useState<TopicProps>();
   const [comments, setComments] = useState<CommentProps[]>([]);
@@ -29,7 +32,7 @@ export default function TopicPage() {
   const fetchTopic = (topicId: string): TopicProps => {
     console.log(topicId);
 
-    const topic = {
+    const topic: TopicProps = {
       topicId: '111',
       title: 'Title of very interesting topic',
       content:
@@ -42,7 +45,7 @@ export default function TopicPage() {
   const fetchComments: FetchComments = topicId => {
     console.log(topicId);
 
-    const comments = [];
+    const comments: CommentProps[] = [];
     comments.push(
       {
         id: '1',
@@ -79,25 +82,19 @@ export default function TopicPage() {
         <Star key={idx} top={item.top} left={item.left} />
       ))}
 
-      <Button className='button__back' onClick={() => navigate(-1)}>
-        🠔
-      </Button>
+      <ButtonBack />
 
       <h1 className='main-title'>Community</h1>
       <Card className='topic__info'>
-        <div className='topic__title'>{topic?.title}</div>
-        <div className='topic__content'>{topic?.content}</div>
-        <div className='topic__author'>{topic?.author}</div>
+        <div className='topic__title'>{topic?.title || ''}</div>
+        <div className='topic__content'>{topic?.content || ''}</div>
+        <div className='topic__author'>{topic?.author || ''}</div>
       </Card>
       <div>
-        {comments.map(comment => (
-          <Comment
-            key={comment.id}
-            id={comment.id}
-            content={comment?.content}
-            author={comment?.author}
-          />
-        ))}
+        {comments.map(comment => {
+          const { id, content, author } = comment;
+          return <Comment key={id} id={id} content={content} author={author} />;
+        })}
       </div>
       <NewCommentButton topicId={topicId} fetchComments={fetchComments} />
     </div>

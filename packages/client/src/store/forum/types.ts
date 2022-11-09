@@ -8,14 +8,14 @@ export type ForumProps = {
 
 export type FetchForums = () => ForumProps[];
 
-export type TopicProps = {
-  topicId?: string;
-  title?: string;
-  author?: string;
-  description?: string;
-  content?: string;
-  commentCount?: string;
-};
+export type TopicProps = Partial<{
+  topicId: string;
+  title: string;
+  author: string;
+  description: string;
+  content: string;
+  commentCount: string;
+}>;
 
 export type FetchTopics = (forumId?: string) => TopicProps[];
 

@@ -32,7 +32,9 @@ export function Router() {
               element={<ForumItemPage />}
             />
           </Route>
-          <Route path={RouterList.FORUM_TOPIC} element={<TopicPage />} />
+          <Route path={RouterList.FORUM_TOPIC}>
+            <Route path={RouterList.TOPIC_ID_PARAM} element={<TopicPage />} />
+          </Route>
           <Route path={RouterList.PROFILE}>
             <Route index element={withPrivateRoute(<ProfilePage />)} />
             <Route

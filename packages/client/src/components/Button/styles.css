@@ -11,10 +11,3 @@
   min-width: 140px;
   padding: 3px 20px;
 }
-
-.button__back {
-  position: absolute;
-  left: 20px;
-  top: 30px;
-  min-width: 45px;
-}

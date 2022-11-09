@@ -2,11 +2,8 @@
   background: var(--color-light);
   box-shadow: inset 0px 4px 4px rgba(37, 27, 55, 0.57);
   border-radius: 30px;
-  font-family: 'Audiowide', Helvetica, sans-serif;
-  font-style: normal;
-  font-weight: 400;
   color: var(--color-normal);
-  border: 0;
+  border: none;
   padding: 10px 15px;
   width: 100%;
   min-height: 100px;
@@ -15,9 +12,6 @@
 .textarea::placeholder {
   color: var(--color-grey);
   opacity: 1;
-  font-family: 'Audiowide', Helvetica, sans-serif;
-  font-style: normal;
-  font-weight: 400;
   font-size: 15px;
   line-height: 19px;
   transition: 0.2s opacity;

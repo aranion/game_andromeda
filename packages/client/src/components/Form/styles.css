@@ -6,14 +6,14 @@
 }
 
 .form__button {
-  width: 230px;
-  height: 35px;
+  min-width: 230px;
   font-size: 20px;
+  padding: 5px 20px;
 }
 
 .form__input {
-  width: 320px;
-  height: 30px;
+  min-width: 320px;
+  padding: 7px 20px;
 }
 
 .form__textarea {
@@ -22,8 +22,8 @@
 
 @media only screen and (max-width: 600px) {
   .form__button {
-    width: 170px;
-    height: 30px;
+    min-width: 170px;
+    padding: 5px 20px;
     font-size: 18px;
   }
 }

@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ForumProps, FetchForums } from '../../store/forum/types';
-import { ForumItem } from '../../components/Forum/ForumItem';
-import { NewForumButton } from '../../components/Forum/NewForumButton';
-import { Button, Table, Star } from '../../components';
+import type { ForumProps, FetchForums } from '../../store/forum/types';
+import { ButtonBack, Star, ForumItem, NewForumButton } from '../../components';
+import './styles.css';
 
 const configStar = [
   { top: '7%', left: '3%' },
@@ -16,10 +14,9 @@ const configStar = [
 
 export default function ForumPage() {
   const [forums, setForums] = useState<ForumProps[]>([]);
-  const navigate = useNavigate();
 
   const fetchForums: FetchForums = () => {
-    const forums = [];
+    const forums: ForumProps[] = [];
     forums.push(
       {
         forumId: '111',
@@ -60,30 +57,32 @@ export default function ForumPage() {
         <Star key={idx} top={item.top} left={item.left} />
       ))}
 
-      <Button className='button__back' onClick={() => navigate(-1)}>
-        🠔
-      </Button>
+      <ButtonBack />
+
       <h1 className='main-title'>Community</h1>
-      <Table>
+      <table className='main-table'>
         <thead>
           <tr>
-            <th>Forums</th>
-            <th>Topics</th>
-            <th>Comments</th>
+            <th className='main-table__th'>Forums</th>
+            <th className='main-table__th'>Topics</th>
+            <th className='main-table__th'>Comments</th>
           </tr>
         </thead>
         <tbody>
-          {forums.map((forum: ForumProps) => (
-            <ForumItem
-              key={forum.forumId}
-              forumId={forum.forumId}
-              title={forum.title}
-              topicsCount={forum.topicsCount}
-              commentsCount={forum.commentsCount}
-            />
-          ))}
+          {forums.map(forum => {
+            const { forumId, title, topicsCount, commentsCount } = forum;
+            return (
+              <ForumItem
+                key={forumId}
+                forumId={forumId}
+                title={title}
+                topicsCount={topicsCount}
+                commentsCount={commentsCount}
+              />
+            );
+          })}
         </tbody>
-      </Table>
+      </table>
       <NewForumButton fetchForums={fetchForums} />
     </div>
   );

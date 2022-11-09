@@ -1,14 +1,15 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import classnames from 'classnames';
 import './styles.css';
 
-type CardProps = React.HTMLAttributes<HTMLElement>;
+type Props = React.HTMLAttributes<HTMLElement>;
 
-export const Card: FC<CardProps> = props => {
-  const { className, children, id } = props;
+export const Card: FC<Props> = props => {
+  const { className, children, ...otherProps } = props;
   const classNames = classnames('card', className);
+
   return (
-    <div className={classNames} id={id}>
+    <div className={classNames} {...otherProps}>
       {children}
     </div>
   );
