@@ -30,11 +30,16 @@ export abstract class GameObject {
       width: config.width,
       height: config.height,
       isAnimated: config.isAnimated,
+      currentAnimation: config.currentAnimation,
     });
   }
 
   get getPosition(): Coordinates {
     return this.position;
+  }
+
+  get getRadius(): number {
+    return this.radius;
   }
 
   protected draw(...args: unknown[]) {
