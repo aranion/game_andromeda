@@ -1,20 +1,7 @@
-import type { Leader } from '../pages/LeaderBoard';
-import type { RequestSignUp } from '../store/auth/type';
-import type { RequestSignIn } from '../store/auth/type';
+import type { Leader } from 'src/pages/LeaderBoard';
 
-export const mockParamsSignIn: RequestSignIn = {
-  login: 'Xxxxx',
-  password: '123XXXxxx',
-};
-
-export const mockParamsSignUp: RequestSignUp = {
-  email: 'xxxxxxxxxxx@mail.ru',
-  first_name: 'Xxxxxxx',
-  login: 'Xxxxxxxxxxxx',
-  password: '123XXXxxx',
-  phone: '123456789',
-  second_name: 'Xxxxx',
-};
+export const mockAvatar =
+  '/6c0b6793-6a62-45c9-ad9a-4c09963ecb69/09b83bb3-7455-4c3b-925e-b5380cf77c76_334638.jpg';
 
 export const mockLeader: Leader[] = [
   { userId: 91209, nickname: 'Player 1', highScore: 223112123 },

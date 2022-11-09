@@ -1,6 +1,8 @@
 import cls from './styles.module.css';
 import { Component } from 'react';
 import type { ErrorInfo, ReactNode } from 'react';
+import { TitlePage } from '../TitlePage';
+import { Button } from '../Button';
 
 export class ErrorBoundary extends Component<Props, State> {
   private messageError?: string = undefined;
@@ -36,16 +38,16 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div className={cls.errorBoundary}>
           <div className={cls.errorBoundary__content}>
-            <h1>App-Error</h1>
+            <TitlePage title='App-Error' />
             <p>{title}</p>
 
             <div className={cls.errorBoundary__message}>
               <span>{message}</span>
-              <button
+              <Button
                 className={cls.errorBoundary__message_button}
                 onClick={this.resetPage}>
                 Обновить страницу
-              </button>
+              </Button>
               <span>Подробная информация в console.</span>
             </div>
           </div>

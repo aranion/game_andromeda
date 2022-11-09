@@ -1,6 +1,8 @@
 import cls from './styles.module.css';
 import { useEffect, useState } from 'react';
-import { Loader } from '../';
+import { Loader } from 'src/components';
+import { BASE_URL } from 'src/constants/vars';
+import mockSrcAvatar from 'src/assets/imgs/mockAvatar.jpg';
 
 export function Avatar(props: Props) {
   const { path, isEditAvatar = false } = props;
@@ -19,7 +21,7 @@ export function Avatar(props: Props) {
     if (path) {
       setIsLoading(true);
 
-      fetch(`https://ya-praktikum.tech/api/v2/resources${path}`, {
+      fetch(`${BASE_URL}/resources${path}`, {
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
       })
@@ -40,6 +42,8 @@ export function Avatar(props: Props) {
         .finally(() => {
           setIsLoading(false);
         });
+    } else {
+      setAvatar(mockSrcAvatar);
     }
   }, [path]);
 
@@ -51,7 +55,7 @@ export function Avatar(props: Props) {
           Изменить аватар
         </button>
       )}
-      {avatar && <img className={cls.avatar__img} src={path} alt='avatar' />}
+      {avatar && <img className={cls.avatar__img} src={avatar} alt='avatar' />}
     </div>
   );
 }

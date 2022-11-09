@@ -1,7 +1,8 @@
 import cls from './styles.module.css';
 import classNames from 'classnames';
-import { Avatar } from '../';
 import { Link } from 'react-router-dom';
+import { Avatar } from 'src/components';
+import { mockAvatar } from 'src/constants/mockData';
 import { RouterList } from 'src/router/routerList';
 import type { Leader } from 'src/pages/LeaderBoard';
 
@@ -9,15 +10,16 @@ export function TopLeader(props: Props) {
   const { position, leaderInfo } = props;
   const { highScore, nickname, userId } = leaderInfo;
 
+  const clsWrapper = classNames(cls.topLeader, {
+    [cls.topLeader__first]: position === 0,
+  });
+
   return (
-    <div
-      className={classNames(cls.topLeader, {
-        [cls.topLeader__first]: position === 0,
-      })}>
+    <div className={clsWrapper}>
       <Link to={`${RouterList.PROFILE}/${userId}`}>
         <div className={cls.topLeader__wrapper}>
           <div className={cls.topLeader__avatar}>
-            <Avatar />
+            <Avatar path={mockAvatar} />
           </div>
           <div className={cls.topLeader__content}>
             <span className={cls.topLeader__content_nickname}>{nickname}</span>

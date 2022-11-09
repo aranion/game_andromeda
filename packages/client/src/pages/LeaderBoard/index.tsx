@@ -1,6 +1,6 @@
 import cls from './styles.module.css';
-import { BoardTable, TitlePage, TopLeader } from 'src/components';
 import { useEffect, useState } from 'react';
+import { BoardTable, TitlePage, TopLeader } from 'src/components';
 import { mockLeader } from 'src/constants/mockData';
 
 export default function LeaderBoard() {

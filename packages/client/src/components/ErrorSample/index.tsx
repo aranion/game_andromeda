@@ -1,8 +1,8 @@
 import cls from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
-import { RouterList } from '../../router/routerList';
-import { Button } from '../';
+import { RouterList } from 'src/router/routerList';
+import { Button } from 'src/components';
 import { CONFIG_PARAMS } from './constants';
 import type { To } from 'react-router-dom';
 

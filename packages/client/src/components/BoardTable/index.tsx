@@ -1,5 +1,5 @@
 import cls from './styles.module.css';
-import { Avatar } from '../';
+import { Avatar } from 'src/components';
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
 import type { Leader } from 'src/pages/LeaderBoard';
