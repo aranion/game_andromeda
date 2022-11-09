@@ -1,0 +1,79 @@
+.topLeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-image: url('../../assets/imgs/star.svg');
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: 14rem;
+  animation: rotationAnimation 1s both;
+  flex-wrap: wrap;
+  width: 14rem;
+  height: 14rem;
+  min-height: 18rem;
+
+  &__first {
+    flex-basis: 100%;
+  }
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    animation: opacityAnimation 2s;
+  }
+
+  &__avatar {
+    width: 11rem;
+    height: 11rem;
+    margin-top: 35px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px 3px #dcd49df7;
+
+    &:hover {
+      box-shadow: 0px 0px 5px 3px var(--mainColor);
+    }
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    &_nickname {
+      font-size: 2.5rem;
+    }
+
+    &_highScore {
+      font-size: 1.5rem;
+      margin: 5px;
+      background: var(--color-light);
+      color: var(--color-bg);
+      padding: 2px 10px;
+      border-radius: 15px;
+    }
+  }
+}
+
+@keyframes rotationAnimation {
+  0% {
+    transform: scale(0) rotate(0deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+@keyframes opacityAnimation {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

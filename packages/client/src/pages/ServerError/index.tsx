@@ -1,5 +1,5 @@
-import { ErrorSample } from '../../components';
-import { LANGUAGE } from '../../constants/vars';
+import { ErrorSample } from 'src/components';
+import { LANGUAGE } from 'src/constants/vars';
 import { text } from './constants';
 
 export default function ServerError() {
