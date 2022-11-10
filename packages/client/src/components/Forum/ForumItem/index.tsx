@@ -8,7 +8,7 @@ export function ForumItem(props: ForumProps) {
   return (
     <tr id={forumId}>
       <td className='main-table__td'>
-        <Link to={`${RouterList.FORUM}/${forumId}`}>
+        <Link className='main-table__a' to={`${RouterList.FORUM}/${forumId}`}>
           <div>{title}</div>
         </Link>
       </td>
