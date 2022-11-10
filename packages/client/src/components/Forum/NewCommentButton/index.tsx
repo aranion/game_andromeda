@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FetchComments } from 'src/store/forum/types';
-import { Modal, Form, ForumButton } from '../..';
+import { Modal, Form, ButtonStar } from '../..';
 
 type Props = {
   topicId: string | undefined;
@@ -28,7 +28,7 @@ export function NewCommentButton(props: Props) {
 
   return (
     <>
-      <ForumButton onClick={handleOpen}>New Comment</ForumButton>
+      <ButtonStar onClick={handleOpen}>New Comment</ButtonStar>
 
       <Modal
         active={isModalActive}
