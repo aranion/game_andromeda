@@ -20,7 +20,7 @@
   &__content {
     width: 100vw;
     height: 100vh;
-    overflow-y: auto;
+    overflow: hidden;
     position: relative;
     text-align: center;
     z-index: 2;
