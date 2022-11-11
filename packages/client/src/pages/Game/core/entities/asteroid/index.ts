@@ -14,7 +14,7 @@ export class Asteroid extends GameObject {
       position: {
         x:
           Math.cos(config.moveAngle) > 0
-            ? config.radius
+            ? -config.radius
             : config.canvas.width + config.radius,
         y:
           Math.sin(config.moveAngle) > 0

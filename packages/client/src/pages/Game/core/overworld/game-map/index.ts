@@ -5,6 +5,8 @@ import { GameObject } from '../../entities/game-object';
 import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
 import { createAsteroidConfig } from '../../entities/asteroid/stats';
 import { Asteroid } from '../../entities/asteroid';
+import { Particles } from '../../particle/particles';
+import { asteroidExplode, resourceExplode } from '../../particle/stats';
 
 /**
  * Карта текущего уровня, настраивается через конфиг. Управляет текущим уровнем и его логикой.
@@ -22,6 +24,7 @@ export class GameMap {
   private readonly player: Player;
   private resources: Resource[] = [];
   private asteroids: Asteroid[] = [];
+  private particlesGroups: Particles[] = [];
 
   constructor(config: GameMapConstrConfig) {
     this.canvas = config.canvas;
@@ -44,8 +47,8 @@ export class GameMap {
     return (
       object.getPosition.y > this.canvas.height + object.getRadius * 2 ||
       object.getPosition.y < -object.getRadius * 2 ||
-      object.getPosition.x < object.getRadius ||
-      object.getPosition.x > this.canvas.width - object.getRadius
+      object.getPosition.x < -object.getRadius * 2 ||
+      object.getPosition.x > this.canvas.width + object.getRadius * 2
     );
   }
 
@@ -71,6 +74,17 @@ export class GameMap {
       if (this.isCollided(resource) && !resource.isCounted) {
         this.score += resource.collect();
         this.resources.splice(i, 1);
+        this.particlesGroups.push(
+          new Particles({
+            canvas: this.canvas,
+            ctx: this.ctx,
+            position: {
+              x: resource.getPosition.x,
+              y: resource.getPosition.y,
+            },
+            ...resourceExplode,
+          })
+        );
         i--;
       }
     }
@@ -93,6 +107,8 @@ export class GameMap {
       asteroid.update(this.player);
 
       if (this.isOutsideCanvas(asteroid)) {
+        console.log('delete asteroid');
+        console.log(asteroid.getPosition);
         this.asteroids.splice(i, 1);
         i--;
       }
@@ -100,6 +116,28 @@ export class GameMap {
       if (this.isCollided(asteroid)) {
         this.player.updateLives(-1);
         this.asteroids.splice(i, 1);
+        this.particlesGroups.push(
+          new Particles({
+            canvas: this.canvas,
+            ctx: this.ctx,
+            position: {
+              x: asteroid.getPosition.x,
+              y: asteroid.getPosition.y,
+            },
+            ...asteroidExplode(),
+          })
+        );
+        i--;
+      }
+    }
+  }
+
+  private handleParticles() {
+    for (let i = 0; i < this.particlesGroups.length; i++) {
+      const particles = this.particlesGroups[i];
+      particles.update();
+      if (particles.opacity <= 0) {
+        this.particlesGroups.splice(i, 1);
         i--;
       }
     }
@@ -122,6 +160,7 @@ export class GameMap {
     this.player.update();
     this.handleResources(frame);
     this.handleAsteroids(frame);
+    this.handleParticles();
     this.drawUI();
   }
 }

@@ -20,15 +20,19 @@ export class Sprite {
   private animationFrameLimit = ANIM_FRAME_LIMIT;
   private animationFrameProgress = ANIM_FRAME_LIMIT;
   private readonly isAnimated: boolean;
+  private readonly sizeRatio: number;
 
   constructor(config: SpriteConfig) {
     this.ctx = config.ctx;
     this.image = new Image();
     this.imageSrc = config.src;
+    this.sizeRatio = config.sizeRatio ?? 1;
     this.position = config.position;
     this.radius = config.radius;
-    this.width = config.width ?? this.radius * 2;
-    this.height = config.height ?? this.radius * 2;
+    this.width = config.width ? config.width * this.sizeRatio : this.radius * 2;
+    this.height = config.height
+      ? config.height * this.sizeRatio
+      : this.radius * 2;
     this.isAnimated = config.isAnimated ?? true;
 
     if (this.isAnimated) {
@@ -79,10 +83,10 @@ export class Sprite {
 
     this.ctx.drawImage(
       this.image,
-      frameX * this.width,
-      frameY * this.height,
-      this.width,
-      this.height,
+      frameX * (this.width / this.sizeRatio),
+      frameY * (this.height / this.sizeRatio),
+      this.width / this.sizeRatio,
+      this.height / this.sizeRatio,
       x,
       y,
       this.width,
