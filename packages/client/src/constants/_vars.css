@@ -21,11 +21,15 @@
 :root {
   --backgroundMain: radial-gradient(
     ellipse at center,
+    rgba(8, 25, 42, 1) 19%,
+    rgba(1, 4, 6, 1) 100%
+  );
+  --backgroundMainAlternative: radial-gradient(
+    ellipse at center,
     var(--color-bg),
     var(--color-space)
   );
   --inputShadow: 0px 0px 7px rgba(255, 255, 202, 0.8);
-  --boxShadow: 0px 0px 7px rgba(255, 255, 202, 0.8);
-  --textShadow: 0px 0px 7px rgba(255, 255, 237, 0.8),
-    2px 2px 2px rgba(0, 0, 0, 0.91);
+  --boxShadow: var(--inputShadow);
+  --textShadow: var(--inputShadow), 2px 2px 2px rgba(0, 0, 0, 0.91);
 }

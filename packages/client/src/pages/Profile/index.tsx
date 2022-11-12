@@ -81,7 +81,7 @@ export default function Profile() {
   };
 
   return (
-    <>
+    <div className={cls.wrapper}>
       <TitlePage title='Profile' />
 
       <div className={cls.profile}>
@@ -123,7 +123,7 @@ export default function Profile() {
           <Link to={`${RouterList.PROFILE}/${id}`}>Go to my profile</Link>
         )}
       </div>
-    </>
+    </div>
   );
 }
 
