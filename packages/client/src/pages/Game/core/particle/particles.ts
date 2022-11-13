@@ -1,5 +1,6 @@
 import { Particle } from './particle';
 import { ParticlesConfig } from './types';
+import { FPS } from '../constants';
 
 export class Particles {
   private canvas: HTMLCanvasElement;
@@ -7,15 +8,17 @@ export class Particles {
   private particleGroup: Particle[] = [];
   private isDisappearing: boolean;
   private readonly disappearingSpeed: number;
-  public opacity = 1;
+  private readonly isEndless: boolean;
+  private opacity = 1;
+  public isDisappeared = false;
 
   constructor(config: ParticlesConfig) {
     this.canvas = config.canvas;
     this.ctx = config.ctx;
-    this.disappearingSpeed = 60 / (config.disappearanceTime ?? 2000);
-    if (config.canDisappear) {
-      this.isDisappearing = false;
-    } else {
+    this.isEndless = config.isEndless ?? false;
+    this.disappearingSpeed = FPS / (config.disappearanceTime ?? 2000);
+
+    if (!this.isEndless) {
       if (config.disappearanceDelay) {
         this.isDisappearing = false;
         setTimeout(() => {
@@ -24,6 +27,8 @@ export class Particles {
       } else {
         this.isDisappearing = true;
       }
+    } else {
+      this.isDisappearing = false;
     }
 
     for (let i = 0; i < config.particleNumber; i++) {
@@ -34,11 +39,14 @@ export class Particles {
           type: config.type,
           radius:
             config.particleConfig.radius ??
-            (config.particleConfig.maxRadius ?? 20) * Math.random(),
+            (config.particleConfig.maxRadius ?? 20) * random,
+          color: config.particleConfig.color,
           speed: config.particleConfig.maxSpeed * random,
           sizeRatio: config.particleConfig.sizeRatio,
-          position: config.position,
-          moveAngle: 2 * Math.PI * random,
+          position: config.spawnFunc
+            ? config.spawnFunc(this.canvas)
+            : config.position ?? { x: 0, y: 0 },
+          moveAngle: config.moveAngle ?? 2 * Math.PI * random,
           imageSrc: config.particleConfig.imageSrc,
           isAnimated: config.isAnimated,
           currentAnimation: config.currentAnimation,
@@ -53,22 +61,40 @@ export class Particles {
     for (let i = 0; i < this.particleGroup.length; i++) {
       const particle = this.particleGroup[i];
       particle.update();
-      if (
-        particle.getPosition.x > this.canvas.width + particle.getRadius ||
-        particle.getPosition.x < -particle.getRadius ||
-        particle.getPosition.y > this.canvas.height + particle.getRadius ||
-        particle.getPosition.y < -particle.getRadius
-      ) {
-        this.particleGroup.splice(i, 1);
-        i--;
+      if (this.isOutsideCanvas(particle)) {
+        if (this.isEndless) {
+          particle.normalizePosition({
+            x: this.canvas.width,
+            y: this.canvas.height,
+          });
+        } else {
+          this.particleGroup.splice(i, 1);
+          i--;
+        }
       }
     }
     this.ctx.restore();
   }
 
+  isOutsideCanvas(particle: Particle) {
+    if (
+      particle.getPosition.x > this.canvas.width + 2 * particle.getRadius ||
+      particle.getPosition.x < -2 * particle.getRadius ||
+      particle.getPosition.y > this.canvas.height + 2 * particle.getRadius ||
+      particle.getPosition.y < -2 * particle.getRadius
+    ) {
+      return true;
+    }
+  }
+
   update() {
     if (this.isDisappearing && this.opacity - this.disappearingSpeed > 0) {
       this.opacity -= this.disappearingSpeed;
+    } else if (
+      this.isDisappearing &&
+      this.opacity - this.disappearingSpeed < 0
+    ) {
+      this.isDisappeared = true;
     }
     this.draw();
   }

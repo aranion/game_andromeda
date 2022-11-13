@@ -22,9 +22,29 @@ export function asteroidExplode(): ParticlesGroupType {
     particleNumber: 10,
     particleConfig: {
       imageSrc: images[randomInteger(0, 3)],
-      radius: 5,
+      radius: 20,
       maxSpeed: 5,
-      sizeRatio: 0.5,
+      sizeRatio: 0.3,
+    },
+  };
+}
+
+export function starConfig(): ParticlesGroupType {
+  return {
+    type: 'circle',
+    spawnFunc: canvas => {
+      return {
+        x: canvas.width * Math.random(),
+        y: canvas.width * Math.random(),
+      };
+    },
+    particleNumber: 30,
+    isEndless: true,
+    moveAngle: Math.PI / 2,
+    particleConfig: {
+      maxRadius: 5,
+      maxSpeed: 5,
+      color: 'white',
     },
   };
 }

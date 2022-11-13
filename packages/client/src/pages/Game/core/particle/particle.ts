@@ -4,19 +4,21 @@ import { Coordinates } from '../types';
 
 export class Particle {
   private ctx: CanvasRenderingContext2D;
-  private moveAngle: number;
+  private readonly moveAngle: number;
   private readonly type: ParticleTypes;
   private readonly imageSrc?: string;
   private readonly radius: number;
   private readonly color: string;
   private readonly speed: number;
   private position: Coordinates;
+  private readonly sizeRatio: number;
   private readonly sprite: Sprite | undefined;
 
   constructor(config: ParticleConfig) {
     this.ctx = config.ctx;
     this.position = { x: config.position.x, y: config.position.y };
-    this.radius = config.radius;
+    this.sizeRatio = config.sizeRatio ?? 1;
+    this.radius = config.radius * this.sizeRatio;
     this.moveAngle = config.moveAngle;
     this.speed = config.speed;
     this.type = config.type;
@@ -67,5 +69,18 @@ export class Particle {
     this.position.x += this.speed * Math.cos(this.moveAngle);
     this.position.y += this.speed * Math.sin(this.moveAngle);
     this.draw();
+  }
+
+  normalizePosition(canvasSize: Coordinates) {
+    if (this.position.x > canvasSize.x) {
+      this.position.x = -this.radius;
+    } else if (this.position.x < 0) {
+      this.position.x = canvasSize.x + this.radius;
+    }
+    if (this.position.y > canvasSize.y) {
+      this.position.y = -this.radius;
+    } else if (this.position.y < 0) {
+      this.position.y = canvasSize.y + this.radius;
+    }
   }
 }
