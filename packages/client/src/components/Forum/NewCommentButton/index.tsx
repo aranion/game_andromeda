@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { FetchComments } from 'src/store/forum/types';
-import { Modal, Form, ButtonStar } from '../..';
+import type { FetchComments } from 'src/store/forum/types';
+import { Modal, Form, ButtonStar } from 'src/components';
 
 type Props = {
   topicId: string | undefined;

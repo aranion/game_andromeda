@@ -1,7 +1,7 @@
 import classnames from 'classnames';
-import { Input, InputProps } from '../Input';
-import { Textarea, TextareaProps } from '../Textarea';
-import { Button } from '../Button';
+import { Input, Textarea, Button } from 'src/components';
+import type { TextareaProps } from 'src/components/Textarea';
+import type { InputProps } from 'src/components/Input';
 import './styles.css';
 
 type Props = React.FormHTMLAttributes<HTMLFormElement>;

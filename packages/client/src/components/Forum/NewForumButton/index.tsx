@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { FetchForums } from 'src/store/forum/types';
-import { Modal, Form, ButtonStar } from '../..';
+import type { FetchForums } from 'src/store/forum/types';
+import { Modal, Form, ButtonStar } from 'src/components';
 
 type Props = {
   fetchForums: FetchForums;

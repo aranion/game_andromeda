@@ -1,5 +1,5 @@
-import { Button, Star } from '..';
-import type { ButtonProps } from '../Button';
+import { Button, Star } from 'src/components';
+import type { ButtonProps } from 'src/components/Button';
 import styles from './styles.module.css';
 
 export function ButtonStar(props: ButtonProps) {
