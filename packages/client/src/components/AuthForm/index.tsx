@@ -1,5 +1,6 @@
 import classnames from 'classnames';
-import { Input, InputProps, Button } from 'src/components';
+import { Input, Button } from 'src/components';
+import type { InputTextProps } from 'src/components';
 
 import './styles.css';
 
@@ -18,6 +19,6 @@ export function AuthForm(props: AuthFormProps) {
   );
 }
 
-AuthForm.Input = function FormInput(props: InputProps) {
+AuthForm.Input = function FormInput(props: InputTextProps) {
   return <Input {...props} className='authform__input' />;
 };

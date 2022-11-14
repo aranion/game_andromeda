@@ -41,7 +41,8 @@ export function NewForumButton(props: Props) {
             value={title}
             onChange={e => setTitle(e.target.value)}
           />
-          <Form.Textarea
+          <Form.Input
+            typeInput='textarea'
             placeholder='Forum description'
             name='description'
             value={description}

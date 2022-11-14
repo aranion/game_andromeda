@@ -1,7 +1,6 @@
 import classnames from 'classnames';
-import { Input, Textarea, Button } from 'src/components';
-import type { TextareaProps } from 'src/components/Textarea';
-import type { InputProps } from 'src/components/Input';
+import { Input, Button } from 'src/components';
+import type { InputTextProps } from 'src/components';
 import './styles.css';
 
 type Props = React.FormHTMLAttributes<HTMLFormElement>;
@@ -18,10 +17,12 @@ export function Form(props: Props) {
   );
 }
 
-Form.Input = function FormInput(props: InputProps) {
-  return <Input {...props} className='form__input' />;
-};
-
-Form.Textarea = function FormInput(props: TextareaProps) {
-  return <Textarea {...props} className='form__textarea' />;
+Form.Input = function FormInput(props: InputTextProps) {
+  const { typeInput } = props;
+  return (
+    <Input
+      {...props}
+      className={typeInput === 'textarea' ? 'form__textarea' : 'form__input'}
+    />
+  );
 };

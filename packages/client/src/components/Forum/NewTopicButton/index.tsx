@@ -45,13 +45,15 @@ export function NewTopicButton(props: Props) {
             value={title}
             onChange={e => setTitle(e.target.value)}
           />
-          <Form.Textarea
+          <Form.Input
+            typeInput='textarea'
             placeholder='Topic description'
             name='description'
             value={description}
             onChange={e => setDescription(e.target.value)}
           />
-          <Form.Textarea
+          <Form.Input
+            typeInput='textarea'
             placeholder='Topic content'
             name='content'
             value={content}

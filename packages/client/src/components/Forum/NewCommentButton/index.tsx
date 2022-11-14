@@ -35,7 +35,8 @@ export function NewCommentButton(props: Props) {
         setActive={setisModalActive}
         title='New Comment'>
         <Form title='Submit' onSubmit={submitComment}>
-          <Form.Textarea
+          <Form.Input
+            typeInput='textarea'
             name='content'
             value={content}
             onChange={e => setContent(e.target.value)}
