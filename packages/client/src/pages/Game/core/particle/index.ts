@@ -1,4 +1,5 @@
-import { ParticleConfig, ParticleTypes } from './types';
+import { ParticleConfig } from './types';
+import { ParticleTypes } from './types';
 import { Sprite } from '../entities/sprite';
 import { Coordinates } from '../types';
 
@@ -29,11 +30,16 @@ export class Particle {
         ctx: config.ctx,
         src: this.imageSrc,
         position: this.position,
-        radius: this.radius,
+        radius: config.radius,
         isAnimated: config.isAnimated ?? false,
         sizeRatio: config.sizeRatio,
       });
     }
+  }
+
+  set setPosition(pos: Coordinates) {
+    this.position.x = pos.x;
+    this.position.y = pos.y;
   }
 
   get getPosition() {
@@ -69,18 +75,5 @@ export class Particle {
     this.position.x += this.speed * Math.cos(this.moveAngle);
     this.position.y += this.speed * Math.sin(this.moveAngle);
     this.draw();
-  }
-
-  normalizePosition(canvasSize: Coordinates) {
-    if (this.position.x > canvasSize.x) {
-      this.position.x = -this.radius;
-    } else if (this.position.x < 0) {
-      this.position.x = canvasSize.x + this.radius;
-    }
-    if (this.position.y > canvasSize.y) {
-      this.position.y = -this.radius;
-    } else if (this.position.y < 0) {
-      this.position.y = canvasSize.y + this.radius;
-    }
   }
 }

@@ -1,37 +1,46 @@
-import { Particle } from './particle';
+import { Particle } from '../particle';
 import { ParticlesConfig } from './types';
 import { FPS } from '../constants';
+import { Coordinates } from '../types';
+
+const defaultDisappearanceTime = 2000;
+const defaultMaxRadius = 20;
 
 export class Particles {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private particleGroup: Particle[] = [];
-  private isDisappearing: boolean;
   private readonly disappearingSpeed: number;
   private readonly isEndless: boolean;
   private opacity = 1;
   public isDisappeared = false;
+  private isDisappearing = false;
 
   constructor(config: ParticlesConfig) {
     this.canvas = config.canvas;
     this.ctx = config.ctx;
     this.isEndless = config.isEndless ?? false;
-    this.disappearingSpeed = FPS / (config.disappearanceTime ?? 2000);
+    this.disappearingSpeed =
+      FPS / (config.disappearanceTime ?? defaultDisappearanceTime);
 
+    this.setDisappearDelay();
+    this.createParticles(config);
+  }
+
+  private setDisappearDelay(disappearanceDelay?: number) {
     if (!this.isEndless) {
-      if (config.disappearanceDelay) {
-        this.isDisappearing = false;
+      if (disappearanceDelay) {
         setTimeout(() => {
           this.isDisappearing = true;
-        }, config.disappearanceDelay);
+        }, disappearanceDelay);
       } else {
         this.isDisappearing = true;
       }
-    } else {
-      this.isDisappearing = false;
     }
+  }
 
-    for (let i = 0; i < config.particleNumber; i++) {
+  private createParticles(config: ParticlesConfig) {
+    for (let i = 0; i < config.quantity; i++) {
       const random = Math.random();
       this.particleGroup.push(
         new Particle({
@@ -39,7 +48,7 @@ export class Particles {
           type: config.type,
           radius:
             config.particleConfig.radius ??
-            (config.particleConfig.maxRadius ?? 20) * random,
+            (config.particleConfig.maxRadius ?? defaultMaxRadius) * random,
           color: config.particleConfig.color,
           speed: config.particleConfig.maxSpeed * random,
           sizeRatio: config.particleConfig.sizeRatio,
@@ -58,12 +67,13 @@ export class Particles {
   protected draw() {
     this.ctx.save();
     this.ctx.globalAlpha = this.opacity;
+
     for (let i = 0; i < this.particleGroup.length; i++) {
       const particle = this.particleGroup[i];
       particle.update();
       if (this.isOutsideCanvas(particle)) {
         if (this.isEndless) {
-          particle.normalizePosition({
+          particle.setPosition = this.normalizePosition(particle, {
             x: this.canvas.width,
             y: this.canvas.height,
           });
@@ -73,29 +83,46 @@ export class Particles {
         }
       }
     }
+
     this.ctx.restore();
   }
 
   isOutsideCanvas(particle: Particle) {
-    if (
+    return (
       particle.getPosition.x > this.canvas.width + 2 * particle.getRadius ||
       particle.getPosition.x < -2 * particle.getRadius ||
       particle.getPosition.y > this.canvas.height + 2 * particle.getRadius ||
       particle.getPosition.y < -2 * particle.getRadius
-    ) {
-      return true;
-    }
+    );
   }
 
   update() {
-    if (this.isDisappearing && this.opacity - this.disappearingSpeed > 0) {
-      this.opacity -= this.disappearingSpeed;
-    } else if (
-      this.isDisappearing &&
-      this.opacity - this.disappearingSpeed < 0
-    ) {
-      this.isDisappeared = true;
+    if (this.isDisappearing) {
+      if (this.opacity - this.disappearingSpeed > 0) {
+        this.opacity -= this.disappearingSpeed;
+      } else {
+        this.isDisappeared = true;
+      }
     }
     this.draw();
+  }
+
+  normalizePosition(particle: Particle, canvasSize: Coordinates): Coordinates {
+    const particlePos = particle.getPosition;
+    const radius = particle.getRadius;
+    const newPos: Coordinates = { x: 0, y: 0 };
+
+    if (particlePos.x > canvasSize.x) {
+      newPos.x = -radius;
+    } else if (particlePos.x < 0) {
+      newPos.x = canvasSize.x + radius;
+    }
+    if (particlePos.y > canvasSize.y) {
+      newPos.y = -radius;
+    } else if (particlePos.y < 0) {
+      newPos.y = canvasSize.y + radius;
+    }
+
+    return newPos;
   }
 }

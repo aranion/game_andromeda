@@ -28,7 +28,7 @@ export class Sprite {
     this.imageSrc = config.src;
     this.sizeRatio = config.sizeRatio ?? 1;
     this.position = config.position;
-    this.radius = config.radius;
+    this.radius = config.radius * this.sizeRatio;
     this.width = config.width ? config.width * this.sizeRatio : this.radius * 2;
     this.height = config.height
       ? config.height * this.sizeRatio

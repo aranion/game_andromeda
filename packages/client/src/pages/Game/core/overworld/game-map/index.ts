@@ -5,12 +5,9 @@ import { GameObject } from '../../entities/game-object';
 import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
 import { createAsteroidConfig } from '../../entities/asteroid/stats';
 import { Asteroid } from '../../entities/asteroid';
-import { Particles } from '../../particle/particles';
-import {
-  asteroidExplode,
-  resourceExplode,
-  starConfig,
-} from '../../particle/stats';
+import { Particles } from '../../particles';
+import { asteroidExplode } from '../../entities/asteroid/particles';
+import { resourceExplode } from '../../entities/resource/particles';
 
 /**
  * Карта текущего уровня, настраивается через конфиг. Управляет текущим уровнем и его логикой.
@@ -35,13 +32,6 @@ export class GameMap {
     this.ctx = config.ctx;
     this.spawnInterval = config.spawnInterval;
     this.player = config.player;
-    this.particlesGroups.push(
-      new Particles({
-        canvas: this.canvas,
-        ctx: this.ctx,
-        ...starConfig(),
-      })
-    );
   }
 
   get getScore(): number {
