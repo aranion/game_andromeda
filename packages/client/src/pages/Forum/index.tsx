@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import type { ForumProps, FetchForums } from 'src/store/forum/types';
 import { ButtonBack, Star, ForumItem, NewForumButton } from 'src/components';
 import './styles.css';
+import { FullscreenButton } from 'src/components/FullscreenButton';
 
 const configStar = [
   { top: '7%', left: '3%' },
@@ -14,6 +15,7 @@ const configStar = [
 
 export default function ForumPage() {
   const [forums, setForums] = useState<ForumProps[]>([]);
+  const fullscreenElement = useRef(null);
 
   const fetchForums: FetchForums = () => {
     const forums: ForumProps[] = [];
@@ -52,12 +54,13 @@ export default function ForumPage() {
   }, []);
 
   return (
-    <div className='forum'>
+    <div className='forum' ref={fullscreenElement}>
       {configStar.map((item, idx) => (
         <Star key={idx} top={item.top} left={item.left} />
       ))}
 
       <ButtonBack />
+      <FullscreenButton elemRef={fullscreenElement} />
 
       <h1 className='main-title'>Community</h1>
       <table className='main-table'>

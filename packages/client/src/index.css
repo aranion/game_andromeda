@@ -42,8 +42,8 @@ input {
   align-items: center;
   gap: 20px;
 
- &__title, 
- .main-title {
+  &__title,
+  .main-title {
     font-weight: 400;
     font-size: 52px;
     text-align: center;
@@ -55,10 +55,10 @@ input {
 }
 
 @media only screen and (max-width: 600px) {
- .mobile_hidden {
+  .mobile_hidden {
     display: none;
   }
-  
+
   .main-title,
   .main-menu__title {
     font-size: 40px;

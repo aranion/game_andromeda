@@ -1,0 +1,33 @@
+.button-fullscreen {
+  border: 0;
+  cursor: pointer;
+  background: var(--color-light);
+  box-shadow: 0px 0px 7px rgba(255, 255, 202, 0.8);
+  border-radius: 30px;
+  font-weight: 400;
+  font-size: 18px;
+  color: var(--color-normal);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+  padding: 3px 20px;
+  position: absolute;
+  right: 20px;
+  top: 30px;
+  min-width: 45px;
+}
+
+.fullscreen-open,
+.fullscreen-exit {
+  height: 20px;
+  width: 30px;
+  display: block;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.fullscreen-open {
+  background-image: url('src/assets/imgs/fullscreenOpen.svg');
+}
+.fullscreen-exit {
+  background-image: url('src/assets/imgs/fullscreenExit.svg');
+}
