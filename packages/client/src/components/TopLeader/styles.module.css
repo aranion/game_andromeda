@@ -10,8 +10,6 @@
   animation: rotationAnimation 1s both;
   flex-wrap: wrap;
   width: 14rem;
-  height: 14rem;
-  min-height: 18rem;
 
   &__first {
     flex-basis: 100%;
@@ -30,10 +28,10 @@
     height: 11rem;
     margin-top: 35px;
     border-radius: 50%;
-    box-shadow: 0px 0px 5px 3px #dcd49df7;
+    box-shadow: 0px 0px 40px 3px #dcd49df7;
 
     &:hover {
-      box-shadow: 0px 0px 5px 3px var(--mainColor);
+      box-shadow: 0px 0px 40px 3px var(--mainColor);
     }
   }
 
@@ -41,6 +39,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    margin-top: 5px;
 
     &_nickname {
       font-size: 2.5rem;

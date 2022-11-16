@@ -15,5 +15,6 @@
     background-image: url('src/assets/imgs/leaderFon.webp');
     background-repeat: no-repeat;
     background-size: cover;
+    padding: 20px 0;
   }
 }

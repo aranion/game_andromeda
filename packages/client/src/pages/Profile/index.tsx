@@ -2,9 +2,8 @@ import cls from './styles.module.css';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Avatar, Button, ProfileFields, TitlePage } from 'src/components';
-import { useLazyFetchUserDataQuery } from 'src/store/user/api';
+import { userSelectors, useLazyFetchUserDataQuery } from 'src/store/user';
 import { useTypeSelector } from 'src/hooks/useTypeSelector';
-import { userSelectors } from 'src/store/user';
 import { RouterList, RouterParamsProfile } from 'src/router/routerList';
 import { useAuth } from 'src/hooks/useAuth';
 import { prepareAllProfileFields, preparePasswordProfileFields } from './utils';
@@ -19,7 +18,7 @@ export default function Profile() {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  const { userData } = useTypeSelector(userSelectors.allUser);
+  const { userData } = useTypeSelector(userSelectors.all);
   const { id, avatar } = userData;
 
   const [fetchUserData, { isLoading, isError }] = useLazyFetchUserDataQuery();
