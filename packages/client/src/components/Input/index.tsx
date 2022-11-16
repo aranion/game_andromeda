@@ -1,22 +1,29 @@
 import classnames from 'classnames';
-import { ReactElement } from 'react';
 import './styles.css';
+import type { InputHTMLAttributes, TextareaHTMLAttributes } from 'react';
 
-export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
-export type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+export function Input(props: PropsInput) {
+  const { className, ...otherProps } = props;
+  const { typeComponent } = otherProps;
 
-export type InputTextProps = InputProps | TextareaProps | any;
+  const classNames = classnames(typeComponent, className);
 
-export function Input(props: InputTextProps): ReactElement {
-  const { typeInput = 'input', className, ...otherProps } = props;
-  const classNames = classnames(typeInput, className);
+  if (typeComponent === 'textarea') {
+    const { typeComponent, ...attributes } = otherProps;
 
-  let input;
-  if (typeInput === 'input') {
-    input = <input {...otherProps} className={classNames} />;
+    return <textarea {...attributes} className={classNames} />;
   } else {
-    input = <textarea {...otherProps} className={classNames} />;
-  }
+    const { typeComponent, ...attributes } = otherProps;
 
-  return input;
+    return <input {...attributes} className={classNames} />;
+  }
 }
+
+export type PropsInput = InputProps | TextareaProps;
+
+type InputProps = {
+  typeComponent: 'input';
+} & InputHTMLAttributes<HTMLInputElement>;
+type TextareaProps = {
+  typeComponent: 'textarea';
+} & TextareaHTMLAttributes<HTMLTextAreaElement>;

@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import type { TopicProps } from 'src/store/forum/types';
 import { RouterList } from 'src/router/routerList';
+import type { TopicProps } from 'src/store/forum/types';
 
-export function TopicItem(props: TopicProps) {
+export function TopicItem(props: Props) {
   const { topicId, title, commentCount } = props;
 
   return (
@@ -18,3 +18,5 @@ export function TopicItem(props: TopicProps) {
     </tr>
   );
 }
+
+type Props = TopicProps;

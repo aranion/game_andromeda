@@ -11,7 +11,7 @@ export const Modal: FC<Props> = props => {
   const { active, children, title, setActive } = props;
 
   const handleActive = () => setActive(false);
-  const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
 

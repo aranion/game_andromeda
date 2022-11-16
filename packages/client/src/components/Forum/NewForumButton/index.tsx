@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import type { FetchForums } from 'src/store/forum/types';
 import { Modal, Form, ButtonStar } from 'src/components';
+import type { FetchForums } from 'src/store/forum/types';
 
 type Props = {
   fetchForums: FetchForums;
@@ -9,13 +9,14 @@ type Props = {
 export function NewForumButton(props: Props) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [isModalActive, setModalActive] = useState(false);
-  const handleOpen = () => setModalActive(true);
-  const handleClose = () => setModalActive(false);
+  const [isModalActive, setIsModalActive] = useState(false);
+
+  const handleOpen = () => setIsModalActive(true);
+  const handleClose = () => setIsModalActive(false);
 
   const handleSetTitle = (e: React.ChangeEvent<HTMLInputElement>) =>
     setTitle(e.target.value);
-  const handleSetDescription = (e: React.ChangeEvent<HTMLInputElement>) =>
+  const handleSetDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
     setDescription(e.target.value);
 
   function submitForum(e: React.FormEvent<HTMLFormElement>) {
@@ -37,17 +38,18 @@ export function NewForumButton(props: Props) {
 
       <Modal
         active={isModalActive}
-        setActive={setModalActive}
+        setActive={setIsModalActive}
         title='New forum'>
         <Form title='Submit' onSubmit={submitForum}>
           <Form.Input
+            typeComponent='input'
             placeholder='Forum title'
             name='title'
             value={title}
             onChange={handleSetTitle}
           />
           <Form.Input
-            typeInput='textarea'
+            typeComponent='textarea'
             placeholder='Forum description'
             name='description'
             value={description}
