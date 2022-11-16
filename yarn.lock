@@ -8508,6 +8508,7 @@ postcss-value-parser@^1.1.0, postcss-value-parser@^1.4.2:
   resolved "https://registry.yarnpkg.com/postcss-value-parser/-/postcss-value-parser-1.4.2.tgz#1865633e13701f8a721e7834dad185cb144aad0c"
   integrity sha512-22vc2Fs4uAZTNRbQ9M7yU877FYXkKIq7aaTgm0gg+Q9Yj+SkcMVYjZ/hJ3adaUBJlZDz2dGLcjHzSt13mAMh+Q==
 
+<<<<<<< HEAD
 
 postcss-value-parser@^4.0.0, postcss-value-parser@^4.1.0, postcss-value-parser@^4.2.0:
   version "4.2.0"
@@ -9863,6 +9864,8 @@ postcss-value-parser@^1.1.0, postcss-value-parser@^1.4.2:
   resolved "https://registry.yarnpkg.com/postcss-value-parser/-/postcss-value-parser-1.4.2.tgz#1865633e13701f8a721e7834dad185cb144aad0c"
   integrity sha512-22vc2Fs4uAZTNRbQ9M7yU877FYXkKIq7aaTgm0gg+Q9Yj+SkcMVYjZ/hJ3adaUBJlZDz2dGLcjHzSt13mAMh+Q==
 
+=======
+>>>>>>> 757a36675d614c8a083a1cb927d3931f9da27a0f
 postcss-value-parser@^4.0.0, postcss-value-parser@^4.1.0, postcss-value-parser@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/postcss-value-parser/-/postcss-value-parser-4.2.0.tgz#723c09920836ba6d3e5af019f92bc0971c02e514"

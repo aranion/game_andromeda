@@ -1,0 +1,16 @@
+.button__wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.button-star {
+  min-width: 140px;
+  font-size: 13px;
+}
+
+@media only screen and (max-width: 600px) {
+  .button-star {
+    min-width: 120px;
+  }
+}

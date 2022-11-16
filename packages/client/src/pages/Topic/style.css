@@ -1,0 +1,20 @@
+.topic {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.topic__info {
+  margin: 10px 0 30px;
+}
+
+.topic__title {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.topic__content {
+  margin-bottom: 10px;
+}
