@@ -42,21 +42,25 @@ export class Particles {
   private createParticles(config: ParticlesConfig) {
     for (let i = 0; i < config.quantity; i++) {
       const random = Math.random();
+      const radius =
+        config.particleConfig.radius ??
+        (config.particleConfig.maxRadius ?? defaultMaxRadius) * random;
+      const position = config.spawnFunc
+        ? config.spawnFunc(this.canvas)
+        : config.position ?? { x: 0, y: 0 };
+      const moveAngle = config.moveAngle ?? 2 * Math.PI * random;
+      const speed = config.particleConfig.maxSpeed * random;
       this.particleGroup.push(
         new Particle({
           ctx: this.ctx,
           type: config.type,
-          radius:
-            config.particleConfig.radius ??
-            (config.particleConfig.maxRadius ?? defaultMaxRadius) * random,
+          radius: radius,
+          speed: speed,
+          position: position,
+          moveAngle: moveAngle,
           color: config.particleConfig.color,
-          speed: config.particleConfig.maxSpeed * random,
-          sizeRatio: config.particleConfig.sizeRatio,
-          position: config.spawnFunc
-            ? config.spawnFunc(this.canvas)
-            : config.position ?? { x: 0, y: 0 },
-          moveAngle: config.moveAngle ?? 2 * Math.PI * random,
           imageSrc: config.particleConfig.imageSrc,
+          sizeRatio: config.particleConfig.sizeRatio,
           isAnimated: config.isAnimated,
           currentAnimation: config.currentAnimation,
         })
@@ -88,12 +92,18 @@ export class Particles {
   }
 
   isOutsideCanvas(particle: Particle) {
-    return (
-      particle.getPosition.x > this.canvas.width + 2 * particle.getRadius ||
-      particle.getPosition.x < -2 * particle.getRadius ||
-      particle.getPosition.y > this.canvas.height + 2 * particle.getRadius ||
-      particle.getPosition.y < -2 * particle.getRadius
-    );
+    const pos = particle.getPosition;
+    const axes = Object.keys(pos) as ['x', 'y'];
+    let isOutside = false;
+
+    for (const axis of axes) {
+      isOutside =
+        particle.getPosition[axis] >
+          this.canvas.width + 2 * particle.getRadius ||
+        particle.getPosition[axis] < -2 * particle.getRadius;
+    }
+
+    return isOutside;
   }
 
   update() {
@@ -112,15 +122,13 @@ export class Particles {
     const radius = particle.getRadius;
     const newPos: Coordinates = { x: 0, y: 0 };
 
-    if (particlePos.x > canvasSize.x) {
-      newPos.x = -radius;
-    } else if (particlePos.x < 0) {
-      newPos.x = canvasSize.x + radius;
-    }
-    if (particlePos.y > canvasSize.y) {
-      newPos.y = -radius;
-    } else if (particlePos.y < 0) {
-      newPos.y = canvasSize.y + radius;
+    for (const anyAxis in newPos) {
+      const axis = anyAxis as 'x' | 'y';
+      if (particlePos[axis] > canvasSize[axis]) {
+        newPos[axis] = -radius;
+      } else if (particlePos[axis] < 0) {
+        newPos[axis] = canvasSize[axis] + radius;
+      }
     }
 
     return newPos;
