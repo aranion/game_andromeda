@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { FetchTopics } from 'src/store/forum/types';
-import { Modal, Form, ForumButton } from '../..';
+import type { FetchTopics } from 'src/store/forum/types';
+import { Modal, Form, ButtonStar } from 'src/components';
 
 type Props = {
   forumId?: string;
@@ -32,7 +32,7 @@ export function NewTopicButton(props: Props) {
 
   return (
     <>
-      <ForumButton onClick={handleOpen}>New Topic</ForumButton>
+      <ButtonStar onClick={handleOpen}>New Topic</ButtonStar>
 
       <Modal
         active={isModalActive}

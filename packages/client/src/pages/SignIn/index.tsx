@@ -1,4 +1,4 @@
-import { Button, Star, AuthForm } from 'src/components';
+import { Star, ButtonStar, AuthForm } from 'src/components';
 import './styles.css';
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
@@ -73,13 +73,7 @@ export default function SignIn() {
           />
         </AuthForm>
 
-        <div className='login__signup'>
-          <Star size='small' relative={true} />
-          <Button className='login__signup-button' onClick={navigateSignUp}>
-            Sign Up
-          </Button>
-          <Star size='small' relative={true} />
-        </div>
+        <ButtonStar onClick={navigateSignUp}>Sign Up</ButtonStar>
       </div>
     </>
   );
