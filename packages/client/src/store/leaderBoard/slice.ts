@@ -16,6 +16,3 @@ export const leaderBoardSlice = createSlice({
     },
   },
 });
-
-export const leaderBoardActions = leaderBoardSlice.actions;
-export const leaderBoardReducer = leaderBoardSlice.reducer;
