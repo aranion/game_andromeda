@@ -15,7 +15,7 @@ const configStar = [
 
 export default function ForumPage() {
   const [forums, setForums] = useState<ForumProps[]>([]);
-  const fullscreenElement = useRef(null);
+  const fullscreenElement = useRef<HTMLDivElement>(null);
 
   const fetchForums: FetchForums = () => {
     const forums: ForumProps[] = [];
