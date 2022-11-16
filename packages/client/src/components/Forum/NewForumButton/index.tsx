@@ -13,6 +13,11 @@ export function NewForumButton(props: Props) {
   const handleOpen = () => setModalActive(true);
   const handleClose = () => setModalActive(false);
 
+  const handleSetTitle = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setTitle(e.target.value);
+  const handleSetDescription = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setDescription(e.target.value);
+
   function submitForum(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const { fetchForums } = props;
@@ -39,14 +44,14 @@ export function NewForumButton(props: Props) {
             placeholder='Forum title'
             name='title'
             value={title}
-            onChange={e => setTitle(e.target.value)}
+            onChange={handleSetTitle}
           />
           <Form.Input
             typeInput='textarea'
             placeholder='Forum description'
             name='description'
             value={description}
-            onChange={e => setDescription(e.target.value)}
+            onChange={handleSetDescription}
           />
         </Form>
       </Modal>

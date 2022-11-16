@@ -16,6 +16,13 @@ export function NewTopicButton(props: Props) {
   const handleOpen = () => setModalActive(true);
   const handleClose = () => setModalActive(false);
 
+  const handleSetTitle = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setTitle(e.target.value);
+  const handleSetDescription = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setDescription(e.target.value);
+  const handleSetContent = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setContent(e.target.value);
+
   function submitTopic(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const { fetchTopics, forumId } = props;
@@ -43,21 +50,21 @@ export function NewTopicButton(props: Props) {
             name='title'
             placeholder='Topic title'
             value={title}
-            onChange={e => setTitle(e.target.value)}
+            onChange={handleSetTitle}
           />
           <Form.Input
             typeInput='textarea'
             placeholder='Topic description'
             name='description'
             value={description}
-            onChange={e => setDescription(e.target.value)}
+            onChange={handleSetDescription}
           />
           <Form.Input
             typeInput='textarea'
             placeholder='Topic content'
             name='content'
             value={content}
-            onChange={e => setContent(e.target.value)}
+            onChange={handleSetContent}
           />
         </Form>
       </Modal>

@@ -14,6 +14,9 @@ export function NewCommentButton(props: Props) {
   const handleOpen = () => setisModalActive(true);
   const handleClose = () => setisModalActive(false);
 
+  const handleSetContent = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setContent(e.target.value);
+
   function submitComment(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const { fetchComments, topicId } = props;
@@ -39,7 +42,7 @@ export function NewCommentButton(props: Props) {
             typeInput='textarea'
             name='content'
             value={content}
-            onChange={e => setContent(e.target.value)}
+            onChange={handleSetContent}
           />
         </Form>
       </Modal>
