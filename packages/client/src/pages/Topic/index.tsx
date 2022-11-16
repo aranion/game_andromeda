@@ -77,14 +77,14 @@ export default function TopicPage() {
   }, []);
 
   return (
-    <div className='forum'>
+    <div className='topic'>
       {configStar.map((item, idx) => (
         <Star key={idx} top={item.top} left={item.left} />
       ))}
 
       <ButtonBack />
 
-      <h1 className='main-title'>Community</h1>
+      <h1 className='main-menu__title'>Community</h1>
       <Card className='topic__info'>
         <div className='topic__title'>{topic?.title || ''}</div>
         <div className='topic__content'>{topic?.content || ''}</div>

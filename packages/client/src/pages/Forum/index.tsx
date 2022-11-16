@@ -62,7 +62,7 @@ export default function ForumPage() {
       <ButtonBack />
       <FullscreenButton elemRef={fullscreenElement} />
 
-      <h1 className='main-title'>Community</h1>
+      <h1 className='main-menu__title'>Community</h1>
       <table className='main-table'>
         <thead>
           <tr>

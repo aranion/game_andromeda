@@ -6,6 +6,7 @@ import type {
   FetchForumName,
 } from 'src/store/forum/types';
 import { ButtonBack, Star, TopicItem, NewTopicButton } from 'src/components';
+import './styles.css';
 
 const configStar = [
   { top: '7%', left: '3%' },
@@ -64,7 +65,7 @@ export default function ForumItemPage() {
 
       <ButtonBack />
 
-      <h1 className='main-title'>{forumName}</h1>
+      <h1 className='main-menu__title'>{forumName}</h1>
       <table className='main-table'>
         <thead>
           <tr>
