@@ -5,6 +5,7 @@ import { defaultPlayerStats } from './entities/player/stats';
 import { mapConfig } from './map.config';
 import { FPS } from './constants';
 import type { CanvasProperties, GameMapConfig } from './types';
+import { SceneTransition } from './overworld/scene-transition';
 
 type GameConfig = {
   canvas: HTMLCanvasElement;
@@ -21,15 +22,21 @@ export class Game {
   private map: GameMap | null = null;
   private directions: DirectionsInput;
   private readonly player: Player;
+  private readonly sceneTransition: SceneTransition;
   private status: GameStatus = 'unmounted';
   private frame = 0;
 
   constructor(config: GameConfig) {
     const { canvas, ctx } = this.initCanvas(config.canvas);
     this.directions = new DirectionsInput({ canvas });
+    this.sceneTransition = SceneTransition.createSceneTransition({
+      canvas,
+      ctx,
+    });
     this.player = new Player({
       canvas,
       ctx,
+      sceneTransition: this.sceneTransition,
       direction: this.directions.getDirections,
       position: {
         x: canvas.width / 2,
@@ -67,6 +74,7 @@ export class Game {
     if (this.canvas && this.ctx) {
       this.map = new GameMap({
         ...gameMapConfig,
+        sceneTransition: this.sceneTransition,
         canvas: this.canvas,
         ctx: this.ctx,
         player: this.player,

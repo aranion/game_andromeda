@@ -1,6 +1,7 @@
 import { GameObject } from '../game-object';
 import type { PlayerConfig, PlayerSkin } from './types';
 import type { Coordinates } from '../../types';
+import { SceneTransition } from '../../overworld/scene-transition';
 
 /**
  * Класс игрока. Главная сущность игры в виде космического корабля.
@@ -11,6 +12,7 @@ export class Player extends GameObject {
   private maxLives: number;
   private shielded: boolean;
   private skin: PlayerSkin;
+  private sceneTransition: SceneTransition;
 
   constructor(config: PlayerConfig) {
     super({ ...config, imageSrc: config.imageSrc.healthy });
@@ -20,6 +22,7 @@ export class Player extends GameObject {
     this.maxLives = config.maxLives;
     this.shielded = config.shielded ?? false;
     this.skin = config.imageSrc;
+    this.sceneTransition = config.sceneTransition;
     this.updateSkin();
   }
 
@@ -35,7 +38,17 @@ export class Player extends GameObject {
     const newLives = this.lives + num;
 
     if (newLives <= 0) {
-      alert('Your ship was consumed by cosmic void...');
+      this.sceneTransition.createLabel({
+        text: 'Your ship was consumed by cosmic void...',
+        position: {
+          x: this.canvas.width / 2,
+          y: this.canvas.height / 2,
+        },
+        color: 'red',
+        font: 'bold 30px Audiowide',
+        deleteDelay: 9000,
+      });
+      this.sceneTransition.darkScreen(2000, 5000);
       return;
     }
 

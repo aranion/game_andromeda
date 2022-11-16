@@ -8,6 +8,7 @@ import { Asteroid } from '../../entities/asteroid';
 import { Particles } from '../../particles';
 import { asteroidExplode } from '../../entities/asteroid/particles';
 import { resourceExplode } from '../../entities/resource/particles';
+import { SceneTransition } from '../scene-transition';
 
 /**
  * Карта текущего уровня, настраивается через конфиг. Управляет текущим уровнем и его логикой.
@@ -21,6 +22,7 @@ export class GameMap {
     asteroid: number;
     resource: number;
   };
+  private sceneTransition: SceneTransition;
   private score = 0;
   private readonly player: Player;
   private resources: Resource[] = [];
@@ -32,6 +34,7 @@ export class GameMap {
     this.ctx = config.ctx;
     this.spawnInterval = config.spawnInterval;
     this.player = config.player;
+    this.sceneTransition = config.sceneTransition;
   }
 
   get getScore(): number {
@@ -161,5 +164,6 @@ export class GameMap {
     this.handleResources(frame);
     this.handleAsteroids(frame);
     this.drawUI();
+    this.sceneTransition.update();
   }
 }
