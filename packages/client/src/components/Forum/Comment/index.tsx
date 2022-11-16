@@ -1,5 +1,5 @@
 import { CommentProps } from 'src/store/forum/types';
-import { Card } from '../../';
+import { Card } from 'src/components';
 import styles from './styles.module.css';
 
 export const Comment = (props: CommentProps) => {

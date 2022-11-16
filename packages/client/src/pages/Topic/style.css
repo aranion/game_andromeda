@@ -1,3 +1,11 @@
+.topic {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
 .topic__info {
   margin: 10px 0 30px;
 }

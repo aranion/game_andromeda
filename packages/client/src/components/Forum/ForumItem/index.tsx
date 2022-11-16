@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ForumProps } from 'src/store/forum/types';
+import type { ForumProps } from 'src/store/forum/types';
 import { RouterList } from 'src/router/routerList';
 
 export function ForumItem(props: ForumProps) {
@@ -8,7 +8,7 @@ export function ForumItem(props: ForumProps) {
   return (
     <tr id={forumId}>
       <td className='main-table__td'>
-        <Link to={`${RouterList.FORUM}/${forumId}`}>
+        <Link className='main-table__a' to={`${RouterList.FORUM}/${forumId}`}>
           <div>{title}</div>
         </Link>
       </td>
