@@ -4,7 +4,7 @@
   border-radius: 50%;
   background-color: var(--color-light);
   overflow: hidden;
-  background-image: url('../../assets/imgs/AvatarDefault.svg');
+  background-image: url(src/assets/imgs/AvatarDefault.svg);
   background-repeat: no-repeat;
   background-position: center;
   position: relative;
@@ -32,8 +32,7 @@
 
   &:hover &__edit {
     display: flex;
-    background-color: var(--secondaryColor);
-    opacity: 0.7;
+    background-color: var(--translucentColor);
     cursor: pointer;
   }
 }

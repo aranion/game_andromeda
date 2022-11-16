@@ -11,6 +11,12 @@
   border-radius: 50%;
   perspective: 800px;
 
+  &__relative {
+    position: relative;
+    top: auto;
+    left: auto;
+  }
+
   &__inner {
     position: absolute;
     box-sizing: border-box;
