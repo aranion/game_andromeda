@@ -56,25 +56,44 @@ export default function SignUp() {
         </h1>
 
         <AuthForm onSubmit={handleSignUp} title='Sign Up'>
-          <AuthForm.Input name='email' type='email' placeholder='Email' />
-          <AuthForm.Input name='login' type='text' placeholder='Login' />
           <AuthForm.Input
+            typeComponent='input'
+            name='email'
+            type='email'
+            placeholder='Email'
+          />
+          <AuthForm.Input
+            typeComponent='input'
+            name='login'
+            type='text'
+            placeholder='Login'
+          />
+          <AuthForm.Input
+            typeComponent='input'
             name='first_name'
             type='text'
             placeholder='First Name'
           />
           <AuthForm.Input
+            typeComponent='input'
             name='second_name'
             type='text'
             placeholder='Last Name'
           />
-          <AuthForm.Input name='phone' type='text' placeholder='Phone' />
           <AuthForm.Input
+            typeComponent='input'
+            name='phone'
+            type='text'
+            placeholder='Phone'
+          />
+          <AuthForm.Input
+            typeComponent='input'
             name='password'
             type='password'
             placeholder='Password'
           />
           <AuthForm.Input
+            typeComponent='input'
             name='password'
             type='password'
             placeholder='Password (Again)'
