@@ -40,6 +40,7 @@ export function ProfileFields(props: Props) {
             </label>
             <Input
               {...otherProps}
+              typeComponent='input'
               name={key}
               id={key}
               readOnly={!isEdit}
