@@ -1,7 +1,15 @@
 import { FPS } from '../../constants';
-import { SceneTransitionConfig, Label } from './types';
+import { Coordinates } from '../../types';
+import {
+  SceneTransitionConfig,
+  Label,
+  Button,
+  LabelConfig,
+  ButtonConfig,
+} from './types';
 
 const defaultOpacytyTime = 3000;
+const defaultFont = 'bold 30px Audiowide';
 
 export class SceneTransition {
   private static singleton: SceneTransition;
@@ -9,11 +17,14 @@ export class SceneTransition {
   private ctx: CanvasRenderingContext2D;
   private opacity = 0;
   private opacitySpeed = 0;
+  private clickPosition: Coordinates;
   private labels: Label[] = [];
+  private buttons: Button[] = [];
 
   constructor(config: SceneTransitionConfig) {
     this.canvas = config.canvas;
     this.ctx = config.ctx;
+    this.clickPosition = config.clickPosition;
   }
 
   static createSceneTransition(config: SceneTransitionConfig) {
@@ -30,19 +41,64 @@ export class SceneTransition {
     }, blackoutTime + delay);
   }
 
-  createLabel(label: Label & { deleteDelay: number }) {
-    this.labels.push(label);
+  createLabel(label: LabelConfig) {
+    const id = Date.now().toString() + Math.random.toString();
+    this.labels.push({ ...label, id });
     setTimeout(() => {
       for (let i = 0; i < this.labels.length; i++) {
-        if (
-          this.labels[i].text === label.text &&
-          this.labels[i].position === label.position
-        ) {
+        if (this.labels[i].id === id) {
           this.labels.splice(i, 1);
           i -= 1;
         }
       }
     }, label.deleteDelay);
+  }
+
+  createButton(buttonConfig: ButtonConfig) {
+    const id = Date.now().toString() + Math.random.toString();
+    this.setButtonImageSrc(buttonConfig);
+    const button = buttonConfig as Button;
+    button.id = id;
+    this.buttons.push(button);
+    setTimeout(() => {
+      for (let i = 0; i < this.buttons.length; i++) {
+        if (this.buttons[i].id === id) {
+          this.buttons.splice(i, 1);
+          i -= 1;
+        }
+      }
+    }, button.deleteDelay);
+  }
+
+  setButtonImageSrc(button: ButtonConfig) {
+    if (button.backgroundImageSrc) {
+      button.isLoaded = false;
+      button.backgroundImage = new Image();
+      button.backgroundImage.src = button.backgroundImageSrc;
+      button.backgroundImage.onload = () => {
+        button.isLoaded = true;
+      };
+    }
+  }
+
+  private checkClick() {
+    this.buttons.forEach(button => {
+      if (this.inBounds(button)) {
+        button.handleClick();
+      }
+    });
+  }
+
+  inBounds(button: Button): boolean {
+    const clickPos = this.clickPosition;
+    if (clickPos.x > 0)
+      return !(
+        clickPos.x < button.position.x - button.width / 2 ||
+        clickPos.x > button.position.x + button.width / 2 ||
+        clickPos.y < button.position.y - button.height / 2 ||
+        clickPos.y > button.position.y + button.height / 2
+      );
+    return false;
   }
 
   private draw() {
@@ -62,7 +118,42 @@ export class SceneTransition {
       this.ctx.fillText(label.text, label.position.x, label.position.y);
     }
 
+    // рисуем кнопки
+    for (const button of this.buttons) {
+      if (button.backgroundImage && button.isLoaded) {
+        // если картинка
+        this.ctx.drawImage(
+          button.backgroundImage,
+          0,
+          0,
+          button.width,
+          button.height,
+          button.position.x - button.width / 2,
+          button.position.y - button.height / 2,
+          button.width,
+          button.height
+        );
+      } else {
+        // если прямоугольник с текстом
+        const backgroundColor = button.backgroundColor ?? 'grey';
+        const text = button.text ?? 'here it is';
+
+        this.ctx.fillStyle = backgroundColor;
+        this.ctx.fillRect(
+          button.position.x - button.width / 2,
+          button.position.y - button.height / 2,
+          button.width,
+          button.height
+        );
+        this.ctx.fillStyle = button.color ?? 'red';
+        this.ctx.textAlign = 'center';
+        this.ctx.font = button.font ?? defaultFont;
+        this.ctx.fillText(text, button.position.x, button.position.y);
+      }
+    }
+
     this.ctx.restore();
+    this.checkClick();
   }
 
   public update() {

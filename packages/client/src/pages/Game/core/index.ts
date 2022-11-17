@@ -32,6 +32,7 @@ export class Game {
     this.sceneTransition = SceneTransition.createSceneTransition({
       canvas,
       ctx,
+      clickPosition: this.directions.getClickPosition,
     });
     this.player = new Player({
       canvas,

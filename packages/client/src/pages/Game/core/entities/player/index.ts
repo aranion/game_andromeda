@@ -2,6 +2,7 @@ import { GameObject } from '../game-object';
 import type { PlayerConfig, PlayerSkin } from './types';
 import type { Coordinates } from '../../types';
 import { SceneTransition } from '../../overworld/scene-transition';
+import endganeButton from '../../assets/finish-button/finish.png';
 
 /**
  * Класс игрока. Главная сущность игры в виде космического корабля.
@@ -46,8 +47,23 @@ export class Player extends GameObject {
         },
         color: 'red',
         font: 'bold 30px Audiowide',
-        deleteDelay: 9000,
+        deleteDelay: 8000,
       });
+
+      this.sceneTransition.createButton({
+        position: {
+          x: this.canvas.width / 2,
+          y: (2 * this.canvas.height) / 3,
+        },
+        width: 224,
+        height: 102,
+        backgroundImageSrc: endganeButton,
+        deleteDelay: 8000,
+        handleClick: () => {
+          console.log('мы кликнули');
+        },
+      });
+
       this.sceneTransition.darkScreen(2000, 5000);
       return;
     }
