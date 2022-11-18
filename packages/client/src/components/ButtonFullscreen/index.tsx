@@ -1,4 +1,4 @@
-import { useFullScreen, exitFullscreen } from 'src/hooks/useFullscreen';
+import { useFullscreen, exitFullscreen } from 'src/hooks/useFullscreen';
 import { Button } from 'src/components';
 import styles from './styles.module.css';
 
@@ -8,7 +8,7 @@ type Props = {
 
 export function ButtonFullscreen(props: Props) {
   const { elemRef } = props;
-  const { isFullscreen, setFullscreen } = useFullScreen(elemRef);
+  const { isFullscreen, setFullscreen } = useFullscreen(elemRef);
 
   const handleSetIsFullscreen = () => setFullscreen();
 
