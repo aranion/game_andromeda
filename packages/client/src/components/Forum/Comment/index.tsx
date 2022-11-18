@@ -7,8 +7,8 @@ export const Comment = (props: CommentProps) => {
 
   return (
     <Card className={styles.comment} id={id}>
-      <div className={styles['comment__content']}>{content}</div>
-      <div className={styles['comment__author']}>{author}</div>
+      <div className={styles.comment__content}>{content}</div>
+      <div className={styles.comment__author}>{author}</div>
     </Card>
   );
 };

@@ -1,19 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import type { ForumProps, FetchForums } from 'src/store/forum/types';
-import { ButtonBack, Star, ForumItem, NewForumButton } from 'src/components';
-import './styles.css';
-
-const configStar = [
-  { top: '7%', left: '3%' },
-  { top: '2%', left: '15%' },
-  { top: '3%', left: '80%' },
-  { top: '13%', left: '89%' },
-  { top: '87%', left: '3%' },
-  { top: '76%', left: '89%' },
-];
+import {
+  ButtonBack,
+  ForumItem,
+  NewForumButton,
+  ButtonFullscreen,
+} from 'src/components';
+import styles from './styles.module.css';
 
 export default function ForumPage() {
   const [forums, setForums] = useState<ForumProps[]>([]);
+  const fullscrinableElem = useRef(null);
 
   const fetchForums: FetchForums = () => {
     const forums: ForumProps[] = [];
@@ -52,20 +49,17 @@ export default function ForumPage() {
   }, []);
 
   return (
-    <div className='forum'>
-      {configStar.map((item, idx) => (
-        <Star key={idx} top={item.top} left={item.left} />
-      ))}
-
+    <div className={styles.forum} ref={fullscrinableElem}>
       <ButtonBack />
+      <ButtonFullscreen elemRef={fullscrinableElem} />
 
       <h1 className='main-menu__title'>Community</h1>
-      <table className='main-table'>
+      <table className={styles.table}>
         <thead>
           <tr>
-            <th className='main-table__th'>Forums</th>
-            <th className='main-table__th'>Topics</th>
-            <th className='main-table__th'>Comments</th>
+            <th className={styles.table__th}>Forums</th>
+            <th className={styles.table__th}>Topics</th>
+            <th className={styles.table__th}>Comments</th>
           </tr>
         </thead>
         <tbody>

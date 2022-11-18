@@ -1,0 +1,27 @@
+.item {
+  background-color: var(--color-light);
+  box-shadow: 0px 0px 7px rgba(255, 255, 202, 0.8);
+  border-radius: 30px;
+}
+
+.item:not(:first-child) {
+  text-align: center;
+  width: 10%;
+}
+
+.item__link {
+  display: block;
+  color: var(--color-normal);
+  padding: 15px 25px;
+  text-align: start;
+}
+
+.item__link:hover {
+  color: var(--color-normal);
+}
+
+@media only screen and (max-width: 640px) {
+  .item:not(:first-child) {
+    display: none;
+  }
+}
