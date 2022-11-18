@@ -10,14 +10,16 @@ import {
 
 const defaultOpacytyTime = 3000;
 const defaultFont = 'bold 30px Audiowide';
+const defaultButtonBGColor = 'grey';
+const defaultButtonColor = 'red';
 
 export class SceneTransition {
-  private static singleton: SceneTransition;
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private opacity = 0;
   private opacitySpeed = 0;
   private clickPosition: Coordinates;
+  private expireClickPostion: () => void;
   private labels: Label[] = [];
   private buttons: Button[] = [];
 
@@ -25,13 +27,7 @@ export class SceneTransition {
     this.canvas = config.canvas;
     this.ctx = config.ctx;
     this.clickPosition = config.clickPosition;
-  }
-
-  static createSceneTransition(config: SceneTransitionConfig) {
-    if (!this.singleton) {
-      this.singleton = new SceneTransition(config);
-    }
-    return this.singleton;
+    this.expireClickPostion = config.expireClickPosition;
   }
 
   darkScreen(blackoutTime = defaultOpacytyTime, delay = defaultOpacytyTime) {
@@ -44,14 +40,17 @@ export class SceneTransition {
   createLabel(label: LabelConfig) {
     const id = Date.now().toString() + Math.random.toString();
     this.labels.push({ ...label, id });
-    setTimeout(() => {
-      for (let i = 0; i < this.labels.length; i++) {
-        if (this.labels[i].id === id) {
-          this.labels.splice(i, 1);
-          i -= 1;
+
+    if (label.deleteDelay) {
+      setTimeout(() => {
+        for (let i = 0; i < this.labels.length; i++) {
+          if (this.labels[i].id === id) {
+            this.labels.splice(i, 1);
+            i -= 1;
+          }
         }
-      }
-    }, label.deleteDelay);
+      }, label.deleteDelay);
+    }
   }
 
   createButton(buttonConfig: ButtonConfig) {
@@ -60,14 +59,17 @@ export class SceneTransition {
     const button = buttonConfig as Button;
     button.id = id;
     this.buttons.push(button);
-    setTimeout(() => {
-      for (let i = 0; i < this.buttons.length; i++) {
-        if (this.buttons[i].id === id) {
-          this.buttons.splice(i, 1);
-          i -= 1;
+
+    if (button.deleteDelay) {
+      setTimeout(() => {
+        for (let i = 0; i < this.buttons.length; i++) {
+          if (this.buttons[i].id === id) {
+            this.buttons.splice(i, 1);
+            i -= 1;
+          }
         }
-      }
-    }, button.deleteDelay);
+      }, button.deleteDelay);
+    }
   }
 
   setButtonImageSrc(button: ButtonConfig) {
@@ -87,6 +89,7 @@ export class SceneTransition {
         button.handleClick();
       }
     });
+    this.expireClickPostion();
   }
 
   inBounds(button: Button): boolean {
@@ -99,6 +102,11 @@ export class SceneTransition {
         clickPos.y > button.position.y + button.height / 2
       );
     return false;
+  }
+
+  deleteObjects() {
+    this.labels = [];
+    this.buttons = [];
   }
 
   private draw() {
@@ -135,8 +143,8 @@ export class SceneTransition {
         );
       } else {
         // если прямоугольник с текстом
-        const backgroundColor = button.backgroundColor ?? 'grey';
-        const text = button.text ?? 'here it is';
+        const backgroundColor = button.backgroundColor ?? defaultButtonBGColor;
+        const text = button.text ?? '...';
 
         this.ctx.fillStyle = backgroundColor;
         this.ctx.fillRect(
@@ -145,7 +153,7 @@ export class SceneTransition {
           button.width,
           button.height
         );
-        this.ctx.fillStyle = button.color ?? 'red';
+        this.ctx.fillStyle = button.color ?? defaultButtonColor;
         this.ctx.textAlign = 'center';
         this.ctx.font = button.font ?? defaultFont;
         this.ctx.fillText(text, button.position.x, button.position.y);
@@ -163,6 +171,7 @@ export class SceneTransition {
     } else if (this.opacity + this.opacitySpeed < 0) {
       this.opacity = 0;
       this.opacitySpeed = 0;
+      this.deleteObjects();
     } else {
       this.opacity += this.opacitySpeed;
     }

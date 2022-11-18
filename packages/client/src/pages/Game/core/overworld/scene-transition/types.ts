@@ -2,6 +2,7 @@ import { CanvasProperties, Coordinates } from '../../types';
 
 export type SceneTransitionConfig = CanvasProperties & {
   clickPosition: Coordinates;
+  expireClickPosition: () => void;
 };
 
 export type LabelConfig = Omit<Label, 'id'>;
@@ -13,7 +14,7 @@ export type Label = {
   color: string;
   font: string;
   position: Coordinates;
-  deleteDelay: number;
+  deleteDelay?: number;
 };
 
 export type Button = {
@@ -21,8 +22,8 @@ export type Button = {
   width: number;
   height: number;
   position: Coordinates;
-  deleteDelay: number;
   handleClick: () => void;
+  deleteDelay?: number;
   text?: string;
   color?: string;
   font?: string;

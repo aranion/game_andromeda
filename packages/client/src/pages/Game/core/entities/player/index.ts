@@ -2,7 +2,10 @@ import { GameObject } from '../game-object';
 import type { PlayerConfig, PlayerSkin } from './types';
 import type { Coordinates } from '../../types';
 import { SceneTransition } from '../../overworld/scene-transition';
-import endganeButton from '../../assets/finish-button/finish.png';
+import {
+  endGameLabel,
+  endGameButton,
+} from '../../overworld/scene-transition/stats';
 
 /**
  * Класс игрока. Главная сущность игры в виде космического корабля.
@@ -40,14 +43,11 @@ export class Player extends GameObject {
 
     if (newLives <= 0) {
       this.sceneTransition.createLabel({
-        text: 'Your ship was consumed by cosmic void...',
         position: {
           x: this.canvas.width / 2,
           y: this.canvas.height / 2,
         },
-        color: 'red',
-        font: 'bold 30px Audiowide',
-        deleteDelay: 8000,
+        ...endGameLabel,
       });
 
       this.sceneTransition.createButton({
@@ -55,13 +55,7 @@ export class Player extends GameObject {
           x: this.canvas.width / 2,
           y: (2 * this.canvas.height) / 3,
         },
-        width: 224,
-        height: 102,
-        backgroundImageSrc: endganeButton,
-        deleteDelay: 8000,
-        handleClick: () => {
-          console.log('мы кликнули');
-        },
+        ...endGameButton,
       });
 
       this.sceneTransition.darkScreen(2000, 5000);

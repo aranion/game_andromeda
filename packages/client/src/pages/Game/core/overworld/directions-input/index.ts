@@ -27,7 +27,21 @@ export class DirectionsInput {
   }
 
   get getClickPosition(): Coordinates {
+    if (this.clickPosition.x > 0) {
+      const pos = {
+        x: this.clickPosition.x,
+        y: this.clickPosition.y,
+      };
+      this.clickPosition.x = -1;
+      this.clickPosition.y = -1;
+      return pos;
+    }
     return this.clickPosition;
+  }
+
+  expireClickPosition() {
+    this.clickPosition.x = -1;
+    this.clickPosition.y = -1;
   }
 
   private handleMouseMove = (evt: MouseEvent) => {

@@ -29,10 +29,11 @@ export class Game {
   constructor(config: GameConfig) {
     const { canvas, ctx } = this.initCanvas(config.canvas);
     this.directions = new DirectionsInput({ canvas });
-    this.sceneTransition = SceneTransition.createSceneTransition({
+    this.sceneTransition = new SceneTransition({
       canvas,
       ctx,
       clickPosition: this.directions.getClickPosition,
+      expireClickPosition: this.directions.expireClickPosition,
     });
     this.player = new Player({
       canvas,
