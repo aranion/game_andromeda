@@ -10,9 +10,12 @@ interface DocumentWithFullscreen extends Document {
 }
 
 interface DocumentElementWithFullscreen extends HTMLElement {
-  msRequestFullscreen?: () => void;
-  mozRequestFullScreen?: () => void;
-  webkitRequestFullscreen?: () => void;
+  // msRequestFullscreen?: () => void;
+  // mozRequestFullScreen?: () => void;
+  // webkitRequestFullscreen?: () => void;
+  msRequestFullscreen?: any;
+  mozRequestFullScreen?: any;
+  webkitRequestFullscreen?: any;
 }
 
 const getIsFullscreen = () => {
