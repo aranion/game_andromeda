@@ -51,7 +51,7 @@ export const exitFullscreen = () => {
   }
 };
 
-export const useFullscreen = (elRef: React.RefObject<HTMLElement>) => {
+export const useFullScreen = (elRef: React.RefObject<HTMLElement>) => {
   const [isFullscreen, setIsFullscreen] = useState(getIsFullscreen());
 
   const setFullscreen: () => void = () => {

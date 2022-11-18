@@ -1,26 +1,25 @@
-import { useFullScreen, exitFullscreen } from 'src/hooks/useFullscreen';
-import { Button } from 'src/components';
+import { useFullScreen, exitFullscreen } from 'src/hooks/useFullScreen';
 import styles from './styles.module.css';
 
 type Props = {
   elemRef: React.RefObject<HTMLElement>;
 };
 
-export function ButtonFullscreen(props: Props) {
+export function FullscreenButton(props: Props) {
   const { elemRef } = props;
   const { isFullscreen, setFullscreen } = useFullScreen(elemRef);
 
   const handleSetIsFullscreen = () => setFullscreen();
 
   return isFullscreen ? (
-    <Button className={styles['button-fullscreen']} onClick={exitFullscreen}>
+    <button className={styles['button-fullscreen']} onClick={exitFullscreen}>
       <span className={styles['fullscreen-exit']}></span>
-    </Button>
+    </button>
   ) : (
-    <Button
+    <button
       className={styles['button-fullscreen']}
       onClick={handleSetIsFullscreen}>
       <span className={styles['fullscreen-open']}></span>
-    </Button>
+    </button>
   );
 }
