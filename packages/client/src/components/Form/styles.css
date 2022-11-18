@@ -11,6 +11,7 @@
   padding: 5px 20px;
 }
 
+.form__textarea,
 .form__input {
   min-width: 320px;
   padding: 7px 20px;

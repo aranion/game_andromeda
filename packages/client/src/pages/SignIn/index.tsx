@@ -33,7 +33,7 @@ export default function SignIn() {
   const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formParams: Record<string, string> = {};
-    const formData = new FormData(e.target as HTMLFormElement);
+    const formData = new FormData(e.currentTarget);
     Array.from(formData.entries()).forEach(([key, value]) => {
       formParams[key] = value as string;
     });
@@ -65,8 +65,14 @@ export default function SignIn() {
         </h1>
 
         <AuthForm onSubmit={handleSignIn} title='Sign In'>
-          <AuthForm.Input name='login' type='text' placeholder='Login' />
           <AuthForm.Input
+            typeComponent='input'
+            name='login'
+            type='text'
+            placeholder='Login'
+          />
+          <AuthForm.Input
+            typeComponent='input'
             name='password'
             type='password'
             placeholder='Password'
