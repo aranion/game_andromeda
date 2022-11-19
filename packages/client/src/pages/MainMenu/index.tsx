@@ -55,7 +55,7 @@ export default function MainMenu() {
             LeaderBoards
           </Button>
         </div>
-        <ButtonStar onClick={logout}>Logout</ButtonStar>
+        <ButtonStar onClick={logout}>Log out</ButtonStar>
       </div>
     </>
   );
