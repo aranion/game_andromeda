@@ -1,5 +1,6 @@
 export enum RouterList {
   HOME = '/',
+  MAINMENU = '/',
   NOT_FOUND = '/*',
   SIGN_IN = '/sign-in',
   SIGN_UP = '/sign-up',

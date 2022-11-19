@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import type { FetchTopics } from 'src/store/forum/types';
 import { Modal, Form, ButtonStar } from 'src/components';
+import type { FetchTopics } from 'src/store/forum/types';
 
 type Props = {
   forumId?: string;
@@ -11,10 +11,17 @@ export function NewTopicButton(props: Props) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [description, setDescription] = useState('');
+  const [isModalActive, setIsModalActive] = useState(false);
 
-  const [isModalActive, setModalActive] = useState(false);
-  const handleOpen = () => setModalActive(true);
-  const handleClose = () => setModalActive(false);
+  const handleOpen = () => setIsModalActive(true);
+  const handleClose = () => setIsModalActive(false);
+
+  const handleSetTitle = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setTitle(e.target.value);
+  const handleSetDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setDescription(e.target.value);
+  const handleSetContent = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setContent(e.target.value);
 
   function submitTopic(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -36,26 +43,29 @@ export function NewTopicButton(props: Props) {
 
       <Modal
         active={isModalActive}
-        setActive={setModalActive}
+        setActive={setIsModalActive}
         title='New topic'>
         <Form title='Submit' onSubmit={submitTopic}>
           <Form.Input
+            typeComponent='input'
             name='title'
             placeholder='Topic title'
             value={title}
-            onChange={e => setTitle(e.target.value)}
+            onChange={handleSetTitle}
           />
-          <Form.Textarea
+          <Form.Input
+            typeComponent='textarea'
             placeholder='Topic description'
             name='description'
             value={description}
-            onChange={e => setDescription(e.target.value)}
+            onChange={handleSetDescription}
           />
-          <Form.Textarea
+          <Form.Input
+            typeComponent='textarea'
             placeholder='Topic content'
             name='content'
             value={content}
-            onChange={e => setContent(e.target.value)}
+            onChange={handleSetContent}
           />
         </Form>
       </Modal>

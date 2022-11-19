@@ -1,4 +1,4 @@
-import { Star, ButtonStar, AuthForm } from 'src/components';
+import { Star, ButtonStar, AuthForm, TitlePage } from 'src/components';
 import './styles.css';
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
@@ -47,34 +47,53 @@ export default function SignUp() {
           ))}
         </div>
 
-        <h1 className='main-menu__title'>
+        <TitlePage>
           Journey
           <br />
           to the
           <br />
           Andromeda
-        </h1>
+        </TitlePage>
 
         <AuthForm onSubmit={handleSignUp} title='Sign Up'>
-          <AuthForm.Input name='email' type='email' placeholder='Email' />
-          <AuthForm.Input name='login' type='text' placeholder='Login' />
           <AuthForm.Input
+            typeComponent='input'
+            name='email'
+            type='email'
+            placeholder='Email'
+          />
+          <AuthForm.Input
+            typeComponent='input'
+            name='login'
+            type='text'
+            placeholder='Login'
+          />
+          <AuthForm.Input
+            typeComponent='input'
             name='first_name'
             type='text'
             placeholder='First Name'
           />
           <AuthForm.Input
+            typeComponent='input'
             name='second_name'
             type='text'
             placeholder='Last Name'
           />
-          <AuthForm.Input name='phone' type='text' placeholder='Phone' />
           <AuthForm.Input
+            typeComponent='input'
+            name='phone'
+            type='text'
+            placeholder='Phone'
+          />
+          <AuthForm.Input
+            typeComponent='input'
             name='password'
             type='password'
             placeholder='Password'
           />
           <AuthForm.Input
+            typeComponent='input'
             name='password'
             type='password'
             placeholder='Password (Again)'
