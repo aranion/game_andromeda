@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from 'react';
 import { Game } from './core';
 import './game.css';
+///test change
 
 export default function GamePage() {
   const canvas = useRef<HTMLCanvasElement>(null);
