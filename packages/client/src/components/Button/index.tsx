@@ -4,7 +4,7 @@ import './styles.css';
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   typeButton?: 'danger';
-  sizeButton?: null | 'normal' | 'big';
+  sizeButton?: null | 'small' | 'normal' | 'big';
 };
 
 export function Button(props: ButtonProps) {
@@ -16,7 +16,7 @@ export function Button(props: ButtonProps) {
       ['button__danger']: typeButton === 'danger',
     },
     {
-      ['button_size_big']: sizeButton === 'big',
+      [`button_size_${sizeButton}`]: sizeButton !== null,
     }
   );
 

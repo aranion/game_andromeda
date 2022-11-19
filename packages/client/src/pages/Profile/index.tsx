@@ -69,12 +69,12 @@ export default function Profile() {
   }, [pathname, userId]);
 
   if (!isEditProfile && !isCorrectUserId) {
-    return <TitlePage title='ID пользователя указан не верно' />;
+    return <TitlePage>ID пользователя указан не верно</TitlePage>;
   }
 
   if (isError) {
     return (
-      <TitlePage title='Произошла ошибка при получении данных с сервера' />
+      <TitlePage>Произошла ошибка при получении данных с сервера</TitlePage>
     );
   }
 
@@ -88,7 +88,7 @@ export default function Profile() {
 
   return (
     <div className={cls.wrapper}>
-      <TitlePage title='Profile' />
+      <TitlePage>Profile</TitlePage>
 
       <div className={cls.profile}>
         <div className={cls.profile__avatar}>

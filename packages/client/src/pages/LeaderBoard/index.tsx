@@ -14,7 +14,7 @@ export default function LeaderBoard() {
 
   return (
     <>
-      <TitlePage title='LeaderBoard' />
+      <TitlePage>LeaderBoard</TitlePage>
       <div className={cls.leaderBoard}>
         <div className={cls.leaderBoard__topLeader}>
           {topLeader.map((leader, i) => (
