@@ -56,10 +56,6 @@ export default function GamePage() {
   return (
     <>
       <canvas className='canvas' ref={canvas}></canvas>
-      <Button></Button>
-      <Button className='canvas__menu-button' onClick={handleOpenPauseMenu}>
-        Menu
-      </Button>
       <Modal active={activePauseMenu} setActive={setActivePauseMenuMutated}>
         <Button onClick={handleClosePauseMenu}>Resume</Button>
         <Button onClick={navigateForums}>Forums</Button>

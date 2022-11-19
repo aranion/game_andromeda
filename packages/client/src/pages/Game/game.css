@@ -7,9 +7,3 @@
   image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-crisp-edges;
 }
-
-.canvas__menu-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
