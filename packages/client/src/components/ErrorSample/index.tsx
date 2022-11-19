@@ -18,7 +18,7 @@ export function ErrorSample(props: Props) {
   return (
     <div className={cls.errorSample}>
       <section>
-        <TitlePage title='ERROR' />
+        <TitlePage>ERROR</TitlePage>
         <span className={cls.errorSample__code}>{code}</span>
         <p>{message}</p>
         <Button onClick={handleGoBack} className={cls.errorSample__buttonBack}>

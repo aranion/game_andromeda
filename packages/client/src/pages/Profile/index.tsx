@@ -1,7 +1,13 @@
 import cls from './styles.module.css';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Avatar, Button, ProfileFields, TitlePage } from 'src/components';
+import {
+  Avatar,
+  Button,
+  ProfileFields,
+  TitlePage,
+  ButtonBack,
+} from 'src/components';
 import { useLazyFetchUserDataQuery } from 'src/store/user/api';
 import { useTypeSelector } from 'src/hooks/useTypeSelector';
 import { userSelectors } from 'src/store/user';
@@ -65,7 +71,7 @@ export default function Profile() {
   }, [userId]);
 
   if (!isEditProfile && !isCorrectUserId) {
-    return <TitlePage title='ID пользователя указан не верно' />;
+    return <TitlePage>ID пользователя указан не верно</TitlePage>;
   }
 
   const handleEditProfile = () => {
@@ -78,7 +84,7 @@ export default function Profile() {
 
   return (
     <div className={cls.wrapper}>
-      <TitlePage title='Profile' />
+      <TitlePage>Profile</TitlePage>
 
       <div className={cls.profile}>
         <div className={cls.profile__avatar}>
@@ -120,6 +126,7 @@ export default function Profile() {
           <Link to={`${RouterList.PROFILE}/${id}`}>Go to my profile</Link>
         )}
       </div>
+      <ButtonBack />
     </div>
   );
 }

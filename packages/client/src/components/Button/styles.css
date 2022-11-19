@@ -19,6 +19,18 @@
     }
   }
 
+  &_size_big {
+    font-size: 1.7rem;
+    padding: 5px 40px;
+    min-width: 210px;
+  }
+
+  &_size_small {
+    font-size: 0.8rem;
+    padding: 3px 10px;
+    min-width: 100px;
+  }
+
   &:hover {
     background: var(--color-highlight);
   }
