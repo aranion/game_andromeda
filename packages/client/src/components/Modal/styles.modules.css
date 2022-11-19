@@ -19,7 +19,7 @@
 }
 
 .modal__content {
-  min-width: 400px;
+  min-width: 200px;
   transform: scale(0.8);
   transition: 0.4s all;
   background-color: var(--color-normal);

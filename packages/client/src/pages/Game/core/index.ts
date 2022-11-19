@@ -51,7 +51,7 @@ export class Game {
 
       const delay = now - last;
 
-      if (delay >= framesDelta) {
+      if (this.status === 'running' && delay >= framesDelta) {
         last = now;
         this.render();
         this.frame++;
@@ -105,7 +105,13 @@ export class Game {
     this.directions.mount();
     window.addEventListener('resize', this.resize);
   }
+  pause() {
+    this.status = 'paused';
+  }
 
+  unpause() {
+    this.status = 'running';
+  }
   unmount() {
     this.status = 'unmounted';
     this.directions.unmount();
