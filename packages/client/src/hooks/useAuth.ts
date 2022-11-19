@@ -57,7 +57,7 @@ export const useAuth = () => {
         .then(res => {
           if ('data' in res) {
             setIsAuth(true);
-            navigate(RouterList.GAME);
+            navigate(RouterList.HOME);
           } else {
             error(res.error);
           }
@@ -75,7 +75,7 @@ export const useAuth = () => {
 
             setUserData({ id });
             checkIsAuth();
-            navigate(RouterList.GAME);
+            navigate(RouterList.HOME);
           } else {
             error(res.error);
           }

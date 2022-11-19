@@ -37,7 +37,7 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div className={cls.errorBoundary}>
           <div className={cls.errorBoundary__content}>
-            <TitlePage title='App-Error' />
+            <TitlePage>App-Error</TitlePage>
             <p>{title}</p>
 
             <div className={cls.errorBoundary__message}>

@@ -1,8 +1,14 @@
 import cls from './styles.module.css';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Avatar, Button, ProfileFields, TitlePage } from 'src/components';
 import { userSelectors, useLazyFetchUserDataQuery } from 'src/store/user';
+import {
+  Avatar,
+  Button,
+  ProfileFields,
+  TitlePage,
+  ButtonBack,
+} from 'src/components';
 import { useTypeSelector } from 'src/hooks/useTypeSelector';
 import { RouterList, RouterParamsProfile } from 'src/router/routerList';
 import { useAuth } from 'src/hooks/useAuth';
@@ -62,12 +68,12 @@ export default function Profile() {
   }, [pathname, userId]);
 
   if (!isEditProfile && !isCorrectUserId) {
-    return <TitlePage title='ID пользователя указан не верно' />;
+    return <TitlePage>ID пользователя указан не верно</TitlePage>;
   }
 
   if (isError) {
     return (
-      <TitlePage title='Произошла ошибка при получении данных с сервера' />
+      <TitlePage>Произошла ошибка при получении данных с сервера</TitlePage>
     );
   }
 
@@ -81,7 +87,7 @@ export default function Profile() {
 
   return (
     <div className={cls.wrapper}>
-      <TitlePage title='Profile' />
+      <TitlePage>Profile</TitlePage>
 
       <div className={cls.profile}>
         <div className={cls.profile__avatar}>
@@ -122,6 +128,7 @@ export default function Profile() {
           <Link to={`${RouterList.PROFILE}/${id}`}>Go to my profile</Link>
         )}
       </div>
+      <ButtonBack />
     </div>
   );
 }

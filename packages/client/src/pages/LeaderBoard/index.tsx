@@ -1,6 +1,6 @@
 import cls from './styles.module.css';
 import { useEffect, useState } from 'react';
-import { BoardTable, TitlePage, TopLeader } from 'src/components';
+import { BoardTable, TitlePage, TopLeader, ButtonBack } from 'src/components';
 import { useTypeSelector } from 'src/hooks/useTypeSelector';
 import { leaderBoardSelectors } from 'src/store/leaderBoard';
 import { useLeaderBoard } from 'src/hooks/useLeaderBoard';
@@ -29,7 +29,7 @@ export default function LeaderBoard() {
 
   return (
     <>
-      <TitlePage title='LeaderBoard' />
+      <TitlePage>LeaderBoard</TitlePage>
       <div className={cls.leaderBoard}>
         <div className={cls.leaderBoard__topLeader}>
           {topLeader.map((leader, i) => (
@@ -38,6 +38,7 @@ export default function LeaderBoard() {
         </div>
 
         <BoardTable leaders={otherLeader} isLoading={isLoadingLeaders} />
+        <ButtonBack />
       </div>
     </>
   );

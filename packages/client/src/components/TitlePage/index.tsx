@@ -1,11 +1,5 @@
 import cls from './styles.module.css';
 
-export function TitlePage(props: Props) {
-  const { title } = props;
-
-  return <h1 className={cls.titlePage}>{title}</h1>;
+export function TitlePage(props: React.PropsWithChildren) {
+  return <h1 className={cls.titlePage}>{props.children}</h1>;
 }
-
-type Props = {
-  title: string;
-};

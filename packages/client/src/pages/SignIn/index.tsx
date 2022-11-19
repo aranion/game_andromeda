@@ -1,4 +1,4 @@
-import { Star, ButtonStar, AuthForm } from 'src/components';
+import { Star, ButtonStar, AuthForm, TitlePage } from 'src/components';
 import './styles.css';
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
@@ -33,7 +33,7 @@ export default function SignIn() {
   const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formParams: Record<string, string> = {};
-    const formData = new FormData(e.target as HTMLFormElement);
+    const formData = new FormData(e.currentTarget);
     Array.from(formData.entries()).forEach(([key, value]) => {
       formParams[key] = value as string;
     });
@@ -56,17 +56,23 @@ export default function SignIn() {
           ))}
         </div>
 
-        <h1 className='main-menu__title'>
+        <TitlePage>
           Journey
           <br />
           to the
           <br />
           Andromeda
-        </h1>
+        </TitlePage>
 
         <AuthForm onSubmit={handleSignIn} title='Sign In'>
-          <AuthForm.Input name='login' type='text' placeholder='Login' />
           <AuthForm.Input
+            typeComponent='input'
+            name='login'
+            type='text'
+            placeholder='Login'
+          />
+          <AuthForm.Input
+            typeComponent='input'
             name='password'
             type='password'
             placeholder='Password'
