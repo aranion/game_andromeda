@@ -1,7 +1,6 @@
-import { ParticleConfig } from './types';
-import { ParticleTypes } from './types';
-import { Sprite } from '../entities/sprite';
-import { Coordinates } from '../types';
+import { Sprite } from '../../entities/sprite';
+import { ParticleConfig, ParticleTypes } from './types';
+import { Coordinates } from '../../types';
 
 export class Particle {
   private ctx: CanvasRenderingContext2D;
@@ -11,7 +10,7 @@ export class Particle {
   private readonly radius: number;
   private readonly color: string;
   private readonly speed: number;
-  private position: Coordinates;
+  private readonly position: Coordinates;
   private readonly sizeRatio: number;
   private readonly sprite: Sprite | undefined;
 
