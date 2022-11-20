@@ -1,6 +1,7 @@
 import { Particle } from '../particle';
 import { FPS } from '../../constants';
 import { isOutsideCanvas } from '../../utils/is-outside-canvas';
+import { mapCanvasSizeToAxes } from '../../utils/map-canvas-size-to-axes';
 import { ParticlesConfig } from './types';
 import { Axis, Coordinates } from '../../types';
 
@@ -30,13 +31,6 @@ export class Particles {
 
   get isFaded() {
     return this.isDisappeared;
-  }
-
-  get canvasSize(): Coordinates {
-    return {
-      x: this.canvas.width,
-      y: this.canvas.height,
-    };
   }
 
   private randomizePosition(): Coordinates {
@@ -74,13 +68,11 @@ export class Particles {
         new Particle({
           ctx: this.ctx,
           type: config.type,
+          ...config.particleConfig,
           radius,
           speed,
           position,
           moveAngle,
-          color: config.particleConfig.color,
-          imageSrc: config.particleConfig.imageSrc,
-          sizeRatio: config.particleConfig.sizeRatio,
           isAnimated: config.isAnimated,
           currentAnimation: config.currentAnimation,
         })
@@ -95,19 +87,19 @@ export class Particles {
   private normalizePosition(particle: Particle) {
     const pos = particle.getPosition;
     const radius = particle.getRadius;
-    const canvasSize = this.canvasSize;
+    const canvas = mapCanvasSizeToAxes(this.canvas);
     const newPos: Coordinates = { x: 0, y: 0 };
 
     for (const anyAxis in newPos) {
       const axis = anyAxis as Axis;
       const oppositeAxis = this.getOppositeAxis(axis);
 
-      if (pos[axis] - radius >= canvasSize[axis]) {
+      if (pos[axis] - radius >= canvas[axis]) {
         newPos[axis] = -radius;
-        newPos[oppositeAxis] = Math.random() * canvasSize[oppositeAxis];
+        newPos[oppositeAxis] = Math.random() * canvas[oppositeAxis];
       } else if (pos[axis] + radius < 0) {
         newPos[oppositeAxis] = -radius;
-        newPos[axis] = Math.random() * canvasSize[axis];
+        newPos[axis] = Math.random() * canvas[axis];
       }
     }
 
