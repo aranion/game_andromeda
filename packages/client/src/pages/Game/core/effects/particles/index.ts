@@ -1,5 +1,6 @@
 import { Particle } from '../particle';
 import { FPS } from '../../constants';
+import { isOutsideCanvas } from '../../utils/is-outside-canvas';
 import { ParticlesConfig } from './types';
 import { Axis, Coordinates } from '../../types';
 
@@ -113,22 +114,6 @@ export class Particles {
     particle.setPosition = newPos;
   }
 
-  private isOutsideCanvas(particle: Particle) {
-    const pos = particle.getPosition;
-    const axes = Object.keys(pos) as ['x', 'y'];
-    const objectEdge = 2 * particle.getRadius;
-    const canvasSize = this.canvasSize;
-    let isOutside = false;
-
-    for (const axis of axes) {
-      isOutside =
-        particle.getPosition[axis] > canvasSize[axis] + objectEdge ||
-        particle.getPosition[axis] < -objectEdge;
-    }
-
-    return isOutside;
-  }
-
   protected draw() {
     this.ctx.save();
     this.ctx.globalAlpha = this.opacity;
@@ -137,7 +122,7 @@ export class Particles {
       const particle = this.particleGroup[i];
       particle.update();
 
-      if (this.isOutsideCanvas(particle)) {
+      if (isOutsideCanvas({ object: particle, canvas: this.canvas })) {
         if (this.isEndless) {
           this.normalizePosition(particle);
         } else {

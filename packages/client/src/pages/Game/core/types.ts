@@ -5,6 +5,11 @@ export type Coordinates = {
 
 export type Axis = keyof Coordinates;
 
+export interface GameEntityInterface {
+  getPosition: Coordinates;
+  getRadius: number;
+}
+
 export type GameMapConfig = {
   spawnInterval: {
     alien: number;

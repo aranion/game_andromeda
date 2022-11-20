@@ -1,14 +1,14 @@
 import { styles } from '../../constants';
 import { Player } from '../../entities/player';
 import { Resource } from '../../entities/resource';
-import { GameObject } from '../../entities/game-object';
 import { Asteroid } from '../../entities/asteroid';
 import { asteroidExplode } from '../../entities/asteroid/particles';
 import { resourceExplode } from '../../entities/resource/particles';
 import { createAsteroidConfig } from '../../entities/asteroid/stats';
 import { Particles } from '../../effects/particles';
-import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
 import { getStarsConfig } from './particles';
+import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
+import { isOutsideCanvas } from '../../utils/is-outside-canvas';
 
 /**
  * Карта текущего уровня, настраивается через конфиг. Управляет текущим уровнем и его логикой.
@@ -47,16 +47,6 @@ export class GameMap {
     );
   }
 
-  private isOutsideCanvas(object: GameObject): boolean {
-    const objectEdge = 2 * object.getRadius;
-    return (
-      object.getPosition.y > this.canvas.height + objectEdge ||
-      object.getPosition.y < -objectEdge ||
-      object.getPosition.x < -objectEdge ||
-      object.getPosition.x > this.canvas.width + objectEdge
-    );
-  }
-
   private createStarsBackground() {
     this.particlesGroups.push(
       new Particles({
@@ -81,7 +71,7 @@ export class GameMap {
       const resource = this.resources[i];
       resource.update(this.player);
 
-      if (this.isOutsideCanvas(resource)) {
+      if (isOutsideCanvas({ object: resource, canvas: this.canvas })) {
         this.resources.splice(i, 1);
         i--;
       }
@@ -121,7 +111,7 @@ export class GameMap {
       const asteroid = this.asteroids[i];
       asteroid.update(this.player);
 
-      if (this.isOutsideCanvas(asteroid)) {
+      if (isOutsideCanvas({ object: asteroid, canvas: this.canvas })) {
         this.asteroids.splice(i, 1);
         i--;
       }

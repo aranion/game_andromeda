@@ -1,8 +1,8 @@
 import { Sprite } from '../../entities/sprite';
 import { ParticleConfig, ParticleTypes } from './types';
-import { Coordinates } from '../../types';
+import { Coordinates, GameEntityInterface } from '../../types';
 
-export class Particle {
+export class Particle implements GameEntityInterface {
   private ctx: CanvasRenderingContext2D;
   private readonly moveAngle: number;
   private readonly type: ParticleTypes;
@@ -24,6 +24,7 @@ export class Particle {
     this.type = config.type;
     this.imageSrc = config.imageSrc;
     this.color = config.color ?? 'grey';
+
     if (this.type === 'sprite' && this.imageSrc) {
       this.sprite = new Sprite({
         ctx: config.ctx,
