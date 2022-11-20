@@ -52,21 +52,19 @@ export class Particle {
     return this.radius;
   }
 
+  private drawCircle() {
+    this.ctx.fillStyle = this.color;
+    this.ctx.beginPath();
+    this.ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
+    this.ctx.closePath();
+    this.ctx.fill();
+  }
+
   protected draw() {
-    if (this.sprite) {
+    if (this.sprite && this.type === 'sprite') {
       this.sprite.draw();
     } else {
-      this.ctx.fillStyle = this.color;
-      this.ctx.beginPath();
-      this.ctx.arc(
-        this.position.x,
-        this.position.y,
-        this.radius,
-        0,
-        Math.PI * 2
-      );
-      this.ctx.closePath();
-      this.ctx.fill();
+      this.drawCircle();
     }
   }
 

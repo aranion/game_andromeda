@@ -8,6 +8,7 @@ import { resourceExplode } from '../../entities/resource/particles';
 import { createAsteroidConfig } from '../../entities/asteroid/stats';
 import { Particles } from '../../effects/particles';
 import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
+import { getStarsConfig } from './particles';
 
 /**
  * Карта текущего уровня, настраивается через конфиг. Управляет текущим уровнем и его логикой.
@@ -32,6 +33,8 @@ export class GameMap {
     this.ctx = config.ctx;
     this.spawnInterval = config.spawnInterval;
     this.player = config.player;
+
+    this.createStarsBackground();
   }
 
   get getScore(): number {
@@ -51,6 +54,16 @@ export class GameMap {
       object.getPosition.y < -objectEdge ||
       object.getPosition.x < -objectEdge ||
       object.getPosition.x > this.canvas.width + objectEdge
+    );
+  }
+
+  private createStarsBackground() {
+    this.particlesGroups.push(
+      new Particles({
+        canvas: this.canvas,
+        ctx: this.ctx,
+        ...getStarsConfig(),
+      })
     );
   }
 

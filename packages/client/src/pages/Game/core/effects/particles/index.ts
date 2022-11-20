@@ -1,7 +1,7 @@
 import { Particle } from '../particle';
 import { FPS } from '../../constants';
 import { ParticlesConfig } from './types';
-import { Coordinates } from '../../types';
+import { Axis, Coordinates } from '../../types';
 
 const defaultDisappearanceTime = 2000;
 const defaultMaxRadius = 20;
@@ -31,6 +31,20 @@ export class Particles {
     return this.isDisappeared;
   }
 
+  get canvasSize(): Coordinates {
+    return {
+      x: this.canvas.width,
+      y: this.canvas.height,
+    };
+  }
+
+  private randomizePosition(): Coordinates {
+    return {
+      x: this.canvas.width * Math.random(),
+      y: this.canvas.height * Math.random(),
+    };
+  }
+
   private setDisappearDelay(disappearanceDelay?: number) {
     if (!this.isEndless) {
       if (disappearanceDelay) {
@@ -49,8 +63,8 @@ export class Particles {
       const radius =
         config.particleConfig.radius ??
         (config.particleConfig.maxRadius ?? defaultMaxRadius) * random;
-      const position = config.spawnFunc
-        ? config.spawnFunc(this.canvas)
+      const position = config.isRandomPosition
+        ? this.randomizePosition()
         : config.position ?? { x: 0, y: 0 };
       const moveAngle = config.moveAngle ?? 2 * Math.PI * random;
       const speed = config.particleConfig.maxSpeed * random;
@@ -73,36 +87,37 @@ export class Particles {
     }
   }
 
-  private normalizePosition(particle: Particle): Coordinates {
+  private getOppositeAxis(axis: Axis): Axis {
+    return axis === 'x' ? 'y' : 'x';
+  }
+
+  private normalizePosition(particle: Particle) {
     const pos = particle.getPosition;
     const radius = particle.getRadius;
+    const canvasSize = this.canvasSize;
     const newPos: Coordinates = { x: 0, y: 0 };
-    const canvasSize = {
-      x: this.canvas.width,
-      y: this.canvas.height,
-    };
 
     for (const anyAxis in newPos) {
-      const axis = anyAxis as keyof typeof pos;
+      const axis = anyAxis as Axis;
+      const oppositeAxis = this.getOppositeAxis(axis);
 
-      if (pos[axis] > canvasSize[axis]) {
+      if (pos[axis] - radius >= canvasSize[axis]) {
         newPos[axis] = -radius;
-      } else if (pos[axis] < 0) {
-        newPos[axis] = canvasSize[axis] + radius;
+        newPos[oppositeAxis] = Math.random() * canvasSize[oppositeAxis];
+      } else if (pos[axis] + radius < 0) {
+        newPos[oppositeAxis] = -radius;
+        newPos[axis] = Math.random() * canvasSize[axis];
       }
     }
 
-    return newPos;
+    particle.setPosition = newPos;
   }
 
   private isOutsideCanvas(particle: Particle) {
     const pos = particle.getPosition;
     const axes = Object.keys(pos) as ['x', 'y'];
     const objectEdge = 2 * particle.getRadius;
-    const canvasSize = {
-      x: this.canvas.width,
-      y: this.canvas.height,
-    };
+    const canvasSize = this.canvasSize;
     let isOutside = false;
 
     for (const axis of axes) {
@@ -124,7 +139,7 @@ export class Particles {
 
       if (this.isOutsideCanvas(particle)) {
         if (this.isEndless) {
-          particle.setPosition = this.normalizePosition(particle);
+          this.normalizePosition(particle);
         } else {
           this.particleGroup.splice(i, 1);
           i--;

@@ -17,8 +17,8 @@ export type ParticlesConfig = CanvasProperties & {
   currentAnimation?: AnimationKey;
   canDisappear?: boolean;
   isEndless?: boolean;
+  isRandomPosition?: boolean;
   moveAngle?: number;
-  spawnFunc?: (canvas: HTMLCanvasElement) => Coordinates;
   particleConfig: {
     maxSpeed: number;
     maxRadius?: number;

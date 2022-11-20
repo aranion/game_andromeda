@@ -3,6 +3,8 @@ export type Coordinates = {
   y: number;
 };
 
+export type Axis = keyof Coordinates;
+
 export type GameMapConfig = {
   spawnInterval: {
     alien: number;
