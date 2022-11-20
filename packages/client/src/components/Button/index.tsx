@@ -9,21 +9,20 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 export function Button(props: ButtonProps) {
-  const { 
-    className, children, typeButton, sizeButton, positionButton, ...otherProps 
-  } = props;
-  
-  const classNames = classnames(
-    'button',
+  const {
     className,
-    {
-     [`button__type_${typeButton}`]: !!typeButton,
-     [`button__position_${positionButton}`]: !!positionButton,
-    },
-    {
-      [`button_size_${sizeButton}`]: !!sizeButton,
-    }
-  );
+    children,
+    typeButton,
+    sizeButton,
+    positionButton,
+    ...otherProps
+  } = props;
+
+  const classNames = classnames('button', className, {
+    [`button__type_${typeButton}`]: !!typeButton,
+    [`button__position_${positionButton}`]: !!positionButton,
+    [`button_size_${sizeButton}`]: !!sizeButton,
+  });
 
   return (
     <button {...otherProps} className={classNames}>
