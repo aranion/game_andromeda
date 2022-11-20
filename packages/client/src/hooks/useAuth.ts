@@ -63,6 +63,8 @@ export const useAuth = () => {
           }
         })
         .catch(console.error);
+    } else {
+      navigate(RouterList.HOME);
     }
   };
 
@@ -81,6 +83,8 @@ export const useAuth = () => {
           }
         })
         .catch(console.error);
+    } else {
+      navigate(RouterList.HOME);
     }
   };
 
