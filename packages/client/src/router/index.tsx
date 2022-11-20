@@ -9,6 +9,7 @@ import {
 } from './routerList';
 import { Loader } from 'src/components';
 
+const MainMenuPage = lazy(() => import('src/pages/MainMenu'));
 const GamePage = lazy(() => import('src/pages/Game'));
 const SignInPage = lazy(() => import('src/pages/SignIn'));
 const SignUpPage = lazy(() => import('src/pages/SignUp'));
@@ -25,7 +26,7 @@ export function Router() {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route path={RouterList.HOME}>
-          <Route index element={withPrivateRoute(<GamePage />)} />
+          <Route index element={withPrivateRoute(<MainMenuPage />)} />
           <Route path={RouterList.SIGN_IN} element={<SignInPage />} />
           <Route path={RouterList.SIGN_UP} element={<SignUpPage />} />
           <Route path={RouterList.SERVER_ERROR} element={<ServerErrorPage />} />

@@ -1,4 +1,4 @@
-import { Star, ButtonStar, AuthForm } from 'src/components';
+import { Star, ButtonStar, AuthForm, TitlePage } from 'src/components';
 import './styles.css';
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
@@ -47,13 +47,13 @@ export default function SignUp() {
           ))}
         </div>
 
-        <h1 className='main-menu__title'>
+        <TitlePage>
           Journey
           <br />
           to the
           <br />
           Andromeda
-        </h1>
+        </TitlePage>
 
         <AuthForm onSubmit={handleSignUp} title='Sign Up'>
           <AuthForm.Input
