@@ -1,0 +1,10 @@
+{
+  "source": "/(.*)",
+  "destination": "/",
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
+}
