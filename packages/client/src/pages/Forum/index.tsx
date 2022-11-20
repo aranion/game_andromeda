@@ -1,16 +1,10 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import type { ForumProps, FetchForums } from 'src/store/forum/types';
-import {
-  ButtonBack,
-  ForumItem,
-  NewForumButton,
-  ButtonFullscreen,
-} from 'src/components';
+import { ButtonBack, ForumItem, NewForumButton } from 'src/components';
 import styles from './styles.module.css';
 
 export default function ForumPage() {
   const [forums, setForums] = useState<ForumProps[]>([]);
-  const fullscrinableElem = useRef(null);
 
   const fetchForums: FetchForums = () => {
     const forums: ForumProps[] = [];
@@ -49,9 +43,8 @@ export default function ForumPage() {
   }, []);
 
   return (
-    <div className={styles.forum} ref={fullscrinableElem}>
+    <div className={styles.forum}>
       <ButtonBack />
-      <ButtonFullscreen elemRef={fullscrinableElem} />
 
       <h1 className='main-menu__title'>Community</h1>
       <table className={styles.table}>

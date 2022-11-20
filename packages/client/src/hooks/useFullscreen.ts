@@ -12,8 +12,10 @@ interface DocumentWithFullscreen extends Document {
 interface DocumentElementWithFullscreen extends HTMLElement {
   msRequestFullscreen?: () => void;
   mozRequestFullScreen?: () => void;
-  webkitRequestFullscreen?: () => void;
+  webkitRequestFullscreen?: (params?: number) => void;
 }
+
+type NewTypeElement = Element & { ALLOW_KEYBOARD_INPUT: number };
 
 const getIsFullscreen = () => {
   const doc = document as DocumentWithFullscreen;
@@ -33,21 +35,9 @@ const activateFullscreen = (elem: DocumentElementWithFullscreen) => {
   } else if (elem.mozRequestFullScreen) {
     elem.mozRequestFullScreen();
   } else if (elem.webkitRequestFullscreen) {
-    //@ts-ignore
-    elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-  }
-};
-
-export const exitFullscreen = () => {
-  const doc = document as DocumentWithFullscreen;
-  if (doc.exitFullscreen) {
-    doc.exitFullscreen();
-  } else if (doc.msExitFullscreen) {
-    doc.msExitFullscreen();
-  } else if (doc.mozCancelFullScreen) {
-    doc.mozCancelFullScreen();
-  } else if (doc.webkitExitFullscreen) {
-    doc.webkitExitFullscreen();
+    elem.webkitRequestFullscreen(
+      (Element as unknown as NewTypeElement).ALLOW_KEYBOARD_INPUT
+    );
   }
 };
 
@@ -57,6 +47,19 @@ export const useFullscreen = (elRef: React.RefObject<HTMLElement>) => {
   const setFullscreen: () => void = () => {
     if (elRef.current === null) return;
     activateFullscreen(elRef.current);
+  };
+
+  const exitFullscreen = () => {
+    const doc = document as DocumentWithFullscreen;
+    if (doc.exitFullscreen) {
+      doc.exitFullscreen();
+    } else if (doc.msExitFullscreen) {
+      doc.msExitFullscreen();
+    } else if (doc.mozCancelFullScreen) {
+      doc.mozCancelFullScreen();
+    } else if (doc.webkitExitFullscreen) {
+      doc.webkitExitFullscreen();
+    }
   };
 
   useLayoutEffect(() => {
@@ -69,5 +72,5 @@ export const useFullscreen = (elRef: React.RefObject<HTMLElement>) => {
     };
   });
 
-  return { isFullscreen, setFullscreen };
+  return { isFullscreen, setFullscreen, exitFullscreen };
 };

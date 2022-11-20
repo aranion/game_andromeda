@@ -1,4 +1,4 @@
-import { useFullscreen, exitFullscreen } from 'src/hooks/useFullscreen';
+import { useFullscreen } from 'src/hooks/useFullscreen';
 import { Button } from 'src/components';
 import styles from './styles.module.css';
 
@@ -8,19 +8,26 @@ type Props = {
 
 export function ButtonFullscreen(props: Props) {
   const { elemRef } = props;
-  const { isFullscreen, setFullscreen } = useFullscreen(elemRef);
+  const { isFullscreen, setFullscreen, exitFullscreen } =
+    useFullscreen(elemRef);
 
-  const handleSetIsFullscreen = () => setFullscreen();
+  const clsButton = isFullscreen ? 'exit' : 'open';
 
-  return isFullscreen ? (
-    <Button className={styles['button-fullscreen']} onClick={exitFullscreen}>
-      <span className={styles['fullscreen-exit']}></span>
-    </Button>
-  ) : (
+  const handleSetIsFullscreen = () => {
+    if (isFullscreen) {
+      exitFullscreen();
+    } else {
+      setFullscreen();
+    }
+  };
+
+  return (
     <Button
       className={styles['button-fullscreen']}
-      onClick={handleSetIsFullscreen}>
-      <span className={styles['fullscreen-open']}></span>
+      onClick={handleSetIsFullscreen}
+      positionButton='absolute'
+      title='Fullscreen'>
+      <span className={styles[`fullscreen-${clsButton}`]} />
     </Button>
   );
 }
