@@ -1,9 +1,8 @@
-import { ParticleConfig } from './types';
-import { ParticleTypes } from './types';
-import { Sprite } from '../entities/sprite';
-import { Coordinates } from '../types';
+import { Sprite } from '../../entities/sprite';
+import { ParticleConfig, ParticleTypes } from './types';
+import { Coordinates, GameEntityInterface } from '../../types';
 
-export class Particle {
+export class Particle implements GameEntityInterface {
   private ctx: CanvasRenderingContext2D;
   private readonly moveAngle: number;
   private readonly type: ParticleTypes;
@@ -11,7 +10,7 @@ export class Particle {
   private readonly radius: number;
   private readonly color: string;
   private readonly speed: number;
-  private position: Coordinates;
+  private readonly position: Coordinates;
   private readonly sizeRatio: number;
   private readonly sprite: Sprite | undefined;
 
@@ -25,6 +24,7 @@ export class Particle {
     this.type = config.type;
     this.imageSrc = config.imageSrc;
     this.color = config.color ?? 'grey';
+
     if (this.type === 'sprite' && this.imageSrc) {
       this.sprite = new Sprite({
         ctx: config.ctx,
@@ -53,21 +53,19 @@ export class Particle {
     return this.radius;
   }
 
+  private drawCircle() {
+    this.ctx.fillStyle = this.color;
+    this.ctx.beginPath();
+    this.ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
+    this.ctx.closePath();
+    this.ctx.fill();
+  }
+
   protected draw() {
-    if (this.sprite) {
+    if (this.sprite && this.type === 'sprite') {
       this.sprite.draw();
     } else {
-      this.ctx.fillStyle = this.color;
-      this.ctx.beginPath();
-      this.ctx.arc(
-        this.position.x,
-        this.position.y,
-        this.radius,
-        0,
-        Math.PI * 2
-      );
-      this.ctx.closePath();
-      this.ctx.fill();
+      this.drawCircle();
     }
   }
 
