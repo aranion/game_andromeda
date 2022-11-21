@@ -1,12 +1,13 @@
 import { INITIAL_RADIUS, INITIAL_SPEED } from '../../constants';
 import { Sprite } from '../sprite';
 import type { Coordinates } from '../../types';
+import { GameEntityInterface } from '../../types';
 import type { GameObjectConfig } from './types';
 
 /**
  * Абстракция над игровыми объектами.
  * */
-export abstract class GameObject {
+export abstract class GameObject implements GameEntityInterface {
   protected readonly canvas: HTMLCanvasElement;
   protected readonly ctx: CanvasRenderingContext2D;
   protected position: Coordinates;

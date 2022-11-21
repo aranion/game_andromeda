@@ -1,5 +1,5 @@
-import { CanvasProperties, Coordinates } from '../types';
-import { AnimationKey } from '../constants';
+import { CanvasProperties, Coordinates } from '../../types';
+import { AnimationKey } from '../../constants';
 import { ParticleTypes } from '../particle/types';
 
 export type ParticlesGroupType = Omit<
@@ -17,8 +17,8 @@ export type ParticlesConfig = CanvasProperties & {
   currentAnimation?: AnimationKey;
   canDisappear?: boolean;
   isEndless?: boolean;
+  isRandomPosition?: boolean;
   moveAngle?: number;
-  spawnFunc?: (canvas: HTMLCanvasElement) => Coordinates;
   particleConfig: {
     maxSpeed: number;
     maxRadius?: number;
