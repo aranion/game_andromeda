@@ -51,5 +51,15 @@
 @media only screen and (max-width: 666px) {
   .boardTable {
     min-width: 400px;
+    font-size: 0.9rem;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .boardTable {
+    min-width: 300px;
+    font-size: 0.7rem;
+    height: auto;
+    margin: 0 0 50px 0;
   }
 }

@@ -18,3 +18,12 @@
     padding: 20px 0;
   }
 }
+
+@media only screen and (max-width: 450px) {
+  .leaderBoard {
+    &__topLeader {
+      background-repeat: repeat;
+      background-size: contain;
+    }
+  }
+}
