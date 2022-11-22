@@ -1,5 +1,7 @@
 import { render } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import Game from './pages/Game';
+import configureStore from 'redux-mock-store';
 
 // @ts-ignore
 global.fetch = jest.fn(() =>
@@ -7,7 +9,20 @@ global.fetch = jest.fn(() =>
 );
 
 test('Canvas initialization test', async () => {
-  const { container } = render(<Game />);
+  const mockStore = configureStore([]);
+  const store = mockStore({
+    game: {},
+    user: {
+      userData: {},
+    },
+  });
+
+  const { container } = render(
+    <Provider store={store}>
+      <Game />
+    </Provider>
+  );
+
   const canvas = container.querySelector('canvas');
   expect(canvas).toBeDefined();
 });

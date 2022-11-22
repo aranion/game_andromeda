@@ -113,7 +113,7 @@ export class GameMap {
       }
 
       if (this.isCollided(asteroid)) {
-        this.player.updateLives(-1);
+        this.player.updateLives(-1, this.score);
         this.asteroids.splice(i, 1);
         this.particlesGroups.push(
           new Particles({

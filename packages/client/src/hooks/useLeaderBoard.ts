@@ -17,7 +17,7 @@ export const useLeaderBoard = () => {
   const { userData } = useTypeSelector(userSelectors.all);
   const { display_name, login, id: userId, avatar } = userData;
 
-  const { setLeaders } = useActions();
+  const { setLeaders, setHightScore } = useActions();
 
   const [fetchAllLeaderBoard, { isLoading: isLoadingAll }] =
     useLazyFetchAllLeaderBoardQuery();
@@ -43,6 +43,7 @@ export const useLeaderBoard = () => {
       })
         .then(res => {
           if ('data' in res) {
+            setHightScore(null);
             console.log('Leader added', res.data);
           } else {
             error(res.error);

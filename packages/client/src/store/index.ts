@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { gameActions, gameReducer } from './game';
 import { authActions, authApi, authReducer } from './auth';
 import { userActions, userApi, userReducer } from './user';
 import {
@@ -14,6 +15,7 @@ export const store = configureStore({
     [leaderBoardApi.reducerPath]: leaderBoardApi.reducer,
     user: userReducer,
     auth: authReducer,
+    game: gameReducer,
     leaderBoard: leaderBoardReducer,
   },
   middleware: getDefaultMiddleware =>
@@ -27,6 +29,7 @@ export const store = configureStore({
 export const allActions = {
   ...userActions,
   ...authActions,
+  ...gameActions,
   ...leaderBoardActions,
 };
 

@@ -4,7 +4,6 @@ import { BoardTable, TitlePage, TopLeader, ButtonBack } from 'src/components';
 import { useTypeSelector } from 'src/hooks/useTypeSelector';
 import { leaderBoardSelectors } from 'src/store/leaderBoard';
 import { useLeaderBoard } from 'src/hooks/useLeaderBoard';
-import { mockHightScorePlayer } from 'src/constants/mockData';
 import type { Leader } from 'src/store/leaderBoard/type';
 
 export default function LeaderBoard() {
@@ -13,10 +12,9 @@ export default function LeaderBoard() {
 
   const leaders = useTypeSelector(leaderBoardSelectors.leaders);
 
-  const { addTeamLeader, getTeamLeaders, isLoadingLeaders } = useLeaderBoard();
+  const { getTeamLeaders, isLoadingLeaders } = useLeaderBoard();
 
   useEffect(() => {
-    addTeamLeader(mockHightScorePlayer);
     getTeamLeaders();
   }, []);
 
