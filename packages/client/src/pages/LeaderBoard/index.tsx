@@ -26,10 +26,10 @@ export default function LeaderBoard() {
   }, [leaders]);
 
   return (
-    <>
+    <div className={cls.leaderBoard}>
       <TitlePage>LeaderBoard</TitlePage>
-      <div className={cls.leaderBoard}>
-        <div className={cls.leaderBoard__topLeader}>
+      <div className={cls.leaderBoard__wrapper}>
+        <div className={cls.leaderBoard__wrapper_topLeader}>
           {topLeader.map((leader, i) => (
             <TopLeader key={i} position={i} leader={leader} />
           ))}
@@ -38,6 +38,6 @@ export default function LeaderBoard() {
         <BoardTable leaders={otherLeader} isLoading={isLoadingLeaders} />
         <ButtonBack />
       </div>
-    </>
+    </div>
   );
 }
