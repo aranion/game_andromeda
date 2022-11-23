@@ -75,11 +75,11 @@ export default function Profile() {
   }
 
   const handleEditProfile = () => {
-    navigate(RouterList.PROFILE_EDIT);
+    navigate(RouterList.PROFILE_EDIT, { replace: true });
   };
 
   const handleEditPassword = () => {
-    navigate(RouterList.PROFILE_EDIT_PASSWORD);
+    navigate(RouterList.PROFILE_EDIT_PASSWORD, { replace: true });
   };
 
   return (
