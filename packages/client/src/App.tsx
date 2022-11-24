@@ -5,12 +5,14 @@ import { useAuth } from './hooks/useAuth';
 import { CONFIG_STARS_PARAMS } from './constants/vars';
 import { useLocation } from 'react-router-dom';
 import { RouterList } from './router/routerList';
+import { ButtonFullscreen } from './components';
 
 function App() {
   const { checkIsAuth } = useAuth();
 
   const { pathname } = useLocation();
   const refWrapper = useRef(null);
+  const fullscrinableElem = useRef(null);
 
   const startStarts = useCallback(() => {
     const isNotGamePage = pathname.toLocaleLowerCase() !== RouterList.GAME;
@@ -67,10 +69,12 @@ function App() {
   }, []);
 
   return (
-    <div className={cls.app}>
+    <div className={cls.app} ref={fullscrinableElem}>
       <main className={cls.app__content}>
         <Router />
       </main>
+      <ButtonFullscreen elemRef={fullscrinableElem} />
+
       <div ref={refWrapper}></div>
     </div>
   );

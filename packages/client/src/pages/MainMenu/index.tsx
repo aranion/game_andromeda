@@ -21,7 +21,7 @@ const configStar = [
 export default function MainMenu() {
   const navigate = useNavigate();
   const { logout } = useAuth();
-  const { userData } = useTypeSelector(userSelectors.allUser);
+  const { userData } = useTypeSelector(userSelectors.all);
   const { id } = userData;
   const navigateGame = () => navigate(RouterList.GAME);
   const navigateProfile = () => navigate(`${RouterList.PROFILE}/${id}`);

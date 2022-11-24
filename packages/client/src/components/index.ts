@@ -16,3 +16,4 @@ export * from './Form';
 export * from './Forum';
 export * from './ProfileFields';
 export * from './ButtonStar';
+export * from './ButtonFullscreen';

@@ -1,6 +1,7 @@
 import cls from './styles.module.css';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { userSelectors, useLazyFetchUserDataQuery } from 'src/store/user';
 import {
   Avatar,
   Button,
@@ -8,9 +9,7 @@ import {
   TitlePage,
   ButtonBack,
 } from 'src/components';
-import { useLazyFetchUserDataQuery } from 'src/store/user/api';
 import { useTypeSelector } from 'src/hooks/useTypeSelector';
-import { userSelectors } from 'src/store/user';
 import { RouterList, RouterParamsProfile } from 'src/router/routerList';
 import { useAuth } from 'src/hooks/useAuth';
 import { prepareAllProfileFields, preparePasswordProfileFields } from './utils';
@@ -25,7 +24,7 @@ export default function Profile() {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  const { userData } = useTypeSelector(userSelectors.allUser);
+  const { userData } = useTypeSelector(userSelectors.all);
   const { id, avatar } = userData;
 
   const [fetchUserData, { isLoading, isError }] = useLazyFetchUserDataQuery();
@@ -120,7 +119,7 @@ export default function Profile() {
               typeButton='danger'
               onClick={logout}
               className={cls.profile__buttons_width}>
-              Exit game
+              Log out
             </Button>
           </div>
         )}

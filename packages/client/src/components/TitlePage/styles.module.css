@@ -6,3 +6,10 @@
   text-transform: uppercase;
   text-shadow: var(--textShadow);
 }
+
+@media only screen and (max-width: 600px) {
+  .titlePage {
+    margin-top: 60px;
+    font-size: 2rem;
+  }
+}
