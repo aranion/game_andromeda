@@ -44,7 +44,7 @@ export const useUpdateProfile = () => {
       .then(res => {
         if (res.data) {
           setUserData(res.data);
-          navigate(`${RouterList.PROFILE}/${id}`);
+          navigate(`${RouterList.PROFILE}/${id}`, { replace: true });
         } else {
           error(res.error);
         }
@@ -71,7 +71,7 @@ export const useUpdateProfile = () => {
     fetchUpdatePassword(data)
       .then(res => {
         if (res.data) {
-          navigate(`${RouterList.PROFILE}/${id}`);
+          navigate(`${RouterList.PROFILE}/${id}`, { replace: true });
         } else {
           error(res.error);
         }
