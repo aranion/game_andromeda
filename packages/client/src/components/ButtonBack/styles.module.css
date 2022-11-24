@@ -1,7 +1,4 @@
 .button-back {
-  padding: 3px 20px;
-  position: absolute;
   left: 20px;
-  top: 30px;
-  min-width: 45px;
+  top: 20px;
 }

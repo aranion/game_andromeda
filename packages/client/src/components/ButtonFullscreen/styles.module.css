@@ -1,0 +1,21 @@
+.button-fullscreen {
+  right: 20px;
+  top: 20px;
+}
+
+.fullscreen-open,
+.fullscreen-exit {
+  height: 20px;
+  width: 30px;
+  display: block;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.fullscreen-open {
+  background-image: url('src/assets/imgs/fullscreenOpen.svg');
+}
+.fullscreen-exit {
+  background-image: url('src/assets/imgs/fullscreenExit.svg');
+}

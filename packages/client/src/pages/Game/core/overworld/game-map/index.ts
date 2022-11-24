@@ -1,13 +1,14 @@
 import { styles } from '../../constants';
 import { Player } from '../../entities/player';
 import { Resource } from '../../entities/resource';
-import { GameObject } from '../../entities/game-object';
-import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
-import { createAsteroidConfig } from '../../entities/asteroid/stats';
 import { Asteroid } from '../../entities/asteroid';
-import { Particles } from '../../particles';
 import { asteroidExplode } from '../../entities/asteroid/particles';
 import { resourceExplode } from '../../entities/resource/particles';
+import { createAsteroidConfig } from '../../entities/asteroid/stats';
+import { Particles } from '../../effects/particles';
+import { getStarsConfig } from './particles';
+import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
+import { isOutsideCanvas } from '../../utils/is-outside-canvas';
 
 /**
  * Карта текущего уровня, настраивается через конфиг. Управляет текущим уровнем и его логикой.
@@ -32,6 +33,8 @@ export class GameMap {
     this.ctx = config.ctx;
     this.spawnInterval = config.spawnInterval;
     this.player = config.player;
+
+    this.createStarsBackground();
   }
 
   get getScore(): number {
@@ -44,12 +47,13 @@ export class GameMap {
     );
   }
 
-  private isOutsideCanvas(object: GameObject): boolean {
-    return (
-      object.getPosition.y > this.canvas.height + object.getRadius * 2 ||
-      object.getPosition.y < -object.getRadius * 2 ||
-      object.getPosition.x < -object.getRadius * 2 ||
-      object.getPosition.x > this.canvas.width + object.getRadius * 2
+  private createStarsBackground() {
+    this.particlesGroups.push(
+      new Particles({
+        canvas: this.canvas,
+        ctx: this.ctx,
+        ...getStarsConfig(),
+      })
     );
   }
 
@@ -67,7 +71,7 @@ export class GameMap {
       const resource = this.resources[i];
       resource.update(this.player);
 
-      if (this.isOutsideCanvas(resource)) {
+      if (isOutsideCanvas({ object: resource, canvas: this.canvas })) {
         this.resources.splice(i, 1);
         i--;
       }
@@ -107,13 +111,13 @@ export class GameMap {
       const asteroid = this.asteroids[i];
       asteroid.update(this.player);
 
-      if (this.isOutsideCanvas(asteroid)) {
+      if (isOutsideCanvas({ object: asteroid, canvas: this.canvas })) {
         this.asteroids.splice(i, 1);
         i--;
       }
 
       if (this.isCollided(asteroid)) {
-        this.player.updateLives(-1);
+        this.player.updateLives(-1, this.score);
         this.asteroids.splice(i, 1);
         this.particlesGroups.push(
           new Particles({
@@ -135,7 +139,8 @@ export class GameMap {
     for (let i = 0; i < this.particlesGroups.length; i++) {
       const particles = this.particlesGroups[i];
       particles.update();
-      if (particles.isDisappeared) {
+
+      if (particles.isFaded) {
         this.particlesGroups.splice(i, 1);
         i--;
       }

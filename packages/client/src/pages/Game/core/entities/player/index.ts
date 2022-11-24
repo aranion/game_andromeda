@@ -1,4 +1,6 @@
 import { GameObject } from '../game-object';
+import { store } from 'src/store';
+import { gameActions } from 'src/store/game';
 import type { PlayerConfig, PlayerSkin } from './types';
 import type { Coordinates } from '../../types';
 
@@ -31,10 +33,12 @@ export class Player extends GameObject {
     return this.shielded;
   }
 
-  updateLives(num: number) {
+  updateLives(num: number, score: number) {
     const newLives = this.lives + num;
 
     if (newLives <= 0) {
+      this.dispatchScore(score);
+
       alert('Your ship was consumed by cosmic void...');
       return;
     }
@@ -91,5 +95,9 @@ export class Player extends GameObject {
 
     this.keepInsideCanvas();
     this.draw();
+  }
+
+  private dispatchScore(score: number) {
+    store.dispatch(gameActions.setHightScore(score));
   }
 }
