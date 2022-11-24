@@ -26,7 +26,7 @@ export const store = configureStore({
     })
       .concat(userApi.middleware)
       .concat(authApi.middleware)
-      .concat(resourcesApi.middleware),
+      .concat(resourcesApi.middleware)
       .concat(leaderBoardApi.middleware),
   devTools: process.env.NODE_ENV !== 'production',
 });
