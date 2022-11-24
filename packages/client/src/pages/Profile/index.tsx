@@ -119,7 +119,7 @@ export default function Profile() {
               typeButton='danger'
               onClick={logout}
               className={cls.profile__buttons_width}>
-              Exit game
+              Log out
             </Button>
           </div>
         )}

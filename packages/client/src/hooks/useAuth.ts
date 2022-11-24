@@ -56,7 +56,7 @@ export const useAuth = () => {
       fetchSignIn(params)
         .then(res => {
           if ('data' in res) {
-            setIsAuth(true);
+            checkIsAuth();
             navigate(RouterList.HOME);
           } else {
             error(res.error);
