@@ -21,7 +21,7 @@ export default function LeaderBoard() {
   useEffect(() => {
     if (leaders.length) {
       setTopLeader(leaders.slice(0, 3));
-      setOtherLeader(leaders.slice(3, 20));
+      setOtherLeader(leaders.slice(3, 13));
     }
   }, [leaders]);
 

@@ -1,12 +1,13 @@
 import { useActions } from './useActions';
 import { useTypeSelector } from './useTypeSelector';
-import { userSelectors } from 'src/store/user';
+import { useLazyFetchUserDataQuery, userSelectors } from 'src/store/user';
 import {
   useLazyAddLeaderBoardQuery,
   useLazyFetchAllLeaderBoardQuery,
   useLazyFetchTeamLeaderBoardQuery,
 } from 'src/store/leaderBoard/api';
 import type {
+  Leader,
   RequestAllLeaderBoard,
   RequestLeaderBoardTeamName,
 } from 'src/store/leaderBoard/type';
@@ -15,9 +16,9 @@ import type { SerializedError } from '@reduxjs/toolkit';
 
 export const useLeaderBoard = () => {
   const { userData } = useTypeSelector(userSelectors.all);
-  const { display_name, login, id: userId, avatar } = userData;
+  const { id } = userData;
 
-  const { setLeaders, setHightScore } = useActions();
+  const { setLeaders, setHightScore, setLeaderUserData } = useActions();
 
   const [fetchAllLeaderBoard, { isLoading: isLoadingAll }] =
     useLazyFetchAllLeaderBoardQuery();
@@ -25,6 +26,7 @@ export const useLeaderBoard = () => {
     useLazyAddLeaderBoardQuery();
   const [fetchTeamLeaderBoard, { isLoading: isLoadingLeaders }] =
     useLazyFetchTeamLeaderBoardQuery();
+  const [fetchUser] = useLazyFetchUserDataQuery();
 
   const error = (error?: FetchBaseQueryError | SerializedError) => {
     if (error) {
@@ -37,10 +39,8 @@ export const useLeaderBoard = () => {
   };
 
   const addTeamLeader = (highScore: number) => {
-    if (userId) {
-      fetchAddLeaderBoard({
-        data: { nickname: display_name || login, userId, highScore, avatar },
-      })
+    if (id) {
+      fetchAddLeaderBoard({ data: { id, highScore } })
         .then(res => {
           if ('data' in res) {
             setHightScore(null);
@@ -69,12 +69,32 @@ export const useLeaderBoard = () => {
     fetchTeamLeaderBoard(params || {})
       .then(res => {
         if (res.data) {
-          setLeaders(res.data);
+          const leaders = res.data;
+          setLeaders(leaders);
+          getLeaderUserData(leaders);
         } else {
           error(res.error);
         }
       })
       .catch(console.error);
+  };
+
+  const getLeaderUserData = (leaders: Leader[]) => {
+    leaders.forEach(leader => {
+      const userId = leader.id?.toString();
+
+      if (userId) {
+        fetchUser(userId)
+          .then(res => {
+            if (res.data) {
+              setLeaderUserData(res.data);
+            } else {
+              error(res.error);
+            }
+          })
+          .catch(console.error);
+      }
+    });
   };
 
   return {

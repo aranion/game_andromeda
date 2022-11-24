@@ -8,9 +8,9 @@ export enum ConfigLeaderBoard {
 }
 
 export type Leader = {
-  userId: number;
-  nickname: string;
-  avatar: string | null;
+  id: number;
+  nickname?: string;
+  avatar?: string | null;
   [ConfigLeaderBoard.RATING_FIELD_NAME]: number;
 };
 

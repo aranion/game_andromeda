@@ -38,12 +38,12 @@ export function BoardTable(props: Props) {
           )}
 
           {leaders.map((leader, i) => {
-            const { highScore, nickname, userId } = leader;
+            const { highScore, nickname, id, avatar } = leader;
             const startPosition = 4;
             const position = i + startPosition;
 
             const handleNavigate = () => {
-              navigate(`${RouterList.PROFILE}/${userId}`);
+              navigate(`${RouterList.PROFILE}/${id}`);
             };
 
             return (
@@ -54,7 +54,7 @@ export function BoardTable(props: Props) {
                 <td className={cls.boardTable__table_td}>{position}</td>
                 <td className={cls.boardTable__table_td}>
                   <div className={cls.boardTable__table_avatar}>
-                    <Avatar />
+                    <Avatar path={avatar} />
                   </div>
                 </td>
                 <td className={cls.boardTable__table_td}>{nickname}</td>
