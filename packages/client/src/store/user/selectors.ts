@@ -1,3 +1,3 @@
-import type { RootState } from '../';
+import type { RootState } from 'src/store';
 
-export const allUser = (state: RootState) => state.user;
+export const all = (state: RootState) => state.user;
