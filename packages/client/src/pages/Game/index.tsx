@@ -11,14 +11,14 @@ import './game.css';
 export default function GamePage() {
   const canvas = useRef<HTMLCanvasElement>(null);
   const game = useRef<Game | null>(null);
-  
+
   const [activePauseMenu, setActivePauseMenu] = useState(false);
   const navigate = useNavigate();
 
   const hightScore = useTypeSelector(gameSelectors.hightScore);
 
   const { addTeamLeader } = useLeaderBoard();
-  
+
   const setActivePauseMenuMutated = (newValue: boolean) => {
     if (newValue) {
       game.current?.pause();
@@ -65,7 +65,7 @@ export default function GamePage() {
       addTeamLeader(hightScore);
     }
   }, [hightScore]);
-  
+
   return (
     <>
       <canvas className='canvas' ref={canvas}></canvas>

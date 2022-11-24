@@ -2,7 +2,6 @@ import cls from './styles.module.css';
 import { useEffect, useState } from 'react';
 import { Loader } from 'src/components';
 import { BASE_URL } from 'src/constants/vars';
-import mockSrcAvatar from 'src/assets/imgs/mockAvatar.jpg';
 
 export function Avatar(props: Props) {
   const { path, isEditAvatar = false } = props;
@@ -43,7 +42,7 @@ export function Avatar(props: Props) {
           setIsLoading(false);
         });
     } else {
-      setAvatar(mockSrcAvatar);
+      setAvatar(null);
     }
   }, [path]);
 
