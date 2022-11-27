@@ -1,18 +1,8 @@
 import { Game } from '../../../core';
 import { FPS } from '../../constants';
-import { Coordinates } from '../../types';
-import {
-  SceneTransitionConfig,
-  Label,
-  Button,
-  LabelConfig,
-  ButtonConfig,
-} from './types';
+import { SceneTransitionConfig, LabelConfig, ButtonConfig } from './types';
 
 const defaultOpacytyTime = 3000;
-const defaultFont = 'bold 30px Audiowide';
-const defaultButtonBGColor = 'grey';
-const defaultButtonColor = 'red';
 
 export class SceneTransition {
   private game: Game;
@@ -20,19 +10,13 @@ export class SceneTransition {
   private ctx: CanvasRenderingContext2D;
   private opacity = 0;
   private opacitySpeed = 0;
-  private clickPosition: Coordinates;
-  private expireClickPostion: () => void;
-  private labels: Label[] = [];
-  private buttons: Button[] = [];
-  private status: 'mounted' | 'unmounted' = 'unmounted';
+  private labelsId: string[] = [];
+  private buttonsId: string[] = [];
 
   constructor(config: SceneTransitionConfig) {
     this.game = config.game;
     this.canvas = config.canvas;
     this.ctx = config.ctx;
-    this.clickPosition = config.clickPosition;
-    this.expireClickPostion = config.expireClickPosition;
-    this.status = 'mounted';
   }
 
   darkScreen(blackoutTime = defaultOpacytyTime, delay = defaultOpacytyTime) {
@@ -42,71 +26,48 @@ export class SceneTransition {
     }, blackoutTime + delay);
   }
 
-  createLabel(label: LabelConfig) {
-    const id = Date.now().toString() + Math.random.toString();
-    this.labels.push({ ...label, id });
+  createLabel(labelConfig: LabelConfig) {
+    const label = document.createElement('label');
+    const id = `l${Date.now().toString()}`;
+    const canvas = document.querySelector('.canvas');
 
-    if (label.deleteDelay) {
+    this.labelsId.push(id);
+
+    label.classList.add(labelConfig.cssClassName);
+    label.innerText = labelConfig.text;
+    label.id = id;
+
+    if (canvas) canvas.before(label);
+
+    if (labelConfig.deleteDelay) {
       setTimeout(() => {
-        for (let i = 0; i < this.labels.length; i++) {
-          if (this.labels[i].id === id) {
-            this.labels.splice(i, 1);
-            i -= 1;
-          }
-        }
-      }, label.deleteDelay);
+        label.remove();
+        console.log('remove label');
+      }, labelConfig.deleteDelay);
     }
   }
 
   createButton(buttonConfig: ButtonConfig) {
-    const id = Date.now().toString() + Math.random.toString();
-    this.setButtonImageSrc(buttonConfig);
-    const button = buttonConfig as Button;
+    const button = document.createElement('button');
+    const id = `b${Date.now().toString()}`;
+    const canvas = document.querySelector('canvas');
+
+    this.buttonsId.push(id);
+
+    button.classList.add(buttonConfig.cssClassName);
+    button.innerText = buttonConfig.text;
     button.id = id;
-    this.buttons.push(button);
+    button.addEventListener('click', () => buttonConfig.handleClick(this.game));
 
-    if (button.deleteDelay) {
+    if (canvas) {
+      canvas.before(button);
+    }
+
+    if (buttonConfig.deleteDelay) {
       setTimeout(() => {
-        for (let i = 0; i < this.buttons.length; i++) {
-          if (this.buttons[i].id === id) {
-            this.buttons.splice(i, 1);
-            i -= 1;
-          }
-        }
-      }, button.deleteDelay);
+        button.remove();
+      }, buttonConfig.deleteDelay);
     }
-  }
-
-  setButtonImageSrc(button: ButtonConfig) {
-    if (button.backgroundImageSrc) {
-      button.isLoaded = false;
-      button.backgroundImage = new Image();
-      button.backgroundImage.src = button.backgroundImageSrc;
-      button.backgroundImage.onload = () => {
-        button.isLoaded = true;
-      };
-    }
-  }
-
-  private checkClick() {
-    this.buttons.forEach(button => {
-      if (this.inBounds(button)) {
-        button.handleClick(this.game);
-      }
-    });
-    this.expireClickPostion();
-  }
-
-  inBounds(button: Button): boolean {
-    const clickPos = this.clickPosition;
-    if (clickPos.x > 0)
-      return !(
-        clickPos.x < button.position.x - button.width / 2 ||
-        clickPos.x > button.position.x + button.width / 2 ||
-        clickPos.y < button.position.y - button.height / 2 ||
-        clickPos.y > button.position.y + button.height / 2
-      );
-    return false;
   }
 
   get getGame(): Game {
@@ -114,8 +75,18 @@ export class SceneTransition {
   }
 
   deleteObjects() {
-    this.labels = [];
-    this.buttons = [];
+    this.labelsId.forEach(id => {
+      const label = document.querySelector(`label#${id}`);
+      label?.remove();
+    });
+
+    this.buttonsId.forEach(id => {
+      const button = document.querySelector(`button#${id}`);
+      button?.remove();
+    });
+
+    this.labelsId = [];
+    this.buttonsId = [];
   }
 
   private draw() {
@@ -125,52 +96,7 @@ export class SceneTransition {
 
     // рисуем прямоугольник, затемняющий экран
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-    // рисуем все label-ы
-    this.ctx.textAlign = 'center';
-
-    for (const label of this.labels) {
-      this.ctx.fillStyle = label.color;
-      this.ctx.font = label.font;
-      this.ctx.fillText(label.text, label.position.x, label.position.y);
-    }
-
-    // рисуем кнопки
-    for (const button of this.buttons) {
-      if (button.backgroundImage && button.isLoaded) {
-        // если картинка
-        this.ctx.drawImage(
-          button.backgroundImage,
-          0,
-          0,
-          button.width,
-          button.height,
-          button.position.x - button.width / 2,
-          button.position.y - button.height / 2,
-          button.width,
-          button.height
-        );
-      } else {
-        // если прямоугольник с текстом
-        const backgroundColor = button.backgroundColor ?? defaultButtonBGColor;
-        const text = button.text ?? '...';
-
-        this.ctx.fillStyle = backgroundColor;
-        this.ctx.fillRect(
-          button.position.x - button.width / 2,
-          button.position.y - button.height / 2,
-          button.width,
-          button.height
-        );
-        this.ctx.fillStyle = button.color ?? defaultButtonColor;
-        this.ctx.textAlign = 'center';
-        this.ctx.font = button.font ?? defaultFont;
-        this.ctx.fillText(text, button.position.x, button.position.y);
-      }
-    }
-
     this.ctx.restore();
-    this.checkClick();
   }
 
   public update() {

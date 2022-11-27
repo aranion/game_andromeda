@@ -33,8 +33,6 @@ export class Game {
       game: this,
       canvas,
       ctx,
-      clickPosition: this.directions.getClickPosition,
-      expireClickPosition: this.directions.expireClickPosition,
     });
     this.player = new Player({
       canvas,

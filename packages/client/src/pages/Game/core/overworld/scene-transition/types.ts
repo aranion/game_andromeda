@@ -2,9 +2,7 @@ import { Game } from '../../../core';
 import { CanvasProperties, Coordinates } from '../../types';
 
 export type SceneTransitionConfig = CanvasProperties & {
-  clickPosition: Coordinates;
   game: Game;
-  expireClickPosition: () => void;
 };
 
 export type LabelConfig = Omit<Label, 'id'>;
@@ -13,24 +11,14 @@ export type ButtonConfig = Omit<Button, 'id'>;
 export type Label = {
   id: string;
   text: string;
-  color: string;
-  font: string;
-  position: Coordinates;
+  cssClassName: string;
   deleteDelay?: number;
 };
 
 export type Button = {
   id: string;
-  width: number;
-  height: number;
-  position: Coordinates;
+  text: string;
   handleClick: (game: Game) => void;
+  cssClassName: string;
   deleteDelay?: number;
-  text?: string;
-  color?: string;
-  font?: string;
-  backgroundColor?: string;
-  backgroundImageSrc?: string;
-  backgroundImage?: HTMLImageElement;
-  isLoaded?: boolean;
 };

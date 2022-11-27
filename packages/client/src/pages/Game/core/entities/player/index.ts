@@ -45,22 +45,10 @@ export class Player extends GameObject {
     const newLives = this.lives + num;
 
     if (newLives <= 0) {
-      this.sceneTransition.createLabel({
-        position: {
-          x: this.canvas.width / 2,
-          y: this.canvas.height / 2,
-        },
-        ...endGameLabel,
-      });
-
-      this.sceneTransition.createButton({
-        position: {
-          x: this.canvas.width / 2,
-          y: (2 * this.canvas.height) / 3,
-        },
-        ...endGameButton(this.sceneTransition.getGame),
-      });
-
+      this.sceneTransition.createLabel(endGameLabel);
+      this.sceneTransition.createButton(
+        endGameButton(this.sceneTransition.getGame)
+      );
       this.sceneTransition.darkScreen(2000, 5000);
       return;
     }
