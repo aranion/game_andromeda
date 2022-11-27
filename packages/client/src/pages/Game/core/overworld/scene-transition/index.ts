@@ -1,3 +1,4 @@
+import { Game } from '../../../core';
 import { FPS } from '../../constants';
 import { Coordinates } from '../../types';
 import {
@@ -14,6 +15,7 @@ const defaultButtonBGColor = 'grey';
 const defaultButtonColor = 'red';
 
 export class SceneTransition {
+  private game: Game;
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private opacity = 0;
@@ -22,12 +24,15 @@ export class SceneTransition {
   private expireClickPostion: () => void;
   private labels: Label[] = [];
   private buttons: Button[] = [];
+  private status: 'mounted' | 'unmounted' = 'unmounted';
 
   constructor(config: SceneTransitionConfig) {
+    this.game = config.game;
     this.canvas = config.canvas;
     this.ctx = config.ctx;
     this.clickPosition = config.clickPosition;
     this.expireClickPostion = config.expireClickPosition;
+    this.status = 'mounted';
   }
 
   darkScreen(blackoutTime = defaultOpacytyTime, delay = defaultOpacytyTime) {
@@ -86,7 +91,7 @@ export class SceneTransition {
   private checkClick() {
     this.buttons.forEach(button => {
       if (this.inBounds(button)) {
-        button.handleClick();
+        button.handleClick(this.game);
       }
     });
     this.expireClickPostion();
@@ -102,6 +107,10 @@ export class SceneTransition {
         clickPos.y > button.position.y + button.height / 2
       );
     return false;
+  }
+
+  get getGame(): Game {
+    return this.game;
   }
 
   deleteObjects() {
@@ -176,5 +185,11 @@ export class SceneTransition {
       this.opacity += this.opacitySpeed;
     }
     this.draw();
+  }
+
+  clear() {
+    this.deleteObjects();
+    this.opacity = 0;
+    this.opacitySpeed = 0;
   }
 }

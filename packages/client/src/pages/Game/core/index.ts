@@ -30,6 +30,7 @@ export class Game {
     const { canvas, ctx } = this.initCanvas(config.canvas);
     this.directions = new DirectionsInput({ canvas });
     this.sceneTransition = new SceneTransition({
+      game: this,
       canvas,
       ctx,
       clickPosition: this.directions.getClickPosition,
@@ -116,9 +117,20 @@ export class Game {
     window.addEventListener('resize', this.resize);
   }
 
+  set setStatus(gameStatus: GameStatus) {
+    this.status = gameStatus;
+  }
+
+  clear() {
+    this.map?.clear();
+    this.sceneTransition.clear();
+  }
+
   unmount() {
     this.status = 'unmounted';
     this.directions.unmount();
+    this.map?.clear();
+    this.sceneTransition.clear();
     window.removeEventListener('resize', this.resize);
   }
 

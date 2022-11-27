@@ -6,11 +6,13 @@ import {
   endGameLabel,
   endGameButton,
 } from '../../overworld/scene-transition/stats';
+import { defaultPlayerStats } from './stats';
 
 /**
  * Класс игрока. Главная сущность игры в виде космического корабля.
  * */
 export class Player extends GameObject {
+  private status: 'mounted' | 'unmounted' = 'unmounted';
   private direction: Coordinates;
   private lives: number;
   private maxLives: number;
@@ -21,6 +23,7 @@ export class Player extends GameObject {
   constructor(config: PlayerConfig) {
     super({ ...config, imageSrc: config.imageSrc.healthy });
 
+    this.status = 'mounted';
     this.direction = config.direction;
     this.lives = config.lives;
     this.maxLives = config.maxLives;
@@ -55,7 +58,7 @@ export class Player extends GameObject {
           x: this.canvas.width / 2,
           y: (2 * this.canvas.height) / 3,
         },
-        ...endGameButton,
+        ...endGameButton(this.sceneTransition.getGame),
       });
 
       this.sceneTransition.darkScreen(2000, 5000);
@@ -97,7 +100,7 @@ export class Player extends GameObject {
   }
 
   protected draw() {
-    this.sprite.drawImageLookAt(this.direction);
+    if (this.status === 'mounted') this.sprite.drawImageLookAt(this.direction);
   }
 
   update() {
@@ -114,5 +117,11 @@ export class Player extends GameObject {
 
     this.keepInsideCanvas();
     this.draw();
+  }
+
+  clear() {
+    this.updateLives(this.maxLives - this.lives - 1);
+    this.position.x = this.canvas.width / 2;
+    this.position.y = this.canvas.height;
   }
 }

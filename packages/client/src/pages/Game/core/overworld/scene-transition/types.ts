@@ -1,7 +1,9 @@
+import { Game } from '../../../core';
 import { CanvasProperties, Coordinates } from '../../types';
 
 export type SceneTransitionConfig = CanvasProperties & {
   clickPosition: Coordinates;
+  game: Game;
   expireClickPosition: () => void;
 };
 
@@ -22,7 +24,7 @@ export type Button = {
   width: number;
   height: number;
   position: Coordinates;
-  handleClick: () => void;
+  handleClick: (game: Game) => void;
   deleteDelay?: number;
   text?: string;
   color?: string;

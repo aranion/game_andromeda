@@ -150,6 +150,14 @@ export class GameMap {
     }
   }
 
+  clear() {
+    this.asteroids = [];
+    this.particlesGroups.splice(1, this.particlesGroups.length - 1); // вырезать всё, кроме звёзд
+    this.resources = [];
+    this.player.clear();
+    this.score = 0;
+  }
+
   private drawUI() {
     this.ctx.fillStyle = styles.fontColor;
     this.ctx.fillText(`Score: ${this.score}`, 10, 50);
