@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { store } from './store';
 import { ErrorBoundary } from './components';
+import { startServiceWorker } from './startServiceWorker';
 
 const rootElement = document.getElementById('root');
 
@@ -24,3 +25,5 @@ if (rootElement) {
 } else {
   throw new Error('HTML element with id = "root" not found');
 }
+
+startServiceWorker();

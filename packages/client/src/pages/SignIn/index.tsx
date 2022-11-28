@@ -1,5 +1,6 @@
 import { Star, ButtonStar, AuthForm, TitlePage } from 'src/components';
 import './styles.css';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
 import { useAuth } from 'src/hooks/useAuth';
@@ -28,7 +29,7 @@ const configStarNoMobile = [
 ];
 
 export default function SignIn() {
-  const { signIn } = useAuth();
+  const { signIn, isAuth } = useAuth();
 
   const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,6 +43,12 @@ export default function SignIn() {
 
   const navigate = useNavigate();
   const navigateSignUp = () => navigate(RouterList.SIGN_UP);
+
+  useEffect(() => {
+    if (isAuth) {
+      navigate(RouterList.HOME);
+    }
+  }, [isAuth]);
 
   return (
     <>
@@ -70,12 +77,14 @@ export default function SignIn() {
             name='login'
             type='text'
             placeholder='Login'
+            required
           />
           <AuthForm.Input
             typeComponent='input'
             name='password'
             type='password'
             placeholder='Password'
+            required
           />
         </AuthForm>
 

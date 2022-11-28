@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import {
+  authSelectors,
   useLazyCheckAuthUserQuery,
   useLogoutMutation,
   useSignInMutation,
   useSignUpMutation,
-} from 'src/store/auth/api';
+} from 'src/store/auth';
 import { useActions } from './useActions';
 import { useTypeSelector } from './useTypeSelector';
-import { authSelectors } from 'src/store/auth';
 import { RouterList } from 'src/router/routerList';
 import type { RequestSignIn, RequestSignUp } from 'src/store/auth/type';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
@@ -56,13 +56,15 @@ export const useAuth = () => {
       fetchSignIn(params)
         .then(res => {
           if ('data' in res) {
-            setIsAuth(true);
+            checkIsAuth();
             navigate(RouterList.HOME);
           } else {
             error(res.error);
           }
         })
         .catch(console.error);
+    } else {
+      navigate(RouterList.HOME);
     }
   };
 
@@ -81,6 +83,8 @@ export const useAuth = () => {
           }
         })
         .catch(console.error);
+    } else {
+      navigate(RouterList.HOME);
     }
   };
 

@@ -25,6 +25,3 @@ export const userSlice = createSlice({
     resetUserState: () => initialState,
   },
 });
-
-export const userActions = userSlice.actions;
-export const userReducer = userSlice.reducer;

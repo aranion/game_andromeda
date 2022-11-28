@@ -1,5 +1,6 @@
 import { Star, ButtonStar, AuthForm, TitlePage } from 'src/components';
 import './styles.css';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
 import { useAuth } from 'src/hooks/useAuth';
@@ -23,7 +24,7 @@ const configStar = [
 ];
 
 export default function SignUp() {
-  const { signUp } = useAuth();
+  const { signUp, isAuth } = useAuth();
 
   const handleSignUp = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,6 +38,12 @@ export default function SignUp() {
 
   const navigate = useNavigate();
   const navigateSignIn = () => navigate(RouterList.SIGN_IN);
+
+  useEffect(() => {
+    if (isAuth) {
+      navigate(RouterList.HOME);
+    }
+  }, [isAuth]);
 
   return (
     <>
@@ -61,42 +68,49 @@ export default function SignUp() {
             name='email'
             type='email'
             placeholder='Email'
+            required
           />
           <AuthForm.Input
             typeComponent='input'
             name='login'
             type='text'
             placeholder='Login'
+            required
           />
           <AuthForm.Input
             typeComponent='input'
             name='first_name'
             type='text'
             placeholder='First Name'
+            required
           />
           <AuthForm.Input
             typeComponent='input'
             name='second_name'
             type='text'
             placeholder='Last Name'
+            required
           />
           <AuthForm.Input
             typeComponent='input'
             name='phone'
             type='text'
             placeholder='Phone'
+            required
           />
           <AuthForm.Input
             typeComponent='input'
             name='password'
             type='password'
             placeholder='Password'
+            required
           />
           <AuthForm.Input
             typeComponent='input'
             name='password'
             type='password'
             placeholder='Password (Again)'
+            required
           />
         </AuthForm>
 

@@ -1,4 +1,6 @@
 import { GameObject } from '../game-object';
+import { store } from 'src/store';
+import { gameActions } from 'src/store/game';
 import type { PlayerConfig, PlayerSkin } from './types';
 import type { Coordinates } from '../../types';
 import { SceneTransition } from '../../overworld/scene-transition';
@@ -41,7 +43,7 @@ export class Player extends GameObject {
     return this.shielded;
   }
 
-  updateLives(num: number) {
+  updateLives(num: number, score: number) {
     const newLives = this.lives + num;
 
     if (newLives <= 0) {
@@ -50,6 +52,7 @@ export class Player extends GameObject {
         endGameButton(this.sceneTransition.getGame)
       );
       this.sceneTransition.darkScreen(2000, 5000);
+      this.dispatchScore(score);
       return;
     }
 
@@ -107,9 +110,13 @@ export class Player extends GameObject {
     this.draw();
   }
 
+
   clear() {
     this.updateLives(this.maxLives - this.lives - 1);
     this.position.x = this.canvas.width / 2;
     this.position.y = this.canvas.height;
+
+  private dispatchScore(score: number) {
+    store.dispatch(gameActions.setHightScore(score));
   }
 }
