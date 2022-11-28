@@ -110,11 +110,11 @@ export class Player extends GameObject {
     this.draw();
   }
 
-
   clear() {
-    this.updateLives(this.maxLives - this.lives - 1);
+    this.updateLives(this.maxLives - this.lives - 1, 0);
     this.position.x = this.canvas.width / 2;
     this.position.y = this.canvas.height;
+  }
 
   private dispatchScore(score: number) {
     store.dispatch(gameActions.setHightScore(score));
