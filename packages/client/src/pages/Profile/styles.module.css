@@ -25,6 +25,9 @@
   &__nickname {
     font-size: 2.5rem;
     margin: 25px;
+    width: 80%;
+    overflow: hidden;
+    overflow-wrap: anywhere;
   }
 
   &__buttons {
