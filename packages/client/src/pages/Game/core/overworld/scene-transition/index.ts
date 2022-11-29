@@ -55,6 +55,7 @@ export class SceneTransition {
     this.buttonsId.push(id);
 
     button.classList.add(buttonConfig.cssClassName);
+    button.classList.add('button');
     button.innerText = buttonConfig.text;
     button.id = id;
     button.addEventListener('click', () => buttonConfig.handleClick(this.game));
