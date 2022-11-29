@@ -17,3 +17,4 @@ export * from './Forum';
 export * from './ProfileFields';
 export * from './ButtonStar';
 export * from './ButtonFullscreen';
+export * from './PauseMenu';

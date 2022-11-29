@@ -4,6 +4,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: InitialState = {
   hightScore: null,
+  gameStatus: 'running',
 };
 
 export const gameSlice = createSlice({
@@ -12,6 +13,12 @@ export const gameSlice = createSlice({
   reducers: {
     setHightScore(state, { payload }: PayloadAction<number | null>) {
       state.hightScore = payload;
+    },
+    setGameStatus(
+      state,
+      { payload }: PayloadAction<InitialState['gameStatus']>
+    ) {
+      state.gameStatus = payload;
     },
   },
 });

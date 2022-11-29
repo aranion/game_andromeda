@@ -4,13 +4,15 @@ import { Player } from './entities/player';
 import { defaultPlayerStats } from './entities/player/stats';
 import { mapConfig } from './map.config';
 import { FPS } from './constants';
+import { store } from 'src/store';
 import type { CanvasProperties, GameMapConfig } from './types';
+import { gameActions } from 'src/store/game';
 
 type GameConfig = {
   canvas: HTMLCanvasElement;
 };
 
-type GameStatus = 'unmounted' | 'paused' | 'running';
+type GameStatus = 'stopped' | 'paused' | 'running';
 
 /**
  * Основной класс, управляет циклом игры, меняет карту уровней.
@@ -21,7 +23,7 @@ export class Game {
   private map: GameMap | null = null;
   private directions: DirectionsInput;
   private readonly player: Player;
-  private status: GameStatus = 'unmounted';
+  private status: GameStatus = 'stopped';
   private frame = 0;
 
   constructor(config: GameConfig) {
@@ -40,12 +42,13 @@ export class Game {
   }
 
   private startGameLoop() {
-    this.status = 'running';
+    this.dispatchStatus('running');
+    this.updateGameStatus('running');
     let last = performance.now();
     const framesDelta = 1000 / FPS;
 
     const step = (now: number) => {
-      if (this.status === 'unmounted') {
+      if (this.status === 'stopped') {
         return;
       }
 
@@ -105,15 +108,9 @@ export class Game {
     this.directions.mount();
     window.addEventListener('resize', this.resize);
   }
-  pause() {
-    this.status = 'paused';
-  }
 
-  unpause() {
-    this.status = 'running';
-  }
   unmount() {
-    this.status = 'unmounted';
+    this.updateGameStatus('stopped');
     this.directions.unmount();
     window.removeEventListener('resize', this.resize);
   }
@@ -122,5 +119,12 @@ export class Game {
     this.mount();
     this.startMap(mapConfig.level_1);
     this.startGameLoop();
+  }
+
+  public updateGameStatus(status: GameStatus) {
+    this.status = status;
+  }
+  private dispatchStatus(status: GameStatus) {
+    store.dispatch(gameActions.setGameStatus(status));
   }
 }
