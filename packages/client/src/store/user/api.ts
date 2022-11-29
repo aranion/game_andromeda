@@ -1,6 +1,21 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_URL } from 'src/constants/vars';
-import type { RequestUserData, ResponseUserData } from './type';
+import type {
+  RequestUpdateAvatar,
+  RequestUpdatePassword,
+  RequestUpdateProfile,
+  RequestUserData,
+  ResponseUpdateProfile,
+  ResponseUserData,
+  User,
+} from './type';
+
+const DEFAULT_OPTIONS = { credentials: 'include', method: 'PUT' } as const;
+
+const transformResponse = (res: ResponseUpdateProfile) => {
+  delete res.status;
+  return res;
+};
 
 export const userApi = createApi({
   reducerPath: 'user/api',
@@ -13,9 +28,37 @@ export const userApi = createApi({
         url: `/${userId}`,
         credentials: 'include',
       }),
-      transformResponse: (res: ResponseUserData) => res,
+    }),
+    updateProfile: build.query<User, RequestUpdateProfile>({
+      query: body => ({
+        ...DEFAULT_OPTIONS,
+        url: '/profile',
+        body,
+      }),
+      transformResponse,
+    }),
+    updateAvatar: build.query<User, RequestUpdateAvatar>({
+      query: body => ({
+        ...DEFAULT_OPTIONS,
+        url: '/profile/avatar',
+        body,
+      }),
+      transformResponse,
+    }),
+    updatePassword: build.query<string, RequestUpdatePassword>({
+      query: body => ({
+        ...DEFAULT_OPTIONS,
+        url: '/password',
+        body,
+        responseHandler: res => res.text(),
+      }),
     }),
   }),
 });
 
-export const { useLazyFetchUserDataQuery } = userApi;
+export const {
+  useLazyFetchUserDataQuery,
+  useLazyUpdateAvatarQuery,
+  useLazyUpdatePasswordQuery,
+  useLazyUpdateProfileQuery,
+} = userApi;
