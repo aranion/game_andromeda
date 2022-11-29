@@ -19,11 +19,13 @@ export class SceneTransition {
     this.ctx = config.ctx;
   }
 
-  darkScreen(blackoutTime = defaultOpacytyTime, delay = defaultOpacytyTime) {
+  darkScreen(blackoutTime = defaultOpacytyTime, delay?: number) {
     this.opacitySpeed = FPS / blackoutTime;
-    setTimeout(() => {
-      this.opacitySpeed = -FPS / blackoutTime;
-    }, blackoutTime + delay);
+    if (delay) {
+      setTimeout(() => {
+        this.opacitySpeed = -FPS / blackoutTime;
+      }, blackoutTime + delay);
+    }
   }
 
   createLabel(labelConfig: LabelConfig) {

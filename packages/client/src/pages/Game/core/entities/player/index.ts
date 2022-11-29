@@ -51,7 +51,7 @@ export class Player extends GameObject {
       this.sceneTransition.createButton(
         endGameButton(this.sceneTransition.getGame)
       );
-      this.sceneTransition.darkScreen(2000, 5000);
+      this.sceneTransition.darkScreen(2000);
       this.dispatchScore(score);
       return;
     }
