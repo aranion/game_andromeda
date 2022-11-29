@@ -1,22 +1,25 @@
 import cls from './styles.module.css';
-import { Avatar } from 'src/components';
+import { Avatar, Loader } from 'src/components';
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
-import type { Leader } from 'src/pages/LeaderBoard';
+import type { Leader } from 'src/store/leaderBoard/type';
 
-const headersColumns = ['Avatar', 'Position', 'Nickname', 'HighScore'];
+const HEADERS_COLUMNS = ['Position', 'Avatar', 'Nickname', 'HighScore'];
 
 export function BoardTable(props: Props) {
-  const { leaders } = props;
+  const { leaders, isLoading = false } = props;
+  const isEmptyData = leaders.length === 0;
 
   const navigate = useNavigate();
 
   return (
     <div className={cls.boardTable}>
+      {isLoading && <Loader />}
+
       <table className={cls.boardTable__table}>
         <thead className={cls.boardTable__table_tr}>
           <tr>
-            {headersColumns.map((title, i) => (
+            {HEADERS_COLUMNS.map((title, i) => (
               <th key={i} className={cls.boardTable__table_th}>
                 {title}
               </th>
@@ -24,13 +27,23 @@ export function BoardTable(props: Props) {
           </tr>
         </thead>
         <tbody>
+          {isEmptyData && (
+            <tr>
+              <td
+                className={cls.boardTable__table_empty}
+                colSpan={HEADERS_COLUMNS.length}>
+                No leaders.
+              </td>
+            </tr>
+          )}
+
           {leaders.map((leader, i) => {
-            const { highScore, nickname, userId } = leader;
+            const { highScore, nickname, id, avatar } = leader;
             const startPosition = 4;
             const position = i + startPosition;
 
             const handleNavigate = () => {
-              navigate(`${RouterList.PROFILE}/${userId}`);
+              navigate(`${RouterList.PROFILE}/${id}`);
             };
 
             return (
@@ -38,12 +51,12 @@ export function BoardTable(props: Props) {
                 key={i}
                 className={cls.boardTable__table_tr}
                 onClick={handleNavigate}>
+                <td className={cls.boardTable__table_td}>{position}</td>
                 <td className={cls.boardTable__table_td}>
                   <div className={cls.boardTable__table_avatar}>
-                    <Avatar />
+                    <Avatar path={avatar} />
                   </div>
                 </td>
-                <td className={cls.boardTable__table_td}>{position}</td>
                 <td className={cls.boardTable__table_td}>{nickname}</td>
                 <td className={cls.boardTable__table_td}>{highScore}</td>
               </tr>
@@ -57,4 +70,5 @@ export function BoardTable(props: Props) {
 
 type Props = {
   leaders: Leader[];
+  isLoading?: boolean;
 };

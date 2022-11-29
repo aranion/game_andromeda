@@ -1,4 +1,4 @@
-import { ParticlesGroupType } from '../../particles/types';
+import { ParticlesGroupType } from '../../effects/particles/types';
 import { randomInteger } from '../../utils/random-integer';
 import { images } from './stats';
 

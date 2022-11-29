@@ -1,24 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import type {
   TopicProps,
   FetchTopics,
   FetchForumName,
 } from 'src/store/forum/types';
-import { ButtonBack, Star, TopicItem, NewTopicButton } from 'src/components';
-import './styles.css';
-
-const configStar = [
-  { top: '7%', left: '3%' },
-  { top: '2%', left: '15%' },
-  { top: '3%', left: '80%' },
-  { top: '13%', left: '89%' },
-  { top: '87%', left: '3%' },
-  { top: '76%', left: '89%' },
-];
+import {
+  ButtonBack,
+  TopicItem,
+  NewTopicButton,
+  ButtonFullscreen,
+} from 'src/components';
+import styles from './styles.module.css';
 
 export default function ForumItemPage() {
   const { forumId } = useParams<{ forumId?: string }>();
+  const fullscrinableElem = useRef(null);
 
   const [topics, setTopics] = useState<TopicProps[]>([]);
   const [forumName, setforumName] = useState<string>('');
@@ -58,19 +55,16 @@ export default function ForumItemPage() {
   }, []);
 
   return (
-    <div className='forum'>
-      {configStar.map((item, idx) => (
-        <Star key={idx} top={item.top} left={item.left} />
-      ))}
-
+    <div className={styles.forum} ref={fullscrinableElem}>
       <ButtonBack />
+      <ButtonFullscreen elemRef={fullscrinableElem} />
 
       <h1 className='main-menu__title'>{forumName}</h1>
-      <table className='main-table'>
+      <table className={styles.table}>
         <thead>
           <tr>
-            <th className='main-table__th'>Topics</th>
-            <th className='main-table__th'>Comments</th>
+            <th className={styles.table__th}>Topics</th>
+            <th className={styles.table__th}>Comments</th>
           </tr>
         </thead>
         <tbody>

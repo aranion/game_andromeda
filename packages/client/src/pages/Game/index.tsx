@@ -1,6 +1,8 @@
-import { useLayoutEffect, useRef, useState } from 'react';
-import { Button } from '../../components/Button';
-import { Modal } from '../../components/Modal';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Button, Modal } from '../../components';
+import { useLeaderBoard } from '../../hooks/useLeaderBoard';
+import { useTypeSelector } from '../../hooks/useTypeSelector';
+import { gameSelectors } from '../../store/game';
 import { Game } from './core';
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from '../../router/routerList';
@@ -9,8 +11,13 @@ import './game.css';
 export default function GamePage() {
   const canvas = useRef<HTMLCanvasElement>(null);
   const game = useRef<Game | null>(null);
+
   const [activePauseMenu, setActivePauseMenu] = useState(false);
   const navigate = useNavigate();
+
+  const hightScore = useTypeSelector(gameSelectors.hightScore);
+
+  const { addTeamLeader } = useLeaderBoard();
 
   const setActivePauseMenuMutated = (newValue: boolean) => {
     if (newValue) {
@@ -52,6 +59,12 @@ export default function GamePage() {
     }
     return () => game?.current?.unmount();
   }, [canvas]);
+
+  useEffect(() => {
+    if (hightScore) {
+      addTeamLeader(hightScore);
+    }
+  }, [hightScore]);
 
   return (
     <>

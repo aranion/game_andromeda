@@ -1,30 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Card,
   ButtonBack,
-  Star,
   NewCommentButton,
   Comment,
+  ButtonFullscreen,
 } from 'src/components';
-import './style.css';
 import type {
   TopicProps,
   CommentProps,
   FetchComments,
 } from 'src/store/forum/types';
-
-const configStar = [
-  { top: '7%', left: '3%' },
-  { top: '2%', left: '15%' },
-  { top: '3%', left: '80%' },
-  { top: '13%', left: '89%' },
-  { top: '87%', left: '3%' },
-  { top: '76%', left: '89%' },
-];
+import styles from './styles.module.css';
 
 export default function TopicPage() {
   const { topicId } = useParams<{ topicId?: string }>();
+  const fullscrinableElem = useRef(null);
 
   const [topic, setTopic] = useState<TopicProps>();
   const [comments, setComments] = useState<CommentProps[]>([]);
@@ -77,18 +69,15 @@ export default function TopicPage() {
   }, []);
 
   return (
-    <div className='topic'>
-      {configStar.map((item, idx) => (
-        <Star key={idx} top={item.top} left={item.left} />
-      ))}
-
+    <div className={styles.topic} ref={fullscrinableElem}>
       <ButtonBack />
+      <ButtonFullscreen elemRef={fullscrinableElem} />
 
       <h1 className='main-menu__title'>Community</h1>
-      <Card className='topic__info'>
-        <div className='topic__title'>{topic?.title || ''}</div>
-        <div className='topic__content'>{topic?.content || ''}</div>
-        <div className='topic__author'>{topic?.author || ''}</div>
+      <Card className={styles.topic__info}>
+        <div className={styles.topic__title}>{topic?.title || ''}</div>
+        <div className={styles.topic__content}>{topic?.content || ''}</div>
+        <div className={styles.topic__author}>{topic?.author || ''}</div>
       </Card>
       <div>
         {comments.map(comment => {
