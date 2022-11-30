@@ -4,6 +4,7 @@ import { Resource } from '../../entities/resource';
 import { Asteroid } from '../../entities/asteroid';
 import { asteroidExplode } from '../../entities/asteroid/particles';
 import { resourceExplode } from '../../entities/resource/particles';
+import { SceneTransition } from '../scene-transition';
 import { createAsteroidConfig } from '../../entities/asteroid/stats';
 import { Particles } from '../../effects/particles';
 import { getStarsConfig } from './particles';
@@ -22,6 +23,7 @@ export class GameMap {
     asteroid: number;
     resource: number;
   };
+  private sceneTransition: SceneTransition;
   private score = 0;
   private readonly player: Player;
   private resources: Resource[] = [];
@@ -33,6 +35,7 @@ export class GameMap {
     this.ctx = config.ctx;
     this.spawnInterval = config.spawnInterval;
     this.player = config.player;
+    this.sceneTransition = config.sceneTransition;
 
     this.createStarsBackground();
   }
@@ -147,6 +150,14 @@ export class GameMap {
     }
   }
 
+  clear() {
+    this.asteroids = [];
+    this.particlesGroups.splice(1, this.particlesGroups.length - 1); // вырезать всё, кроме звёзд
+    this.resources = [];
+    this.player.clear();
+    this.score = 0;
+  }
+
   private drawUI() {
     this.ctx.fillStyle = styles.fontColor;
     this.ctx.fillText(`Score: ${this.score}`, 10, 50);
@@ -166,5 +177,6 @@ export class GameMap {
     this.handleResources(frame);
     this.handleAsteroids(frame);
     this.drawUI();
+    this.sceneTransition.update();
   }
 }

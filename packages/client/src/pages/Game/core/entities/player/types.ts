@@ -2,6 +2,7 @@ import { GameObjectConfig } from '../game-object/types';
 import { Coordinates } from '../../types';
 import { AnimationKey } from '../../constants';
 import { AnimationType } from '../../animations.config';
+import { SceneTransition } from '../../overworld/scene-transition';
 
 export type PlayerAnimationKey = AnimationKey.SpaceshipFly;
 
@@ -21,4 +22,5 @@ export type PlayerConfig = Omit<GameObjectConfig, 'imageSrc'> & {
   maxLives: number;
   shielded?: boolean;
   imageSrc: PlayerSkin;
+  sceneTransition: SceneTransition;
 };
