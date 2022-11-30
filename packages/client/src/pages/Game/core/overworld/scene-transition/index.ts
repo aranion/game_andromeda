@@ -2,7 +2,7 @@ import { Game } from '../../../core';
 import { FPS } from '../../constants';
 import { SceneTransitionConfig, LabelConfig, ButtonConfig } from './types';
 
-const defaultOpacytyTime = 3000;
+const defaultOpacityTime = 3000;
 
 export class SceneTransition {
   private game: Game;
@@ -19,7 +19,7 @@ export class SceneTransition {
     this.ctx = config.ctx;
   }
 
-  darkScreen(blackoutTime = defaultOpacytyTime, delay?: number) {
+  darkScreen(blackoutTime = defaultOpacityTime, delay?: number) {
     this.opacitySpeed = FPS / blackoutTime;
     if (delay) {
       setTimeout(() => {
@@ -44,7 +44,6 @@ export class SceneTransition {
     if (labelConfig.deleteDelay) {
       setTimeout(() => {
         label.remove();
-        console.log('remove label');
       }, labelConfig.deleteDelay);
     }
   }

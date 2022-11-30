@@ -1,6 +1,4 @@
-import { getMutationCacheKey } from '@reduxjs/toolkit/dist/query/core/buildSlice';
 import { Game } from '../../../core';
-import endGameButtonSrc from '../../assets/finish-button/finish.png';
 import { ButtonConfig, LabelConfig } from './types';
 
 export const endGameLabel: LabelConfig = {
@@ -10,7 +8,7 @@ export const endGameLabel: LabelConfig = {
 
 export function endGameButton(game: Game): Omit<ButtonConfig, 'position'> {
   return {
-    text: 'new-game',
+    text: 'New Game',
     cssClassName: 'game__button-game-over',
     handleClick: (game: Game) => {
       game.clear();
