@@ -7,11 +7,13 @@ import { BrowserRouter } from 'react-router-dom';
 import { store } from './store';
 import { ErrorBoundary } from './components';
 import { startServiceWorker } from './startServiceWorker';
+import { hydrateRoot } from 'react-dom/client';
 
 const rootElement = document.getElementById('root');
 
 if (rootElement) {
-  ReactDOM.createRoot(rootElement).render(
+  hydrateRoot(
+    rootElement,
     <React.StrictMode>
       <BrowserRouter>
         <Provider store={store}>
