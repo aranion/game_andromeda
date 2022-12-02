@@ -24,6 +24,6 @@
     "paths": {
       "*": ["types/*"]
     },
-    "outDir": "api"
+    "outDir": "dist"
   }
 }
