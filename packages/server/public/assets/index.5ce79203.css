@@ -1,0 +1,50 @@
+._wrapper_vjhpk_1 {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+}
+._profile_vjhpk_13 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  margin: 25px auto;
+  background: var(--color-normal);
+  box-shadow: 2px 2px 2px #00000038, 0 0 40px #ffffed1a;
+  border-radius: 30px;
+  flex-basis: 50%;
+  width: 900px;
+}
+._profile__avatar_vjhpk_1 {
+  width: 14rem;
+  height: 14rem;
+}
+._profile__nickname_vjhpk_1 {
+  font-size: 2.5rem;
+  margin: 25px;
+  width: 80%;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+._profile__buttons_vjhpk_1 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 40px;
+}
+._profile__buttons_width_vjhpk_1 {
+  min-width: 200px;
+}
+@media only screen and (max-width: 900px) {
+  ._profile_vjhpk_13 {
+    width: 600px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  ._profile_vjhpk_13 {
+    width: 100%;
+  }
+}
