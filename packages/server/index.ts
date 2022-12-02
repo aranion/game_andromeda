@@ -13,8 +13,22 @@ createClientAndConnect();
 
 app.get('/', (_, res) => {
   res.json('👋 Howdy from the server :)');
+  res.setHeader('Content-Type', 'text/html');
+  res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
+  res.end('Hello! Go to item:');
+});
+
+app.get('/api/item/:slug', (req, res) => {
+  const { slug } = req.params;
+  res.end(`Item: ${slug}`);
+});
+//@ts-ignore
+app.get('*', (req, res) => {
+  res.json('👋 ...... :)');
 });
 
 app.listen(port, () => {
   console.log(`  ➜ 🎸 Server is listening on port: ${port}`);
 });
+
+module.exports = app;

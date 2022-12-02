@@ -16,8 +16,19 @@ const port = Number(process.env.SERVER_PORT) || 3001;
 (0, db_1.createClientAndConnect)();
 app.get('/', (_, res) => {
   res.json('👋 Howdy from the server :)');
+  res.setHeader('Content-Type', 'text/html');
+  res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
+  res.end(`Hello! Go to item:`);
+});
+app.get('/api/item/:slug', (req, res) => {
+  const { slug } = req.params;
+  res.end(`Item: ${slug}`);
+});
+app.get('*', (req, res) => {
+  res.json('👋 ...... :)');
 });
 app.listen(port, () => {
   console.log(`  ➜ 🎸 Server is listening on port: ${port}`);
 });
+module.exports = app;
 //# sourceMappingURL=index.js.map
