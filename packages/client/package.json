@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build:client": "vite build --outDir=dist/client",
+    "build:ssr": "vite build --outDir=dist/ssr --ssr src/entry-server.tsx",
+    "build": "rm -rf ./dist && yarn build:client && yarn build:ssr",
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -19,6 +21,7 @@
     "modern-normalize": "1.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hot-loader": "4.13.1",
     "react-redux": "8.0.4",
     "react-router-dom": "6.4.2",
     "yup": "0.32.11"

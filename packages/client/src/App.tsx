@@ -8,14 +8,15 @@ import { RouterList } from './router/routerList';
 import { ButtonFullscreen } from './components';
 
 function App() {
-  const { checkIsAuth } = useAuth();
-
-  const { pathname } = useLocation();
+  // const { checkIsAuth } = useAuth();
+  // const { pathname } = useLocation();
   const refWrapper = useRef(null);
   const fullscrinableElem = useRef(null);
 
   const startStarts = useCallback(() => {
-    const isNotGamePage = pathname.toLocaleLowerCase() !== RouterList.GAME;
+    // const isNotGamePage = pathname.toLocaleLowerCase() !== RouterList.GAME;
+    const isNotGamePage =
+      document.location.pathname.toLocaleLowerCase() !== RouterList.GAME;
 
     if (refWrapper && isNotGamePage) {
       const { amount, size, duration } = CONFIG_STARS_PARAMS;
@@ -56,7 +57,7 @@ function App() {
   }, [refWrapper]);
 
   useEffect(() => {
-    checkIsAuth();
+    // checkIsAuth();
     startStarts();
 
     const fetchServerData = async () => {
@@ -71,10 +72,10 @@ function App() {
   return (
     <div className={cls.app} ref={fullscrinableElem}>
       <main className={cls.app__content}>
-        <Router />
+        SSR...
+        {/* <Router /> */}
       </main>
-      <ButtonFullscreen elemRef={fullscrinableElem} />
-
+      {/* <ButtonFullscreen elemRef={fullscrinableElem} /> */}
       <div ref={refWrapper}></div>
     </div>
   );
