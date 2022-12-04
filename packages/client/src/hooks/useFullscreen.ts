@@ -18,13 +18,17 @@ interface DocumentElementWithFullscreen extends HTMLElement {
 type NewTypeElement = Element & { ALLOW_KEYBOARD_INPUT: number };
 
 const getIsFullscreen = () => {
-  const doc = document as DocumentWithFullscreen;
-  return (
-    doc.fullscreenElement ||
-    doc.mozFullScreenElement ||
-    doc.webkitFullscreenElement ||
-    doc.msFullscreenElement
-  );
+  if (typeof window !== 'undefined') {
+    const doc = document as DocumentWithFullscreen;
+    return (
+      doc.fullscreenElement ||
+      doc.mozFullScreenElement ||
+      doc.webkitFullscreenElement ||
+      doc.msFullscreenElement
+    );
+  } else {
+    console.log('You are on the server');
+  }
 };
 
 const activateFullscreen = (elem: DocumentElementWithFullscreen) => {
@@ -50,15 +54,19 @@ export const useFullscreen = (elRef: React.RefObject<HTMLElement>) => {
   };
 
   const exitFullscreen = () => {
-    const doc = document as DocumentWithFullscreen;
-    if (doc.exitFullscreen) {
-      doc.exitFullscreen();
-    } else if (doc.msExitFullscreen) {
-      doc.msExitFullscreen();
-    } else if (doc.mozCancelFullScreen) {
-      doc.mozCancelFullScreen();
-    } else if (doc.webkitExitFullscreen) {
-      doc.webkitExitFullscreen();
+    if (typeof window !== 'undefined') {
+      const doc = document as DocumentWithFullscreen;
+      if (doc.exitFullscreen) {
+        doc.exitFullscreen();
+      } else if (doc.msExitFullscreen) {
+        doc.msExitFullscreen();
+      } else if (doc.mozCancelFullScreen) {
+        doc.mozCancelFullScreen();
+      } else if (doc.webkitExitFullscreen) {
+        doc.webkitExitFullscreen();
+      }
+    } else {
+      console.log('You are on the server');
     }
   };
 
@@ -66,9 +74,12 @@ export const useFullscreen = (elRef: React.RefObject<HTMLElement>) => {
     function onFullscreenChange() {
       setIsFullscreen(getIsFullscreen());
     }
-    document.addEventListener('fullscreenchange', onFullscreenChange);
+    window?.document.addEventListener('fullscreenchange', onFullscreenChange);
     return () => {
-      document.removeEventListener('fullscreenchange', onFullscreenChange);
+      window?.document.removeEventListener(
+        'fullscreenchange',
+        onFullscreenChange
+      );
     };
   });
 
