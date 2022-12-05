@@ -1,10 +1,10 @@
 import { Navigate } from 'react-router-dom';
 import { Loader } from 'src/components';
-import { useAuth } from 'src/hooks/useAuth';
+// import { useAuth } from 'src/hooks/useAuth';
 import { RouterList } from './routerList';
 
 export function withPrivateRoute(children: JSX.Element) {
-  const { isAuth, isLoadingAuth } = useAuth();
+  const { isAuth, isLoadingAuth } = { isAuth: true, isLoadingAuth: false }; //useAuth();
 
   if (isLoadingAuth) {
     return <Loader />;

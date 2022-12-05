@@ -1,9 +1,9 @@
 import cls from './App.module.css';
 import { useCallback, useEffect, useRef } from 'react';
 import { Router } from './router';
-import { useAuth } from './hooks/useAuth';
+// import { useAuth } from './hooks/useAuth';
 import { CONFIG_STARS_PARAMS } from './constants/vars';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 import { RouterList } from './router/routerList';
 import { ButtonFullscreen } from './components';
 
@@ -73,7 +73,7 @@ function App() {
     <div className={cls.app} ref={fullscrinableElem}>
       <main className={cls.app__content}>
         SSR...
-        {/* <Router /> */}
+        <Router />
       </main>
       <ButtonFullscreen elemRef={fullscrinableElem} />
       <div ref={refWrapper}></div>
