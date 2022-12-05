@@ -70,7 +70,7 @@ export default function Profile() {
   }, [userId]);
 
   if (!isEditProfile && !isCorrectUserId) {
-    return <TitlePage>ID пользователя указан не верно</TitlePage>;
+    return <TitlePage>ID пользователя указан неверно</TitlePage>;
   }
 
   const handleEditProfile = () => {
