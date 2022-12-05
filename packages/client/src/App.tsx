@@ -75,7 +75,7 @@ function App() {
         SSR...
         {/* <Router /> */}
       </main>
-      {/* <ButtonFullscreen elemRef={fullscrinableElem} /> */}
+      <ButtonFullscreen elemRef={fullscrinableElem} />
       <div ref={refWrapper}></div>
     </div>
   );

@@ -1,4 +1,5 @@
-import { useState, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
+import { getDocument } from 'ssr-window';
 
 interface DocumentWithFullscreen extends Document {
   mozFullScreenElement?: HTMLElement;
@@ -18,7 +19,8 @@ interface DocumentElementWithFullscreen extends HTMLElement {
 type NewTypeElement = Element & { ALLOW_KEYBOARD_INPUT: number };
 
 const getIsFullscreen = () => {
-  const doc = document as DocumentWithFullscreen;
+  const doc = getDocument() as DocumentWithFullscreen;
+
   return (
     doc.fullscreenElement ||
     doc.mozFullScreenElement ||
@@ -50,7 +52,8 @@ export const useFullscreen = (elRef: React.RefObject<HTMLElement>) => {
   };
 
   const exitFullscreen = () => {
-    const doc = document as DocumentWithFullscreen;
+    const doc = getDocument() as DocumentWithFullscreen;
+
     if (doc.exitFullscreen) {
       doc.exitFullscreen();
     } else if (doc.msExitFullscreen) {
@@ -61,6 +64,11 @@ export const useFullscreen = (elRef: React.RefObject<HTMLElement>) => {
       doc.webkitExitFullscreen();
     }
   };
+
+  // Если "отрисовка" происходит на сервере, меняем useLayoutEffect
+  if (typeof document === 'undefined') {
+    React.useLayoutEffect = React.useEffect;
+  }
 
   useLayoutEffect(() => {
     function onFullscreenChange() {
