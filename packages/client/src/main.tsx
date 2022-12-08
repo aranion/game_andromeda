@@ -3,7 +3,7 @@ import React from 'react';
 import AppTest from './AppTest';
 import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
-import { configureStore } from '../../server/store/configureStore';
+import { configureStoreSSR } from '../../server/store/configureStoreSSR';
 import { hydrateRoot } from 'react-dom/client';
 import { hot } from 'react-hot-loader/root';
 import { ErrorBoundary } from './components';
@@ -24,7 +24,7 @@ const rootElement = document.getElementById('root');
 if (rootElement) {
   const HotWrapApp: React.FC<Props> = hot(props => <AppTest {...props} />);
 
-  const { store, history } = configureStore(window.__PRELOADED_STATE__, {});
+  const { store, history } = configureStoreSSR(window.__PRELOADED_STATE__, {});
   delete window.__PRELOADED_STATE__;
 
   hydrateRoot(

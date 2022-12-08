@@ -1,25 +1,28 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { setName, setLoading } from '../../server/store';
+import { allActions } from '../../server/store';
 import { go, push, goBack, getRouter } from 'connected-react-router';
 
 function AppTest() {
   const state = useSelector(s => s);
-  const { data, router } = state as any;
+  const { router, auth } = state as any;
   const { location } = router;
+  const { isAuth, isLoadingAuth } = auth;
+
+  const { setIsAuth, setIsLoadingAuth } = allActions;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     console.log('store', state);
-  }, [data, location]);
+  }, [isAuth, isLoadingAuth, location]);
 
   const handle = () => {
     console.log('click');
 
-    dispatch(setLoading(!data.loading));
-    dispatch(setName('NewName... test-random:' + Math.random().toFixed(1)));
+    dispatch(setIsAuth(!isAuth));
+    dispatch(setIsLoadingAuth(!isLoadingAuth));
   };
 
   const handleGoGame = () => {
@@ -35,8 +38,8 @@ function AppTest() {
   return (
     <div>
       <h1>простой SSR c Redux...</h1>
-      <p>name = {data.name}</p>
-      <p>loading = {data.loading ? 'true' : 'false'}</p>
+      <p>isAuth = {isAuth ? 'true' : 'false'}</p>
+      <p>isLoadingAuth = {isLoadingAuth ? 'true' : 'false'}</p>
       <p>path = {location.pathname}</p>
       <button onClick={handle}>Click</button>
       <button onClick={handleGoGame}>Click go Game</button>

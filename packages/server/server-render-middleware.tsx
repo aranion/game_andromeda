@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { configureStore } from './store/configureStore';
+import { configureStoreSSR } from './store/configureStoreSSR';
 import { getInitialState } from './store/index';
 import path from 'path';
 import fs from 'fs';
@@ -10,7 +10,7 @@ import { serializeRenderObject } from './utils/serializeRenderObject';
 export default (req: Request, res: Response) => {
   const location = req.url;
   const context: Record<string, any> = {};
-  const { store } = configureStore(getInitialState(location), {
+  const { store } = configureStoreSSR(getInitialState(location), {
     url: location,
   });
   store.dispatch({ type: '@@redux/INIT' });
