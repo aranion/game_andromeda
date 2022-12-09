@@ -9,7 +9,7 @@ import { authActions, authReducer } from './auth';
 import { userActions, userReducer } from './user';
 import { gameActions, gameReducer } from './game';
 import { leaderBoardActions, leaderBoardReducer } from './leaderBoard';
-import { connectRouter } from 'connected-react-router';
+import { connectRouter, routerActions } from 'connected-react-router';
 import { isServer } from '../utils/isServer';
 import type { RootState } from './getInitialState';
 import type { Reducer } from 'react';
@@ -50,4 +50,5 @@ export const allActions = {
   ...userActions,
   ...gameActions,
   ...leaderBoardActions,
+  ...routerActions,
 };

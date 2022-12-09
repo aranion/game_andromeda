@@ -1,6 +1,7 @@
 import { useActions } from './useActions';
 import { useTypeSelector } from './useTypeSelector';
-import { useLazyFetchUserDataQuery, userSelectors } from 'src/store/user';
+import { useLazyFetchUserDataQuery } from 'src/store/user';
+import { userSelectors } from '../../../server/store/user';
 import {
   useLazyAddLeaderBoardQuery,
   useLazyFetchAllLeaderBoardQuery,

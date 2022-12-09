@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { allActions } from '../../server/store';
-import { go, push, goBack, getRouter } from 'connected-react-router';
-import type { RootState } from '../../server/store/getInitialState';
+import { useTypeSelector } from './hooks/useTypeSelector';
+import { useActions } from './hooks/useActions';
 
 function AppTest() {
-  const state = useSelector(s => s);
-  const { router, auth, user, game, leaderBoard } = state as RootState;
+  const { router, auth, user, game, leaderBoard } = useTypeSelector(
+    state => state
+  );
   const { location } = router;
   const { isAuth, isLoadingAuth } = auth;
 
@@ -17,63 +15,57 @@ function AppTest() {
     setUserData,
     setHightScore,
     setLeaders,
-  } = allActions;
-
-  const dispatch = useDispatch();
+    push,
+    goBack,
+  } = useActions();
 
   useEffect(() => {
-    console.log('store', state);
+    console.log('store', { router, auth, user, game, leaderBoard });
   }, [isAuth, isLoadingAuth, location]);
 
   const handle = () => {
     console.log('click');
 
-    dispatch(setIsAuth(!isAuth));
-    dispatch(setIsLoadingAuth(!isLoadingAuth));
+    setIsAuth(!isAuth);
+    setIsLoadingAuth(!isLoadingAuth);
   };
 
   const handleGoGame = () => {
-    // console.log(getRouter(router));
-
-    dispatch(push('/game'));
+    push('/game');
   };
 
   const handleBack = () => {
-    dispatch(goBack());
+    goBack();
   };
 
   const handleChangeUserData = () => {
-    dispatch(
-      setUserData({
-        avatar: 'Avatar',
-        display_name: 'sdijfsoidf',
-        email: 'asdasd',
-        first_name: 'asdasd',
-        id: 1231231,
-        login: 'asdasd',
-        phone: 'asdasd',
-        second_name: 'asdas',
-      })
-    );
+    setUserData({
+      avatar: 'Avatar',
+      display_name: 'sdijfsoidf',
+      email: 'asdasd',
+      first_name: 'asdasd',
+      id: 1231231,
+      login: 'asdasd',
+      phone: 'asdasd',
+      second_name: 'asdas',
+    });
   };
 
   const handleHightScore = () => {
-    dispatch(setHightScore(777));
+    setHightScore(777);
   };
 
   const handleChangeLeader = () => {
     const { id, avatar, display_name, login } = user.userData;
 
-    dispatch(
-      setLeaders([
-        {
-          highScore: 23423,
-          id: id || 0,
-          avatar,
-          nickname: display_name || login,
-        },
-      ])
-    );
+    setLeaders([
+      {
+        highScore: 23423,
+        id: id || 0,
+        avatar,
+        nickname: display_name || login,
+      },
+    ]);
   };
 
   return (

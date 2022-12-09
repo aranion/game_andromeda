@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useLeaderBoard } from 'src/hooks/useLeaderBoard';
 import { useTypeSelector } from 'src/hooks/useTypeSelector';
-import { gameSelectors } from 'src/store/game';
+import { gameSelectors } from '../../../../server/store/game';
 import { Game } from './core';
 import './game.css';
 
