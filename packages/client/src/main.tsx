@@ -3,7 +3,7 @@ import React from 'react';
 import AppTest from './AppTest';
 import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
-import { configureStoreSSR } from '../../server/store/configureStoreSSR';
+import { configureStoreSSR } from '../../server/store';
 import { hydrateRoot } from 'react-dom/client';
 import { hot } from 'react-hot-loader/root';
 import { ErrorBoundary } from './components';
@@ -24,21 +24,25 @@ const rootElement = document.getElementById('root');
 if (rootElement) {
   const HotWrapApp: React.FC<Props> = hot(props => <AppTest {...props} />);
 
-  const { store, history } = configureStoreSSR(window.__PRELOADED_STATE__, {});
-  delete window.__PRELOADED_STATE__;
+  if (window.__PRELOADED_STATE__) {
+    const { store, history } = configureStoreSSR(window.__PRELOADED_STATE__);
+    delete window.__PRELOADED_STATE__;
 
-  hydrateRoot(
-    rootElement,
-    <React.StrictMode>
-      <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <ErrorBoundary>
-            <HotWrapApp />
-          </ErrorBoundary>
-        </ConnectedRouter>
-      </Provider>
-    </React.StrictMode>
-  );
+    hydrateRoot(
+      rootElement,
+      <React.StrictMode>
+        <Provider store={store}>
+          <ConnectedRouter history={history}>
+            <ErrorBoundary>
+              <HotWrapApp />
+            </ErrorBoundary>
+          </ConnectedRouter>
+        </Provider>
+      </React.StrictMode>
+    );
+  } else {
+    throw new Error('window.__PRELOADED_STATE__ not found');
+  }
 } else {
   throw new Error('HTML element with id = "root" not found');
 }

@@ -1,5 +1,6 @@
-type User = any;
-export type InitialState = {
+import type { User } from '../user/type';
+
+export type AuthInitialState = {
   isAuth: boolean;
   isLoadingAuth: boolean;
 };

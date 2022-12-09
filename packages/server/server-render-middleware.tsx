@@ -1,15 +1,16 @@
 import type { Request, Response } from 'express';
-import { configureStoreSSR } from './store/configureStoreSSR';
-import { getInitialState } from './store/index';
+import { configureStoreSSR } from './store';
+import { getInitialState } from './store/getInitialState';
+import { serializeRenderObject } from './utils/serializeRenderObject';
 import path from 'path';
 import fs from 'fs';
 // @ts-ignore
 import { render } from '../../client/dist/ssr/entry-server.cjs';
-import { serializeRenderObject } from './utils/serializeRenderObject';
 
 export default (req: Request, res: Response) => {
   const location = req.url;
   const context: Record<string, any> = {};
+
   const { store } = configureStoreSSR(getInitialState(location), {
     url: location,
   });
