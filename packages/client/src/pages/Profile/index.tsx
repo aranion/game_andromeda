@@ -1,7 +1,7 @@
 import cls from './styles.module.css';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { userSelectors, useLazyFetchUserDataQuery } from 'src/store/user';
+import { userSelectors } from '../../../../server/store/user';
 import {
   Avatar,
   Button,
@@ -13,12 +13,15 @@ import { useTypeSelector } from 'src/hooks/useTypeSelector';
 import { RouterList, RouterParamsProfile } from 'src/router/routerList';
 import { useAuth } from 'src/hooks/useAuth';
 import { prepareAllProfileFields, preparePasswordProfileFields } from './utils';
-import type { User } from 'src/store/user/type';
+import { BASE_URL } from '../../../../server/constants/vars';
 import type { InputHTMLAttributes } from 'react';
+import type { User } from '../../../../server/store/user/type';
 
 export default function Profile() {
   const [profileData, setProfileData] = useState<User | null>(null);
   const [fields, setFields] = useState<Fields[]>([]);
+  const [isFetching, setIsFetching] = useState(false);
+
   const { userId }: Params = useParams();
   const { pathname } = useLocation();
   const { logout } = useAuth();
@@ -26,8 +29,6 @@ export default function Profile() {
 
   const { userData } = useTypeSelector(userSelectors.all);
   const { id } = userData;
-
-  const [fetchUserData, { isFetching }] = useLazyFetchUserDataQuery();
 
   const nickname = profileData?.display_name || profileData?.login || '';
   const isCorrectUserId = userId && !isNaN(+userId);
@@ -50,22 +51,26 @@ export default function Profile() {
 
   useEffect(() => {
     if (!isEditProfile && isCorrectUserId) {
+      setIsFetching(true);
       setFields([]);
       setProfileData(null);
 
-      fetchUserData(userId)
+      fetch(`${BASE_URL}/user/${userId}`, {
+        credentials: 'include',
+      })
+        .then<User>(res => res.json())
         .then(res => {
-          if (res.data) {
-            const { data } = res;
-            const fields = prepareAllProfileFields(data);
+          if (res) {
+            const fields = prepareAllProfileFields(res);
 
-            setProfileData(data);
+            setProfileData(res);
             setFields(fields);
           } else {
-            console.error(res.error);
+            throw new Error(res);
           }
         })
-        .catch(console.log);
+        .catch(console.error)
+        .finally(() => setIsFetching(false));
     }
   }, [userId]);
 

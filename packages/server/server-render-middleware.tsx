@@ -29,12 +29,12 @@ export default (req: Request, res: Response) => {
   res.status(context.statusCode || 200).send(resultHtml);
 };
 
-function getHtml(reactHtml: string, reduxState = {}) {
+function getHtml(reactHtml: string, reduxState: Record<string, unknown>) {
   const template = path.resolve(
     __dirname,
     '../../client/dist/client/index.html'
   );
-  const preloadedStore = `
+  const preloadedState = `
   <script>
     window.__PRELOADED_STATE__=${serializeRenderObject(reduxState)}
   </script>`;
@@ -42,7 +42,7 @@ function getHtml(reactHtml: string, reduxState = {}) {
   const htmlString = fs.readFileSync(template, 'utf-8');
   const result = htmlString
     .replace('<!--ssr-outlet-->', reactHtml)
-    .replace('<!--store-outlet-->', preloadedStore);
+    .replace('<!--store-outlet-->', preloadedState);
 
   return result;
 }

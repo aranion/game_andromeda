@@ -1,14 +1,14 @@
 import { GameObject } from '../game-object';
-import { store } from 'src/store';
-import { gameActions } from 'src/store/game';
+import { gameActions } from '../../../../../../../server/store/game';
 import type { PlayerConfig, PlayerSkin } from './types';
 import type { Coordinates } from '../../types';
-import { SceneTransition } from '../../overworld/scene-transition';
+import type { SceneTransition } from '../../overworld/scene-transition';
 import {
   endGameLabel,
   endGameButton,
 } from '../../overworld/scene-transition/stats';
 import { defaultPlayerStats } from './stats';
+import { __STORE__ } from 'src/main';
 
 /**
  * Класс игрока. Главная сущность игры в виде космического корабля.
@@ -117,6 +117,6 @@ export class Player extends GameObject {
   }
 
   private dispatchScore(score: number) {
-    store.dispatch(gameActions.setHightScore(score));
+    __STORE__.dispatch(gameActions.setHightScore(score));
   }
 }

@@ -1,4 +1,4 @@
-import type { CommentProps } from 'src/store/forum/types';
+import type { CommentProps } from '../../../../../server/store/forum/types';
 import { Card } from 'src/components';
 import styles from './styles.module.css';
 

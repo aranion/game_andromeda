@@ -1,4 +1,4 @@
-import { AsteroidConfig } from './types';
+import type { AsteroidConfig } from './types';
 import asteroid1 from '../../assets/asteroid/asteroid1.png';
 import asteroid2 from '../../assets/asteroid/asteroid2.png';
 import asteroid3 from '../../assets/asteroid/asteroid3.png';

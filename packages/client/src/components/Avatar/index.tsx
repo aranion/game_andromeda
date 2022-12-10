@@ -2,15 +2,15 @@ import cls from './styles.module.css';
 import { useEffect, useState } from 'react';
 import { Loader } from 'src/components';
 import { useUpdateProfile } from 'src/hooks/useUpdateProfile';
-import { useLazyFetchAvatarQuery } from 'src/store/resources';
 import defaultSrcAvatar from 'src/assets/imgs/AvatarDefault.svg';
+import { BASE_URL } from '../../../../server/constants/vars';
 
 export function Avatar(props: Props) {
   const { path, isEditAvatar = false } = props;
 
-  const { updateAvatar, isLoadingAvatar } = useUpdateProfile();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [getAvatar, { isFetching }] = useLazyFetchAvatarQuery();
+  const { updateAvatar, isLoadingAvatar } = useUpdateProfile();
 
   const [avatar, setAvatar] = useState<string | null>(null);
 
@@ -29,15 +29,23 @@ export function Avatar(props: Props) {
 
   useEffect(() => {
     if (path) {
-      getAvatar(path)
-        .then(res => {
-          if (res.data) {
-            setAvatar(URL.createObjectURL(res.data));
+      setIsLoading(true);
+
+      fetch(`${BASE_URL}/resources/${path}`, {
+        credentials: 'include',
+      })
+        .then(res => res.blob())
+        .then(img => {
+          if (img) {
+            setAvatar(URL.createObjectURL(img));
           }
         })
         .catch(err => {
           console.error(err);
           setAvatar(null);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     } else {
       setAvatar(defaultSrcAvatar);
@@ -46,7 +54,7 @@ export function Avatar(props: Props) {
 
   return (
     <div className={cls.avatar}>
-      {(isFetching || isLoadingAvatar) && <Loader />}
+      {(isLoading || isLoadingAvatar) && <Loader />}
       {isEditAvatar && (
         <button className={cls.avatar__edit} onClick={handleEditAvatar}>
           Изменить аватар

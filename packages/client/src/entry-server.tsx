@@ -1,7 +1,7 @@
-import AppTest from './AppTest';
+import App from './App';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
-import { Provider as ReduxProvider } from 'react-redux';
+import { Provider } from 'react-redux';
 import type { AnyAction, Store } from '@reduxjs/toolkit';
 import type { RootState } from '../../server/store/getInitialState';
 
@@ -10,9 +10,9 @@ export const render = (
   location: string | Partial<Location>
 ) =>
   renderToString(
-    <ReduxProvider store={store}>
+    <Provider store={store}>
       <StaticRouter location={location}>
-        <AppTest />
+        <App />
       </StaticRouter>
-    </ReduxProvider>
+    </Provider>
   );

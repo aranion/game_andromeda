@@ -1,22 +1,22 @@
 import cls from './App.module.css';
 import { useCallback, useEffect, useRef } from 'react';
-import { Router } from './router';
 import { useAuth } from './hooks/useAuth';
 import { CONFIG_STARS_PARAMS } from './constants/vars';
-import { useLocation } from 'react-router-dom';
 import { RouterList } from './router/routerList';
 import { ButtonFullscreen } from './components';
+import { useTypeSelector } from './hooks/useTypeSelector';
+import { routerSelectors } from '../../server/store/router';
+import { Router } from './router';
 
 function App() {
-  // const { checkIsAuth } = useAuth();
-  // const { pathname } = useLocation();
+  const { checkIsAuth } = useAuth();
+  const { pathname } = useTypeSelector(routerSelectors.location);
+
   const refWrapper = useRef(null);
-  const fullscrinableElem = useRef(null);
+  const refFullscrinable = useRef(null);
 
   const startStarts = useCallback(() => {
-    // const isNotGamePage = pathname.toLocaleLowerCase() !== RouterList.GAME;
-    const isNotGamePage =
-      document.location.pathname.toLocaleLowerCase() !== RouterList.GAME;
+    const isNotGamePage = pathname.toLocaleLowerCase() !== RouterList.GAME;
 
     if (refWrapper && isNotGamePage) {
       const { amount, size, duration } = CONFIG_STARS_PARAMS;
@@ -57,7 +57,7 @@ function App() {
   }, [refWrapper]);
 
   useEffect(() => {
-    // checkIsAuth();
+    checkIsAuth();
     startStarts();
 
     const fetchServerData = async () => {
@@ -70,12 +70,11 @@ function App() {
   }, []);
 
   return (
-    <div className={cls.app} ref={fullscrinableElem}>
+    <div className={cls.app} ref={refFullscrinable}>
       <main className={cls.app__content}>
-        SSR...
-        {/* <Router /> */}
+        <Router />
+        <ButtonFullscreen elemRef={refFullscrinable} />
       </main>
-      <ButtonFullscreen elemRef={fullscrinableElem} />
       <div ref={refWrapper}></div>
     </div>
   );

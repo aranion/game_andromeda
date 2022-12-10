@@ -1,6 +1,6 @@
 import { Sprite } from '../../entities/sprite';
-import { ParticleConfig, ParticleTypes } from './types';
-import { Coordinates, GameEntityInterface } from '../../types';
+import type { ParticleConfig, ParticleTypes } from './types';
+import type { Coordinates, GameEntityInterface } from '../../types';
 
 export class Particle implements GameEntityInterface {
   private ctx: CanvasRenderingContext2D;

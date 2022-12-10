@@ -12,16 +12,3 @@ export type User = {
   phone: string;
   second_name: string;
 };
-
-export type ResponseUserData = User;
-export type ResponseUpdateProfile = User & { status?: string | null };
-
-export type RequestUserData = string;
-export type RequestUpdateAvatar = FormData;
-export type RequestUpdatePassword = {
-  oldPassword: string;
-  newPassword: string;
-};
-export type RequestUpdateProfile = Omit<User, 'id' | 'avatar'>;
-
-type FormData = Record<string, unknown>;

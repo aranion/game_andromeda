@@ -1,38 +1,44 @@
+import { useState } from 'react';
 import { useTypeSelector } from './useTypeSelector';
 import { useNavigate } from 'react-router-dom';
 import { useActions } from './useActions';
 import { RouterList } from 'src/router/routerList';
-import { userSelectors } from 'src/store/user';
-import {
-  useLazyUpdateAvatarQuery,
-  useLazyUpdatePasswordQuery,
-  useLazyUpdateProfileQuery,
-} from 'src/store/user/api';
-import type {
-  RequestUpdatePassword,
-  RequestUpdateProfile,
-} from 'src/store/user/type';
-import type { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
-import type { SerializedError } from '@reduxjs/toolkit';
+import { userSelectors } from '../../../server/store/user';
+import { BASE_URL } from '../../../server/constants/vars';
+import type { User } from '../../../server/store/user/type';
 
 export const useUpdateProfile = () => {
+  const URI_USER = `${BASE_URL}/user`;
+  const DEFAULT_OPTIONS = {
+    credentials: 'include',
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+  } as const;
+
+  const [isLoadingAvatar, setIsLoadingAvatar] = useState(false);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(false);
+  const [isLoadingPassword, setIsLoadingPassword] = useState(false);
+
+  const { setUserData } = useActions();
+
   const navigate = useNavigate();
 
   const { userData } = useTypeSelector(userSelectors.all);
   const { id } = userData;
-  const { setUserData } = useActions();
 
-  const [fetchUpdateAvatar, { isFetching: isLoadingAvatar }] =
-    useLazyUpdateAvatarQuery();
-  const [fetchUpdatePassword, { isFetching: isLoadingPassword }] =
-    useLazyUpdatePasswordQuery();
-  const [fetchUpdateProfile, { isFetching: isLoadingProfile }] =
-    useLazyUpdateProfileQuery();
+  const transformResponse = (res: ResponseUpdateProfile): User | null => {
+    if ('status' in res) {
+      delete res.status;
+      return res;
+    }
 
-  const error = (error?: FetchBaseQueryError | SerializedError) => {
+    return null;
+  };
+
+  const error = (error?: Error) => {
     if (error) {
-      if ('message' in error) {
-        throw new Error(error.message);
+      if ('reason' in error) {
+        throw new Error(error.reason);
       } else {
         console.error(error);
       }
@@ -40,43 +46,79 @@ export const useUpdateProfile = () => {
   };
 
   const updateProfile = (data: RequestUpdateProfile) => {
-    fetchUpdateProfile(data)
+    setIsLoadingProfile(true);
+
+    fetch(`${URI_USER}/profile`, {
+      ...DEFAULT_OPTIONS,
+      body: JSON.stringify(data),
+    })
+      .then<ResponseUpdateProfile>(res => res.json())
       .then(res => {
-        if (res.data) {
-          setUserData(res.data);
-          navigate(`${RouterList.PROFILE}/${id}`, { replace: true });
+        if ('reason' in res) {
+          error(res);
         } else {
-          error(res.error);
+          const userData = transformResponse(res);
+
+          if (userData) {
+            setUserData(userData);
+            navigate(`${RouterList.PROFILE}/${id}`, { replace: true });
+          }
         }
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => {
+        setIsLoadingProfile(false);
+      });
   };
 
   const updateAvatar = (file: File) => {
+    setIsLoadingAvatar(true);
+
     const data = new FormData();
     data.append('avatar', file);
 
-    fetchUpdateAvatar(data)
+    fetch(`${URI_USER}/profile/avatar`, {
+      ...DEFAULT_OPTIONS,
+      body: data,
+      headers: {},
+    })
+      .then<ResponseUserData>(res => res.json())
       .then(res => {
-        if (res.data) {
-          setUserData(res.data);
+        if ('reason' in res) {
+          error(res);
         } else {
-          error(res.error);
+          const userData = transformResponse(res);
+
+          if (userData) {
+            setUserData(userData);
+          }
         }
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => {
+        setIsLoadingAvatar(false);
+      });
   };
 
   const updatePassword = (data: RequestUpdatePassword) => {
-    fetchUpdatePassword(data)
+    setIsLoadingPassword(true);
+
+    fetch(`${URI_USER}/password`, {
+      ...DEFAULT_OPTIONS,
+      body: JSON.stringify(data),
+    })
+      .then<ResponseUpdatePassword>(res => res.text())
       .then(res => {
-        if (res.data) {
-          navigate(`${RouterList.PROFILE}/${id}`, { replace: true });
+        if (typeof res !== 'string') {
+          error(res);
         } else {
-          error(res.error);
+          navigate(`${RouterList.PROFILE}/${id}`, { replace: true });
         }
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => {
+        setIsLoadingPassword(false);
+      });
   };
 
   return {
@@ -88,3 +130,17 @@ export const useUpdateProfile = () => {
     isLoadingProfile,
   };
 };
+
+type Error = {
+  reason: string;
+};
+
+export type ResponseUserData = User | Error;
+type ResponseUpdateProfile = (User & { status?: string | null }) | Error;
+type ResponseUpdatePassword = string | Error;
+
+export type RequestUpdatePassword = {
+  oldPassword: string;
+  newPassword: string;
+};
+export type RequestUpdateProfile = Omit<User, 'id' | 'avatar'>;

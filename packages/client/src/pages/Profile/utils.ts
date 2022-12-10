@@ -1,5 +1,5 @@
 import type { Fields } from './';
-import type { User } from 'src/store/user/type';
+import type { User } from '../../../../server/store/user/type';
 
 const fieldsName: FieldsName = {
   login: 'Login',

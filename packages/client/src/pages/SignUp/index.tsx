@@ -3,8 +3,7 @@ import './styles.css';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
-import { useAuth } from 'src/hooks/useAuth';
-import type { RequestSignUp } from 'src/store/auth/type';
+import { RequestSignUp, useAuth } from 'src/hooks/useAuth';
 
 const configStar = [
   { top: '3%', left: '10%' },

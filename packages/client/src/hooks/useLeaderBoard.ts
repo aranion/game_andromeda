@@ -1,83 +1,113 @@
+import { BASE_URL } from '../../../server/constants/vars';
+import { useState } from 'react';
 import { useActions } from './useActions';
 import { useTypeSelector } from './useTypeSelector';
-import { useLazyFetchUserDataQuery } from 'src/store/user';
 import { userSelectors } from '../../../server/store/user';
 import {
-  useLazyAddLeaderBoardQuery,
-  useLazyFetchAllLeaderBoardQuery,
-  useLazyFetchTeamLeaderBoardQuery,
-} from 'src/store/leaderBoard/api';
-import type {
+  ConfigLeaderBoard,
   Leader,
-  RequestAllLeaderBoard,
-  RequestLeaderBoardTeamName,
-} from 'src/store/leaderBoard/type';
-import type { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
-import type { SerializedError } from '@reduxjs/toolkit';
+} from '../../../server/store/leaderBoard/type';
+import type { User } from '../../../server/store/user/type';
 
 export const useLeaderBoard = () => {
+  const URI_LEADERBOARD = `${BASE_URL}/leaderboard`;
+  const DEFAULT_OPTIONS = {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+  } as const;
+
+  const [isLoadingAll, setIsLoadingAll] = useState(false);
+  const [isLoadingLeaders, setIsLoadingLeaders] = useState(false);
+  const [isLoadingAddLeader, setIsLoadingAddLeader] = useState(false);
+
   const { userData } = useTypeSelector(userSelectors.all);
   const { id } = userData;
 
   const { setLeaders, setHightScore, setLeaderUserData } = useActions();
 
-  const [fetchAllLeaderBoard, { isLoading: isLoadingAll }] =
-    useLazyFetchAllLeaderBoardQuery();
-  const [fetchAddLeaderBoard, { isLoading: isLoadingAddLeader }] =
-    useLazyAddLeaderBoardQuery();
-  const [fetchTeamLeaderBoard, { isLoading: isLoadingLeaders }] =
-    useLazyFetchTeamLeaderBoardQuery();
-  const [fetchUser] = useLazyFetchUserDataQuery();
-
-  const error = (error?: FetchBaseQueryError | SerializedError) => {
-    if (error) {
-      if ('message' in error) {
-        throw new Error(error.message);
-      } else {
-        console.error(error);
-      }
-    }
-  };
-
   const addTeamLeader = (highScore: number) => {
     if (id) {
-      fetchAddLeaderBoard({ data: { id, highScore } })
+      setIsLoadingAddLeader(true);
+
+      const body: RequestAddLeaderBoard = {
+        data: { id, highScore },
+        ratingFieldName: ConfigLeaderBoard.RATING_FIELD_NAME,
+        teamName: ConfigLeaderBoard.TEAM_NAME,
+      };
+
+      fetch(`${URI_LEADERBOARD}`, {
+        ...DEFAULT_OPTIONS,
+        body: JSON.stringify(body),
+      })
+        .then<string>(res => res.text())
         .then(res => {
-          if ('data' in res) {
+          if (res) {
             setHightScore(null);
-            console.log('Leader added', res.data);
-          } else {
-            error(res.error);
+            console.log('Leader added', res);
           }
         })
-        .catch(console.error);
+        .catch(console.error)
+        .finally(() => {
+          setIsLoadingAddLeader(false);
+        });
     }
   };
 
   const getAllLeaders = (params?: RequestAllLeaderBoard) => {
-    fetchAllLeaderBoard(params || {})
+    setIsLoadingAll(true);
+
+    const body = {
+      ratingFieldName:
+        params?.ratingFieldName ?? ConfigLeaderBoard.RATING_FIELD_NAME,
+      cursor: params?.cursor ?? 0,
+      limit: params?.limit ?? 13,
+    };
+
+    fetch(`${URI_LEADERBOARD}/all`, {
+      ...DEFAULT_OPTIONS,
+      body: JSON.stringify(body),
+    })
+      .then<Leader[]>(res => res.json())
       .then(res => {
-        if (res.data) {
-          setLeaders(res.data);
-        } else {
-          error(res.error);
+        if (res) {
+          setLeaders(res);
         }
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => {
+        setIsLoadingAll(false);
+      });
   };
 
   const getTeamLeaders = (params?: RequestLeaderBoardTeamName) => {
-    fetchTeamLeaderBoard(params || {})
+    setIsLoadingLeaders(true);
+
+    const body = {
+      ratingFieldName:
+        params?.ratingFieldName ?? ConfigLeaderBoard.RATING_FIELD_NAME,
+      cursor: params?.cursor ?? 0,
+      limit: params?.limit ?? 13,
+    };
+    const teamName = params?.teamName ?? ConfigLeaderBoard.TEAM_NAME;
+
+    fetch(`${URI_LEADERBOARD}/${teamName}`, {
+      ...DEFAULT_OPTIONS,
+      body: JSON.stringify(body),
+    })
+      .then<ResponseLeaderBoard>(res => res.json())
       .then(res => {
-        if (res.data) {
-          const leaders = res.data;
+        if (res) {
+          const leaders = res.map(leader => leader.data);
+
           setLeaders(leaders);
           getLeaderUserData(leaders);
-        } else {
-          error(res.error);
         }
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => {
+        setIsLoadingLeaders(false);
+      });
   };
 
   const getLeaderUserData = (leaders: Leader[]) => {
@@ -85,12 +115,13 @@ export const useLeaderBoard = () => {
       const userId = leader.id?.toString();
 
       if (userId) {
-        fetchUser(userId)
+        fetch(`${BASE_URL}/user/${userId}`, {
+          credentials: 'include',
+        })
+          .then<User>(res => res.json())
           .then(res => {
-            if (res.data) {
-              setLeaderUserData(res.data);
-            } else {
-              error(res.error);
+            if (res) {
+              setLeaderUserData(res);
             }
           })
           .catch(console.error);
@@ -107,3 +138,22 @@ export const useLeaderBoard = () => {
     isLoadingAddLeader,
   };
 };
+
+type LeaderBoardData = { data: Leader };
+
+type RequestAllLeaderBoard = Partial<{
+  ratingFieldName: ConfigLeaderBoard.RATING_FIELD_NAME;
+  cursor: number;
+  limit: number;
+}>;
+
+type RequestLeaderBoardTeamName = Partial<
+  {
+    teamName: ConfigLeaderBoard.TEAM_NAME;
+  } & RequestAllLeaderBoard
+>;
+
+type RequestAddLeaderBoard = LeaderBoardData &
+  Omit<RequestLeaderBoardTeamName, 'cursor' | 'limit'>;
+
+type ResponseLeaderBoard = LeaderBoardData[];

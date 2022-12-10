@@ -1,10 +1,10 @@
 import { styles } from '../../constants';
-import { Player } from '../../entities/player';
+import type { Player } from '../../entities/player';
 import { Resource } from '../../entities/resource';
 import { Asteroid } from '../../entities/asteroid';
 import { asteroidExplode } from '../../entities/asteroid/particles';
 import { resourceExplode } from '../../entities/resource/particles';
-import { SceneTransition } from '../scene-transition';
+import type { SceneTransition } from '../scene-transition';
 import { createAsteroidConfig } from '../../entities/asteroid/stats';
 import { Particles } from '../../effects/particles';
 import { getStarsConfig } from './particles';

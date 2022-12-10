@@ -4,7 +4,7 @@ import type { Leader } from '../leaderBoard/type';
 import type { LeaderBoardInitialState } from './type';
 import type { User } from '../user/type';
 
-const leaderBoardInitialState: LeaderBoardInitialState = {
+export const leaderBoardInitialState: LeaderBoardInitialState = {
   leaders: [],
 };
 

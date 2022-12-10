@@ -1,6 +1,6 @@
-import { Game } from '../../../core';
+import type { Game } from '../../../core';
 import { FPS } from '../../constants';
-import { SceneTransitionConfig, LabelConfig, ButtonConfig } from './types';
+import type { SceneTransitionConfig, LabelConfig, ButtonConfig } from './types';
 
 const defaultOpacityTime = 3000;
 
