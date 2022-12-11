@@ -8,12 +8,16 @@ import { store } from 'src/store';
 import type { CanvasProperties, GameMapConfig } from './types';
 import { gameActions } from 'src/store/game';
 import { SceneTransition } from './overworld/scene-transition';
+import { GameStatusList } from 'src/store/game/type';
 
 type GameConfig = {
   canvas: HTMLCanvasElement;
 };
 
-type GameStatus = 'stopped' | 'paused' | 'running';
+type GameStatus =
+  | GameStatusList.stopped
+  | GameStatusList.paused
+  | GameStatusList.running;
 
 /**
  * Основной класс, управляет циклом игры, меняет карту уровней.
@@ -24,7 +28,7 @@ export class Game {
   private map: GameMap | null = null;
   private directions: DirectionsInput;
   private readonly player: Player;
-  private status: GameStatus = 'stopped';
+  private status: GameStatus = GameStatusList.stopped;
   private readonly sceneTransition: SceneTransition;
   private frame = 0;
 
@@ -50,19 +54,19 @@ export class Game {
   }
 
   private startGameLoop() {
-    this.dispatchStatus('running');
-    this.updateGameStatus('running');
+    this.dispatchStatus(GameStatusList.running);
+    this.updateGameStatus(GameStatusList.running);
     let last = performance.now();
     const framesDelta = 1000 / FPS;
 
     const step = (now: number) => {
-      if (this.status === 'stopped') {
+      if (this.status === GameStatusList.stopped) {
         return;
       }
 
       const delay = now - last;
 
-      if (this.status === 'running' && delay >= framesDelta) {
+      if (this.status === GameStatusList.running && delay >= framesDelta) {
         last = now;
         this.render();
         this.frame++;
@@ -128,7 +132,7 @@ export class Game {
   }
 
   unmount() {
-    this.updateGameStatus('stopped');
+    this.updateGameStatus(GameStatusList.stopped);
     this.directions.unmount();
     this.map?.clear();
     this.sceneTransition.clear();

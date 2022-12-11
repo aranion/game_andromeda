@@ -1,149 +1,107 @@
-import { useState } from 'react';
-import { Button } from '../../components/Button';
-import { Modal } from '../../components/Modal';
-import { useNavigate } from 'react-router-dom';
-import { RouterList } from '../../router/routerList';
-import { gameActions, gameSelectors } from '../../store/game';
-import { store } from '../../store';
-import { useTypeSelector } from '../../hooks/useTypeSelector';
+import { useEffect, useState } from 'react';
+import { Button, Modal } from 'src/components';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { RouterList } from 'src/router/routerList';
+import { gameSelectors } from 'src/store/game';
+import { useTypeSelector } from 'src/hooks/useTypeSelector';
 import { userSelectors } from 'src/store/user';
+import { useActions } from 'src/hooks/useActions';
+import { GameStatusList } from 'src/store/game/type';
 
 export function PauseMenu() {
   const [isActivePause, setIsActivePause] = useState(false);
+
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
   const gameStatus = useTypeSelector(gameSelectors.gameStatus);
+  const { userData } = useTypeSelector(userSelectors.all);
+
+  const { setGameStatus } = useActions();
+
+  const { id } = userData;
+  const isGamePage = pathname === '/game';
+  const isNotHomePage = pathname !== '/';
+  const isNotLeaderBoardPage = pathname !== '/leader-board';
+  const isNotProfile = !pathname.includes('/profile');
+  const isNotForum = !pathname.includes('/forum');
+  const isSignUpOrInPage = pathname.includes('/sign');
+
+  useEffect(() => {
+    document.body.addEventListener('keydown', handlePause);
+
+    return () => {
+      document.body.removeEventListener('keydown', handlePause);
+    };
+  }, []);
 
   const setIsActivePauseMutated = (isValue: boolean) => {
-    if (gameStatus === 'stopped') return;
+    if (gameStatus === GameStatusList.stopped) return;
     if (isValue) {
-      store.dispatch(gameActions.setGameStatus('paused'));
+      setGameStatus(GameStatusList.paused);
     } else {
-      store.dispatch(gameActions.setGameStatus('running'));
+      setGameStatus(GameStatusList.running);
     }
     setIsActivePause(isValue);
   };
 
-  const handleOpenPauseMenu = () => {
-    setIsActivePauseMutated(true);
-  };
-
-  const handleClosePauseMenu = () => {
-    setIsActivePauseMutated(false);
+  const handleTogglePauseMenu = () => {
+    setIsActivePauseMutated(!isActivePause);
   };
 
   const navigateHome = () => {
     navigate(RouterList.HOME);
-    handleClosePauseMenu();
+    handleTogglePauseMenu();
   };
 
   const navigateGame = () => {
     navigate(RouterList.GAME);
-    handleClosePauseMenu();
+    handleTogglePauseMenu();
   };
 
   const navigateForums = () => {
     navigate(RouterList.FORUM);
-    handleClosePauseMenu();
+    handleTogglePauseMenu();
   };
 
-  const { userData } = useTypeSelector(userSelectors.all);
-  const { id } = userData;
   const navigateProfile = () => {
     navigate(`${RouterList.PROFILE}/${id}`);
-    handleClosePauseMenu();
+    handleTogglePauseMenu();
   };
 
   const navigateLeaderboard = () => {
     navigate(RouterList.LEADER_BOARD);
-    handleClosePauseMenu();
+    handleTogglePauseMenu();
   };
 
   const navigateBack = () => {
     navigate(-1);
-    handleClosePauseMenu();
+    handleTogglePauseMenu();
   };
 
   const handlePause = (event: KeyboardEvent) => {
-    if (!event.repeat && event.key === 'Escape') {
-      handleOpenPauseMenu();
+    const { repeat, key } = event;
+
+    if (!repeat && key === 'Escape') {
+      handleTogglePauseMenu();
     }
   };
 
-  document.body.addEventListener('keydown', handlePause);
-
-  const pathname = document.location.pathname;
-  console.log(pathname);
-  if (pathname === '/game') {
-    return (
-      <>
-        <Modal active={isActivePause} setActive={setIsActivePauseMutated}>
-          <Button onClick={handleClosePauseMenu}>Resume</Button>
-          <Button onClick={navigateProfile}>Profile</Button>
-          <Button onClick={navigateForums}>Forums</Button>
-          <Button onClick={navigateLeaderboard}>Leaderboard</Button>
-          <Button onClick={navigateHome}>Back to Menu</Button>
-        </Modal>
-      </>
-    );
-  } else if (pathname === '/') {
-    return (
-      <>
-        <Modal active={isActivePause} setActive={setIsActivePauseMutated}>
-          <Button onClick={navigateGame}>Play</Button>
-          <Button onClick={navigateProfile}>Profile</Button>
-          <Button onClick={navigateForums}>Forums</Button>
-          <Button onClick={navigateLeaderboard}>Leaderboard</Button>
-        </Modal>
-      </>
-    );
-  } else if (pathname === '/leader-board') {
-    return (
-      <>
-        <Modal active={isActivePause} setActive={setIsActivePauseMutated}>
-          <Button onClick={navigateGame}>Play</Button>
-          <Button onClick={navigateForums}>Forums</Button>
-          <Button onClick={navigateProfile}>Profile</Button>
-          <Button onClick={navigateHome}>Back to Menu</Button>
-        </Modal>
-      </>
-    );
-  } else if (pathname.includes('/forum')) {
-    return (
-      <>
-        <Modal active={isActivePause} setActive={setIsActivePauseMutated}>
-          <Button onClick={navigateGame}>Play</Button>
-          <Button onClick={navigateLeaderboard}>Leaderboard</Button>
-          <Button onClick={navigateProfile}>Profile</Button>
-          <Button onClick={navigateHome}>Back to Menu</Button>
-        </Modal>
-      </>
-    );
-  } else if (pathname.includes('/profile')) {
-    return (
-      <>
-        <Modal active={isActivePause} setActive={setIsActivePauseMutated}>
-          <Button onClick={navigateGame}>Play</Button>
-          <Button onClick={navigateLeaderboard}>Leaderboard</Button>
-          <Button onClick={navigateForums}>Forums</Button>
-          <Button onClick={navigateHome}>Back to Menu</Button>
-        </Modal>
-      </>
-    );
-  } else if (pathname.includes('/sign')) {
-    return (
-      <>
-        <Modal active={isActivePause} setActive={setIsActivePauseMutated}>
-          <Button onClick={navigateBack}>Back</Button>
-        </Modal>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <Modal active={isActivePause} setActive={setIsActivePauseMutated}>
-          <Button onClick={navigateHome}>Back to Menu</Button>
-        </Modal>
-      </>
-    );
+  if (isSignUpOrInPage) {
+    return null;
   }
+
+  return (
+    <Modal active={isActivePause} setActive={setIsActivePauseMutated}>
+      {!isGamePage && <Button onClick={navigateGame}>Play</Button>}
+      {isGamePage && <Button onClick={handleTogglePauseMenu}>Resume</Button>}
+      {isNotProfile && <Button onClick={navigateProfile}>Profile</Button>}
+      {isNotForum && <Button onClick={navigateForums}>Forums</Button>}
+      {isNotLeaderBoardPage && (
+        <Button onClick={navigateLeaderboard}>Leaderboard</Button>
+      )}
+      {isSignUpOrInPage && <Button onClick={navigateBack}>Back</Button>}
+      {isNotHomePage && <Button onClick={navigateHome}>Back to Menu</Button>}
+    </Modal>
+  );
 }

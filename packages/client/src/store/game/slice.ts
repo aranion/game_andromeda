@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit/dist';
 import type { InitialState } from './type';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { GameStatusList } from './type';
 
 const initialState: InitialState = {
   hightScore: null,
-  gameStatus: 'running',
+  gameStatus: GameStatusList.running,
 };
 
 export const gameSlice = createSlice({

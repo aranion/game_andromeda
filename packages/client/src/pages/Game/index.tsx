@@ -9,8 +9,7 @@ export default function GamePage() {
   const canvas = useRef<HTMLCanvasElement>(null);
   const game = useRef<Game | null>(null);
 
-  const hightScore = useTypeSelector(gameSelectors.hightScore);
-  const gameStatus = useTypeSelector(gameSelectors.gameStatus);
+  const { hightScore, gameStatus } = useTypeSelector(gameSelectors.all);
 
   const { addTeamLeader } = useLeaderBoard();
 
@@ -28,14 +27,10 @@ export default function GamePage() {
     if (hightScore) {
       addTeamLeader(hightScore);
     }
-    if (gameStatus && game && game.current) {
+    if (gameStatus && game?.current) {
       game.current.updateGameStatus(gameStatus);
     }
   }, [hightScore, gameStatus]);
 
-  return (
-    <>
-      <canvas className='canvas' ref={canvas}></canvas>
-    </>
-  );
+  return <canvas className='canvas' ref={canvas}></canvas>;
 }

@@ -72,9 +72,9 @@ function App() {
     <div className={cls.app} ref={fullscrinableElem}>
       <main className={cls.app__content}>
         <Router />
+        <ButtonFullscreen elemRef={fullscrinableElem} />
+        <PauseMenu />
       </main>
-      <ButtonFullscreen elemRef={fullscrinableElem} />
-      <PauseMenu />
 
       <div ref={refWrapper}></div>
     </div>
