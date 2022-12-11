@@ -7,6 +7,7 @@ import { FPS } from './constants';
 import { store } from 'src/store';
 import type { CanvasProperties, GameMapConfig } from './types';
 import { gameActions } from 'src/store/game';
+import { SceneTransition } from './overworld/scene-transition';
 
 type GameConfig = {
   canvas: HTMLCanvasElement;
@@ -24,14 +25,21 @@ export class Game {
   private directions: DirectionsInput;
   private readonly player: Player;
   private status: GameStatus = 'stopped';
+  private readonly sceneTransition: SceneTransition;
   private frame = 0;
 
   constructor(config: GameConfig) {
     const { canvas, ctx } = this.initCanvas(config.canvas);
     this.directions = new DirectionsInput({ canvas });
+    this.sceneTransition = new SceneTransition({
+      game: this,
+      canvas,
+      ctx,
+    });
     this.player = new Player({
       canvas,
       ctx,
+      sceneTransition: this.sceneTransition,
       direction: this.directions.getDirections,
       position: {
         x: canvas.width / 2,
@@ -70,6 +78,7 @@ export class Game {
     if (this.canvas && this.ctx) {
       this.map = new GameMap({
         ...gameMapConfig,
+        sceneTransition: this.sceneTransition,
         canvas: this.canvas,
         ctx: this.ctx,
         player: this.player,
@@ -109,9 +118,20 @@ export class Game {
     window.addEventListener('resize', this.resize);
   }
 
+  set setStatus(gameStatus: GameStatus) {
+    this.status = gameStatus;
+  }
+
+  clear() {
+    this.map?.clear();
+    this.sceneTransition.clear();
+  }
+
   unmount() {
     this.updateGameStatus('stopped');
     this.directions.unmount();
+    this.map?.clear();
+    this.sceneTransition.clear();
     window.removeEventListener('resize', this.resize);
   }
 

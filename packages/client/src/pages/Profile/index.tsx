@@ -25,64 +25,60 @@ export default function Profile() {
   const navigate = useNavigate();
 
   const { userData } = useTypeSelector(userSelectors.all);
-  const { id, avatar } = userData;
+  const { id } = userData;
 
-  const [fetchUserData, { isLoading, isError }] = useLazyFetchUserDataQuery();
+  const [fetchUserData, { isFetching }] = useLazyFetchUserDataQuery();
 
-  const nickname = profileData?.display_name || 'Anonymous';
+  const nickname = profileData?.display_name || profileData?.login || '';
   const isCorrectUserId = userId && !isNaN(+userId);
   const isEditPassword = pathname === RouterList.PROFILE_EDIT_PASSWORD;
   const isEditProfile = pathname === RouterList.PROFILE_EDIT || isEditPassword;
-  const isNotMyProfile = userId && !!id && id !== +userId;
+  const isNotMyProfile = !!(userId && !!id && id !== +userId);
 
   useEffect(() => {
-    if (isEditProfile) {
-      if (isEditPassword) {
-        const fieldsPassword = preparePasswordProfileFields();
+    if (isEditPassword) {
+      const fieldsPassword = preparePasswordProfileFields();
 
-        setFields(fieldsPassword);
-      } else {
-        const fields = prepareAllProfileFields(userData);
-
-        setFields(fields);
-        setProfileData(userData);
-      }
+      setFields(fieldsPassword);
     } else {
-      if (isCorrectUserId) {
-        setFields([]);
+      const fields = prepareAllProfileFields(userData);
 
-        fetchUserData(userId)
-          .then(res => {
-            if ('data' in res && res.data) {
-              const fields = prepareAllProfileFields(res.data);
-
-              setProfileData(res.data);
-              setFields(fields);
-            } else {
-              console.error(res.error);
-            }
-          })
-          .catch(console.log);
-      }
+      setFields(fields);
+      setProfileData(userData);
     }
-  }, [pathname, userId]);
+  }, [isEditPassword, userData]);
+
+  useEffect(() => {
+    if (!isEditProfile && isCorrectUserId) {
+      setFields([]);
+      setProfileData(null);
+
+      fetchUserData(userId)
+        .then(res => {
+          if (res.data) {
+            const { data } = res;
+            const fields = prepareAllProfileFields(data);
+
+            setProfileData(data);
+            setFields(fields);
+          } else {
+            console.error(res.error);
+          }
+        })
+        .catch(console.log);
+    }
+  }, [userId]);
 
   if (!isEditProfile && !isCorrectUserId) {
     return <TitlePage>ID пользователя указан не верно</TitlePage>;
   }
 
-  if (isError) {
-    return (
-      <TitlePage>Произошла ошибка при получении данных с сервера</TitlePage>
-    );
-  }
-
   const handleEditProfile = () => {
-    navigate(RouterList.PROFILE_EDIT);
+    navigate(RouterList.PROFILE_EDIT, { replace: true });
   };
 
   const handleEditPassword = () => {
-    navigate(RouterList.PROFILE_EDIT_PASSWORD);
+    navigate(RouterList.PROFILE_EDIT_PASSWORD, { replace: true });
   };
 
   return (
@@ -91,14 +87,15 @@ export default function Profile() {
 
       <div className={cls.profile}>
         <div className={cls.profile__avatar}>
-          <Avatar isEditAvatar={true} path={avatar} />
+          <Avatar isEditAvatar={!isNotMyProfile} path={profileData?.avatar} />
         </div>
 
         <span className={cls.profile__nickname}>{nickname}</span>
 
         <ProfileFields
           isEdit={isEditProfile}
-          isLoading={isLoading}
+          isEditPassword={isEditPassword}
+          isLoading={isFetching}
           fields={fields}
           userId={id}
         />

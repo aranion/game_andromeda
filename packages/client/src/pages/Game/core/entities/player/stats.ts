@@ -4,7 +4,7 @@ import type { PlayerConfig } from './types';
 
 export const defaultPlayerStats: Omit<
   PlayerConfig,
-  'canvas' | 'ctx' | 'direction'
+  'canvas' | 'ctx' | 'direction' | 'sceneTransition'
 > = {
   speed: INITIAL_SPEED,
   radius: 34,

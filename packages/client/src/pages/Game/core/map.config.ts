@@ -6,7 +6,7 @@ export const mapConfig: MapConfig = {
   level_1: {
     spawnInterval: {
       alien: 0,
-      asteroid: 500,
+      asteroid: 100,
       resource: 200,
     },
   },

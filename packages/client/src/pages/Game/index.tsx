@@ -19,7 +19,9 @@ export default function GamePage() {
       game.current = new Game({ canvas: canvas.current });
       game.current?.init();
     }
-    return () => game?.current?.unmount();
+    return () => {
+      game?.current?.unmount();
+    };
   }, [canvas]);
 
   useEffect(() => {

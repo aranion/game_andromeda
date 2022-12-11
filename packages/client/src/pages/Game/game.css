@@ -7,3 +7,27 @@
   image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-crisp-edges;
 }
+
+.game__label-game-over {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  margin-top: 300px;
+  color: white;
+  font-size: 30px;
+}
+
+.game__button-game-over {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  margin-top: 500px;
+  width: 250px;
+  height: 35px;
+}
