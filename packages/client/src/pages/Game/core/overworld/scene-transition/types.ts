@@ -1,5 +1,5 @@
-import { Game } from '../../../core';
-import { CanvasProperties, Coordinates } from '../../types';
+import type { Game } from '../../../core';
+import type { CanvasProperties, Coordinates } from '../../types';
 
 export type SceneTransitionConfig = CanvasProperties & {
   game: Game;

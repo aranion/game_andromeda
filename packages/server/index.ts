@@ -4,17 +4,21 @@ dotenv.config();
 
 import express from 'express';
 import { createClientAndConnect } from './db';
+import path from 'path';
+import serverRenderMiddleware from './server-render-middleware';
+
+const PORT = Number(process.env.SERVER_PORT) || 3001;
 
 const app = express();
+
 app.use(cors());
-const port = Number(process.env.SERVER_PORT) || 3001;
 
 createClientAndConnect();
 
-app.get('/', (_, res) => {
-  res.json('👋 Howdy from the server :)');
-});
+app.use(express.static(path.resolve(__dirname, '../../client/dist/client')));
 
-app.listen(port, () => {
-  console.log(`  ➜ 🎸 Server is listening on port: ${port}`);
+app.get('*', serverRenderMiddleware);
+
+app.listen(PORT, () => {
+  console.log(`  ➜ 🎸 Server is listening on port: ${PORT}`);
 });

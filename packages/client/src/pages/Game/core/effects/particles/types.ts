@@ -1,6 +1,6 @@
-import { CanvasProperties, Coordinates } from '../../types';
-import { AnimationKey } from '../../constants';
-import { ParticleTypes } from '../particle/types';
+import type { CanvasProperties, Coordinates } from '../../types';
+import type { AnimationKey } from '../../constants';
+import type { ParticleTypes } from '../particle/types';
 
 export type ParticlesGroupType = Omit<
   ParticlesConfig,

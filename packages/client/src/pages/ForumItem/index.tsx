@@ -4,7 +4,7 @@ import type {
   TopicProps,
   FetchTopics,
   FetchForumName,
-} from 'src/store/forum/types';
+} from '../../../../server/store/forum/types';
 import {
   ButtonBack,
   TopicItem,

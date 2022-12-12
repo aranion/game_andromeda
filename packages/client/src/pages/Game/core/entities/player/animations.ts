@@ -1,5 +1,5 @@
 import { AnimationKey } from '../../constants';
-import { PlayerAnimation } from './types';
+import type { PlayerAnimation } from './types';
 
 export const playerAnimations: PlayerAnimation = {
   [AnimationKey.SpaceshipFly]: [

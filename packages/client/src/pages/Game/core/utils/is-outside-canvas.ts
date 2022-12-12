@@ -1,5 +1,5 @@
 import { mapCanvasSizeToAxes } from './map-canvas-size-to-axes';
-import { GameEntityInterface } from '../types';
+import type { GameEntityInterface } from '../types';
 
 type IsOutsideCanvasParams = {
   object: GameEntityInterface;

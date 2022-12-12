@@ -1,7 +1,7 @@
-import { Player } from '../../entities/player';
-import { GameObject } from '../../entities/game-object';
+import type { Player } from '../../entities/player';
+import type { GameObject } from '../../entities/game-object';
 import type { CanvasProperties, GameMapConfig } from '../../types';
-import { SceneTransition } from '../scene-transition';
+import type { SceneTransition } from '../scene-transition';
 
 export type GameMapConstrConfig = GameMapConfig & {
   player: Player;

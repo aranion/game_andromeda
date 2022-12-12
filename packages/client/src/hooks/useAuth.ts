@@ -1,19 +1,18 @@
 import { useNavigate } from 'react-router-dom';
-import {
-  authSelectors,
-  useLazyCheckAuthUserQuery,
-  useLogoutMutation,
-  useSignInMutation,
-  useSignUpMutation,
-} from 'src/store/auth';
 import { useActions } from './useActions';
 import { useTypeSelector } from './useTypeSelector';
 import { RouterList } from 'src/router/routerList';
-import type { RequestSignIn, RequestSignUp } from 'src/store/auth/type';
-import type { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
-import type { SerializedError } from '@reduxjs/toolkit';
+import { authSelectors } from '../../../server/store/auth';
+import { BASE_URL } from '../../../server/constants/vars';
+import type { User } from '../../../server/store/user/type';
 
 export const useAuth = () => {
+  const URI_AUTH = `${BASE_URL}/auth`;
+  const DEFAULT_OPTIONS = {
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  } as const;
+
   const { isAuth, isLoadingAuth } = useTypeSelector(authSelectors.allAuth);
 
   const { setIsAuth, resetUserState, setIsLoadingAuth, setUserData } =
@@ -21,14 +20,9 @@ export const useAuth = () => {
 
   const navigate = useNavigate();
 
-  const [fetchIsAuth] = useLazyCheckAuthUserQuery();
-  const [fetchLogout] = useLogoutMutation();
-  const [fetchSignIn] = useSignInMutation();
-  const [fetchSignUp] = useSignUpMutation();
-
-  const error = (error: FetchBaseQueryError | SerializedError) => {
-    if ('message' in error) {
-      throw new Error(error.message);
+  const error = (error: Error) => {
+    if ('reason' in error) {
+      throw new Error(error.reason);
     } else {
       console.error(error);
     }
@@ -37,12 +31,16 @@ export const useAuth = () => {
   const checkIsAuth = () => {
     setIsLoadingAuth(true);
 
-    fetchIsAuth(null)
-      .then(({ isSuccess, data }) => {
-        setIsAuth(isSuccess);
-
-        if (isSuccess) {
-          setUserData(data);
+    fetch(`${URI_AUTH}/user`, {
+      ...DEFAULT_OPTIONS,
+    })
+      .then<ResponseAuthUser>(res => res.json())
+      .then(res => {
+        if ('reason' in res) {
+          error(res);
+        } else {
+          setIsAuth(true);
+          setUserData(res);
         }
       })
       .catch(console.error)
@@ -53,13 +51,20 @@ export const useAuth = () => {
 
   const signIn = (params: RequestSignIn) => {
     if (!isAuth) {
-      fetchSignIn(params)
+      fetch(`${URI_AUTH}/signin`, {
+        ...DEFAULT_OPTIONS,
+        method: 'POST',
+        body: JSON.stringify(params),
+      })
+        .then<ResponseSignIn>(res => res.text())
         .then(res => {
-          if ('data' in res) {
-            checkIsAuth();
-            navigate(RouterList.HOME);
+          if (typeof res === 'string') {
+            if (res === 'OK') {
+              checkIsAuth();
+              navigate(RouterList.HOME);
+            }
           } else {
-            error(res.error);
+            error(res);
           }
         })
         .catch(console.error);
@@ -70,16 +75,21 @@ export const useAuth = () => {
 
   const signUp = (params: RequestSignUp) => {
     if (!isAuth) {
-      fetchSignUp(params)
+      fetch(`${URI_AUTH}/signup`, {
+        ...DEFAULT_OPTIONS,
+        method: 'POST',
+        body: JSON.stringify(params),
+      })
+        .then<ResponseSignUp>(res => res.json())
         .then(res => {
-          if ('data' in res) {
-            const { id } = res.data;
+          if ('reason' in res) {
+            error(res);
+          } else {
+            const { id } = res;
 
             setUserData({ id });
             checkIsAuth();
             navigate(RouterList.HOME);
-          } else {
-            error(res.error);
           }
         })
         .catch(console.error);
@@ -90,14 +100,20 @@ export const useAuth = () => {
 
   const logout = () => {
     if (isAuth) {
-      fetchLogout(null)
+      fetch(`${URI_AUTH}/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      })
+        .then<ResponseLogout>(res => res.text())
         .then(res => {
-          if ('data' in res) {
-            setIsAuth(false);
-            resetUserState();
-            navigate(RouterList.SIGN_IN);
+          if (typeof res === 'string') {
+            if (res === 'OK') {
+              setIsAuth(false);
+              resetUserState();
+              navigate(RouterList.SIGN_IN);
+            }
           } else {
-            error(res.error);
+            error(res);
           }
         })
         .catch(console.error);
@@ -105,4 +121,18 @@ export const useAuth = () => {
   };
 
   return { signIn, signUp, logout, checkIsAuth, isAuth, isLoadingAuth };
+};
+
+type Error = {
+  reason: string;
+};
+
+type ResponseAuthUser = User | Error;
+type ResponseLogout = string | Error;
+type ResponseSignIn = string | Error;
+type ResponseSignUp = Pick<User, 'id'> | Error;
+
+export type RequestSignIn = Pick<User, 'login'> & { password: string };
+export type RequestSignUp = Omit<User, 'id' | 'avatar' | 'display_name'> & {
+  password: string;
 };

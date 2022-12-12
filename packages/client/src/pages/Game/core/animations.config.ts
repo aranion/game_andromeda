@@ -1,6 +1,6 @@
 import { playerAnimations } from './entities/player/animations';
 import { resourceAnimations } from './entities/resource/animations';
-import { AnimationKey } from './constants';
+import type { AnimationKey } from './constants';
 
 export type AnimationType = { [key in AnimationKey]: [number, number][] };
 

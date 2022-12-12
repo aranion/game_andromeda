@@ -2,7 +2,6 @@ import cls from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
 import { Button, TitlePage } from 'src/components';
-import type { To } from 'react-router-dom';
 
 export function ErrorSample(props: Props) {
   const { code, message, typeButton } = props;
@@ -10,9 +9,11 @@ export function ErrorSample(props: Props) {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    const navParam = typeButton === 'back' ? (-1 as To) : RouterList.HOME;
-
-    navigate(navParam);
+    if (typeButton === 'back') {
+      navigate(-1);
+    } else {
+      navigate(RouterList.HOME);
+    }
   };
 
   return (

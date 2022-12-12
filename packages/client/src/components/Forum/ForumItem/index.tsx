@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import type { ForumProps } from 'src/store/forum/types';
+import type { ForumProps } from '../../../../../server//store/forum/types';
 import { RouterList } from 'src/router/routerList';
 import styles from './styles.module.css';
 

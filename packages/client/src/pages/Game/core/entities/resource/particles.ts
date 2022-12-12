@@ -1,4 +1,4 @@
-import { ParticlesGroupType } from '../../effects/particles/types';
+import type { ParticlesGroupType } from '../../effects/particles/types';
 
 export const resourceExplode: ParticlesGroupType = {
   type: 'circle',

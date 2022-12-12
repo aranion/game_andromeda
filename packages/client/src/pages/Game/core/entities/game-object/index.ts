@@ -1,7 +1,7 @@
 import { INITIAL_RADIUS, INITIAL_SPEED } from '../../constants';
 import { Sprite } from '../sprite';
 import type { Coordinates } from '../../types';
-import { GameEntityInterface } from '../../types';
+import type { GameEntityInterface } from '../../types';
 import type { GameObjectConfig } from './types';
 
 /**

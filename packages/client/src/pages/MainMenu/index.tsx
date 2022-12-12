@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
 import { useAuth } from 'src/hooks/useAuth';
 import { useTypeSelector } from 'src/hooks/useTypeSelector';
-import { userSelectors } from 'src/store/user';
+import { userSelectors } from '../../../../server/store/user';
 
 const configStar = [
   { top: '7%', left: '3%' },

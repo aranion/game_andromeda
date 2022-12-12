@@ -2,9 +2,9 @@ import cls from './styles.module.css';
 import { useEffect, useState } from 'react';
 import { BoardTable, TitlePage, TopLeader, ButtonBack } from 'src/components';
 import { useTypeSelector } from 'src/hooks/useTypeSelector';
-import { leaderBoardSelectors } from 'src/store/leaderBoard';
+import { leaderBoardSelectors } from '../../../../server/store/leaderBoard';
 import { useLeaderBoard } from 'src/hooks/useLeaderBoard';
-import type { Leader } from 'src/store/leaderBoard/type';
+import type { Leader } from '../../../../server/store/leaderBoard/type';
 
 export default function LeaderBoard() {
   const [topLeader, setTopLeader] = useState<Leader[]>([]);

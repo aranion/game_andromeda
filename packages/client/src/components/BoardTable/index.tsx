@@ -2,7 +2,7 @@ import cls from './styles.module.css';
 import { Avatar, Loader } from 'src/components';
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
-import type { Leader } from 'src/store/leaderBoard/type';
+import type { Leader } from '../../../../server/store/leaderBoard/type';
 
 const HEADERS_COLUMNS = ['Position', 'Avatar', 'Nickname', 'HighScore'];
 

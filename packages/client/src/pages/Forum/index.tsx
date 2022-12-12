@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import type { ForumProps, FetchForums } from 'src/store/forum/types';
+import type {
+  ForumProps,
+  FetchForums,
+} from '../../../../server/store/forum/types';
 import { ButtonBack, ForumItem, NewForumButton } from 'src/components';
 import styles from './styles.module.css';
 

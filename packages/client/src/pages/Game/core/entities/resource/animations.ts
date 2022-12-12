@@ -1,6 +1,6 @@
 import { AnimationKey } from '../../constants';
 import { mapXSequence } from '../../utils/map-x-sequence';
-import { ResourceAnimation } from './types';
+import type { ResourceAnimation } from './types';
 
 const mapAnimation = mapXSequence([0, 1, 1, 2, 2, 1, 1, 0]);
 

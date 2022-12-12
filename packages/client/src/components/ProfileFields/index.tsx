@@ -1,13 +1,13 @@
 import cls from './styles.module.css';
 import classNames from 'classnames';
 import { Loader, Button, Input } from 'src/components';
-import { useUpdateProfile } from 'src/hooks/useUpdateProfile';
-import type { FormEvent } from 'react';
-import type { Fields } from 'src/pages/Profile';
-import type {
+import {
   RequestUpdatePassword,
   RequestUpdateProfile,
-} from 'src/store/user/type';
+  useUpdateProfile,
+} from 'src/hooks/useUpdateProfile';
+import type { FormEvent } from 'react';
+import type { Fields } from 'src/pages/Profile';
 
 export function ProfileFields(props: Props) {
   const { isEdit, isEditPassword, isLoading, fields, userId } = props;

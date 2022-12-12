@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { Avatar } from 'src/components';
 import { RouterList } from 'src/router/routerList';
-import type { Leader } from 'src/store/leaderBoard/type';
+import type { Leader } from '../../../../server/store/leaderBoard/type';
 
 export function TopLeader(props: Props) {
   const { position, leader } = props;

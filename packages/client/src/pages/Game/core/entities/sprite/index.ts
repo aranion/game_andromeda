@@ -1,7 +1,7 @@
 import { animationsConfig, AnimationType } from '../../animations.config';
 import { ANIM_FRAME_LIMIT, AnimationKey } from '../../constants';
-import { Coordinates } from '../../types';
-import { SpriteConfig } from './types';
+import type { Coordinates } from '../../types';
+import type { SpriteConfig } from './types';
 
 /**
  * Класс для отрисовки спрайтов с анимациями или без.
