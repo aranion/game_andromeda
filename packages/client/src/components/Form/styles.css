@@ -1,0 +1,30 @@
+.form {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.form__button {
+  min-width: 230px;
+  font-size: 20px;
+  padding: 5px 20px;
+}
+
+.form__textarea,
+.form__input {
+  min-width: 320px;
+  padding: 7px 20px;
+}
+
+.form__textarea {
+  min-height: 100px;
+}
+
+@media only screen and (max-width: 600px) {
+  .form__button {
+    min-width: 170px;
+    padding: 5px 20px;
+    font-size: 18px;
+  }
+}

@@ -1,10 +1,15 @@
 import cls from './styles.module.css';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Avatar, Button, ProfileFields, TitlePage } from 'src/components';
-import { useLazyFetchUserDataQuery } from 'src/store/user/api';
+import { userSelectors, useLazyFetchUserDataQuery } from 'src/store/user';
+import {
+  Avatar,
+  Button,
+  ProfileFields,
+  TitlePage,
+  ButtonBack,
+} from 'src/components';
 import { useTypeSelector } from 'src/hooks/useTypeSelector';
-import { userSelectors } from 'src/store/user';
 import { RouterList, RouterParamsProfile } from 'src/router/routerList';
 import { useAuth } from 'src/hooks/useAuth';
 import { prepareAllProfileFields, preparePasswordProfileFields } from './utils';
@@ -19,81 +24,78 @@ export default function Profile() {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  const { userData } = useTypeSelector(userSelectors.allUser);
-  const { id, avatar } = userData;
+  const { userData } = useTypeSelector(userSelectors.all);
+  const { id } = userData;
 
-  const [fetchUserData, { isLoading, isError }] = useLazyFetchUserDataQuery();
+  const [fetchUserData, { isFetching }] = useLazyFetchUserDataQuery();
 
-  const nickname = profileData?.display_name || 'Anonymous';
+  const nickname = profileData?.display_name || profileData?.login || '';
   const isCorrectUserId = userId && !isNaN(+userId);
   const isEditPassword = pathname === RouterList.PROFILE_EDIT_PASSWORD;
   const isEditProfile = pathname === RouterList.PROFILE_EDIT || isEditPassword;
-  const isNotMyProfile = userId && !!id && id !== +userId;
+  const isNotMyProfile = !!(userId && !!id && id !== +userId);
 
   useEffect(() => {
-    if (isEditProfile) {
-      if (isEditPassword) {
-        const fieldsPassword = preparePasswordProfileFields();
+    if (isEditPassword) {
+      const fieldsPassword = preparePasswordProfileFields();
 
-        setFields(fieldsPassword);
-      } else {
-        const fields = prepareAllProfileFields(userData);
-
-        setFields(fields);
-        setProfileData(userData);
-      }
+      setFields(fieldsPassword);
     } else {
-      if (isCorrectUserId) {
-        setFields([]);
+      const fields = prepareAllProfileFields(userData);
 
-        fetchUserData(userId)
-          .then(res => {
-            if ('data' in res && res.data) {
-              const fields = prepareAllProfileFields(res.data);
-
-              setProfileData(res.data);
-              setFields(fields);
-            } else {
-              console.error(res.error);
-            }
-          })
-          .catch(console.log);
-      }
+      setFields(fields);
+      setProfileData(userData);
     }
-  }, [pathname, userId]);
+  }, [isEditPassword, userData]);
+
+  useEffect(() => {
+    if (!isEditProfile && isCorrectUserId) {
+      setFields([]);
+      setProfileData(null);
+
+      fetchUserData(userId)
+        .then(res => {
+          if (res.data) {
+            const { data } = res;
+            const fields = prepareAllProfileFields(data);
+
+            setProfileData(data);
+            setFields(fields);
+          } else {
+            console.error(res.error);
+          }
+        })
+        .catch(console.log);
+    }
+  }, [userId]);
 
   if (!isEditProfile && !isCorrectUserId) {
-    return <TitlePage title='ID пользователя указан не верно' />;
-  }
-
-  if (isError) {
-    return (
-      <TitlePage title='Произошла ошибка при получении данных с сервера' />
-    );
+    return <TitlePage>ID пользователя указан не верно</TitlePage>;
   }
 
   const handleEditProfile = () => {
-    navigate(RouterList.PROFILE_EDIT);
+    navigate(RouterList.PROFILE_EDIT, { replace: true });
   };
 
   const handleEditPassword = () => {
-    navigate(RouterList.PROFILE_EDIT_PASSWORD);
+    navigate(RouterList.PROFILE_EDIT_PASSWORD, { replace: true });
   };
 
   return (
-    <>
-      <TitlePage title='Profile' />
+    <div className={cls.wrapper}>
+      <TitlePage>Profile</TitlePage>
 
       <div className={cls.profile}>
         <div className={cls.profile__avatar}>
-          <Avatar isEditAvatar={true} path={avatar} />
+          <Avatar isEditAvatar={!isNotMyProfile} path={profileData?.avatar} />
         </div>
 
         <span className={cls.profile__nickname}>{nickname}</span>
 
         <ProfileFields
           isEdit={isEditProfile}
-          isLoading={isLoading}
+          isEditPassword={isEditPassword}
+          isLoading={isFetching}
           fields={fields}
           userId={id}
         />
@@ -114,7 +116,7 @@ export default function Profile() {
               typeButton='danger'
               onClick={logout}
               className={cls.profile__buttons_width}>
-              Exit game
+              Log out
             </Button>
           </div>
         )}
@@ -123,7 +125,8 @@ export default function Profile() {
           <Link to={`${RouterList.PROFILE}/${id}`}>Go to my profile</Link>
         )}
       </div>
-    </>
+      <ButtonBack />
+    </div>
   );
 }
 

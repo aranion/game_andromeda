@@ -1,5 +1,6 @@
-import { Button, Star, AuthForm } from 'src/components';
+import { Star, ButtonStar, AuthForm, TitlePage } from 'src/components';
 import './styles.css';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
 import { useAuth } from 'src/hooks/useAuth';
@@ -23,7 +24,7 @@ const configStar = [
 ];
 
 export default function SignUp() {
-  const { signUp } = useAuth();
+  const { signUp, isAuth } = useAuth();
 
   const handleSignUp = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,6 +39,12 @@ export default function SignUp() {
   const navigate = useNavigate();
   const navigateSignIn = () => navigate(RouterList.SIGN_IN);
 
+  useEffect(() => {
+    if (isAuth) {
+      navigate(RouterList.HOME);
+    }
+  }, [isAuth]);
+
   return (
     <>
       <div className='main-menu registration'>
@@ -47,49 +54,67 @@ export default function SignUp() {
           ))}
         </div>
 
-        <h1 className='main-menu__title'>
+        <TitlePage>
           Journey
           <br />
           to the
           <br />
           Andromeda
-        </h1>
+        </TitlePage>
 
         <AuthForm onSubmit={handleSignUp} title='Sign Up'>
-          <AuthForm.Input name='email' type='email' placeholder='Email' />
-          <AuthForm.Input name='login' type='text' placeholder='Login' />
           <AuthForm.Input
+            typeComponent='input'
+            name='email'
+            type='email'
+            placeholder='Email'
+            required
+          />
+          <AuthForm.Input
+            typeComponent='input'
+            name='login'
+            type='text'
+            placeholder='Login'
+            required
+          />
+          <AuthForm.Input
+            typeComponent='input'
             name='first_name'
             type='text'
             placeholder='First Name'
+            required
           />
           <AuthForm.Input
+            typeComponent='input'
             name='second_name'
             type='text'
             placeholder='Last Name'
+            required
           />
-          <AuthForm.Input name='phone' type='text' placeholder='Phone' />
           <AuthForm.Input
+            typeComponent='input'
+            name='phone'
+            type='text'
+            placeholder='Phone'
+            required
+          />
+          <AuthForm.Input
+            typeComponent='input'
             name='password'
             type='password'
             placeholder='Password'
+            required
           />
           <AuthForm.Input
+            typeComponent='input'
             name='password'
             type='password'
             placeholder='Password (Again)'
+            required
           />
         </AuthForm>
 
-        <div className='registration__signin'>
-          <Star size='small' relative={true} />
-          <Button
-            className='registration__signin-button'
-            onClick={navigateSignIn}>
-            Sign In
-          </Button>
-          <Star size='small' relative={true} />
-        </div>
+        <ButtonStar onClick={navigateSignIn}>Sign In</ButtonStar>
       </div>
     </>
   );

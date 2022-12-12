@@ -1,7 +1,7 @@
-.input {
+.input,
+.textarea {
   background: var(--color-light);
   box-shadow: inset 0px 4px 4px rgba(37, 27, 55, 0.57);
-  border-radius: 30px;
   color: var(--color-normal);
   line-height: 1rem;
   border: none;
@@ -20,4 +20,12 @@
   &:focus {
     outline: 2px solid rgba(255, 255, 237, 0.8);
   }
+}
+
+.input {
+  border-radius: 30px;
+}
+
+.textarea {
+  border-radius: 20px;
 }

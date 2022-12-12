@@ -13,16 +13,17 @@ type StarProps = {
 };
 
 export function Star(props: StarProps) {
-  const { top, right, left, bottom, className, relative } = props;
-  let { size } = props;
-  if (!size) {
+  const { top, right, left, bottom, className, relative, size } = props;
+  let newSize = size;
+
+  if (!newSize) {
     const randomNum = Math.floor(Math.random() * 3 + 1);
     if (randomNum === 1) {
-      size = 'small';
+      newSize = 'small';
     } else if (randomNum === 2) {
-      size = 'normal';
+      newSize = 'normal';
     } else {
-      size = 'big';
+      newSize = 'big';
     }
   }
   let starPosition = '';
@@ -31,7 +32,7 @@ export function Star(props: StarProps) {
   }
   const classNames = classnames(
     'star',
-    `star_size_${size}`,
+    `star_size_${newSize}`,
     className,
     starPosition
   );

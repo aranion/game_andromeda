@@ -1,22 +1,26 @@
 import cls from './styles.module.css';
 import classNames from 'classnames';
-import { useNavigate } from 'react-router-dom';
 import { Loader, Button, Input } from 'src/components';
-import { RouterList } from 'src/router/routerList';
+import { useUpdateProfile } from 'src/hooks/useUpdateProfile';
 import type { FormEvent } from 'react';
 import type { Fields } from 'src/pages/Profile';
+import type {
+  RequestUpdatePassword,
+  RequestUpdateProfile,
+} from 'src/store/user/type';
 
 export function ProfileFields(props: Props) {
-  const { isEdit, isLoading, fields, userId } = props;
+  const { isEdit, isEditPassword, isLoading, fields, userId } = props;
 
-  const navigate = useNavigate();
+  const { updatePassword, updateProfile, isLoadingPassword, isLoadingProfile } =
+    useUpdateProfile();
 
   const clsFieldValue = classNames(cls.profileFields__field_value, {
     [cls.profileFields__field_edit]: isEdit,
   });
 
   if (isLoading) {
-    return <Loader />;
+    return <Loader position='relative' />;
   }
 
   const handleSubmitForm = (e: FormEvent<HTMLFormElement>) => {
@@ -24,12 +28,31 @@ export function ProfileFields(props: Props) {
     e.stopPropagation();
 
     if (userId) {
-      navigate(`${RouterList.PROFILE}/${userId}`);
+      const data = new FormData(e.currentTarget).entries();
+      const fields: Record<string, string> = {};
+
+      for (const item of data) {
+        const key = item[0];
+        const value = item[1];
+
+        if (typeof value === 'string') {
+          fields[key] = value;
+        }
+      }
+
+      if (isEditPassword) {
+        delete fields.repeatPassword;
+        updatePassword(fields as RequestUpdatePassword);
+      } else {
+        updateProfile(fields as RequestUpdateProfile);
+      }
     }
   };
 
   return (
     <form className={cls.profileFields} onSubmit={handleSubmitForm}>
+      {(isLoadingPassword || isLoadingProfile) && <Loader />}
+
       {fields.map(field => {
         const { label, key, value, ...otherProps } = field;
 
@@ -40,6 +63,7 @@ export function ProfileFields(props: Props) {
             </label>
             <Input
               {...otherProps}
+              typeComponent='input'
               name={key}
               id={key}
               readOnly={!isEdit}
@@ -57,6 +81,7 @@ export function ProfileFields(props: Props) {
 type Props = {
   isLoading: boolean;
   isEdit: boolean;
+  isEditPassword: boolean;
   fields: Fields[];
   userId: number | null;
 };

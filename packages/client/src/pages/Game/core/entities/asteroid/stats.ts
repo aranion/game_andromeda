@@ -1,20 +1,21 @@
 import { AsteroidConfig } from './types';
-import asteroid1 from './../../assets/asteriods/asteroid1.png';
-import asteroid2 from './../../assets/asteriods/asteroid2.png';
-import asteroid3 from './../../assets/asteriods/asteroid3.png';
-import asteroid4 from './../../assets/asteriods/asteroid4.png';
+import asteroid1 from '../../assets/asteroid/asteroid1.png';
+import asteroid2 from '../../assets/asteroid/asteroid2.png';
+import asteroid3 from '../../assets/asteroid/asteroid3.png';
+import asteroid4 from '../../assets/asteroid/asteroid4.png';
 import { randomInteger } from '../../utils/random-integer';
+
+export const images = [asteroid1, asteroid2, asteroid3, asteroid4];
 
 const defaultAsteroidStats = {
   maxSpeed: 10,
   maxRotateSpeed: 0.1,
-  radius: 20,
+  radius: 40,
   isAnimated: false,
 };
 
 export function createAsteroidConfig(): Omit<AsteroidConfig, 'canvas' | 'ctx'> {
   const random = Math.random();
-  const images = [asteroid1, asteroid2, asteroid3, asteroid4];
   return {
     isAnimated: defaultAsteroidStats.isAnimated,
     radius: defaultAsteroidStats.radius,

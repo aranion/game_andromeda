@@ -1,5 +1,6 @@
-import { Button, Star, AuthForm } from 'src/components';
+import { Star, ButtonStar, AuthForm, TitlePage } from 'src/components';
 import './styles.css';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
 import { useAuth } from 'src/hooks/useAuth';
@@ -28,12 +29,12 @@ const configStarNoMobile = [
 ];
 
 export default function SignIn() {
-  const { signIn } = useAuth();
+  const { signIn, isAuth } = useAuth();
 
   const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formParams: Record<string, string> = {};
-    const formData = new FormData(e.target as HTMLFormElement);
+    const formData = new FormData(e.currentTarget);
     Array.from(formData.entries()).forEach(([key, value]) => {
       formParams[key] = value as string;
     });
@@ -42,6 +43,12 @@ export default function SignIn() {
 
   const navigate = useNavigate();
   const navigateSignUp = () => navigate(RouterList.SIGN_UP);
+
+  useEffect(() => {
+    if (isAuth) {
+      navigate(RouterList.HOME);
+    }
+  }, [isAuth]);
 
   return (
     <>
@@ -56,30 +63,32 @@ export default function SignIn() {
           ))}
         </div>
 
-        <h1 className='main-menu__title'>
+        <TitlePage>
           Journey
           <br />
           to the
           <br />
           Andromeda
-        </h1>
+        </TitlePage>
 
         <AuthForm onSubmit={handleSignIn} title='Sign In'>
-          <AuthForm.Input name='login' type='text' placeholder='Login' />
           <AuthForm.Input
+            typeComponent='input'
+            name='login'
+            type='text'
+            placeholder='Login'
+            required
+          />
+          <AuthForm.Input
+            typeComponent='input'
             name='password'
             type='password'
             placeholder='Password'
+            required
           />
         </AuthForm>
 
-        <div className='login__signup'>
-          <Star size='small' relative={true} />
-          <Button className='login__signup-button' onClick={navigateSignUp}>
-            Sign Up
-          </Button>
-          <Star size='small' relative={true} />
-        </div>
+        <ButtonStar onClick={navigateSignUp}>Sign Up</ButtonStar>
       </div>
     </>
   );

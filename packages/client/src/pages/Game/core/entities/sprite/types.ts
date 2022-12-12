@@ -10,4 +10,5 @@ export type SpriteConfig = {
   position: Coordinates;
   isAnimated?: boolean;
   currentAnimation?: AnimationKey;
+  sizeRatio?: number;
 };

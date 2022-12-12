@@ -10,13 +10,44 @@
   min-width: 140px;
   padding: 5px 20px;
 
-  &__danger {
-    background: var(--color-danger);
-    color: var(--color-light);
+  &__type {
+    &_danger {
+      background: var(--color-danger);
+      color: var(--color-light);
 
-    &:hover {
-      color: var(--color-normal);
+      &:hover {
+        color: var(--color-normal);
+      }
     }
+  }
+
+  &__position {
+    &_absolute {
+      padding: 3px 0px;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 55px;
+      z-index: 2;
+      opacity: 0.5;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  &_size_big {
+    font-size: 1.7rem;
+    padding: 5px 40px;
+    min-width: 210px;
+  }
+
+  &_size_small {
+    font-size: 0.8rem;
+    padding: 3px 10px;
+    min-width: 100px;
   }
 
   &:hover {

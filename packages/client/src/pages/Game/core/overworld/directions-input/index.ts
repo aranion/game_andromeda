@@ -8,7 +8,6 @@ import type { Coordinates } from '../../types';
 export class DirectionsInput {
   private readonly canvas: HTMLCanvasElement;
   private readonly mousePosition: Coordinates;
-
   constructor(config: DirectionsInputConfig) {
     this.canvas = config.canvas;
     this.mousePosition = {

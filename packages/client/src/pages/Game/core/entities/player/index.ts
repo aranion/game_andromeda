@@ -1,25 +1,37 @@
 import { GameObject } from '../game-object';
+import { store } from 'src/store';
+import { gameActions } from 'src/store/game';
 import type { PlayerConfig, PlayerSkin } from './types';
 import type { Coordinates } from '../../types';
+import { SceneTransition } from '../../overworld/scene-transition';
+import {
+  endGameLabel,
+  endGameButton,
+} from '../../overworld/scene-transition/stats';
+import { defaultPlayerStats } from './stats';
 
 /**
  * Класс игрока. Главная сущность игры в виде космического корабля.
  * */
 export class Player extends GameObject {
+  private status: 'mounted' | 'unmounted' = 'unmounted';
   private direction: Coordinates;
   private lives: number;
   private maxLives: number;
   private shielded: boolean;
   private skin: PlayerSkin;
+  private sceneTransition: SceneTransition;
 
   constructor(config: PlayerConfig) {
     super({ ...config, imageSrc: config.imageSrc.healthy });
 
+    this.status = 'mounted';
     this.direction = config.direction;
     this.lives = config.lives;
     this.maxLives = config.maxLives;
     this.shielded = config.shielded ?? false;
     this.skin = config.imageSrc;
+    this.sceneTransition = config.sceneTransition;
     this.updateSkin();
   }
 
@@ -31,11 +43,16 @@ export class Player extends GameObject {
     return this.shielded;
   }
 
-  updateLives(num: number) {
+  updateLives(num: number, score: number) {
     const newLives = this.lives + num;
 
     if (newLives <= 0) {
-      alert('Your ship was consumed by cosmic void...');
+      this.sceneTransition.createLabel(endGameLabel);
+      this.sceneTransition.createButton(
+        endGameButton(this.sceneTransition.getGame)
+      );
+      this.sceneTransition.darkScreen(2000);
+      this.dispatchScore(score);
       return;
     }
 
@@ -74,7 +91,7 @@ export class Player extends GameObject {
   }
 
   protected draw() {
-    this.sprite.drawImageLookAt(this.direction);
+    if (this.status === 'mounted') this.sprite.drawImageLookAt(this.direction);
   }
 
   update() {
@@ -91,5 +108,15 @@ export class Player extends GameObject {
 
     this.keepInsideCanvas();
     this.draw();
+  }
+
+  clear() {
+    this.updateLives(this.maxLives - this.lives - 1, 0);
+    this.position.x = this.canvas.width / 2;
+    this.position.y = this.canvas.height;
+  }
+
+  private dispatchScore(score: number) {
+    store.dispatch(gameActions.setHightScore(score));
   }
 }

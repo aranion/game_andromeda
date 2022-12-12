@@ -1,10 +1,15 @@
 import { styles } from '../../constants';
 import { Player } from '../../entities/player';
 import { Resource } from '../../entities/resource';
-import { GameObject } from '../../entities/game-object';
-import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
-import { createAsteroidConfig } from '../../entities/asteroid/stats';
 import { Asteroid } from '../../entities/asteroid';
+import { asteroidExplode } from '../../entities/asteroid/particles';
+import { resourceExplode } from '../../entities/resource/particles';
+import { SceneTransition } from '../scene-transition';
+import { createAsteroidConfig } from '../../entities/asteroid/stats';
+import { Particles } from '../../effects/particles';
+import { getStarsConfig } from './particles';
+import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
+import { isOutsideCanvas } from '../../utils/is-outside-canvas';
 
 /**
  * Карта текущего уровня, настраивается через конфиг. Управляет текущим уровнем и его логикой.
@@ -18,16 +23,21 @@ export class GameMap {
     asteroid: number;
     resource: number;
   };
+  private sceneTransition: SceneTransition;
   private score = 0;
   private readonly player: Player;
   private resources: Resource[] = [];
   private asteroids: Asteroid[] = [];
+  private particlesGroups: Particles[] = [];
 
   constructor(config: GameMapConstrConfig) {
     this.canvas = config.canvas;
     this.ctx = config.ctx;
     this.spawnInterval = config.spawnInterval;
     this.player = config.player;
+    this.sceneTransition = config.sceneTransition;
+
+    this.createStarsBackground();
   }
 
   get getScore(): number {
@@ -40,12 +50,13 @@ export class GameMap {
     );
   }
 
-  private isOutsideCanvas(object: GameObject): boolean {
-    return (
-      object.getPosition.y > this.canvas.height + object.getRadius * 2 ||
-      object.getPosition.y < -object.getRadius * 2 ||
-      object.getPosition.x < object.getRadius ||
-      object.getPosition.x > this.canvas.width - object.getRadius
+  private createStarsBackground() {
+    this.particlesGroups.push(
+      new Particles({
+        canvas: this.canvas,
+        ctx: this.ctx,
+        ...getStarsConfig(),
+      })
     );
   }
 
@@ -63,7 +74,7 @@ export class GameMap {
       const resource = this.resources[i];
       resource.update(this.player);
 
-      if (this.isOutsideCanvas(resource)) {
+      if (isOutsideCanvas({ object: resource, canvas: this.canvas })) {
         this.resources.splice(i, 1);
         i--;
       }
@@ -71,6 +82,17 @@ export class GameMap {
       if (this.isCollided(resource) && !resource.isCounted) {
         this.score += resource.collect();
         this.resources.splice(i, 1);
+        this.particlesGroups.push(
+          new Particles({
+            canvas: this.canvas,
+            ctx: this.ctx,
+            position: {
+              x: resource.getPosition.x,
+              y: resource.getPosition.y,
+            },
+            ...resourceExplode,
+          })
+        );
         i--;
       }
     }
@@ -92,17 +114,48 @@ export class GameMap {
       const asteroid = this.asteroids[i];
       asteroid.update(this.player);
 
-      if (this.isOutsideCanvas(asteroid)) {
+      if (isOutsideCanvas({ object: asteroid, canvas: this.canvas })) {
         this.asteroids.splice(i, 1);
         i--;
       }
 
       if (this.isCollided(asteroid)) {
-        this.player.updateLives(-1);
+        this.player.updateLives(-1, this.score);
         this.asteroids.splice(i, 1);
+        this.particlesGroups.push(
+          new Particles({
+            canvas: this.canvas,
+            ctx: this.ctx,
+            position: {
+              x: asteroid.getPosition.x,
+              y: asteroid.getPosition.y,
+            },
+            ...asteroidExplode(),
+          })
+        );
         i--;
       }
     }
+  }
+
+  private handleParticles() {
+    for (let i = 0; i < this.particlesGroups.length; i++) {
+      const particles = this.particlesGroups[i];
+      particles.update();
+
+      if (particles.isFaded) {
+        this.particlesGroups.splice(i, 1);
+        i--;
+      }
+    }
+  }
+
+  clear() {
+    this.asteroids = [];
+    this.particlesGroups.splice(1, this.particlesGroups.length - 1); // вырезать всё, кроме звёзд
+    this.resources = [];
+    this.player.clear();
+    this.score = 0;
   }
 
   private drawUI() {
@@ -119,9 +172,11 @@ export class GameMap {
 
   update({ frame }: UpdateParams) {
     this.draw();
+    this.handleParticles();
     this.player.update();
     this.handleResources(frame);
     this.handleAsteroids(frame);
     this.drawUI();
+    this.sceneTransition.update();
   }
 }

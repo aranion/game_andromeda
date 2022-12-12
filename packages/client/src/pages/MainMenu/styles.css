@@ -1,0 +1,17 @@
+.mainmenu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  padding: 30px;
+  background: var(--color-normal);
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.22),
+    0px 0px 40px rgba(255, 255, 237, 0.1);
+  border-radius: 30px;
+}
+
+.mainmenu__wrapper {
+  width: 100%;
+  height: 100%;
+}

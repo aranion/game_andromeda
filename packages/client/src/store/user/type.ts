@@ -14,5 +14,12 @@ export type User = {
 };
 
 export type ResponseUserData = User;
+export type ResponseUpdateProfile = User & { status?: string | null };
 
 export type RequestUserData = string;
+export type RequestUpdateAvatar = FormData;
+export type RequestUpdatePassword = {
+  oldPassword: string;
+  newPassword: string;
+};
+export type RequestUpdateProfile = Omit<User, 'id' | 'avatar'>;

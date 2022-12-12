@@ -1,35 +1,43 @@
 import cls from './styles.module.css';
 import { useEffect, useState } from 'react';
-import { BoardTable, TitlePage, TopLeader } from 'src/components';
-import { mockLeader } from 'src/constants/mockData';
+import { BoardTable, TitlePage, TopLeader, ButtonBack } from 'src/components';
+import { useTypeSelector } from 'src/hooks/useTypeSelector';
+import { leaderBoardSelectors } from 'src/store/leaderBoard';
+import { useLeaderBoard } from 'src/hooks/useLeaderBoard';
+import type { Leader } from 'src/store/leaderBoard/type';
 
 export default function LeaderBoard() {
   const [topLeader, setTopLeader] = useState<Leader[]>([]);
   const [otherLeader, setOtherLeader] = useState<Leader[]>([]);
 
+  const leaders = useTypeSelector(leaderBoardSelectors.leaders);
+
+  const { getTeamLeaders, isLoadingLeaders } = useLeaderBoard();
+
   useEffect(() => {
-    setTopLeader(mockLeader.slice(0, 3));
-    setOtherLeader(mockLeader.slice(3, 20));
+    getTeamLeaders();
   }, []);
 
+  useEffect(() => {
+    if (leaders.length) {
+      setTopLeader(leaders.slice(0, 3));
+      setOtherLeader(leaders.slice(3, 13));
+    }
+  }, [leaders]);
+
   return (
-    <>
-      <TitlePage title='LeaderBoard' />
-      <div className={cls.leaderBoard}>
-        <div className={cls.leaderBoard__topLeader}>
+    <div className={cls.leaderBoard}>
+      <TitlePage>LeaderBoard</TitlePage>
+      <div className={cls.leaderBoard__wrapper}>
+        <div className={cls.leaderBoard__wrapper_topLeader}>
           {topLeader.map((leader, i) => (
-            <TopLeader key={i} position={i} leaderInfo={leader} />
+            <TopLeader key={i} position={i} leader={leader} />
           ))}
         </div>
 
-        <BoardTable leaders={otherLeader} />
+        <BoardTable leaders={otherLeader} isLoading={isLoadingLeaders} />
+        <ButtonBack />
       </div>
-    </>
+    </div>
   );
 }
-
-export type Leader = {
-  userId: number;
-  nickname: string;
-  highScore: number;
-};
