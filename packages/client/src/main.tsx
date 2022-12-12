@@ -8,7 +8,7 @@ import { hydrateRoot } from 'react-dom/client';
 import { hot } from 'react-hot-loader/root';
 import { ErrorBoundary } from './components';
 import { BrowserRouter } from 'react-router-dom';
-// // import { startServiceWorker } from './startServiceWorker';
+import { startServiceWorker } from './startServiceWorker';
 
 const rootElement = document.getElementById('root');
 export let __STORE__: any;
@@ -42,6 +42,6 @@ if (rootElement) {
   throw new Error('HTML element with id = "root" not found');
 }
 
-// startServiceWorker();
+startServiceWorker();
 
 type Props = Record<string, unknown>;
