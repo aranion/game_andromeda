@@ -6,7 +6,7 @@
     "dev": "vite",
     "build:client": "vite build --outDir=dist/client",
     "build:ssr": "vite build --outDir=dist/ssr --ssr src/entry-server.tsx",
-    "build": "rm -rf ./dist && yarn build:client && yarn build:ssr",
+    "build": "rm -rf ./dist && yarn build:client && yarn build:ssr && mv ./dist/client/index.html ./dist/ssr",
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",

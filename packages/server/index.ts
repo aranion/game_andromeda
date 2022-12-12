@@ -15,9 +15,9 @@ app.use(cors());
 
 createClientAndConnect();
 
-app.get('/', serverRenderMiddleware);
-
 app.use(express.static(path.resolve(__dirname, '../../client/dist/client')));
+
+app.get('*', serverRenderMiddleware);
 
 app.listen(PORT, () => {
   console.log(`  ➜ 🎸 Server is listening on port: ${PORT}`);
