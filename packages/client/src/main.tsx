@@ -20,21 +20,22 @@ if (rootElement) {
     const { store, history } = configureStoreSSR(window.__PRELOADED_STATE__);
     delete window.__PRELOADED_STATE__;
 
-    (__STORE__ = store),
-      hydrateRoot(
-        rootElement,
-        <React.StrictMode>
-          <Provider store={__STORE__}>
-            <BrowserRouter>
-              <ConnectedRouter history={history}>
-                <ErrorBoundary>
-                  <HotWrapApp />
-                </ErrorBoundary>
-              </ConnectedRouter>
-            </BrowserRouter>
-          </Provider>
-        </React.StrictMode>
-      );
+    __STORE__ = store;
+
+    hydrateRoot(
+      rootElement,
+      <React.StrictMode>
+        <Provider store={__STORE__}>
+          <BrowserRouter>
+            <ConnectedRouter history={history}>
+              <ErrorBoundary>
+                <HotWrapApp />
+              </ErrorBoundary>
+            </ConnectedRouter>
+          </BrowserRouter>
+        </Provider>
+      </React.StrictMode>
+    );
   } else {
     throw new Error('window.__PRELOADED_STATE__ not found');
   }
