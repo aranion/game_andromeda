@@ -12,6 +12,7 @@ export enum RouterList {
   PROFILE = '/profile',
   PROFILE_EDIT = '/profile/edit',
   PROFILE_EDIT_PASSWORD = '/profile/edit-password',
+  OAUTH_TOKEN = '/oauth/',
 }
 
 export enum RouterParamsProfile {
