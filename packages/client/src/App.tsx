@@ -5,7 +5,7 @@ import { useAuth } from './hooks/useAuth';
 import { CONFIG_STARS_PARAMS } from './constants/vars';
 import { useLocation } from 'react-router-dom';
 import { RouterList } from './router/routerList';
-import { ButtonFullscreen } from './components';
+import { ButtonFullscreen, PauseMenu } from './components';
 
 function App() {
   const { checkIsAuth } = useAuth();
@@ -72,8 +72,9 @@ function App() {
     <div className={cls.app} ref={fullscrinableElem}>
       <main className={cls.app__content}>
         <Router />
+        <ButtonFullscreen elemRef={fullscrinableElem} />
+        <PauseMenu />
       </main>
-      <ButtonFullscreen elemRef={fullscrinableElem} />
 
       <div ref={refWrapper}></div>
     </div>

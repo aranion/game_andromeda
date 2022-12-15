@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import Game from './pages/Game';
+import { BrowserRouter } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 
 // @ts-ignore
@@ -19,7 +20,9 @@ test('Canvas initialization test', async () => {
 
   const { container } = render(
     <Provider store={store}>
-      <Game />
+      <BrowserRouter>
+        <Game />
+      </BrowserRouter>
     </Provider>
   );
 
