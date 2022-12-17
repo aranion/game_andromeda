@@ -3,6 +3,8 @@ import { GameObject } from '../game-object';
 import { randomInteger } from '../../utils/random-integer';
 import { resourceConfig, ResourceType } from './resource.config';
 import { ResourceConfig } from './types';
+import { store } from 'src/store';
+import { soundActions } from 'src/store/sound';
 
 const RADIUS = 23;
 const RANDOM_SPEED = Math.random() * 2 + 1;
@@ -43,6 +45,9 @@ export class Resource extends GameObject {
 
   collect(): number {
     this.counted = true;
+    store.dispatch(
+      soundActions.playSound({ soundURL: 'spark.mp3', volume: 0.3 })
+    );
     return this.points;
   }
 

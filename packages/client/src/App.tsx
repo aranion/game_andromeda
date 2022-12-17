@@ -5,7 +5,9 @@ import { useAuth } from './hooks/useAuth';
 import { CONFIG_STARS_PARAMS } from './constants/vars';
 import { useLocation } from 'react-router-dom';
 import { RouterList } from './router/routerList';
-import { ButtonFullscreen, PauseMenu } from './components';
+import { ButtonFullscreen, PauseMenu, ButtonSoundOption } from './components';
+import { store } from './store';
+import { soundActions } from './store/sound';
 
 function App() {
   const { checkIsAuth } = useAuth();
@@ -58,6 +60,17 @@ function App() {
   useEffect(() => {
     checkIsAuth();
     startStarts();
+    store.dispatch(soundActions.addSound({ soundURL: 'bosstheme.mp3' }));
+    store.dispatch(soundActions.addSound({ soundURL: 'shoot1.mp3' }));
+    store.dispatch(soundActions.addSound({ soundURL: 'shoot2.mp3' }));
+    store.dispatch(soundActions.addSound({ soundURL: 'spark.mp3' }));
+    store.dispatch(
+      soundActions.addSound({
+        soundURL: 'maintheme.mp3',
+        playWhenLoaded: 'continuous',
+      })
+    );
+    store.dispatch(soundActions.addSound({ soundURL: 'shoot.mp3' }));
 
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`;
@@ -72,6 +85,7 @@ function App() {
     <div className={cls.app} ref={fullscrinableElem}>
       <main className={cls.app__content}>
         <Router />
+        <ButtonSoundOption />
         <ButtonFullscreen elemRef={fullscrinableElem} />
         <PauseMenu />
       </main>
