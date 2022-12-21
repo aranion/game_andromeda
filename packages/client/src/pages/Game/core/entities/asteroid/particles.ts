@@ -1,6 +1,6 @@
-import { ParticlesGroupType } from '../../effects/particles/types';
 import { randomInteger } from '../../utils/random-integer';
 import { images } from './stats';
+import type { ParticlesGroupType } from '../../effects/particles/types';
 
 export function asteroidExplode(): ParticlesGroupType {
   return {

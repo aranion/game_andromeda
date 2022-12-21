@@ -3,7 +3,7 @@ import { store } from 'src/store';
 import { gameActions } from 'src/store/game';
 import type { PlayerConfig, PlayerSkin } from './types';
 import type { Coordinates } from '../../types';
-import { SceneTransition } from '../../overworld/scene-transition';
+import type { SceneTransition } from '../../overworld/scene-transition';
 import {
   endGameLabel,
   endGameButton,
