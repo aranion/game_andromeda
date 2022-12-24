@@ -15,12 +15,22 @@ export type PlayerSkin = {
   wrecked: string;
 };
 
+export type PlayerSkins = {
+  base: PlayerSkin;
+  shield: PlayerSkin;
+};
+
 export type PlayerConfig = Omit<GameObjectConfig, 'imageSrc'> & {
   direction: Coordinates;
   radius: number;
   lives: number;
   maxLives: number;
   shielded?: boolean;
-  imageSrc: PlayerSkin;
+  skins: PlayerSkins;
   sceneTransition: SceneTransition;
+};
+
+export type IdTimeouts = {
+  shield: NodeJS.Timeout | null;
+  speed: NodeJS.Timeout | null;
 };

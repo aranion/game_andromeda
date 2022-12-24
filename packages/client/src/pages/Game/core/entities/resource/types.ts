@@ -5,6 +5,7 @@ import type { GameObjectConfig } from '../game-object/types';
 
 export type ResourceConfig = Omit<GameObjectConfig, 'imageSrc' | 'position'> & {
   type?: ResourceType;
+  multiplier?: Multiplier;
 };
 
 export type ResourceAnimationKey =
@@ -15,3 +16,5 @@ export type ResourceAnimationKey =
   | AnimationKey.PlatinumOreFly;
 
 export type ResourceAnimation = Pick<AnimationType, ResourceAnimationKey>;
+
+export type Multiplier = 1 | 2;
