@@ -1,15 +1,24 @@
 import { useState, useEffect } from 'react';
 
-export const useDarkTheme = (): [string, () => void] => {
-  const [theme, setTheme] = useState('light');
+const enum ThemeList {
+  Light = 'light',
+  Dark = 'dark',
+}
+
+export const useDarkTheme = (): [string, boolean, () => void] => {
+  const [theme, setTheme] = useState(ThemeList.Light);
 
   const setMode = (mode: string) => {
     window.localStorage.setItem('theme', mode);
     setTheme(mode);
   };
 
+  const isThemeMode = theme === ThemeList.Dark;
+
   const toggleTheme = () => {
-    theme === 'light' ? setMode('dark') : setMode('light');
+    theme === ThemeList.Light
+      ? setMode(ThemeList.Dark)
+      : setMode(ThemeList.Light);
   };
 
   useEffect(() => {
@@ -18,11 +27,11 @@ export const useDarkTheme = (): [string, () => void] => {
     window.matchMedia &&
     window.matchMedia('(prefers-color-scheme: dark)').matches &&
     !localTheme
-      ? setTheme('dark')
+      ? setTheme(ThemeList.Dark)
       : localTheme
       ? setTheme(localTheme)
-      : setMode('light');
+      : setMode(ThemeList.Light);
   }, []);
 
-  return [theme, toggleTheme];
+  return [theme, isThemeMode, toggleTheme];
 };

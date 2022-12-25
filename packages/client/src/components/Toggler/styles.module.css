@@ -1,9 +1,13 @@
 .toggler {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
+  top: 55px;
+  right: 20px;
   min-width: 55px;
   height: 26px;
+  opacity: 0.5;
+}
+.toggler:hover {
+  opacity: 1;
 }
 .toggler__input {
   display: none;

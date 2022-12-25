@@ -11,8 +11,7 @@ import { ButtonFullscreen, PauseMenu, Toggler } from './components';
 function App() {
   const { checkIsAuth } = useAuth();
 
-  const [theme, toggleTheme] = useDarkTheme();
-  const themeMode = theme === 'dark';
+  const [theme, isThemeMode, toggleTheme] = useDarkTheme();
 
   const { pathname } = useLocation();
   const refWrapper = useRef(null);
@@ -70,6 +69,9 @@ function App() {
       console.log(data);
     };
     fetchServerData();
+  }, []);
+
+  useEffect(() => {
     document.body.className = theme;
   }, [theme]);
 
@@ -77,7 +79,7 @@ function App() {
     <div className={cls.app} ref={fullscrinableElem}>
       <main className={cls.app__content}>
         <Router />
-        <Toggler isChecked={themeMode} toggleCheck={toggleTheme} />
+        <Toggler isChecked={isThemeMode} toggleCheck={toggleTheme} />
         <ButtonFullscreen elemRef={fullscrinableElem} />
         <PauseMenu />
       </main>

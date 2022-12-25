@@ -1,16 +1,9 @@
 import classnames from 'classnames';
 import cls from './styles.module.css';
 import type { InputHTMLAttributes } from 'react';
-import { useState } from 'react';
 
 export function Toggler(props: Props) {
   const { className, toggleCheck, isChecked, ...otherProps } = props;
-
-  const [isToggled, setIsToggled] = useState(isChecked);
-  const onToggle = () => {
-    setIsToggled(!isToggled);
-    toggleCheck();
-  };
 
   const classNames = classnames(cls.toggler, className);
 
@@ -20,8 +13,8 @@ export function Toggler(props: Props) {
         className={cls.toggler__input}
         id='toggler'
         type='checkbox'
-        checked={isToggled}
-        onChange={onToggle}
+        checked={isChecked}
+        onChange={toggleCheck}
         readOnly
         {...otherProps}
       />
