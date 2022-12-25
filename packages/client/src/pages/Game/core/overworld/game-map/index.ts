@@ -10,6 +10,8 @@ import { Particles } from '../../effects/particles';
 import { getStarsConfig } from './particles';
 import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
 import { isOutsideCanvas } from '../../utils/is-outside-canvas';
+import { ResourceHints } from '../../effects/resource-hints';
+import { ResourceType } from '../../entities/resource/resource.config';
 
 /**
  * Карта текущего уровня, настраивается через конфиг. Управляет текущим уровнем и его логикой.
@@ -23,6 +25,7 @@ export class GameMap {
     asteroid: number;
     resource: number;
   };
+  private readonly resourceHints: ResourceHints;
   private sceneTransition: SceneTransition;
   private score = 0;
   private readonly player: Player;
@@ -36,6 +39,7 @@ export class GameMap {
     this.spawnInterval = config.spawnInterval;
     this.player = config.player;
     this.sceneTransition = config.sceneTransition;
+    this.resourceHints = new ResourceHints(this.ctx);
 
     this.createStarsBackground();
   }
@@ -93,6 +97,15 @@ export class GameMap {
             ...resourceExplode,
           })
         );
+        console.log('hint added');
+        this.resourceHints.addHint({
+          resourceType: resource.type,
+          position: {
+            x: resource.getPosition.x,
+            y: resource.getPosition.y,
+          },
+        });
+        console.log('hint added finish');
         i--;
       }
     }
@@ -178,5 +191,6 @@ export class GameMap {
     this.handleAsteroids(frame);
     this.drawUI();
     this.sceneTransition.update();
+    this.resourceHints.update();
   }
 }
