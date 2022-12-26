@@ -6,8 +6,7 @@ import { CONFIG_STARS_PARAMS } from './constants/vars';
 import { useLocation } from 'react-router-dom';
 import { RouterList } from './router/routerList';
 import { ButtonFullscreen, PauseMenu, ButtonSoundOption } from './components';
-import { store } from './store';
-import { soundActions } from './store/sound';
+import { useAudio } from './hooks/useAudio';
 
 function App() {
   const { checkIsAuth } = useAuth();
@@ -15,6 +14,7 @@ function App() {
   const { pathname } = useLocation();
   const refWrapper = useRef(null);
   const fullscrinableElem = useRef(null);
+  const { addSound } = useAudio();
 
   const startStarts = useCallback(() => {
     const isNotGamePage = pathname.toLocaleLowerCase() !== RouterList.GAME;
@@ -60,17 +60,11 @@ function App() {
   useEffect(() => {
     checkIsAuth();
     startStarts();
-    store.dispatch(soundActions.addSound({ soundURL: 'bosstheme.mp3' }));
-    store.dispatch(soundActions.addSound({ soundURL: 'shoot1.mp3' }));
-    store.dispatch(soundActions.addSound({ soundURL: 'shoot2.mp3' }));
-    store.dispatch(soundActions.addSound({ soundURL: 'spark.mp3' }));
-    store.dispatch(
-      soundActions.addSound({
-        soundURL: 'maintheme.mp3',
-        playWhenLoaded: 'continuous',
-      })
-    );
-    store.dispatch(soundActions.addSound({ soundURL: 'shoot.mp3' }));
+    addSound({ soundURL: 'maintheme.wav', playWhenLoaded: 'continuous' });
+    addSound({ soundURL: 'spark.mp3' });
+    addSound({ soundURL: 'bosstheme.wav' });
+    addSound({ soundURL: 'shoot1.mp3' });
+    addSound({ soundURL: 'shoot2.mp3' });
 
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`;

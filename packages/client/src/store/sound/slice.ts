@@ -3,182 +3,124 @@ import type { InitialState } from './type';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: InitialState = {
-  soundURLs: [],
-  soundSources: [],
-  globalVolume: false,
+  loadedSounds: [],
+  globalContext: undefined,
+  globalGainNode: undefined,
+};
+
+initialState.globalContext = new AudioContext();
+initialState.globalGainNode = initialState.globalContext.createGain();
+initialState.globalGainNode.gain.value = 0.6;
+initialState.globalGainNode.connect(initialState.globalContext.destination);
+
+type AppendAudioPayload = {
+  soundURL: string;
+  audioBuffer: AudioBuffer | 'loading';
+  audioSource: AudioBufferSourceNode | 'loading';
+};
+type PlayAudioPayload = {
+  soundURL: string;
+  continuous?: boolean | null;
 };
 
 export const soundSlice = createSlice({
   name: 'sound',
   initialState,
   reducers: {
-    addSound(
-      state,
-      {
-        payload,
-      }: PayloadAction<{
-        soundURL: string;
-        playWhenLoaded?: 'continuous' | 'once';
-      }>
-    ) {
-      const { soundURL, playWhenLoaded } = payload;
-      const mime = 'audio/mpeg';
-      if (state.soundURLs.includes(soundURL) || !checkMediaSourceSupport(mime))
-        return;
-      const audio = document.createElement('audio');
-      audio.style.display = 'none';
-      audio.textContent = 'loading';
-      document.body.appendChild(audio);
-      const mediaSource = new MediaSource();
-      const mediaSourceURL = URL.createObjectURL(mediaSource);
-      audio.src = mediaSourceURL;
-      mediaSource.addEventListener('sourceopen', () => {
-        const sourceBuffer = mediaSource.addSourceBuffer(mime);
-        fetchAB(`/audio/${soundURL.toString()}`, function (buf) {
-          sourceBuffer.addEventListener('updateend', function () {
-            mediaSource.endOfStream();
-            audio.textContent = soundURL;
-            console.log('added sound: ' + soundURL);
-            if (playWhenLoaded) {
-              if (playWhenLoaded === 'continuous') {
-                audio.ontimeupdate = () => {
-                  if (audio.currentTime === audio.duration) {
-                    audio.currentTime = 0;
-                    audio.play();
-                  }
-                };
-                const tryToPlay = setInterval(() => {
-                  audio
-                    .play()
-                    .then(() => {
-                      clearInterval(tryToPlay);
-                    })
-                    .catch(() => {
-                      console.info(
-                        'User has not interacted with document yet.'
-                      );
-                    });
-                }, 2000);
-              } else {
-                audio.play();
-              }
-            }
-          });
-          sourceBuffer.appendBuffer(buf);
-        });
+    appendAudio(state, { payload }: PayloadAction<AppendAudioPayload>) {
+      const { soundURL, audioBuffer, audioSource } = payload;
+
+      let noInstance = true;
+      state.loadedSounds = state.loadedSounds.map(sound => {
+        if (soundURL === sound.soundURL) {
+          noInstance = false;
+          return {
+            soundURL: soundURL,
+            audioBuffer: audioBuffer,
+            audioSource: audioSource,
+          };
+        }
+
+        return sound;
       });
-      state.soundSources.push(audio);
-      state.soundURLs.push(soundURL);
+      if (noInstance) {
+        state.loadedSounds.push({
+          soundURL: soundURL,
+          audioBuffer: audioBuffer,
+          audioSource: audioSource,
+        });
+      }
+
+      return state;
     },
-    playSound(
-      state,
-      {
-        payload,
-      }: PayloadAction<{
-        soundURL: string;
-        continuous?: boolean | null;
-        volume?: number;
-      }>
-    ) {
-      const { soundURL, continuous, volume } = payload;
-      const mime = 'audio/mpeg';
-      if (!state.soundURLs.includes(soundURL) || !checkMediaSourceSupport(mime))
-        return;
-      for (const soundSource of state.soundSources) {
-        if (soundSource.src && soundSource.textContent === soundURL) {
-          if (state.globalVolume !== false) {
-            soundSource.volume = state.globalVolume;
-          } else if (volume) {
-            soundSource.volume = volume;
-          } else {
-            soundSource.volume = 1;
-          }
-          if (continuous) {
-            soundSource.ontimeupdate = () => {
-              if (soundSource.currentTime === soundSource.duration) {
-                soundSource.currentTime = 0;
-                soundSource.play();
-              }
-            };
-            const tryToPlay = setInterval(() => {
-              soundSource
-                .play()
-                .then(() => {
-                  clearInterval(tryToPlay);
-                })
-                .catch(() => {
-                  console.info('User has not interacted with document yet.');
-                });
-            }, 2000);
-          } else {
-            soundSource.play();
-          }
+    playAudio(state, { payload }: PayloadAction<PlayAudioPayload>) {
+      const { soundURL, continuous } = payload;
+      if (!state.globalGainNode || !state.globalContext) return;
+
+      let audioBuffer: 'loading' | undefined | AudioBuffer = undefined;
+      for (const loadedSound of state.loadedSounds) {
+        if (loadedSound['soundURL'] === soundURL) {
+          audioBuffer = loadedSound['audioBuffer'];
         }
       }
+      if (!audioBuffer || audioBuffer === 'loading') return;
+      const bufferSource = state.globalContext.createBufferSource();
+      bufferSource.connect(state.globalGainNode);
+      bufferSource.buffer = audioBuffer;
+
+      soundSlice.caseReducers.appendAudio(state, {
+        payload: {
+          soundURL: soundURL,
+          audioBuffer: audioBuffer,
+          audioSource: bufferSource,
+        },
+        type: '',
+      });
+
+      if (continuous) {
+        bufferSource.loop = true;
+
+        let testAudio: HTMLAudioElement | null =
+          document.createElement('audio');
+        testAudio.style.display = 'none';
+        document.body.appendChild(testAudio);
+        testAudio.src = '/audio/shoot1.mp3';
+        testAudio.volume = 0;
+        const tryToPlay = setInterval(() => {
+          if (!testAudio) return;
+          testAudio
+            .play()
+            .then(() => {
+              bufferSource.start(0);
+              clearInterval(tryToPlay);
+              testAudio = null;
+            })
+            .catch(() => {
+              console.info('User has not interacted with document yet.');
+            });
+        }, 2000);
+      } else {
+        bufferSource.start(0);
+      }
     },
-    stopSound(state, { payload }: PayloadAction<{ soundURL: string }>) {
+    stopAudio(state, { payload }: PayloadAction<{ soundURL: string }>) {
       const { soundURL } = payload;
-      const mime = 'audio/mpeg';
-      if (!state.soundURLs.includes(soundURL) || !checkMediaSourceSupport(mime))
-        return;
-      for (const soundSource of state.soundSources) {
-        if (soundSource.src && soundSource.textContent === soundURL) {
-          soundSource.pause();
-          soundSource.currentTime = 0;
+
+      for (const loadedSound of state.loadedSounds) {
+        if (loadedSound.soundURL === soundURL) {
+          if (loadedSound.audioSource !== 'loading')
+            loadedSound.audioSource.stop();
         }
       }
     },
-    pauseSound(state, { payload }: PayloadAction<{ soundURL: string }>) {
-      const { soundURL } = payload;
-      const mime = 'audio/mpeg';
-      if (!state.soundURLs.includes(soundURL) || !checkMediaSourceSupport(mime))
-        return;
-      for (const soundSource of state.soundSources) {
-        if (soundSource.src && soundSource.textContent === soundURL) {
-          soundSource.pause();
-        }
-      }
-    },
-    setGlobalVolume(
-      state,
-      { payload }: PayloadAction<{ volume: InitialState['globalVolume'] }>
-    ) {
+    setGlobalVolume(state, { payload }: PayloadAction<{ volume: number }>) {
       const { volume } = payload;
-      for (const soundSource of state.soundSources) {
-        soundSource.volume = volume === false ? 1 : volume;
+      if (!state.globalGainNode) return;
+      state.globalGainNode.gain.value = volume;
+      for (const loadedSound of state.loadedSounds) {
+        if (loadedSound.audioSource !== 'loading')
+          loadedSound.audioSource.connect(state.globalGainNode);
       }
-      state.globalVolume = volume;
     },
   },
 });
-
-function checkMediaSourceSupport(mime: string) {
-  let isSupported = true;
-
-  if (!('MediaSource' in window)) {
-    console.log('There is no MediaSource property in window object.');
-    isSupported = false;
-  }
-
-  if (!MediaSource.isTypeSupported(mime)) {
-    console.log(
-      'Can not play the media. Media of MIME type ' +
-        mime +
-        ' is not supported.'
-    );
-    isSupported = false;
-  }
-
-  return isSupported;
-}
-
-function fetchAB(url: string, callbackfunc: (buffer: any) => void) {
-  console.log('loading file: ' + url);
-  const xhr = new XMLHttpRequest();
-  xhr.open('get', url);
-  xhr.responseType = 'arraybuffer';
-  xhr.onload = function () {
-    callbackfunc(xhr.response);
-  };
-  xhr.send();
-}

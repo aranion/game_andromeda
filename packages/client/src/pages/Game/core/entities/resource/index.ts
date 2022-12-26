@@ -45,9 +45,7 @@ export class Resource extends GameObject {
 
   collect(): number {
     this.counted = true;
-    store.dispatch(
-      soundActions.playSound({ soundURL: 'spark.mp3', volume: 0.3 })
-    );
+    store.dispatch(soundActions.playAudio({ soundURL: 'spark.mp3' }));
     return this.points;
   }
 

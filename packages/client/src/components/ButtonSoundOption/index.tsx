@@ -1,20 +1,21 @@
 import { Button } from 'src/components';
 import styles from './styles.module.css';
-import { store } from 'src/store';
-import { soundActions } from 'src/store/sound';
 import { useState } from 'react';
+import { useActions } from 'src/hooks/useActions';
 
 export function ButtonSoundOption() {
+  const { setGlobalVolume } = useActions();
+
   const [isSoundEnabled, setIsSoundEnabled] = useState(true);
 
   const clsButton = isSoundEnabled ? 'enabled' : 'disabled';
 
   const handleSetIsSoundEnabled = () => {
     if (isSoundEnabled) {
-      store.dispatch(soundActions.setGlobalVolume({ volume: 0 }));
+      setGlobalVolume({ volume: 0 });
       setIsSoundEnabled(false);
     } else {
-      store.dispatch(soundActions.setGlobalVolume({ volume: false }));
+      setGlobalVolume({ volume: 0.6 });
       setIsSoundEnabled(true);
     }
   };
