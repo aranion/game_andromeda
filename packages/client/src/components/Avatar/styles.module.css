@@ -33,6 +33,5 @@
   &:hover &__edit {
     display: flex;
     background-color: var(--translucentColor);
-    cursor: pointer;
   }
 }
