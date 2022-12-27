@@ -63,6 +63,7 @@ export const useAudio = () => {
                 .then(() => {
                   bufferSource.start(0);
                   clearInterval(tryToPlay);
+                  if (testAudio) testAudio.remove();
                   testAudio = null;
                 })
                 .catch(() => {

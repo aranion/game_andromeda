@@ -93,6 +93,7 @@ export const soundSlice = createSlice({
             .then(() => {
               bufferSource.start(0);
               clearInterval(tryToPlay);
+              if (testAudio) testAudio.remove();
               testAudio = null;
             })
             .catch(() => {
