@@ -1,5 +1,5 @@
-import { Coordinates } from '../../types';
-import { AnimationKey } from '../../constants';
+import type { Coordinates } from '../../types';
+import type { AnimationKey } from '../../constants';
 
 export type ParticleTypes = 'circle' | 'sprite';
 

@@ -11,6 +11,7 @@
   opacity: 0;
   pointer-events: none;
   transition: 0.5s;
+  z-index: 9999;
 }
 
 .modal.active {
@@ -19,7 +20,7 @@
 }
 
 .modal__content {
-  min-width: 400px;
+  min-width: 200px;
   transform: scale(0.8);
   transition: 0.4s all;
   background-color: var(--color-normal);

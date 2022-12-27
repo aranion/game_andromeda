@@ -1,5 +1,5 @@
-import { AnimationKey } from '../../constants';
-import { Coordinates } from '../../types';
+import type { AnimationKey } from '../../constants';
+import type { Coordinates } from '../../types';
 
 export type SpriteConfig = {
   ctx: CanvasRenderingContext2D;
