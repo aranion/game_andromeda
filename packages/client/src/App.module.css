@@ -8,11 +8,7 @@
 
   &__star {
     position: absolute;
-    background: radial-gradient(
-      ellipse at center,
-      rgba(177, 198, 219, 1) 2%,
-      rgba(5, 63, 118, 1) 100%
-    );
+    background: var(--starGradient);
     border-radius: 100%;
     animation: shine infinite alternate;
   }

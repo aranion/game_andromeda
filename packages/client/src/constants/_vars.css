@@ -11,13 +11,14 @@
   --color-space: #10021e;
   --color-select: rgb(216, 201, 235, 0.2);
   --color-bg: #251b37;
-  --color-highlight: #ffffed;
   --color-grey: #626262;
   --color-danger: #c64b4b;
 }
 .dark {
   --color-normal: #372948;
   --color-light: #ffffca;
+  --color-highlight: #ffffed;
+  --color-title: var(--color-light);
   --backgroundMain: radial-gradient(
     ellipse at center,
     rgba(8, 25, 42, 1) 19%,
@@ -26,16 +27,32 @@
   --inputShadow: inset 0px 4px 4px rgba(8, 25, 42, 0.8);
   --boxShadow: 0px 0px 7px rgba(255, 255, 202, 0.8);
   --textShadow: 0px 0px 1px var(--color-light), 0px 0px 3px var(--color-light);
+  --starShadowColor: #043668;
+  --starGradient: radial-gradient(
+    ellipse at center,
+    rgba(177, 198, 219, 1) 2%,
+    rgba(5, 63, 118, 1) 100%
+  );
+  --colorSvgStar: #ffffca;
 }
 .light {
-  --color-light: #242d4d;
-  --color-normal: #ffffff;
+  --color-normal: #fffbca;
+  --color-light: #3d3c6a;
+  --color-highlight: #3f3e67;
+  --color-title: var(--color-normal);
   --backgroundMain: radial-gradient(
     ellipse at center,
-    rgb(144 188 241) 19%,
-    rgb(43 129 198) 100%
+    #e66465 19%,
+    #9198e5 100%
   );
   --inputShadow: inset 0px 4px 4px rgb(255 255 255 / 80%);
   --boxShadow: 0px 0px 7px rgba(8, 25, 42, 0.8);
-  --textShadow: 0px 0px 1px var(--color-light), 0px 0px 3px var(--color-light);
+  --textShadow: 0px 0px 1px var(--color-normal), 0px 0px 3px var(--color-normal);
+  --starShadowColor: rgb(206, 202, 158);
+  --starGradient: radial-gradient(
+    ellipse at center,
+    rgb(224, 224, 193) 2%,
+    var(--starShadowColor) 100%
+  );
+  --colorSvgStar: #ffffd9;
 }
