@@ -1,4 +1,4 @@
-import { GameObjectConfig } from '../game-object/types';
+import type { GameObjectConfig } from '../game-object/types';
 
 export type AsteroidConfig = {
   rotateSpeed: number;

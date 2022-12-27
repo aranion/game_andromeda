@@ -1,8 +1,8 @@
-import { GameObjectConfig } from '../game-object/types';
-import { Coordinates } from '../../types';
-import { AnimationKey } from '../../constants';
-import { AnimationType } from '../../animations.config';
-import { SceneTransition } from '../../overworld/scene-transition';
+import type { GameObjectConfig } from '../game-object/types';
+import type { Coordinates } from '../../types';
+import type { AnimationKey } from '../../constants';
+import type { AnimationType } from '../../animations.config';
+import type { SceneTransition } from '../../overworld/scene-transition';
 
 export type PlayerAnimationKey = AnimationKey.SpaceshipFly;
 
@@ -15,12 +15,22 @@ export type PlayerSkin = {
   wrecked: string;
 };
 
+export type PlayerSkins = {
+  base: PlayerSkin;
+  shield: PlayerSkin;
+};
+
 export type PlayerConfig = Omit<GameObjectConfig, 'imageSrc'> & {
   direction: Coordinates;
   radius: number;
   lives: number;
   maxLives: number;
   shielded?: boolean;
-  imageSrc: PlayerSkin;
+  skins: PlayerSkins;
   sceneTransition: SceneTransition;
+};
+
+export type IdTimeouts = {
+  shield: NodeJS.Timeout | null;
+  speed: NodeJS.Timeout | null;
 };
