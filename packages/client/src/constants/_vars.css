@@ -11,25 +11,31 @@
   --color-space: #10021e;
   --color-select: rgb(216, 201, 235, 0.2);
   --color-bg: #251b37;
-  --color-normal: #372948;
-  --color-light: #ffffca;
   --color-highlight: #ffffed;
   --color-grey: #626262;
   --color-danger: #c64b4b;
 }
-
-:root {
+.dark {
+  --color-normal: #372948;
+  --color-light: #ffffca;
   --backgroundMain: radial-gradient(
     ellipse at center,
     rgba(8, 25, 42, 1) 19%,
     rgba(1, 4, 6, 1) 100%
   );
-  --backgroundMainAlternative: radial-gradient(
+  --inputShadow: inset 0px 4px 4px rgba(8, 25, 42, 0.8);
+  --boxShadow: 0px 0px 7px rgba(255, 255, 202, 0.8);
+  --textShadow: 0px 0px 1px var(--color-light), 0px 0px 3px var(--color-light);
+}
+.light {
+  --color-light: #242d4d;
+  --color-normal: #ffffff;
+  --backgroundMain: radial-gradient(
     ellipse at center,
-    var(--color-bg),
-    var(--color-space)
+    rgb(144 188 241) 19%,
+    rgb(43 129 198) 100%
   );
-  --inputShadow: 0px 0px 7px rgba(255, 255, 202, 0.8);
-  --boxShadow: var(--inputShadow);
-  --textShadow: var(--inputShadow), 2px 2px 2px rgba(0, 0, 0, 0.91);
+  --inputShadow: inset 0px 4px 4px rgb(255 255 255 / 80%);
+  --boxShadow: 0px 0px 7px rgba(8, 25, 42, 0.8);
+  --textShadow: 0px 0px 1px var(--color-light), 0px 0px 3px var(--color-light);
 }
