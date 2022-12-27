@@ -6,7 +6,7 @@ import {
   letterSize,
   opcityTime,
 } from './constants';
-import { ResourseHint, ResourseHintConfig } from './types';
+import type { ResourseHint, ResourseHintConfig } from './types';
 
 class ResourceHints {
   private ctx: CanvasRenderingContext2D;
