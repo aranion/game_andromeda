@@ -7,7 +7,12 @@ import { CONFIG_STARS_PARAMS } from './constants/vars';
 import { useLocation } from 'react-router-dom';
 import { RouterList } from './router/routerList';
 import { useAudio } from './hooks/useAudio';
-import { ButtonFullscreen, PauseMenu, Toggler, ButtonSoundOption  } from './components';
+import {
+  ButtonFullscreen,
+  PauseMenu,
+  Toggler,
+  ButtonSoundOption,
+} from './components';
 
 function App() {
   const { checkIsAuth } = useAuth();

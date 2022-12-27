@@ -1,4 +1,4 @@
-import { HintColors, HintValues } from './types';
+import type { HintColors, HintValues } from './types';
 
 export const hintColors: HintColors = {
   iron: '#A59C94',
