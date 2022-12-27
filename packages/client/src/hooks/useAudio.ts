@@ -87,12 +87,12 @@ export const useAudio = () => {
 
   const playSound = (soundURL: string, continuous?: boolean | null) => {
     if (!checkMediaSourceSupport(soundURL)) return;
-    playAudio({ soundURL: soundURL, continuous: continuous });
+    playAudio({ soundURL, continuous });
   };
 
   const stopSound = (soundURL: string) => {
     if (!checkMediaSourceSupport(soundURL)) return;
-    stopAudio({ soundURL: soundURL });
+    stopAudio({ soundURL });
   };
 
   return { addSound, playSound, stopSound };

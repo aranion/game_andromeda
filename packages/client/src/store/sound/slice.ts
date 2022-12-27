@@ -45,9 +45,9 @@ export const soundSlice = createSlice({
       });
       if (noInstance) {
         state.loadedSounds.push({
-          soundURL: soundURL,
-          audioBuffer: audioBuffer,
-          audioSource: audioSource,
+          soundURL,
+          audioBuffer,
+          audioSource,
         });
       }
 
