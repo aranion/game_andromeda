@@ -6,9 +6,9 @@ const enum ThemeList {
 }
 
 export const useDarkTheme = (): [string, boolean, () => void] => {
-  const [theme, setTheme] = useState(ThemeList.Light);
+  const [theme, setTheme] = useState<ThemeList>(ThemeList.Light);
 
-  const setMode = (mode: string) => {
+  const setMode = (mode: ThemeList) => {
     window.localStorage.setItem('theme', mode);
     setTheme(mode);
   };
@@ -22,7 +22,7 @@ export const useDarkTheme = (): [string, boolean, () => void] => {
   };
 
   useEffect(() => {
-    const localTheme = window.localStorage.getItem('theme');
+    const localTheme = window.localStorage.getItem('theme') as ThemeList;
 
     window.matchMedia &&
     window.matchMedia('(prefers-color-scheme: dark)').matches &&

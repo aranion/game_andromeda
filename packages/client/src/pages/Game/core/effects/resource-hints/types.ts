@@ -1,5 +1,5 @@
-import { ResourceType } from '../../entities/resource/resource.config';
-import { Coordinates } from '../../types';
+import type { ResourceType } from '../../entities/resource/resource.config';
+import type { Coordinates } from '../../types';
 
 export type ResourceHintsConfig = {
   ctx: CanvasRenderingContext2D;
