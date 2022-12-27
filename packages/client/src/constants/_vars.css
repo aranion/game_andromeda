@@ -11,7 +11,6 @@
   --color-space: #10021e;
   --color-select: rgb(216, 201, 235, 0.2);
   --color-bg: #251b37;
-  --color-grey: #626262;
   --color-danger: #c64b4b;
 }
 .dark {
@@ -19,6 +18,7 @@
   --color-light: #ffffca;
   --color-highlight: #ffffed;
   --color-title: var(--color-light);
+  --color-grey: #626262;
   --backgroundMain: radial-gradient(
     ellipse at center,
     rgba(8, 25, 42, 1) 19%,
@@ -40,6 +40,7 @@
   --color-light: #3d3c6a;
   --color-highlight: #3f3e67;
   --color-title: var(--color-normal);
+  --color-grey: #b9b9b9;
   --backgroundMain: radial-gradient(
     ellipse at center,
     #e66465 19%,
