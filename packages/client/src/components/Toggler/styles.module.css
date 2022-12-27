@@ -21,7 +21,6 @@
   z-index: 1;
   overflow: hidden;
   border-radius: 30px;
-  cursor: pointer;
   transition: all 1.4s;
   background-color: var(--color-light);
   box-shadow: var(--boxShadow);
