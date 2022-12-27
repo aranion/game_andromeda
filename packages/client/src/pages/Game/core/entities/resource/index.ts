@@ -2,6 +2,8 @@ import resourceSprite from '../../assets/resource/resource.png';
 import { GameObject } from '../game-object';
 import { randomInteger } from '../../utils/random-integer';
 import { resourceConfig, ResourceType } from './resource.config';
+import { store } from 'src/store';
+import { soundActions } from 'src/store/sound';
 import type { ResourceConfig } from './types';
 
 const RADIUS = 23;
@@ -45,6 +47,7 @@ export class Resource extends GameObject {
 
   collect(): number {
     this.counted = true;
+    store.dispatch(soundActions.playAudio({ soundURL: 'spark.mp3' }));
     return this.points;
   }
 

@@ -1,0 +1,21 @@
+.button-soundoption {
+  right: 95px;
+  top: 20px;
+}
+
+.soundoption-disabled,
+.soundoption-enabled {
+  height: 20px;
+  width: 30px;
+  display: block;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.soundoption-disabled {
+  background-image: url('src/assets/imgs/soundDisabled.svg');
+}
+.soundoption-enabled {
+  background-image: url('src/assets/imgs/soundEnabled.svg');
+}
