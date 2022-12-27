@@ -7,6 +7,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { store } from './store';
 import { ErrorBoundary } from './components';
 import { startServiceWorker } from './startServiceWorker';
+import { cursor } from './cursor';
+import cursorImg from './assets/imgs/cursor.png';
+import cursorPointerImg from './assets/imgs/cursorPointer.png';
 
 const rootElement = document.getElementById('root');
 
@@ -27,3 +30,4 @@ if (rootElement) {
 }
 
 startServiceWorker();
+cursor.init(cursorImg, cursorPointerImg);

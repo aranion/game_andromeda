@@ -11,6 +11,13 @@ a {
   }
 }
 
+html,
+html *,
+body,
+body * {
+  cursor: none;
+}
+
 *::-webkit-scrollbar {
   width: 3px;
 }
