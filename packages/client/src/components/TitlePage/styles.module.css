@@ -5,6 +5,7 @@
   font-weight: 400;
   text-transform: uppercase;
   text-shadow: var(--textShadow);
+  color: var(--color-title);
 }
 
 @media only screen and (max-width: 600px) {
