@@ -25,7 +25,7 @@ class ResourceHints {
       this.ctx.font = '20px audiowide';
       console.log(hint.resourceType);
       this.ctx.fillText(
-        hintValues[hint.resourceType].toString(),
+        (hintValues[hint.resourceType] * hint.multiplier).toString(),
         hint.position.x,
         hint.position.y
       );
@@ -56,6 +56,7 @@ class ResourceHints {
       opacity: 1,
       color: hintColors[hintConfig.resourceType],
       ...hintConfig,
+      multiplier: hintConfig.multiplier,
     });
 
     console.log(this.hints[0]);

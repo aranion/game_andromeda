@@ -118,6 +118,7 @@ export class GameMap {
             x: resource.getPosition.x,
             y: resource.getPosition.y,
           },
+          multiplier: this.multiplier,
         });
         console.log('hint added finish');
         i--;

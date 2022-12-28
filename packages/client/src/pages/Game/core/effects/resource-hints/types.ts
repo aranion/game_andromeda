@@ -1,4 +1,5 @@
 import type { ResourceType } from '../../entities/resource/resource.config';
+import type { Multiplier } from '../../entities/resource/types';
 import type { Coordinates } from '../../types';
 
 export type ResourceHintsConfig = {
@@ -10,6 +11,7 @@ export type ResourseHint = {
   resourceType: ResourceType;
   opacity: number;
   color: string;
+  multiplier: Multiplier;
 };
 
 export type ResourseHintConfig = Omit<ResourseHint, 'opacity' | 'color'>;
