@@ -58,7 +58,7 @@ input {
     font-size: 52px;
     text-align: center;
     text-transform: uppercase;
-    color: var(--color-light);
+    color: var(--color-title);
     text-shadow: var(--textShadow);
     margin: 0;
   }

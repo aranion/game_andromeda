@@ -14,6 +14,7 @@ import {
   ButtonSoundOption,
 } from './components';
 
+
 function App() {
   const { checkIsAuth } = useAuth();
 
@@ -52,7 +53,7 @@ function App() {
         starElem.style.top = `${randomBetween(0, 100)}%`;
         starElem.style.boxShadow = `0 0 ${sizeElem}px ${
           sizeElem / 2
-        }px #043668`;
+        }px var(--starShadowColor)`;
         starElem.style.animationDuration = `${randomBetween(
           duration.min,
           duration.max
