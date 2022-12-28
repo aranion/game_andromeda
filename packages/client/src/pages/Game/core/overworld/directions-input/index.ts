@@ -25,11 +25,24 @@ export class DirectionsInput {
     this.mousePosition.y = evt.y;
   };
 
+  private handleMouseMoveTouch = (evt: TouchEvent) => {
+    this.mousePosition.x = evt.changedTouches[0].clientX;
+    this.mousePosition.y = evt.changedTouches[0].clientY;
+  };
+
   mount() {
     this.canvas.addEventListener('mousemove', this.handleMouseMove);
+    const isTouch = 'ontouchstart' in window;
+
+    if (isTouch) {
+      this.canvas.addEventListener('touchmove', this.handleMouseMoveTouch);
+    } else {
+      this.canvas.addEventListener('mousemove', this.handleMouseMove);
+    }
   }
 
   unmount() {
     this.canvas.removeEventListener('mousemove', this.handleMouseMove);
+    this.canvas.removeEventListener('touchmove', this.handleMouseMoveTouch);
   }
 }
