@@ -12,6 +12,7 @@ import { isOutsideCanvas } from '../../utils/is-outside-canvas';
 import { ResourceHints } from '../../effects/resource-hints';
 import { ResourceType } from '../../entities/resource/resource.config';
 import { EnhancementType } from '../../entities/enhancement/enhancement.config';
+import { ThemeList } from 'src/hooks/useDarkTheme';
 import type { SceneTransition } from '../scene-transition';
 import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
 import type { Player } from '../../entities/player';
@@ -294,7 +295,13 @@ export class GameMap {
       gradient.addColorStop(1, '#08192a');
     }
 
-    this.ctx.fillStyle = gradient;
+    this.ctx.fillStyle = this.toggleTheme(gradient);
+  }
+
+  toggleTheme(gradient: CanvasGradient) {
+    const theme = window.localStorage.getItem('theme');
+
+    return theme !== ThemeList.Dark ? '#000' : gradient;
   }
 
   updateMultiplier(multiplier: Multiplier = 2) {
