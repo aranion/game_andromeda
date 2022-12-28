@@ -1,3 +1,7 @@
+import {
+  resourceConfig,
+  ResourceType,
+} from '../../entities/resource/resource.config';
 import type { HintColors, HintValues } from './types';
 
 export const hintColors: HintColors = {
@@ -8,14 +12,16 @@ export const hintColors: HintColors = {
   titan: '#A0A0A0',
 };
 
+// было бы круто избавитьсся от такого "ручного" копирования полностью
+// если есть у кого идеи, предлагайте!
 export const hintValues: HintValues = {
-  iron: 1,
-  nickel: 2,
-  titan: 3,
-  gold: 4,
-  platinum: 5,
+  iron: resourceConfig[ResourceType.Iron].value,
+  nickel: resourceConfig[ResourceType.Nickel].value,
+  titan: resourceConfig[ResourceType.Titan].value,
+  gold: resourceConfig[ResourceType.Gold].value,
+  platinum: resourceConfig[ResourceType.Platinum].value,
 };
 
-export const opcityTime = 1000;
+export const opcityTime = 1500;
 export const hintSpeed = 3;
 export const letterSize = 30;

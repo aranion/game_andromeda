@@ -11,6 +11,7 @@ import type { ResourseHint, ResourseHintConfig } from './types';
 class ResourceHints {
   private ctx: CanvasRenderingContext2D;
   private hints: ResourseHint[];
+  private multiplier = 1;
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
@@ -23,9 +24,9 @@ class ResourceHints {
       this.ctx.globalAlpha = hint.opacity;
       this.ctx.fillStyle = hint.color;
       this.ctx.font = '20px audiowide';
-      console.log(hint.resourceType);
+
       this.ctx.fillText(
-        hintValues[hint.resourceType].toString(),
+        (hintValues[hint.resourceType] * this.multiplier).toString(),
         hint.position.x,
         hint.position.y
       );
@@ -57,12 +58,18 @@ class ResourceHints {
       color: hintColors[hintConfig.resourceType],
       ...hintConfig,
     });
-
-    console.log(this.hints[0]);
   }
 
   clear() {
     this.hints = [];
+  }
+
+  get getMultiplier(): number {
+    return this.multiplier;
+  }
+
+  set setMultiplier(k: number) {
+    this.multiplier = k;
   }
 }
 
