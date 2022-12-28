@@ -15,6 +15,13 @@ export const cursor = {
   size: 50,
 
   init: function (cursor: string, cursorPointer: string, size?: number) {
+    const isTouch = 'ontouchstart' in window;
+
+    if (isTouch) {
+      console.log('Display touch - Cursor hidden!');
+      return;
+    }
+
     this.cursorPointer = cursorPointer;
     this.cursor = cursor;
     this.size = size ?? 50;
