@@ -1,15 +1,21 @@
 import { soundSelectors } from 'src/store/sound';
 import { useTypeSelector } from 'src/hooks/useTypeSelector';
 import { useActions } from './useActions';
-import { ReactReduxContext } from 'react-redux';
-import { useContext } from 'react';
+import { AudioStatus } from 'src/store/sound/type';
 
-type PlayWhenLoaded = 'continuous' | 'once';
-type AddSoundParams = { soundURL: string; playWhenLoaded?: PlayWhenLoaded };
+enum PlayWhenLoaded {
+  continuous = 'continuous',
+  once = 'once',
+}
+type AddSoundParams = {
+  soundURL: string;
+  playWhenLoaded?: keyof typeof PlayWhenLoaded;
+};
 
 export const useAudio = () => {
-  const { globalGainNode, globalContext } = useTypeSelector(soundSelectors.all);
-  const { store } = useContext(ReactReduxContext);
+  const { globalGainNode, globalContext, loadedSounds } = useTypeSelector(
+    soundSelectors.all
+  );
 
   const { appendAudio, playAudio, stopAudio } = useActions();
 
@@ -19,17 +25,17 @@ export const useAudio = () => {
     if (!checkMediaSourceSupport(soundURL) || !globalGainNode || !globalContext)
       return;
 
-    for (const loadedSound of store.getState().sound.loadedSounds) {
-      if (loadedSound['soundURL'] === soundURL) {
+    for (const loadedSound of loadedSounds) {
+      if (loadedSound.soundURL === soundURL) {
         console.log('REJECT');
         return;
       }
     }
 
     appendAudio({
-      soundURL: soundURL,
-      audioBuffer: 'loading',
-      audioSource: 'loading',
+      soundURL,
+      audioBuffer: AudioStatus.loading,
+      audioSource: AudioStatus.loading,
     });
 
     fetchAB(`/audio/${soundURL.toString()}`, function (buf) {
@@ -41,12 +47,12 @@ export const useAudio = () => {
             bufferSource.connect(globalGainNode);
             bufferSource.buffer = response;
             appendAudio({
-              soundURL: soundURL,
+              soundURL,
               audioBuffer: response,
               audioSource: bufferSource,
             });
 
-            if (playWhenLoaded === 'continuous') {
+            if (playWhenLoaded === PlayWhenLoaded.continuous) {
               bufferSource.loop = true;
             }
 
@@ -72,9 +78,9 @@ export const useAudio = () => {
             }, 2000);
           } else {
             appendAudio({
-              soundURL: soundURL,
+              soundURL,
               audioBuffer: response,
-              audioSource: 'loading',
+              audioSource: AudioStatus.loading,
             });
           }
         },

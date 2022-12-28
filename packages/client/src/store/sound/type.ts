@@ -1,11 +1,18 @@
 export type InitialState = {
-  loadedSounds: loadedSounds;
-  globalGainNode: GainNode | undefined;
-  globalContext: AudioContext | undefined;
+  loadedSounds: LoadedSounds;
+  globalGainNode: GainNode;
+  globalContext: AudioContext;
 };
 
-export type loadedSounds = Array<{
+export type AppendAudioPayload = {
   soundURL: string;
-  audioBuffer: AudioBuffer | 'loading';
-  audioSource: AudioBufferSourceNode | 'loading';
-}>;
+  audioBuffer: AudioBufferType;
+  audioSource: AudioBufferSourceNode | keyof typeof AudioStatus;
+};
+
+export type LoadedSounds = Array<AppendAudioPayload>;
+export type AudioBufferType = keyof typeof AudioStatus | AudioBuffer;
+
+export enum AudioStatus {
+  loading = 'loading',
+}
