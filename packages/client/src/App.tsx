@@ -14,7 +14,6 @@ import {
   ButtonSoundOption,
 } from './components';
 
-
 function App() {
   const { checkIsAuth } = useAuth();
 
