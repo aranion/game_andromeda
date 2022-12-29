@@ -119,6 +119,7 @@ export default function SignUp() {
 
         <ButtonStar
           onClick={() => {
+            console.log('reroute to yandex oauth');
             routeYandexOauth();
           }}>
           From Yandex Galaxy!?
