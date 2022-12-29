@@ -6,6 +6,7 @@ import {
   InitialState,
 } from './type';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { whenAudioCanPlay } from 'src/hooks/useAudio';
 
 const getAudioContext = () => {
   const globalContext = new AudioContext();
@@ -89,27 +90,9 @@ export const soundSlice = createSlice({
       if (continuous) {
         bufferSource.loop = true;
 
-        let testAudio: HTMLAudioElement | null =
-          document.createElement('audio');
-        testAudio.style.display = 'none';
-        document.body.appendChild(testAudio);
-        testAudio.src = '/audio/shoot1.mp3';
-        testAudio.volume = 0;
-
-        const tryToPlay = setInterval(() => {
-          if (!testAudio) return;
-          testAudio
-            .play()
-            .then(() => {
-              bufferSource.start(0);
-              clearInterval(tryToPlay);
-              if (testAudio) testAudio.remove();
-              testAudio = null;
-            })
-            .catch(() => {
-              console.info('User has not interacted with document yet.');
-            });
-        }, 2000);
+        whenAudioCanPlay(() => {
+          bufferSource.start(0);
+        });
       } else {
         bufferSource.start(0);
       }

@@ -2,6 +2,8 @@ import { soundSelectors } from 'src/store/sound';
 import { useTypeSelector } from 'src/hooks/useTypeSelector';
 import { useActions } from './useActions';
 import { AudioStatus } from 'src/store/sound/type';
+import { ReactReduxContext } from 'react-redux';
+import { useContext } from 'react';
 
 enum PlayWhenLoaded {
   continuous = 'continuous',
@@ -13,9 +15,9 @@ type AddSoundParams = {
 };
 
 export const useAudio = () => {
-  const { globalGainNode, globalContext, loadedSounds } = useTypeSelector(
-    soundSelectors.all
-  );
+  const { globalGainNode, globalContext } = useTypeSelector(soundSelectors.all);
+
+  const { store } = useContext(ReactReduxContext);
 
   const { appendAudio, playAudio, stopAudio } = useActions();
 
@@ -25,7 +27,7 @@ export const useAudio = () => {
     if (!checkMediaSourceSupport(soundURL) || !globalGainNode || !globalContext)
       return;
 
-    for (const loadedSound of loadedSounds) {
+    for (const loadedSound of store.getState().sound.loadedSounds) {
       if (loadedSound.soundURL === soundURL) {
         console.log('REJECT');
         return;
@@ -42,45 +44,17 @@ export const useAudio = () => {
       globalContext.decodeAudioData(
         buf,
         function (response) {
+          appendAudio({
+            soundURL,
+            audioBuffer: response,
+            audioSource: AudioStatus.loading,
+          });
           if (playWhenLoaded) {
-            const bufferSource = globalContext.createBufferSource();
-            bufferSource.connect(globalGainNode);
-            bufferSource.buffer = response;
-            appendAudio({
-              soundURL,
-              audioBuffer: response,
-              audioSource: bufferSource,
-            });
+            const setContinuous =
+              playWhenLoaded === PlayWhenLoaded.continuous ? true : false;
 
-            if (playWhenLoaded === PlayWhenLoaded.continuous) {
-              bufferSource.loop = true;
-            }
-
-            let testAudio: HTMLAudioElement | null =
-              document.createElement('audio');
-            testAudio.style.display = 'none';
-            document.body.appendChild(testAudio);
-            testAudio.src = '/audio/shoot1.mp3';
-            testAudio.volume = 0;
-            const tryToPlay = setInterval(() => {
-              if (!testAudio) return;
-              testAudio
-                .play()
-                .then(() => {
-                  bufferSource.start(0);
-                  clearInterval(tryToPlay);
-                  if (testAudio) testAudio.remove();
-                  testAudio = null;
-                })
-                .catch(() => {
-                  console.info('User has not interacted with document yet.');
-                });
-            }, 2000);
-          } else {
-            appendAudio({
-              soundURL,
-              audioBuffer: response,
-              audioSource: AudioStatus.loading,
+            whenAudioCanPlay(() => {
+              playAudio({ soundURL, continuous: setContinuous });
             });
           }
         },
@@ -133,7 +107,6 @@ function checkMediaSourceSupport(soundURL: string) {
 }
 
 function fetchAB(url: string, callbackfunc: (buffer: ArrayBuffer) => void) {
-  console.log('loading file: ' + url);
   const xhr = new XMLHttpRequest();
   xhr.open('get', url);
   xhr.responseType = 'arraybuffer';
@@ -141,4 +114,26 @@ function fetchAB(url: string, callbackfunc: (buffer: ArrayBuffer) => void) {
     callbackfunc(xhr.response);
   };
   xhr.send();
+}
+
+export function whenAudioCanPlay(callbackfunc: () => void) {
+  let testAudio: HTMLAudioElement | null = document.createElement('audio');
+  testAudio.style.display = 'none';
+  document.body.appendChild(testAudio);
+  testAudio.src = '/audio/shoot1.mp3';
+  testAudio.volume = 0;
+  const tryPlaying = setInterval(() => {
+    if (!testAudio) return;
+    testAudio
+      .play()
+      .then(() => {
+        callbackfunc();
+        clearInterval(tryPlaying);
+        if (testAudio) testAudio.remove();
+        testAudio = null;
+      })
+      .catch(() => {
+        console.info('User has not interacted with document yet.');
+      });
+  }, 2000);
 }

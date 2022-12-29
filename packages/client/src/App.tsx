@@ -6,7 +6,12 @@ import { useDarkTheme } from './hooks/useDarkTheme';
 import { CONFIG_STARS_PARAMS } from './constants/vars';
 import { useLocation } from 'react-router-dom';
 import { RouterList } from './router/routerList';
-import { ButtonFullscreen, PauseMenu, ButtonSoundOption, Toggler } from './components';
+import {
+  ButtonFullscreen,
+  PauseMenu,
+  ButtonSoundOption,
+  Toggler,
+} from './components';
 import { useAudio } from './hooks/useAudio';
 
 function App() {
