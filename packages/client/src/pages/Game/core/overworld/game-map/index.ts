@@ -10,7 +10,7 @@ import { Particles } from '../../effects/particles';
 import { getStarsConfig } from './particles';
 import { isOutsideCanvas } from '../../utils/is-outside-canvas';
 import { EnhancementType } from '../../entities/enhancement/enhancement.config';
-import type{ ResourceHints } from '../../effects/resource-hints';
+import { ResourceHints } from '../../effects/resource-hints';
 import type { SceneTransition } from '../scene-transition';
 import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
 import type { Player } from '../../entities/player';
@@ -185,68 +185,6 @@ export class GameMap {
     }
   }
 
-  private handleEnhancement(frame: number) {
-    // пока бафы появляются случайно, нужно сделать чтобы они появлялись после уничтожения вражеского корабля
-    // указать координаты(position) и тип бафа(type)
-    const spawnInterval = 60;
-    const isAddEnhancement = frame % spawnInterval === 0;
-
-    if (isAddEnhancement) {
-      this.enhancements.push(
-        new Enhancement({
-          canvas: this.canvas,
-          ctx: this.ctx,
-        })
-      );
-    }
-
-    for (let i = 0; i < this.enhancements.length; i++) {
-      const enhancement = this.enhancements[i];
-      enhancement.update(this.player);
-
-      if (isOutsideCanvas({ object: enhancement, canvas: this.canvas })) {
-        this.enhancements.splice(i, 1);
-        i--;
-      }
-
-      if (this.isCollided(enhancement) && !enhancement.getIsCounted) {
-        const enhancementType = enhancement.getEnhancementType;
-
-        switch (enhancementType) {
-          case EnhancementType.Lives:
-            this.player.updateLives();
-            break;
-          case EnhancementType.Shield:
-            this.player.updateShield();
-            break;
-          case EnhancementType.Speed:
-            this.player.updateSpeed();
-            break;
-          case EnhancementType.Multiplier:
-            this.updateMultiplier();
-            break;
-          default:
-            break;
-        }
-
-        this.setScore = enhancement.collect();
-        this.enhancements.splice(i, 1);
-        this.particlesGroups.push(
-          new Particles({
-            canvas: this.canvas,
-            ctx: this.ctx,
-            position: {
-              x: enhancement.getPosition.x,
-              y: enhancement.getPosition.y,
-            },
-            ...enhancementUse,
-          })
-        );
-        i--;
-      }
-    }
-  }
-
   private handleAsteroids(frame: number) {
     const isAddAsteroids = frame % this.spawnInterval.asteroid === 0;
 
@@ -323,7 +261,7 @@ export class GameMap {
   }
 
   private draw() {
-    this.renderBackground(); // this.ctx.fillStyle = styles.canvasBackground;
+    this.renderBackground();
     this.ctx.font = styles.font;
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
