@@ -8,6 +8,7 @@ import {
   RouterParamsTopic,
 } from './routerList';
 import { Loader } from 'src/components';
+import { OauthTokenHandler } from 'src/oauth';
 
 const MainMenuPage = lazy(() => import('src/pages/MainMenu'));
 const GamePage = lazy(() => import('src/pages/Game'));
@@ -26,7 +27,10 @@ export function Router() {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route path={RouterList.HOME}>
-          <Route index element={withPrivateRoute(<MainMenuPage />)} />
+          <Route
+            index
+            element={OauthTokenHandler(withPrivateRoute(<MainMenuPage />))}
+          />
           <Route path={RouterList.SIGN_IN} element={<SignInPage />} />
           <Route path={RouterList.SIGN_UP} element={<SignUpPage />} />
           <Route path={RouterList.SERVER_ERROR} element={<ServerErrorPage />} />
