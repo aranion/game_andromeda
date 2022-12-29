@@ -1,4 +1,4 @@
-import { Coordinates } from '../types';
+import type { Coordinates } from '../types';
 
 export const mapCanvasSizeToAxes = (
   canvas: HTMLCanvasElement

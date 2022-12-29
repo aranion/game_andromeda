@@ -1,5 +1,5 @@
-import { Game } from '../../../core';
-import { ButtonConfig, LabelConfig } from './types';
+import type { Game } from '../../../core';
+import type { ButtonConfig, LabelConfig } from './types';
 
 export const endGameLabel: LabelConfig = {
   text: 'Your ship was consumed by the cosmic void...',

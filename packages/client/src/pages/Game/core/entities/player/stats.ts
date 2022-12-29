@@ -10,5 +10,5 @@ export const defaultPlayerStats: Omit<
   radius: 34,
   lives: 4,
   maxLives: 5,
-  imageSrc: playerSkins.base,
+  skins: playerSkins,
 };

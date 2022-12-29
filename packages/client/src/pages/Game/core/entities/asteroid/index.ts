@@ -1,5 +1,5 @@
 import { GameObject } from '../game-object';
-import { AsteroidConfig } from './types';
+import type { AsteroidConfig } from './types';
 
 export class Asteroid extends GameObject {
   private rotateAngle: number;
