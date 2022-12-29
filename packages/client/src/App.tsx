@@ -2,14 +2,17 @@ import cls from './App.module.css';
 import { useCallback, useEffect, useRef } from 'react';
 import { Router } from './router';
 import { useAuth } from './hooks/useAuth';
+import { useDarkTheme } from './hooks/useDarkTheme';
 import { CONFIG_STARS_PARAMS } from './constants/vars';
 import { useLocation } from 'react-router-dom';
 import { RouterList } from './router/routerList';
-import { ButtonFullscreen, PauseMenu, ButtonSoundOption } from './components';
+import { ButtonFullscreen, PauseMenu, ButtonSoundOption, Toggler } from './components';
 import { useAudio } from './hooks/useAudio';
 
 function App() {
   const { checkIsAuth } = useAuth();
+
+  const [theme, isThemeMode, toggleTheme] = useDarkTheme();
 
   const { pathname } = useLocation();
   const refWrapper = useRef(null);
@@ -44,7 +47,7 @@ function App() {
         starElem.style.top = `${randomBetween(0, 100)}%`;
         starElem.style.boxShadow = `0 0 ${sizeElem}px ${
           sizeElem / 2
-        }px #043668`;
+        }px var(--starShadowColor)`;
         starElem.style.animationDuration = `${randomBetween(
           duration.min,
           duration.max
@@ -75,12 +78,17 @@ function App() {
     fetchServerData();
   }, []);
 
+  useEffect(() => {
+    document.body.className = theme;
+  }, [theme]);
+
   return (
     <div className={cls.app} ref={fullscrinableElem}>
       <main className={cls.app__content}>
         <Router />
-        <ButtonSoundOption />
         <ButtonFullscreen elemRef={fullscrinableElem} />
+        <Toggler isChecked={isThemeMode} toggleCheck={toggleTheme} />
+        <ButtonSoundOption />
         <PauseMenu />
       </main>
 
