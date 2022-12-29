@@ -9,9 +9,8 @@ import { createAsteroidConfig } from '../../entities/asteroid/stats';
 import { Particles } from '../../effects/particles';
 import { getStarsConfig } from './particles';
 import { isOutsideCanvas } from '../../utils/is-outside-canvas';
-import { ResourceHints } from '../../effects/resource-hints';
-import { ResourceType } from '../../entities/resource/resource.config';
 import { EnhancementType } from '../../entities/enhancement/enhancement.config';
+import { ResourceHints } from '../../effects/resource-hints';
 import type { SceneTransition } from '../scene-transition';
 import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
 import type { Player } from '../../entities/player';
@@ -262,7 +261,7 @@ export class GameMap {
   }
 
   private draw() {
-    this.renderBackground(); // this.ctx.fillStyle = styles.canvasBackground;
+    this.renderBackground();
     this.ctx.font = styles.font;
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
