@@ -6,20 +6,25 @@ export type ResourceHintsConfig = {
   ctx: CanvasRenderingContext2D;
 };
 
-export type ResourseHint = {
+export enum OtherHintType {
+  Damage = 'damage',
+}
+
+export type ResourceHint = {
   position: Coordinates;
-  resourceType: ResourceType;
+  resourceType: ResourceType | OtherHintType;
   opacity: number;
   color: string;
-  multiplier: Multiplier;
+  multiplier?: Multiplier;
+  isShield?: boolean;
 };
 
-export type ResourseHintConfig = Omit<ResourseHint, 'opacity' | 'color'>;
+export type ResourceHintConfig = Omit<ResourceHint, 'opacity' | 'color'>;
 
 export type HintColors = {
   [key in ResourceType]: string;
-};
+} & { [key in OtherHintType]: 'red' };
 
 export type HintValues = {
   [key in ResourceType]: number;
-};
+} & { [key in OtherHintType]: number };

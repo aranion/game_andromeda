@@ -6,6 +6,7 @@ export const hintColors: HintColors = {
   gold: '#FFD700',
   platinum: '#E5E1E6',
   titan: '#A0A0A0',
+  damage: 'red',
 };
 
 export const hintValues: HintValues = {
@@ -14,8 +15,9 @@ export const hintValues: HintValues = {
   titan: 3,
   gold: 4,
   platinum: 5,
+  damage: -1,
 };
 
-export const opcityTime = 1000;
-export const hintSpeed = 3;
+export const opacityTime = 3000;
+export const hintSpeed = 0.5;
 export const letterSize = 30;

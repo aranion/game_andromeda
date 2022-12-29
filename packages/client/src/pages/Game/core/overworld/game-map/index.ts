@@ -10,13 +10,13 @@ import { Particles } from '../../effects/particles';
 import { getStarsConfig } from './particles';
 import { isOutsideCanvas } from '../../utils/is-outside-canvas';
 import { ResourceHints } from '../../effects/resource-hints';
-import { ResourceType } from '../../entities/resource/resource.config';
 import { EnhancementType } from '../../entities/enhancement/enhancement.config';
 import { ThemeList } from 'src/hooks/useDarkTheme';
 import type { SceneTransition } from '../scene-transition';
 import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
 import type { Player } from '../../entities/player';
 import type { Multiplier } from '../../entities/resource/types';
+import { OtherHintType } from '../../effects/resource-hints/types';
 
 /**
  * Карта текущего уровня, настраивается через конфиг. Управляет текущим уровнем и его логикой.
@@ -212,7 +212,6 @@ export class GameMap {
       }
 
       if (this.isCollided(asteroid)) {
-        this.player.updateLives(-1, this.score);
         this.asteroids.splice(i, 1);
         this.particlesGroups.push(
           new Particles({
@@ -225,6 +224,15 @@ export class GameMap {
             ...asteroidExplode(),
           })
         );
+        this.resourceHints.addHint({
+          resourceType: OtherHintType.Damage,
+          position: {
+            x: asteroid.getPosition.x,
+            y: asteroid.getPosition.y,
+          },
+          isShield: this.player.getIsShield,
+        });
+        this.player.updateLives(-1, this.score);
         i--;
       }
     }

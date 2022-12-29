@@ -4,13 +4,13 @@ import {
   hintSpeed,
   hintValues,
   letterSize,
-  opcityTime,
+  opacityTime,
 } from './constants';
-import type { ResourseHint, ResourseHintConfig } from './types';
+import type { ResourceHint, ResourceHintConfig } from './types';
 
 class ResourceHints {
   private ctx: CanvasRenderingContext2D;
-  private hints: ResourseHint[];
+  private hints: ResourceHint[];
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
@@ -22,10 +22,14 @@ class ResourceHints {
     this.hints.forEach(hint => {
       this.ctx.globalAlpha = hint.opacity;
       this.ctx.fillStyle = hint.color;
-      this.ctx.font = '20px audiowide';
+      this.ctx.font = '23px audiowide';
       console.log(hint.resourceType);
       this.ctx.fillText(
-        (hintValues[hint.resourceType] * hint.multiplier).toString(),
+        (hint.isShield && hint.resourceType === 'damage'
+          ? ''
+          : hintValues[hint.resourceType] * (hint.multiplier ?? 1) +
+            (hint.resourceType === 'damage' && !hint.isShield ? ' ♥' : '')
+        ).toString(),
         hint.position.x,
         hint.position.y
       );
@@ -38,25 +42,25 @@ class ResourceHints {
     this.hints.forEach((hint, i) => {
       if (
         hint.position.y - hintSpeed < letterSize ||
-        hint.opacity - FPS / opcityTime < 0
+        hint.opacity - FPS / opacityTime < 0
       ) {
         this.hints.splice(i, 1);
       } else {
         hint.position.y -= hintSpeed;
-        hint.opacity -= FPS / opcityTime;
+        hint.opacity -= FPS / opacityTime;
       }
     });
 
     this.draw();
   }
 
-  addHint(hintConfig: ResourseHintConfig) {
+  addHint(hintConfig: ResourceHintConfig) {
     console.log('method add hint', hintConfig.resourceType);
     this.hints.push({
       opacity: 1,
       color: hintColors[hintConfig.resourceType],
       ...hintConfig,
-      multiplier: hintConfig.multiplier,
+      multiplier: hintConfig.multiplier ?? 1,
     });
 
     console.log(this.hints[0]);
