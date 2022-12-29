@@ -10,6 +10,7 @@ import { Particles } from '../../effects/particles';
 import { getStarsConfig } from './particles';
 import { isOutsideCanvas } from '../../utils/is-outside-canvas';
 import { EnhancementType } from '../../entities/enhancement/enhancement.config';
+import type{ ResourceHints } from '../../effects/resource-hints';
 import type { SceneTransition } from '../scene-transition';
 import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
 import type { Player } from '../../entities/player';
@@ -27,6 +28,7 @@ export class GameMap {
     asteroid: number;
     resource: number;
   };
+  private readonly resourceHints: ResourceHints;
   private sceneTransition: SceneTransition;
   private score = 0;
   private readonly player: Player;
@@ -43,6 +45,7 @@ export class GameMap {
     this.spawnInterval = config.spawnInterval;
     this.player = config.player;
     this.sceneTransition = config.sceneTransition;
+    this.resourceHints = new ResourceHints(this.ctx);
 
     this.createStarsBackground();
   }
@@ -104,6 +107,77 @@ export class GameMap {
               y: resource.getPosition.y,
             },
             ...resourceExplode,
+          })
+        );
+        console.log('hint added');
+        this.resourceHints.addHint({
+          resourceType: resource.type,
+          position: {
+            x: resource.getPosition.x,
+            y: resource.getPosition.y,
+          },
+        });
+        console.log('hint added finish');
+        i--;
+      }
+    }
+  }
+
+  private handleEnhancement(frame: number) {
+    // пока бафы появляются случайно, нужно сделать чтобы они появлялись после уничтожения вражеского корабля
+    // указать координаты(position) и тип бафа(type)
+    const spawnInterval = 60;
+    const isAddEnhancement = frame % spawnInterval === 0;
+
+    if (isAddEnhancement) {
+      this.enhancements.push(
+        new Enhancement({
+          canvas: this.canvas,
+          ctx: this.ctx,
+        })
+      );
+    }
+
+    for (let i = 0; i < this.enhancements.length; i++) {
+      const enhancement = this.enhancements[i];
+      enhancement.update(this.player);
+
+      if (isOutsideCanvas({ object: enhancement, canvas: this.canvas })) {
+        this.enhancements.splice(i, 1);
+        i--;
+      }
+
+      if (this.isCollided(enhancement) && !enhancement.getIsCounted) {
+        const enhancementType = enhancement.getEnhancementType;
+
+        switch (enhancementType) {
+          case EnhancementType.Lives:
+            this.player.updateLives();
+            break;
+          case EnhancementType.Shield:
+            this.player.updateShield();
+            break;
+          case EnhancementType.Speed:
+            this.player.updateSpeed();
+            break;
+          case EnhancementType.Multiplier:
+            this.updateMultiplier();
+            break;
+          default:
+            break;
+        }
+
+        this.setScore = enhancement.collect();
+        this.enhancements.splice(i, 1);
+        this.particlesGroups.push(
+          new Particles({
+            canvas: this.canvas,
+            ctx: this.ctx,
+            position: {
+              x: enhancement.getPosition.x,
+              y: enhancement.getPosition.y,
+            },
+            ...enhancementUse,
           })
         );
         i--;
@@ -305,5 +379,6 @@ export class GameMap {
     this.handleEnhancement(frame);
     this.drawUI();
     this.sceneTransition.update();
+    this.resourceHints.update();
   }
 }
