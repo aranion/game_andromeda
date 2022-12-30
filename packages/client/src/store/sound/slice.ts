@@ -92,6 +92,7 @@ export const soundSlice = createSlice({
 
         whenAudioCanPlay(() => {
           bufferSource.start(0);
+          console.log('playing ' + soundURL);
         });
       } else {
         bufferSource.start(0);
