@@ -1,0 +1,40 @@
+import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
+import { userModel } from '../models/user';
+import { userThemeModel } from './userTheme';
+import { siteThemeModel } from './siteTheme';
+
+const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
+  process.env;
+
+const sequelizeOptions: SequelizeOptions = {
+  host: 'postgres',
+  username: POSTGRES_USER,
+  password: POSTGRES_PASSWORD,
+  database: POSTGRES_DB,
+  port: Number(POSTGRES_PORT),
+  dialect: 'postgres',
+  ssl: false,
+  dialectOptions: {},
+};
+
+// Создаем инстанс Sequelize
+export const sequelize = new Sequelize(sequelizeOptions);
+
+// Инициализируем модели
+export const User = sequelize.define('User', userModel, {});
+export const UserTheme = sequelize.define('UserTheme', userThemeModel, {});
+export const SiteTheme = sequelize.define('SiteTheme', siteThemeModel, {});
+
+User.hasOne(UserTheme, {
+  foreignKey: 'ownerId',
+});
+UserTheme.belongsTo(User, {
+  foreignKey: 'ownerId',
+});
+
+SiteTheme.hasMany(UserTheme, {
+  foreignKey: 'themeId',
+});
+UserTheme.belongsTo(SiteTheme, {
+  foreignKey: 'themeId',
+});
