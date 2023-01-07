@@ -5,10 +5,10 @@ import { defaultPlayerStats } from './entities/player/stats';
 import { mapConfig } from './map.config';
 import { FPS } from './constants';
 import { store } from 'src/store';
-import type { CanvasProperties, GameMapConfig } from './types';
 import { gameActions } from 'src/store/game';
 import { SceneTransition } from './overworld/scene-transition';
 import { GameStatusList } from 'src/store/game/type';
+import type { CanvasProperties, GameMapConfig } from './types';
 
 type GameConfig = {
   canvas: HTMLCanvasElement;

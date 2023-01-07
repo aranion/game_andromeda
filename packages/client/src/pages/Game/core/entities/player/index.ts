@@ -1,14 +1,14 @@
+import { INITIAL_SPEED, TIME_ACTIONS_ENHANCEMENT } from './../../constants';
 import { GameObject } from '../game-object';
 import { store } from 'src/store';
 import { gameActions } from 'src/store/game';
-import type { PlayerConfig, PlayerSkin } from './types';
+import type { IdTimeouts, PlayerConfig, PlayerSkins } from './types';
 import type { Coordinates } from '../../types';
-import { SceneTransition } from '../../overworld/scene-transition';
+import type { SceneTransition } from '../../overworld/scene-transition';
 import {
   endGameLabel,
   endGameButton,
 } from '../../overworld/scene-transition/stats';
-import { defaultPlayerStats } from './stats';
 
 /**
  * Класс игрока. Главная сущность игры в виде космического корабля.
@@ -19,18 +19,24 @@ export class Player extends GameObject {
   private lives: number;
   private maxLives: number;
   private shielded: boolean;
-  private skin: PlayerSkin;
+  private skins: PlayerSkins;
   private sceneTransition: SceneTransition;
+  private idTimeouts: IdTimeouts = {
+    shield: null,
+    speed: null,
+  };
 
   constructor(config: PlayerConfig) {
-    super({ ...config, imageSrc: config.imageSrc.healthy });
+    const { skins, shielded, maxLives, lives, direction } = config;
+
+    super({ ...config, imageSrc: skins.base.healthy });
 
     this.status = 'mounted';
-    this.direction = config.direction;
-    this.lives = config.lives;
-    this.maxLives = config.maxLives;
-    this.shielded = config.shielded ?? false;
-    this.skin = config.imageSrc;
+    this.direction = direction;
+    this.lives = lives;
+    this.maxLives = maxLives;
+    this.shielded = shielded ?? false;
+    this.skins = skins;
     this.sceneTransition = config.sceneTransition;
     this.updateSkin();
   }
@@ -39,12 +45,63 @@ export class Player extends GameObject {
     return this.lives;
   }
 
-  get isShielded(): boolean {
+  get getIsShield(): boolean {
     return this.shielded;
   }
 
-  updateLives(num: number, score: number) {
+  get getSpeed(): number {
+    return this.speed;
+  }
+
+  destroyShield() {
+    const { shield } = this.idTimeouts;
+    this.shielded = false;
+    this.updateSkin();
+
+    if (shield) {
+      clearInterval(shield);
+    }
+  }
+
+  updateSpeed(value = 50) {
+    const { speed } = this.idTimeouts;
+    const newSpeed = this.speed - value;
+    const maxSpeed = 50;
+
+    this.speed = newSpeed <= maxSpeed ? maxSpeed : newSpeed;
+
+    if (speed) {
+      clearInterval(speed);
+    }
+
+    this.idTimeouts.speed = setTimeout(() => {
+      this.speed = INITIAL_SPEED;
+    }, TIME_ACTIONS_ENHANCEMENT.speed);
+  }
+
+  updateShield() {
+    const { shield } = this.idTimeouts;
+    this.shielded = true;
+    this.updateSkin();
+
+    if (shield) {
+      clearInterval(shield);
+    }
+
+    this.idTimeouts.shield = setTimeout(() => {
+      this.shielded = false;
+      this.updateSkin();
+    }, TIME_ACTIONS_ENHANCEMENT.shield);
+  }
+
+  updateLives(num = 1, score?: number) {
     const newLives = this.lives + num;
+    const isSubtractLives = num < 0;
+
+    if (isSubtractLives && this.shielded) {
+      this.destroyShield();
+      return;
+    }
 
     if (newLives <= 0) {
       this.sceneTransition.createLabel(endGameLabel);
@@ -52,7 +109,10 @@ export class Player extends GameObject {
         endGameButton(this.sceneTransition.getGame)
       );
       this.sceneTransition.darkScreen(2000);
-      this.dispatchScore(score);
+
+      if (score) {
+        this.dispatchScore(score);
+      }
       return;
     }
 
@@ -61,17 +121,21 @@ export class Player extends GameObject {
   }
 
   private updateSkin() {
+    const { shield, base } = this.skins;
+    const skins = this.shielded ? shield : base;
+    const { wrecked, damaged, battered, healthy } = skins;
+
     if (this.lives === 1) {
-      this.sprite.imageSrc = this.skin.wrecked;
+      this.sprite.imageSrc = wrecked;
     }
     if (this.lives === 2) {
-      this.sprite.imageSrc = this.skin.damaged;
+      this.sprite.imageSrc = damaged;
     }
     if (this.lives === 3) {
-      this.sprite.imageSrc = this.skin.battered;
+      this.sprite.imageSrc = battered;
     }
     if (this.lives > 3) {
-      this.sprite.imageSrc = this.skin.healthy;
+      this.sprite.imageSrc = healthy;
     }
   }
 

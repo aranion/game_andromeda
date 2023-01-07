@@ -2,8 +2,8 @@ import { Particle } from '../particle';
 import { FPS } from '../../constants';
 import { isOutsideCanvas } from '../../utils/is-outside-canvas';
 import { mapCanvasSizeToAxes } from '../../utils/map-canvas-size-to-axes';
-import { ParticlesConfig } from './types';
-import { Axis, Coordinates } from '../../types';
+import type { ParticlesConfig } from './types';
+import type { Axis, Coordinates } from '../../types';
 
 const defaultDisappearanceTime = 2000;
 const defaultMaxRadius = 20;
