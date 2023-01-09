@@ -12,7 +12,7 @@ export const hintColors: HintColors = {
   titan: '#A0A0A0',
 };
 
-// было бы круто избавитьсся от такого "ручного" копирования полностью
+// было бы круто избавиться от такого "ручного" копирования полностью
 // если есть у кого идеи, предлагайте!
 export const hintValues: HintValues = {
   iron: resourceConfig[ResourceType.Iron].value,
@@ -22,6 +22,6 @@ export const hintValues: HintValues = {
   platinum: resourceConfig[ResourceType.Platinum].value,
 };
 
-export const opcityTime = 1500;
+export const opacityTime = 1500;
 export const hintSpeed = 3;
 export const letterSize = 30;
