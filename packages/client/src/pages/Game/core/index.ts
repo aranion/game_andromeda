@@ -8,6 +8,7 @@ import { store } from 'src/store';
 import { gameActions } from 'src/store/game';
 import { SceneTransition } from './overworld/scene-transition';
 import { GameStatusList } from 'src/store/game/type';
+import { GameTheme } from './overworld/game-theme';
 import type { CanvasProperties, GameMapConfig } from './types';
 
 type GameConfig = {
@@ -31,6 +32,7 @@ export class Game {
   private status: GameStatus = GameStatusList.stopped;
   private readonly sceneTransition: SceneTransition;
   private frame = 0;
+  private gameTheme: GameTheme;
 
   constructor(config: GameConfig) {
     const { canvas, ctx } = this.initCanvas(config.canvas);
@@ -50,6 +52,11 @@ export class Game {
         y: canvas.height + defaultPlayerStats.radius * 2,
       },
       ...defaultPlayerStats,
+    });
+    this.gameTheme = new GameTheme({
+      canvas,
+      ctx,
+      player: this.player,
     });
   }
 
@@ -86,6 +93,7 @@ export class Game {
         canvas: this.canvas,
         ctx: this.ctx,
         player: this.player,
+        gameTheme: this.gameTheme,
       });
     }
   }
