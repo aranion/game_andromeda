@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const enum ThemeList {
+export const enum ThemeList {
   Light = 'light',
   Dark = 'dark',
 }
