@@ -15,9 +15,9 @@ type AddSoundParams = {
 };
 
 export const useAudio = () => {
-  const { globalGainNode, globalContext, loadedSounds } = useTypeSelector(
-    soundSelectors.all
-  );
+  const { globalGainNode, globalContext } = useTypeSelector(soundSelectors.all);
+
+  const { store } = useContext(ReactReduxContext);
 
   const { appendAudio, playAudio, stopAudio } = useActions();
 
@@ -27,9 +27,8 @@ export const useAudio = () => {
     if (!checkMediaSourceSupport(soundURL) || !globalGainNode || !globalContext)
       return;
 
-    for (const loadedSound of loadedSounds) {
+    for (const loadedSound of store.getState().sound.loadedSounds) {
       if (loadedSound.soundURL === soundURL) {
-        console.log('REJECT');
         return;
       }
     }

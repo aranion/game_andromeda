@@ -2,7 +2,7 @@ import resourceSprite from '../../assets/resource/resource.png';
 import { GameObject } from '../game-object';
 import { randomInteger } from '../../utils/random-integer';
 import { resourceConfig, ResourceType } from './resource.config';
-import { ResourceConfig } from './types';
+import type { ResourceConfig } from './types';
 import { store } from 'src/store';
 import { soundActions } from 'src/store/sound';
 
