@@ -1,12 +1,6 @@
 import { FPS } from '../../constants';
-import {
-  hintColors,
-  hintSpeed,
-  hintValues,
-  letterSize,
-  opacityTime,
-} from './constants';
-import type { ResourceHint, ResourceHintConfig } from './types';
+import { hintColors, hintValues, hintConfig } from './constants';
+import { OtherHintType, ResourceHint, ResourceHintConfig } from './types';
 
 class ResourceHints {
   private ctx: CanvasRenderingContext2D;
@@ -21,20 +15,35 @@ class ResourceHints {
   private draw() {
     this.ctx.save();
     this.hints.forEach(hint => {
-      this.ctx.globalAlpha = hint.opacity;
-      this.ctx.fillStyle = hint.color;
-      this.ctx.font = '20px audiowide';
+      const { opacity, color, position } = hint;
 
-      const points = `${hintValues[hint.resourceType] * hint.multiplier}`;
-
-      this.ctx.fillText(points, hint.position.x, hint.position.y);
+      this.ctx.globalAlpha = opacity;
+      this.ctx.fillStyle = color;
+      this.ctx.font = '23px audiowide';
+      this.ctx.fillText(this.selectHints(hint), position.x, position.y);
     });
 
     this.ctx.restore();
   }
 
+  private selectHints(hint: ResourceHint): string {
+    const { isShield, resourceType, multiplier = 1 } = hint;
+    const isTypeDamage = resourceType === OtherHintType.Damage;
+
+    if (isShield && isTypeDamage) {
+      return '';
+    } else {
+      const value = hintValues[resourceType] * multiplier;
+      const live = isTypeDamage && !isShield ? '♥' : '';
+
+      return `${value} ${live}`;
+    }
+  }
+
   update() {
     this.hints.forEach((hint, i) => {
+      const { hintSpeed, letterSize, opacityTime } = hintConfig;
+
       if (
         hint.position.y - hintSpeed < letterSize ||
         hint.opacity - FPS / opacityTime < 0
@@ -50,7 +59,6 @@ class ResourceHints {
   }
 
   addHint(hintConfig: ResourceHintConfig) {
-    console.log('method add hint', hintConfig.resourceType);
     this.hints.push({
       opacity: 1,
       color: hintColors[hintConfig.resourceType],

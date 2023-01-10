@@ -1,8 +1,5 @@
-import {
-  resourceConfig,
-  ResourceType,
-} from '../../entities/resource/resource.config';
-import type { HintColors, HintValues } from './types';
+import { resourceConfig } from '../../entities/resource/resource.config';
+import type { EntriesResourceConfig, HintColors, HintValues } from './types';
 
 export const hintColors: HintColors = {
   iron: '#A59C94',
@@ -10,18 +7,24 @@ export const hintColors: HintColors = {
   gold: '#FFD700',
   platinum: '#E5E1E6',
   titan: '#A0A0A0',
+  damage: '#AD0303',
 };
 
-// было бы круто избавиться от такого "ручного" копирования полностью
-// если есть у кого идеи, предлагайте!
+const listHintValues: HintValues = (
+  Object.entries(resourceConfig) as EntriesResourceConfig
+).reduce((res, [key, { value }]) => {
+  res[key] = value;
+
+  return res;
+}, {} as HintValues);
+
 export const hintValues: HintValues = {
-  iron: resourceConfig[ResourceType.Iron].value,
-  nickel: resourceConfig[ResourceType.Nickel].value,
-  titan: resourceConfig[ResourceType.Titan].value,
-  gold: resourceConfig[ResourceType.Gold].value,
-  platinum: resourceConfig[ResourceType.Platinum].value,
+  ...listHintValues,
+  damage: -1,
 };
 
-export const opacityTime = 1500;
-export const hintSpeed = 3;
-export const letterSize = 30;
+export const hintConfig = {
+  opacityTime: 3000,
+  hintSpeed: 0.5,
+  letterSize: 30,
+};

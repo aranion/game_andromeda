@@ -10,7 +10,7 @@ import { Particles } from '../../effects/particles';
 import { getStarsConfig } from './particles';
 import { isOutsideCanvas } from '../../utils/is-outside-canvas';
 import { ResourceHints } from '../../effects/resource-hints';
-import { ResourceType } from '../../entities/resource/resource.config';
+import { OtherHintType } from '../../effects/resource-hints/types';
 import { EnhancementType } from '../../entities/enhancement/enhancement.config';
 import type { SceneTransition } from '../scene-transition';
 import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
@@ -110,7 +110,6 @@ export class GameMap {
             ...resourceExplode,
           })
         );
-        console.log('hint added');
         this.resourceHints.addHint({
           resourceType: resource.type,
           position: {
@@ -119,7 +118,6 @@ export class GameMap {
           },
           multiplier: this.multiplier,
         });
-        console.log('hint added finish');
         i--;
       }
     }
@@ -211,19 +209,26 @@ export class GameMap {
       }
 
       if (this.isCollided(asteroid)) {
-        this.player.updateLives(-1, this.score);
+        const position = {
+          x: asteroid.getPosition.x,
+          y: asteroid.getPosition.y,
+        };
+
         this.asteroids.splice(i, 1);
         this.particlesGroups.push(
           new Particles({
             canvas: this.canvas,
             ctx: this.ctx,
-            position: {
-              x: asteroid.getPosition.x,
-              y: asteroid.getPosition.y,
-            },
+            position,
             ...asteroidExplode(),
           })
         );
+        this.resourceHints.addHint({
+          position,
+          resourceType: OtherHintType.Damage,
+          isShield: this.player.getIsShield,
+        });
+        this.player.updateLives(-1, this.score);
         i--;
       }
     }
@@ -263,7 +268,7 @@ export class GameMap {
   }
 
   private draw() {
-    this.renderBackground(); // this.ctx.fillStyle = styles.canvasBackground;
+    this.renderBackground();
     this.ctx.font = styles.font;
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
