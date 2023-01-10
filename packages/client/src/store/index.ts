@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { gameActions, gameReducer } from './game';
+import { soundActions, soundReducer } from './sound';
 import { authActions, authApi, authReducer } from './auth';
 import { userActions, userApi, userReducer } from './user';
 import { resourcesApi } from './resources';
@@ -18,6 +19,7 @@ export const store = configureStore({
     user: userReducer,
     auth: authReducer,
     game: gameReducer,
+    sound: soundReducer,
     leaderBoard: leaderBoardReducer,
   },
   middleware: getDefaultMiddleware =>
@@ -35,6 +37,7 @@ export const allActions = {
   ...userActions,
   ...authActions,
   ...gameActions,
+  ...soundActions,
   ...leaderBoardActions,
 };
 
