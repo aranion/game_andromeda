@@ -155,6 +155,11 @@ export class GameMap {
 
         switch (enhancementType) {
           case EnhancementType.Lives:
+            this.resourceHints.addHint({
+              position: enhancement.getPosition,
+              resourceType: OtherHintType.ExtraLife,
+              isFullLives: this.player.getIsFullLives,
+            });
             this.player.updateLives();
             break;
           case EnhancementType.Shield:

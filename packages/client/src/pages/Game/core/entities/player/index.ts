@@ -53,6 +53,10 @@ export class Player extends GameObject {
     return this.speed;
   }
 
+  get getIsFullLives(): boolean {
+    return this.lives === this.maxLives;
+  }
+
   destroyShield() {
     const { shield } = this.idTimeouts;
     this.shielded = false;

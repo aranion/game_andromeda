@@ -8,6 +8,7 @@ export type ResourceHintsConfig = {
 
 export enum OtherHintType {
   Damage = 'damage',
+  ExtraLife = 'extraLife',
 }
 
 export type ResourceHint = {
@@ -17,6 +18,7 @@ export type ResourceHint = {
   color: string;
   multiplier?: Multiplier;
   isShield?: boolean;
+  isFullLives?: boolean;
 };
 
 export type ResourceHintConfig = Omit<ResourceHint, 'opacity' | 'color'>;

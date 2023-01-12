@@ -27,16 +27,24 @@ class ResourceHints {
   }
 
   private selectHints(hint: ResourceHint): string {
-    const { isShield, resourceType, multiplier = 1 } = hint;
-    const isTypeDamage = resourceType === OtherHintType.Damage;
+    const {
+      isShield,
+      resourceType,
+      multiplier = 1,
+      isFullLives = false,
+    } = hint;
+    const value = hintValues[resourceType] * multiplier;
 
-    if (isShield && isTypeDamage) {
-      return '';
-    } else {
-      const value = hintValues[resourceType] * multiplier;
-      const live = isTypeDamage && !isShield ? '♥' : '';
-
-      return `${value} ${live}`;
+    switch (resourceType) {
+      case OtherHintType.Damage:
+      case OtherHintType.ExtraLife:
+        if (isFullLives || isShield) {
+          return '';
+        } else {
+          return `${value} ♥`;
+        }
+      default:
+        return `${value}`;
     }
   }
 
