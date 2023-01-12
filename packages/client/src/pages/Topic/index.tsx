@@ -26,10 +26,10 @@ export default function TopicPage() {
 
     const topic: TopicProps = {
       topicId: '111',
-      title: 'Title of very interesting topic',
-      content:
+      topicTitle: 'Title of very interesting topic',
+      topicContent:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      author: 'Amanda',
+      topicAuthor: 'Amanda',
     };
     return topic;
   };
@@ -40,20 +40,20 @@ export default function TopicPage() {
     const comments: CommentProps[] = [];
     comments.push(
       {
-        id: '1',
-        author: 'Jane',
-        content: 'First interesting comment',
+        commentId: '1',
+        commentAuthor: 'Jane',
+        commentContent: 'First interesting comment',
       },
       {
-        id: '2',
-        author: 'David',
-        content:
+        commentId: '2',
+        commentAuthor: 'David',
+        commentContent:
           'Second interesting comment (Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.)',
       },
       {
-        id: '3',
-        author: 'Kate',
-        content: 'Third interesting comment',
+        commentId: '3',
+        commentAuthor: 'Kate',
+        commentContent: 'Third interesting comment',
       }
     );
     return comments;
@@ -75,14 +75,21 @@ export default function TopicPage() {
 
       <h1 className='main-menu__title'>Community</h1>
       <Card className={styles.topic__info}>
-        <div className={styles.topic__title}>{topic?.title || ''}</div>
-        <div className={styles.topic__content}>{topic?.content || ''}</div>
-        <div className={styles.topic__author}>{topic?.author || ''}</div>
+        <div className={styles.topic__title}>{topic?.topicTitle || ''}</div>
+        <div className={styles.topic__content}>{topic?.topicContent || ''}</div>
+        <div className={styles.topic__author}>{topic?.topicAuthor || ''}</div>
       </Card>
       <div>
         {comments.map(comment => {
-          const { id, content, author } = comment;
-          return <Comment key={id} id={id} content={content} author={author} />;
+          const { commentId, commentContent, commentAuthor } = comment;
+          return (
+            <Comment
+              key={commentId}
+              commentId={commentId}
+              commentContent={commentContent}
+              commentAuthor={commentAuthor}
+            />
+          );
         })}
       </div>
       <NewCommentButton topicId={topicId} fetchComments={fetchComments} />

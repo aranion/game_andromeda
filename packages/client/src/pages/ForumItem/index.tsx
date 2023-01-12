@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import type {
   TopicProps,
   FetchTopics,
-  FetchForumName,
+  FetchForumTitle,
 } from 'src/store/forum/types';
 import {
   ButtonBack,
@@ -18,9 +18,9 @@ export default function ForumItemPage() {
   const fullscrinableElem = useRef(null);
 
   const [topics, setTopics] = useState<TopicProps[]>([]);
-  const [forumName, setforumName] = useState<string>('');
+  const [forumTitle, setforumTitle] = useState<string>('');
 
-  const fetchForumName: FetchForumName = forumId => {
+  const fetchForumTitle: FetchForumTitle = forumId => {
     console.log(forumId);
     return 'Game Devlog - News';
   };
@@ -32,12 +32,12 @@ export default function ForumItemPage() {
     topics.push(
       {
         topicId: '111',
-        title: 'Test toppic title',
+        topicTitle: 'Test toppic title',
         commentCount: '111',
       },
       {
         topicId: '222',
-        title:
+        topicTitle:
           'Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title ',
         commentCount: '1',
       }
@@ -47,8 +47,8 @@ export default function ForumItemPage() {
 
   useEffect(() => {
     if (forumId) {
-      const forumName = fetchForumName(forumId);
-      setforumName(forumName);
+      const forumTitle = fetchForumTitle(forumId);
+      setforumTitle(forumTitle);
       const topics = fetchTopics(forumId);
       setTopics(topics);
     }
@@ -59,7 +59,7 @@ export default function ForumItemPage() {
       <ButtonBack />
       <ButtonFullscreen elemRef={fullscrinableElem} />
 
-      <h1 className='main-menu__title'>{forumName}</h1>
+      <h1 className='main-menu__title'>{forumTitle}</h1>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -69,12 +69,12 @@ export default function ForumItemPage() {
         </thead>
         <tbody>
           {topics.map(topic => {
-            const { topicId, title, commentCount } = topic;
+            const { topicId, topicTitle, commentCount } = topic;
             return (
               <TopicItem
                 key={topicId}
                 topicId={topicId}
-                title={title}
+                topicTitle={topicTitle}
                 commentCount={commentCount}
               />
             );

@@ -4,12 +4,12 @@ import type { ModelAttributes } from 'sequelize/types';
 export interface IUser {
   id: number | null;
   avatar: string | null;
-  display_name: string | null;
+  displayName: string | null;
   email: string;
-  first_name: string;
+  firstName: string;
   login: string;
   phone: string;
-  second_name: string;
+  secondName: string;
 }
 
 export const userModel: ModelAttributes<Model, IUser> = {
@@ -23,7 +23,7 @@ export const userModel: ModelAttributes<Model, IUser> = {
     type: DataType.STRING,
     allowNull: true,
   },
-  display_name: {
+  displayName: {
     type: DataType.STRING,
     allowNull: true,
   },
@@ -31,7 +31,7 @@ export const userModel: ModelAttributes<Model, IUser> = {
     type: DataType.STRING,
     allowNull: false,
   },
-  first_name: {
+  firstName: {
     type: DataType.STRING,
     allowNull: false,
   },
@@ -43,7 +43,7 @@ export const userModel: ModelAttributes<Model, IUser> = {
     type: DataType.STRING,
     allowNull: false,
   },
-  second_name: {
+  secondName: {
     type: DataType.STRING,
     allowNull: false,
   },

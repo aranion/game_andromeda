@@ -7,32 +7,33 @@ export default function ForumPage() {
   const [forums, setForums] = useState<ForumProps[]>([]);
 
   const fetchForums: FetchForums = () => {
+    //getForums
     const forums: ForumProps[] = [];
     forums.push(
       {
         forumId: '111',
-        title: 'Game Devlog - News',
+        forumTitle: 'Game Devlog - News',
         topicsCount: '1',
         commentsCount: '12',
-      },
-      {
-        forumId: '222',
-        title: 'Feedback Forum',
-        topicsCount: '126',
-        commentsCount: '12',
-      },
-      {
-        forumId: '333',
-        title: 'Cavern',
-        topicsCount: '12',
-        commentsCount: '12',
-      },
-      {
-        forumId: '444',
-        title: 'Game Devlog - test forum',
-        topicsCount: '12',
-        commentsCount: '12',
       }
+      // {
+      //   forumId: '222',
+      //   forumTitle: 'Feedback Forum',
+      //   topicsCount: '126',
+      //   commentsCount: '12',
+      // },
+      // {
+      //   forumId: '333',
+      //   forumTitle: 'Cavern',
+      //   topicsCount: '12',
+      //   commentsCount: '12',
+      // },
+      // {
+      //   forumId: '444',
+      //   forumTitle: 'Game Devlog - test forum',
+      //   topicsCount: '12',
+      //   commentsCount: '12',
+      // }
     );
 
     return forums;
@@ -57,12 +58,12 @@ export default function ForumPage() {
         </thead>
         <tbody>
           {forums.map(forum => {
-            const { forumId, title, topicsCount, commentsCount } = forum;
+            const { forumId, forumTitle, topicsCount, commentsCount } = forum;
             return (
               <ForumItem
                 key={forumId}
                 forumId={forumId}
-                title={title}
+                forumTitle={forumTitle}
                 topicsCount={topicsCount}
                 commentsCount={commentsCount}
               />

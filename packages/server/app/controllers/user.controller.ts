@@ -17,22 +17,27 @@ export async function updateUserById(id: number, data: IUser) {
   return User.update(data, { where: { id } });
 }
 
-// Удаление пользователя по ID
-export async function deleteUserById(id: number) {
-  return User.destroy({ where: { id } });
-}
-
 // Получение пользователя по ID
 export async function getUserById(id: number) {
   return User.findOne({ where: { id } });
 }
 
-// Получение пользователей по ID
-export async function getUsersByFirstName(firstName: string) {
-  return User.findAll({ where: { firstName } });
+// Получение пользователя по displayName
+export async function getUserByFirstName(displayName: string) {
+  return User.findOne({ where: { displayName } });
 }
 
 // Получение всех пользователей
 export async function getAllUsers() {
   return User.findAll();
+}
+
+// Удаление пользователя по ID
+export async function deleteUserById(id: number) {
+  return User.destroy({ where: { id } });
+}
+
+// Удаление всех пользователей
+export async function deleteAllUsers() {
+  return User.destroy();
 }
