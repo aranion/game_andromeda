@@ -8,6 +8,18 @@
   image-rendering: -webkit-crisp-edges;
 }
 
+.game__label-new-level {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  margin-top: 300px;
+  color: white;
+  font-size: 30px;
+}
+
 .game__label-game-over {
   position: absolute;
   top: 0;
@@ -30,4 +42,51 @@
   margin-top: 500px;
   width: 250px;
   height: 35px;
+}
+
+.game__button-new-level {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  margin-top: 500px;
+  width: 250px;
+  height: 35px;
+}
+
+.game__button-to-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  margin-top: 600px;
+  width: 250px;
+  height: 35px;
+}
+.game__button-new-game {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  margin-top: 450px;
+  width: 250px;
+  height: 35px;
+}
+
+.game__label-endgame {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  margin-top: 300px;
+  color: white;
+  font-size: 30px;
 }

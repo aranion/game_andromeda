@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLeaderBoard } from '../../hooks/useLeaderBoard';
 import { useTypeSelector } from '../../hooks/useTypeSelector';
 import { gameSelectors } from '../../store/game';
@@ -13,9 +14,11 @@ export default function GamePage() {
 
   const { addTeamLeader } = useLeaderBoard();
 
+  const navigate = useNavigate();
+
   useLayoutEffect(() => {
     if (canvas?.current) {
-      game.current = new Game({ canvas: canvas.current });
+      game.current = new Game({ canvas: canvas.current, navigator: navigate });
       game.current?.init();
     }
     return () => {

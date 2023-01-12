@@ -16,6 +16,7 @@ export type GameMapConfig = {
     asteroid: number;
     resource: number;
   };
+  maxResource: number;
 };
 
 export type CanvasProperties = {

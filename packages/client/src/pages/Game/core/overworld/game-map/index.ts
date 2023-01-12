@@ -1,4 +1,4 @@
-import { styles, TIME_ACTIONS_ENHANCEMENT } from '../../constants';
+import { styles, TIME_ACTIONS_ENHANCEMENT, toMenuBtn } from '../../constants';
 import { Resource } from '../../entities/resource';
 import { Enhancement } from '../../entities/enhancement';
 import { Asteroid } from '../../entities/asteroid';
@@ -16,6 +16,9 @@ import type { SceneTransition } from '../scene-transition';
 import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
 import type { Player } from '../../entities/player';
 import type { Multiplier } from '../../entities/resource/types';
+import type { GameMapConfig } from '../../types';
+import { delaySceneNewLevel, newLevelBtn, newLevelLabel } from './constants';
+import { GameStatusList } from 'src/store/game/type';
 
 /**
  * Карта текущего уровня, настраивается через конфиг. Управляет текущим уровнем и его логикой.
@@ -23,12 +26,7 @@ import type { Multiplier } from '../../entities/resource/types';
 export class GameMap {
   private readonly canvas: HTMLCanvasElement;
   private readonly ctx: CanvasRenderingContext2D;
-  private spawnInterval: {
-    // интервал - количество кадров
-    alien: number;
-    asteroid: number;
-    resource: number;
-  };
+  private mapConfig: GameMapConfig;
   private readonly resourceHints: ResourceHints;
   private sceneTransition: SceneTransition;
   private score = 0;
@@ -43,7 +41,7 @@ export class GameMap {
   constructor(config: GameMapConstrConfig) {
     this.canvas = config.canvas;
     this.ctx = config.ctx;
-    this.spawnInterval = config.spawnInterval;
+    this.mapConfig = config.mapConfig;
     this.player = config.player;
     this.sceneTransition = config.sceneTransition;
     this.resourceHints = new ResourceHints(this.ctx);
@@ -76,7 +74,7 @@ export class GameMap {
   }
 
   private handleResources(frame: number) {
-    const isAddResources = frame % this.spawnInterval.resource === 0;
+    const isAddResources = frame % this.mapConfig.spawnInterval.resource === 0;
 
     if (isAddResources) {
       this.resources.push(
@@ -110,7 +108,6 @@ export class GameMap {
             ...resourceExplode,
           })
         );
-        console.log('hint added');
         this.resourceHints.addHint({
           resourceType: resource.type,
           position: {
@@ -118,7 +115,6 @@ export class GameMap {
             y: resource.getPosition.y,
           },
         });
-        console.log('hint added finish');
         i--;
       }
     }
@@ -187,7 +183,7 @@ export class GameMap {
   }
 
   private handleAsteroids(frame: number) {
-    const isAddAsteroids = frame % this.spawnInterval.asteroid === 0;
+    const isAddAsteroids = frame % this.mapConfig.spawnInterval.asteroid === 0;
 
     if (isAddAsteroids) {
       const asteroidConfig = createAsteroidConfig();
@@ -309,6 +305,15 @@ export class GameMap {
     }, TIME_ACTIONS_ENHANCEMENT.multiplier);
   }
 
+  checkForEndLevel() {
+    if (
+      this.score >= this.mapConfig.maxResource &&
+      !this.sceneTransition.isActiveBackground
+    ) {
+      this.sceneTransition.getGame.nextLevel();
+    }
+  }
+
   update({ frame }: UpdateParams) {
     this.draw();
     this.handleParticles();
@@ -319,5 +324,6 @@ export class GameMap {
     this.drawUI();
     this.sceneTransition.update();
     this.resourceHints.update();
+    this.checkForEndLevel();
   }
 }

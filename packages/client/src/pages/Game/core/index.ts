@@ -3,15 +3,21 @@ import { DirectionsInput } from './overworld/directions-input';
 import { Player } from './entities/player';
 import { defaultPlayerStats } from './entities/player/stats';
 import { mapConfig } from './map.config';
-import { FPS } from './constants';
+import { endGameLabel, FPS, newGameBtn, toMenuBtn } from './constants';
 import { store } from 'src/store';
 import { gameActions } from 'src/store/game';
 import { SceneTransition } from './overworld/scene-transition';
 import { GameStatusList } from 'src/store/game/type';
 import type { CanvasProperties, GameMapConfig } from './types';
+import { endGameButton } from './overworld/scene-transition/stats';
+import { newLevelBtn, newLevelLabel } from './overworld/game-map/constants';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { RouterList } from 'src/router/routerList';
+import type { NavigateFunction } from 'react-router-dom';
 
 type GameConfig = {
   canvas: HTMLCanvasElement;
+  navigator: NavigateFunction;
 };
 
 type GameStatus =
@@ -31,6 +37,8 @@ export class Game {
   private status: GameStatus = GameStatusList.stopped;
   private readonly sceneTransition: SceneTransition;
   private frame = 0;
+  private levelNumber = 0;
+  private navigate: NavigateFunction;
 
   constructor(config: GameConfig) {
     const { canvas, ctx } = this.initCanvas(config.canvas);
@@ -51,6 +59,7 @@ export class Game {
       },
       ...defaultPlayerStats,
     });
+    this.navigate = config.navigator;
   }
 
   private startGameLoop() {
@@ -82,6 +91,7 @@ export class Game {
     if (this.canvas && this.ctx) {
       this.map = new GameMap({
         ...gameMapConfig,
+        mapConfig: gameMapConfig,
         sceneTransition: this.sceneTransition,
         canvas: this.canvas,
         ctx: this.ctx,
@@ -126,9 +136,41 @@ export class Game {
     this.status = gameStatus;
   }
 
+  get getStatus(): GameStatus {
+    return this.status;
+  }
+
   clear() {
     this.map?.clear();
     this.sceneTransition.clear();
+  }
+
+  nextLevel() {
+    this.levelNumber += 1;
+    this.sceneTransition.darkScreen();
+    if (this.levelNumber <= Object.keys(mapConfig).length) {
+      this.player.moveUp();
+      this.sceneTransition.createLabel(newLevelLabel);
+      this.sceneTransition.createButton(
+        newLevelBtn(() => {
+          this.startMap(mapConfig[`level_${this.levelNumber}`]);
+        })
+      );
+    } else {
+      this.player.moveToCenter();
+      this.sceneTransition.createLabel(endGameLabel); // endgame label
+      this.sceneTransition.createButton(
+        newGameBtn(() => {
+          this.levelNumber = 1;
+          this.startMap(mapConfig.level_1);
+        })
+      ); // endgame button
+      this.sceneTransition.createButton(
+        toMenuBtn(() => {
+          this.navigate(RouterList.HOME);
+        })
+      );
+    }
   }
 
   unmount() {
@@ -141,6 +183,7 @@ export class Game {
 
   init() {
     this.mount();
+    this.levelNumber = 1;
     this.startMap(mapConfig.level_1);
     this.startGameLoop();
   }
