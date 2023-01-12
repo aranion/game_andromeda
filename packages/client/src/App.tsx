@@ -6,7 +6,13 @@ import { useDarkTheme } from './hooks/useDarkTheme';
 import { CONFIG_STARS_PARAMS } from './constants/vars';
 import { useLocation } from 'react-router-dom';
 import { RouterList } from './router/routerList';
-import { ButtonFullscreen, PauseMenu, Toggler } from './components';
+import {
+  ButtonFullscreen,
+  PauseMenu,
+  ButtonSoundOption,
+  Toggler,
+} from './components';
+import { useAudio } from './hooks/useAudio';
 
 function App() {
   const { checkIsAuth } = useAuth();
@@ -16,6 +22,7 @@ function App() {
   const { pathname } = useLocation();
   const refWrapper = useRef(null);
   const fullscrinableElem = useRef(null);
+  const { addSound } = useAudio();
 
   const startStarts = useCallback(() => {
     const isNotGamePage = pathname.toLocaleLowerCase() !== RouterList.GAME;
@@ -61,6 +68,11 @@ function App() {
   useEffect(() => {
     checkIsAuth();
     startStarts();
+    addSound({ soundURL: 'maintheme.wav', playWhenLoaded: 'continuous' });
+    addSound({ soundURL: 'spark.mp3' });
+    addSound({ soundURL: 'bosstheme.wav' });
+    addSound({ soundURL: 'shoot1.mp3' });
+    addSound({ soundURL: 'shoot2.mp3' });
 
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`;
@@ -79,8 +91,9 @@ function App() {
     <div className={cls.app} ref={fullscrinableElem}>
       <main className={cls.app__content}>
         <Router />
-        <Toggler isChecked={isThemeMode} toggleCheck={toggleTheme} />
         <ButtonFullscreen elemRef={fullscrinableElem} />
+        <Toggler isChecked={isThemeMode} toggleCheck={toggleTheme} />
+        <ButtonSoundOption />
         <PauseMenu />
       </main>
 

@@ -12,6 +12,7 @@ import { isOutsideCanvas } from '../../utils/is-outside-canvas';
 import { ResourceHints } from '../../effects/resource-hints';
 import { OtherHintType } from '../../effects/resource-hints/types';
 import { EnhancementType } from '../../entities/enhancement/enhancement.config';
+import type { GameTheme } from '../game-theme';
 import type { SceneTransition } from '../scene-transition';
 import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
 import type { Player } from '../../entities/player';
@@ -33,6 +34,7 @@ export class GameMap {
   private sceneTransition: SceneTransition;
   private score = 0;
   private readonly player: Player;
+  private readonly gameTheme: GameTheme;
   private resources: Resource[] = [];
   private enhancements: Enhancement[] = [];
   private asteroids: Asteroid[] = [];
@@ -47,6 +49,7 @@ export class GameMap {
     this.player = config.player;
     this.sceneTransition = config.sceneTransition;
     this.resourceHints = new ResourceHints(this.ctx);
+    this.gameTheme = config.gameTheme;
 
     this.createStarsBackground();
   }
@@ -268,39 +271,9 @@ export class GameMap {
   }
 
   private draw() {
-    this.renderBackground();
+    this.gameTheme.drawBackground();
     this.ctx.font = styles.font;
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-  }
-
-  private renderBackground() {
-    let gradient;
-
-    if (this.player.getLives === 1) {
-      gradient = this.ctx.createRadialGradient(
-        this.canvas.width / 2,
-        this.canvas.height,
-        this.canvas.height * 2,
-        this.canvas.height,
-        this.canvas.height / 2,
-        this.canvas.width / 3
-      );
-      gradient.addColorStop(0, '#590909');
-      gradient.addColorStop(1, '#150404');
-    } else {
-      gradient = this.ctx.createRadialGradient(
-        this.canvas.width / 2,
-        this.canvas.height / 2,
-        this.canvas.height,
-        this.canvas.width / 2,
-        this.canvas.height / 2,
-        30
-      );
-      gradient.addColorStop(0, '#010406');
-      gradient.addColorStop(1, '#08192a');
-    }
-
-    this.ctx.fillStyle = gradient;
   }
 
   updateMultiplier(multiplier: Multiplier = 2) {
