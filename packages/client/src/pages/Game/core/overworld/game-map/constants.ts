@@ -2,7 +2,7 @@ import type { Game } from '../..';
 import type { ButtonConfig, LabelConfig } from '../scene-transition/types';
 
 export const newLevelLabel: LabelConfig = {
-  text: 'Some galaxies stay behind, but you should be ready for new ones!',
+  text: 'Some galaxies stay behind, but you should be ready for the new ones!',
   cssClassName: 'game__label-new-level',
 };
 

@@ -34,7 +34,7 @@ export enum AnimationKey {
 }
 
 export const endGameLabel: LabelConfig = {
-  text: 'You,ve reached Andromeda',
+  text: "You've reached Andromeda",
   cssClassName: 'game__label-endgame',
 };
 
@@ -51,7 +51,7 @@ export const newGameBtn = (restartGame: () => void): ButtonConfig => {
 
 export const toMenuBtn = (navigateToMenu: () => void): ButtonConfig => {
   return {
-    text: 'To menu',
+    text: 'Back To the Menu',
     cssClassName: 'game__button-to-menu',
     handleClick: (game: Game) => {
       game.clear();

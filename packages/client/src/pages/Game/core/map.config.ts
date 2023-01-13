@@ -10,6 +10,7 @@ export const mapConfig: MapConfig = {
       resource: 200,
     },
     maxResource: 10,
+    levelNum: 1,
   },
   level_2: {
     spawnInterval: {
@@ -18,5 +19,6 @@ export const mapConfig: MapConfig = {
       resource: 300,
     },
     maxResource: 15,
+    levelNum: 2,
   },
 };

@@ -17,6 +17,7 @@ export type GameMapConfig = {
     resource: number;
   };
   maxResource: number;
+  levelNum: number;
 };
 
 export type CanvasProperties = {

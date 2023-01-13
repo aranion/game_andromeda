@@ -247,14 +247,17 @@ export class GameMap {
 
   private drawUI() {
     this.ctx.fillStyle = styles.fontColor;
+    this.ctx.font = '30px audiowide';
+
     this.ctx.fillText(`Score: ${this.score}`, 10, 50);
     this.ctx.fillText(`Lives: ${'♥'.repeat(this.player.getLives)}`, 10, 100);
+    this.ctx.fillText(`Level: ${this.mapConfig.levelNum}`, 10, 150);
 
     const bafShield = this.player.getIsShield ? '🛡' : '';
     const bafSpeed = this.player.getSpeed < 100 ? '🗲' : '';
     const bafMultiplier = this.multiplier > 1 ? 'X2' : '';
 
-    this.ctx.fillText(`${bafShield}${bafSpeed}${bafMultiplier}`, 10, 150);
+    this.ctx.fillText(`${bafShield}${bafSpeed}${bafMultiplier}`, 10, 200);
   }
 
   private draw() {
