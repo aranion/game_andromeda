@@ -8,6 +8,7 @@ import { store } from 'src/store';
 import { gameActions } from 'src/store/game';
 import { SceneTransition } from './overworld/scene-transition';
 import { GameStatusList } from 'src/store/game/type';
+import { GameTheme } from './overworld/game-theme';
 import type { CanvasProperties, GameMapConfig } from './types';
 import { endGameButton } from './overworld/scene-transition/stats';
 import { newLevelBtn, newLevelLabel } from './overworld/game-map/constants';
@@ -39,6 +40,7 @@ export class Game {
   private frame = 0;
   private levelNumber = 0;
   private navigate: NavigateFunction;
+  private gameTheme: GameTheme;
 
   constructor(config: GameConfig) {
     const { canvas, ctx } = this.initCanvas(config.canvas);
@@ -60,6 +62,11 @@ export class Game {
       ...defaultPlayerStats,
     });
     this.navigate = config.navigator;
+    this.gameTheme = new GameTheme({
+      canvas,
+      ctx,
+      player: this.player,
+    });
   }
 
   private startGameLoop() {
@@ -96,6 +103,7 @@ export class Game {
         canvas: this.canvas,
         ctx: this.ctx,
         player: this.player,
+        gameTheme: this.gameTheme,
       });
     }
   }
