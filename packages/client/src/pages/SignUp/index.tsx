@@ -39,6 +39,9 @@ export default function SignUp() {
 
   const navigate = useNavigate();
   const navigateSignIn = () => navigate(RouterList.SIGN_IN);
+  const handleOnClick = () => {
+    routeYandexOauth();
+  };
 
   useEffect(() => {
     if (isAuth) {
@@ -117,13 +120,7 @@ export default function SignUp() {
 
         <ButtonStar onClick={navigateSignIn}>Sign In</ButtonStar>
 
-        <ButtonStar
-          onClick={() => {
-            console.log('reroute to yandex oauth');
-            routeYandexOauth();
-          }}>
-          From Yandex Galaxy!?
-        </ButtonStar>
+        <ButtonStar onClick={handleOnClick}>From Yandex Galaxy!?</ButtonStar>
       </div>
     </>
   );

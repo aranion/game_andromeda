@@ -1,6 +1,6 @@
 import { BASE_URL } from 'src/constants/vars';
 
-const REDIRECT_URI = 'http://localhost:3000/';
+const REDIRECT_URI = 'http://localhost:3000';
 
 type GetServiceIdRespons = {
   service_id: string;
@@ -23,6 +23,7 @@ export function routeYandexOauth() {
 }
 
 export function createOauthProfile(code: string) {
+  console.log('fetching');
   return fetch(`${BASE_URL}/oauth/yandex`, {
     method: 'POST',
     headers: {
