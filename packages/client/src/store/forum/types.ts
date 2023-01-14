@@ -1,6 +1,6 @@
 export type ForumProps = {
-  forumId: string;
-  forumTitle: string;
+  id: string;
+  title: string;
   topicsCount?: string;
   commentsCount?: string;
 };
@@ -9,17 +9,17 @@ export type FetchForums = () => ForumProps[];
 export type FetchForumTitle = (forumId?: string) => string;
 
 export type TopicProps = Partial<{
-  topicId: string;
-  topicTitle: string;
-  topicAuthor: string;
-  topicContent: string;
+  id: string;
+  title: string;
+  author: string;
+  content: string;
   commentCount: string;
 }>;
 export type FetchTopics = (forumId?: string) => TopicProps[];
 
 export type CommentProps = {
-  commentId: string;
-  commentContent: string;
-  commentAuthor: string;
+  id: string;
+  content: string;
+  author: string;
 };
 export type FetchComments = (topicId?: string) => CommentProps[];

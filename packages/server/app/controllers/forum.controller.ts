@@ -28,6 +28,6 @@ export async function getAllForums() {
 }
 
 // Удаление форума по ID
-export async function deleteForumById(forumId: number) {
-  return Forum.destroy({ where: { forumId } });
+export async function deleteForumById(id: number) {
+  return Forum.destroy({ where: { id } });
 }

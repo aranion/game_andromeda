@@ -2,7 +2,7 @@ import { DataType, Model } from 'sequelize-typescript';
 import type { ModelAttributes } from 'sequelize/types';
 
 export interface ITopic {
-  topicId: number | null;
+  id: number | null;
   topicTitle: string;
   topicAuthorId: number | null;
   topicContent: number | null;
@@ -11,7 +11,7 @@ export interface ITopic {
 }
 
 export const topicModel: ModelAttributes<Model, ITopic> = {
-  topicId: {
+  id: {
     type: DataType.INTEGER,
     primaryKey: true,
     autoIncrement: true,
@@ -35,8 +35,6 @@ export const topicModel: ModelAttributes<Model, ITopic> = {
   },
   forumId: {
     type: DataType.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
     allowNull: true,
   },
 };

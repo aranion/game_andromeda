@@ -31,13 +31,13 @@ export default function ForumItemPage() {
     const topics: TopicProps[] = [];
     topics.push(
       {
-        topicId: '111',
-        topicTitle: 'Test toppic title',
+        id: '111',
+        title: 'Test toppic title',
         commentCount: '111',
       },
       {
-        topicId: '222',
-        topicTitle:
+        id: '222',
+        title:
           'Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title ',
         commentCount: '1',
       }
@@ -69,12 +69,12 @@ export default function ForumItemPage() {
         </thead>
         <tbody>
           {topics.map(topic => {
-            const { topicId, topicTitle, commentCount } = topic;
+            const { id, title, commentCount } = topic;
             return (
               <TopicItem
-                key={topicId}
-                topicId={topicId}
-                topicTitle={topicTitle}
+                key={id}
+                id={id}
+                title={title}
                 commentCount={commentCount}
               />
             );

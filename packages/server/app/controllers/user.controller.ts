@@ -23,7 +23,7 @@ export async function getUserById(id: number) {
 }
 
 // Получение пользователя по displayName
-export async function getUserByFirstName(displayName: string) {
+export async function getUserByDisplayName(displayName: string) {
   return User.findOne({ where: { displayName } });
 }
 

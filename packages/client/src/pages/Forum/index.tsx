@@ -11,8 +11,8 @@ export default function ForumPage() {
     const forums: ForumProps[] = [];
     forums.push(
       {
-        forumId: '111',
-        forumTitle: 'Game Devlog - News',
+        id: '111',
+        title: 'Game Devlog - News',
         topicsCount: '1',
         commentsCount: '12',
       }
@@ -58,12 +58,12 @@ export default function ForumPage() {
         </thead>
         <tbody>
           {forums.map(forum => {
-            const { forumId, forumTitle, topicsCount, commentsCount } = forum;
+            const { id, title, topicsCount, commentsCount } = forum;
             return (
               <ForumItem
-                key={forumId}
-                forumId={forumId}
-                forumTitle={forumTitle}
+                key={id}
+                id={id}
+                title={title}
                 topicsCount={topicsCount}
                 commentsCount={commentsCount}
               />

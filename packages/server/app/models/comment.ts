@@ -25,8 +25,6 @@ export const commentModel: ModelAttributes<Model, IComment> = {
   },
   topicId: {
     type: DataType.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
     allowNull: true,
   },
 };

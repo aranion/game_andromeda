@@ -4,14 +4,12 @@ import { RouterList } from 'src/router/routerList';
 import styles from './styles.module.css';
 
 export function ForumItem(props: ForumProps) {
-  const { forumId, title, topicsCount, commentsCount } = props;
+  const { id, title, topicsCount, commentsCount } = props;
 
   return (
-    <tr id={forumId}>
+    <tr id={id}>
       <td className={styles.item}>
-        <Link
-          className={styles.item__link}
-          to={`${RouterList.FORUM}/${forumId}`}>
+        <Link className={styles.item__link} to={`${RouterList.FORUM}/${id}`}>
           <div>{title}</div>
         </Link>
       </td>
