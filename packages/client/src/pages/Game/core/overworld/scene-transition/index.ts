@@ -1,6 +1,11 @@
 import { FPS } from '../../constants';
 import type { Game } from '../../../core';
-import type { SceneTransitionConfig, LabelConfig, ButtonConfig } from './types';
+import type {
+  SceneTransitionConfig,
+  LabelConfig,
+  ButtonConfig,
+  OptionsButton,
+} from './types';
 
 const defaultOpacityTime = 3000;
 
@@ -19,7 +24,7 @@ export class SceneTransition {
     this.ctx = config.ctx;
   }
 
-  darkScreen(blackoutTime = defaultOpacityTime, delay?: number) {
+  public darkScreen(blackoutTime = defaultOpacityTime, delay?: number) {
     this.opacitySpeed = FPS / blackoutTime;
     if (delay) {
       setTimeout(() => {
@@ -28,7 +33,7 @@ export class SceneTransition {
     }
   }
 
-  createLabel(labelConfig: LabelConfig) {
+  private createLabel(labelConfig: LabelConfig) {
     const label = document.createElement('label');
     const id = `l${Date.now().toString()}`;
     const canvas = document.querySelector('.canvas');
@@ -48,7 +53,7 @@ export class SceneTransition {
     }
   }
 
-  createButton(buttonConfig: ButtonConfig) {
+  public createButton(buttonConfig: ButtonConfig) {
     const button = document.createElement('button');
     const id = `b${Date.now().toString()}`;
     const canvas = document.querySelector('canvas');
@@ -76,7 +81,7 @@ export class SceneTransition {
     return this.game;
   }
 
-  deleteObjects() {
+  private deleteObjects() {
     this.labelsId.forEach(id => {
       const label = document.querySelector(`label#${id}`);
       label?.remove();
@@ -115,7 +120,7 @@ export class SceneTransition {
     this.draw();
   }
 
-  clear() {
+  public clear() {
     this.deleteObjects();
     this.opacity = 0;
     this.opacitySpeed = 0;
@@ -123,5 +128,20 @@ export class SceneTransition {
 
   get isActiveBackground() {
     return this.opacity !== 0;
+  }
+
+  public addBtn(optionsButton: OptionsButton): ButtonConfig {
+    const { cssClassName, text, cbFn, label } = optionsButton;
+
+    label && this.createLabel(label);
+
+    return {
+      text,
+      cssClassName: `game__button-${cssClassName}`,
+      handleClick: (game: Game) => {
+        game.clear();
+        cbFn && cbFn();
+      },
+    };
   }
 }

@@ -2,14 +2,10 @@ import { INITIAL_SPEED, TIME_ACTIONS_ENHANCEMENT } from './../../constants';
 import { GameObject } from '../game-object';
 import { store } from 'src/store';
 import { gameActions } from 'src/store/game';
+import { configRestartBtn, defaultMoveTime } from './stats';
 import type { IdTimeouts, PlayerConfig, PlayerSkins } from './types';
 import type { Coordinates } from '../../types';
 import type { SceneTransition } from '../../overworld/scene-transition';
-import {
-  endGameLabel,
-  endGameButton,
-} from '../../overworld/scene-transition/stats';
-import { defaultMoveTime } from './stats';
 
 /**
  * Класс игрока. Главная сущность игры в виде космического корабля.
@@ -106,8 +102,8 @@ export class Player extends GameObject {
     }
 
     if (newLives <= 0) {
-      this.sceneTransition.createLabel(endGameLabel);
-      this.sceneTransition.createButton(endGameButton());
+      const button = this.sceneTransition.addBtn(configRestartBtn);
+      this.sceneTransition.createButton(button);
       this.sceneTransition.darkScreen(2000);
 
       if (score) {

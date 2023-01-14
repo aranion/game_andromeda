@@ -1,4 +1,4 @@
-import type { LabelConfig } from './overworld/scene-transition/types';
+import type { OptionsButton } from './overworld/scene-transition/types';
 
 export const styles = {
   font: '30px sans-serif',
@@ -29,12 +29,25 @@ export enum AnimationKey {
   Multiplier = 'multiplier',
 }
 
-export const endGameLabel: LabelConfig = {
-  text: "You've reached Andromeda",
-  cssClassName: 'game__label-endgame',
+export const configEndGameBtn: OptionsButton = {
+  text: 'New game',
+  cssClassName: 'new-game',
+  label: {
+    text: "You've reached Andromeda",
+    cssClassName: 'game__label-endgame',
+  },
 };
 
-export const newLevelLabel: LabelConfig = {
-  text: 'Some galaxies stay behind, but you should be ready for the new ones!',
-  cssClassName: 'game__label-new-level',
+export const configNewLevelBtn: OptionsButton = {
+  text: 'To New Universe!',
+  cssClassName: 'new-level',
+  label: {
+    text: 'Some galaxies stay behind, but you should be ready for the new ones!',
+    cssClassName: 'game__label-new-level',
+  },
+};
+
+export const configGoHomeBtn: OptionsButton = {
+  text: 'Back To the Menu',
+  cssClassName: 'to-menu',
 };

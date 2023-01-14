@@ -8,7 +8,7 @@ import { Game } from './core';
 import './game.css';
 
 export default function GamePage() {
-  const canvas = useRef<HTMLCanvasElement>(null);
+  const canvas = useRef<HTMLCanvasElement | null>(null);
   const game = useRef<Game | null>(null);
   const navigate = useNavigate();
 
@@ -23,10 +23,11 @@ export default function GamePage() {
   useLayoutEffect(() => {
     if (canvas?.current) {
       game.current = new Game({ canvas: canvas.current, goHome });
-      game.current?.init();
     }
+
     return () => {
-      game?.current?.unmount();
+      game.current?.unmount();
+      canvas.current = null;
     };
   }, [canvas]);
 

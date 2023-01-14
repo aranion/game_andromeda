@@ -1,8 +1,4 @@
 import { AnimationKey } from '../../constants';
-import enhancementShield from '../../assets/enhancement/shield.png';
-import enhancementLives from '../../assets/enhancement/lives.png';
-import enhancementSpeed from '../../assets/enhancement/speed.png';
-import enhancementDoubling from '../../assets/enhancement/multiplier.png';
 
 export enum EnhancementType {
   Shield = 'shield',
@@ -11,25 +7,34 @@ export enum EnhancementType {
   Multiplier = 'multiplier',
 }
 
-export const enhancementConfig = {
-  [EnhancementType.Shield]: {
-    value: 0,
-    animation: AnimationKey.Shield,
-    imgSrc: enhancementShield,
-  },
-  [EnhancementType.Lives]: {
-    value: 0,
-    animation: AnimationKey.Lives,
-    imgSrc: enhancementLives,
-  },
-  [EnhancementType.Speed]: {
-    value: 0,
-    animation: AnimationKey.Speed,
-    imgSrc: enhancementSpeed,
-  },
-  [EnhancementType.Multiplier]: {
-    value: 0,
-    animation: AnimationKey.Multiplier,
-    imgSrc: enhancementDoubling,
-  },
+export const getEnhancementConfig = (images: string[]) => {
+  const [
+    enhancementShield,
+    enhancementLives,
+    enhancementSpeed,
+    enhancementDoubling,
+  ] = images;
+
+  return {
+    [EnhancementType.Shield]: {
+      value: 0,
+      currentAnimation: AnimationKey.Shield,
+      imageSrc: enhancementShield,
+    },
+    [EnhancementType.Lives]: {
+      value: 0,
+      currentAnimation: AnimationKey.Lives,
+      imageSrc: enhancementLives,
+    },
+    [EnhancementType.Speed]: {
+      value: 0,
+      currentAnimation: AnimationKey.Speed,
+      imageSrc: enhancementSpeed,
+    },
+    [EnhancementType.Multiplier]: {
+      value: 0,
+      currentAnimation: AnimationKey.Multiplier,
+      imageSrc: enhancementDoubling,
+    },
+  };
 };

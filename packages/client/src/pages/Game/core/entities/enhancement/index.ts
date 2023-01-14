@@ -1,10 +1,15 @@
 import { GameObject } from '../game-object';
 import { randomInteger } from '../../utils/random-integer';
-import { enhancementConfig, EnhancementType } from './enhancement.config';
+import type { EnhancementType } from './enhancement.config';
 import type { EnhancementConfig } from './types';
 
 const RADIUS = 26;
-const enhancementKeys = Object.keys(enhancementConfig) as EnhancementType[];
+const defaultConfig = {
+  radius: RADIUS,
+  width: 64,
+  height: 64,
+  speed: 0.4,
+};
 
 export class Enhancement extends GameObject {
   private distance = 0;
@@ -13,32 +18,27 @@ export class Enhancement extends GameObject {
   private readonly enhancementType: EnhancementType;
 
   constructor(config: EnhancementConfig) {
-    const randomType =
-      enhancementKeys[randomInteger(0, enhancementKeys.length - 1)];
-    const configType = enhancementConfig[config.type ?? randomType];
-    const imageSrc = configType.imgSrc;
-    const positionX =
-      config.position?.x ?? randomInteger(RADIUS, config.canvas.width - RADIUS);
-    const positionY =
-      config.position?.y ??
-      randomInteger(RADIUS, config.canvas.height - RADIUS * 6);
+    const { enhancementConfig, type, canvas, position: XY } = config;
 
+    const enhancementKeys = Object.keys(enhancementConfig) as EnhancementType[];
+    const enhancementType =
+      type ?? enhancementKeys[randomInteger(0, enhancementKeys.length - 1)];
+    const { imageSrc, currentAnimation, value } =
+      enhancementConfig[enhancementType];
+    const position = {
+      x: XY?.x ?? randomInteger(RADIUS, canvas.width - RADIUS),
+      y: XY?.y ?? randomInteger(RADIUS, canvas.height - RADIUS * 6),
+    };
     super({
+      ...defaultConfig,
       ...config,
       imageSrc,
-      radius: RADIUS,
-      width: 64,
-      height: 64,
-      position: {
-        x: positionX,
-        y: positionY,
-      },
-      speed: 0.4,
-      currentAnimation: configType.animation,
+      position,
+      currentAnimation,
     });
 
-    this.points = configType.value;
-    this.enhancementType = config.type ?? randomType;
+    this.points = value;
+    this.enhancementType = enhancementType;
   }
 
   get getDistance() {

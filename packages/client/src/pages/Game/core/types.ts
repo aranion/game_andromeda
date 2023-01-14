@@ -1,3 +1,12 @@
+import type { GameStatusList } from 'src/store/game/type';
+
+export type GameConfig = {
+  canvas: HTMLCanvasElement;
+  goHome: () => void;
+};
+
+export type GameStatus = keyof typeof GameStatusList;
+
 export type Coordinates = {
   x: number;
   y: number;
@@ -11,13 +20,15 @@ export interface GameEntityInterface {
 }
 
 export type GameMapConfig = {
-  spawnInterval: {
-    alien: number;
-    asteroid: number;
-    resource: number;
-  };
+  spawnInterval: SpawnInterval;
   maxResource: number;
   levelNum: number;
+};
+
+export type SpawnInterval = {
+  alien: number;
+  asteroid: number;
+  resource: number;
 };
 
 export type CanvasProperties = {
