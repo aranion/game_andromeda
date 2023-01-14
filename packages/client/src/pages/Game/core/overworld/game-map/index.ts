@@ -1,4 +1,4 @@
-import { styles, TIME_ACTIONS_ENHANCEMENT, toMenuBtn } from '../../constants';
+import { styles, TIME_ACTIONS_ENHANCEMENT } from '../../constants';
 import { Resource } from '../../entities/resource';
 import { Enhancement } from '../../entities/enhancement';
 import { Asteroid } from '../../entities/asteroid';
@@ -17,8 +17,6 @@ import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
 import type { Player } from '../../entities/player';
 import type { Multiplier } from '../../entities/resource/types';
 import type { GameMapConfig } from '../../types';
-import { delaySceneNewLevel, newLevelBtn, newLevelLabel } from './constants';
-import { GameStatusList } from 'src/store/game/type';
 
 /**
  * Карта текущего уровня, настраивается через конфиг. Управляет текущим уровнем и его логикой.

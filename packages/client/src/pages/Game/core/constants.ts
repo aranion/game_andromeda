@@ -1,8 +1,4 @@
-import type { Game } from '.';
-import type {
-  ButtonConfig,
-  LabelConfig,
-} from './overworld/scene-transition/types';
+import type { LabelConfig } from './overworld/scene-transition/types';
 
 export const styles = {
   font: '30px sans-serif',
@@ -38,24 +34,7 @@ export const endGameLabel: LabelConfig = {
   cssClassName: 'game__label-endgame',
 };
 
-export const newGameBtn = (restartGame: () => void): ButtonConfig => {
-  return {
-    text: 'New game',
-    cssClassName: 'game__button-new-game',
-    handleClick: (game: Game) => {
-      game.clear();
-      restartGame();
-    },
-  };
-};
-
-export const toMenuBtn = (navigateToMenu: () => void): ButtonConfig => {
-  return {
-    text: 'Back To the Menu',
-    cssClassName: 'game__button-to-menu',
-    handleClick: (game: Game) => {
-      game.clear();
-      navigateToMenu();
-    },
-  };
+export const newLevelLabel: LabelConfig = {
+  text: 'Some galaxies stay behind, but you should be ready for the new ones!',
+  cssClassName: 'game__label-new-level',
 };

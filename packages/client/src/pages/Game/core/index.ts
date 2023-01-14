@@ -3,22 +3,21 @@ import { DirectionsInput } from './overworld/directions-input';
 import { Player } from './entities/player';
 import { defaultPlayerStats } from './entities/player/stats';
 import { mapConfig } from './map.config';
-import { endGameLabel, FPS, newGameBtn, toMenuBtn } from './constants';
+import { endGameLabel, FPS, newLevelLabel } from './constants';
 import { store } from 'src/store';
 import { gameActions } from 'src/store/game';
 import { SceneTransition } from './overworld/scene-transition';
 import { GameStatusList } from 'src/store/game/type';
 import { GameTheme } from './overworld/game-theme';
 import type { CanvasProperties, GameMapConfig } from './types';
-import { endGameButton } from './overworld/scene-transition/stats';
-import { newLevelBtn, newLevelLabel } from './overworld/game-map/constants';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { RouterList } from 'src/router/routerList';
-import type { NavigateFunction } from 'react-router-dom';
+import type {
+  ButtonConfig,
+  LabelConfig,
+} from './overworld/scene-transition/types';
 
 type GameConfig = {
   canvas: HTMLCanvasElement;
-  navigator: NavigateFunction;
+  goHome: () => void;
 };
 
 type GameStatus =
@@ -38,8 +37,8 @@ export class Game {
   private status: GameStatus = GameStatusList.stopped;
   private readonly sceneTransition: SceneTransition;
   private frame = 0;
-  private levelNumber = 0;
-  private navigate: NavigateFunction;
+  private levelNumber = 1;
+  private readonly goHome: () => void;
   private gameTheme: GameTheme;
 
   constructor(config: GameConfig) {
@@ -61,7 +60,7 @@ export class Game {
       },
       ...defaultPlayerStats,
     });
-    this.navigate = config.navigator;
+    this.goHome = config.goHome;
     this.gameTheme = new GameTheme({
       canvas,
       ctx,
@@ -156,29 +155,31 @@ export class Game {
   nextLevel() {
     this.levelNumber += 1;
     this.sceneTransition.darkScreen();
-    if (this.levelNumber <= Object.keys(mapConfig).length) {
+
+    const buttons = [];
+    const isNotLastLevel = this.levelNumber <= Object.keys(mapConfig).length;
+
+    if (isNotLastLevel) {
       this.player.moveUp();
-      this.sceneTransition.createLabel(newLevelLabel);
-      this.sceneTransition.createButton(
-        newLevelBtn(() => {
-          this.startMap(mapConfig[`level_${this.levelNumber}`]);
-        })
+      buttons.push(
+        this.addBtn(
+          'To New Universe!',
+          'new-level',
+          this.startLevel,
+          newLevelLabel
+        )
       );
     } else {
       this.player.moveToCenter();
-      this.sceneTransition.createLabel(endGameLabel); // endgame label
-      this.sceneTransition.createButton(
-        newGameBtn(() => {
-          this.levelNumber = 1;
-          this.startMap(mapConfig.level_1);
-        })
-      ); // endgame button
-      this.sceneTransition.createButton(
-        toMenuBtn(() => {
-          this.navigate(RouterList.HOME);
-        })
+      buttons.push(
+        this.addBtn('New game', 'new-game', this.newGameMap, endGameLabel),
+        this.addBtn('Back To the Menu', 'to-menu', this.goHome)
       );
     }
+
+    buttons.forEach(btn => {
+      this.sceneTransition.createButton(btn);
+    });
   }
 
   unmount() {
@@ -191,15 +192,42 @@ export class Game {
 
   init() {
     this.mount();
-    this.levelNumber = 1;
-    this.startMap(mapConfig.level_1);
+    this.newGameMap();
     this.startGameLoop();
   }
 
   public updateGameStatus(status: GameStatus) {
     this.status = status;
   }
+
   private dispatchStatus(status: GameStatus) {
     store.dispatch(gameActions.setGameStatus(status));
   }
+
+  private addBtn(
+    text: string,
+    cssClassName: string,
+    cbFn: () => void,
+    label?: LabelConfig
+  ): ButtonConfig {
+    label && this.sceneTransition.createLabel(label);
+
+    return {
+      text,
+      cssClassName: `game__button-${cssClassName}`,
+      handleClick: (game: Game) => {
+        game.clear();
+        cbFn();
+      },
+    };
+  }
+
+  private newGameMap = () => {
+    this.levelNumber = 1;
+    this.startMap(mapConfig.level_1);
+  };
+
+  private startLevel = () => {
+    this.startMap(mapConfig[`level_${this.levelNumber}`]);
+  };
 }
