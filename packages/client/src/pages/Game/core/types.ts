@@ -1,4 +1,5 @@
 import type { GameStatusList } from 'src/store/game/type';
+import type { PlayerConfig } from './entities/player/types';
 
 export type GameConfig = {
   canvas: HTMLCanvasElement;
@@ -34,4 +35,9 @@ export type SpawnInterval = {
 export type CanvasProperties = {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
+};
+
+export type GameState = {
+  player: Pick<PlayerConfig, 'lives'> | null;
+  score: number | null;
 };

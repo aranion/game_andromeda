@@ -10,6 +10,7 @@ export type GameMapConstrConfig = GameMapConfig & {
   sceneTransition: SceneTransition;
   gameTheme: GameTheme;
   images: ImagesGame;
+  score: number;
 } & CanvasProperties;
 
 export type UpdateParams = {

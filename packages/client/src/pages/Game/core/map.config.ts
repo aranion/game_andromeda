@@ -2,23 +2,29 @@ import type { GameMapConfig } from './types';
 
 type MapConfig = Record<string, GameMapConfig>;
 
-export const mapConfig: MapConfig = {
-  level_1: {
-    spawnInterval: {
-      alien: 0,
-      asteroid: 100,
-      resource: 200,
-    },
-    maxResource: 10,
-    levelNum: 1,
-  },
-  level_2: {
-    spawnInterval: {
-      alien: 0,
-      asteroid: 200,
-      resource: 300,
-    },
-    maxResource: 15,
-    levelNum: 2,
-  },
-};
+function generateLevel(): MapConfig {
+  const maxLevel = 15;
+  const multiplier = 10;
+  let maxResource = 15;
+  const levels: MapConfig = {};
+
+  for (let i = 1; i <= maxLevel; i++) {
+    const newMultiplier = i * multiplier;
+    const levelNum = i;
+    maxResource += i * multiplier;
+
+    levels[`level_${i}`] = {
+      spawnInterval: {
+        alien: 0,
+        asteroid: 110 - newMultiplier / 2,
+        resource: 200 + newMultiplier,
+      },
+      maxResource,
+      levelNum,
+    };
+  }
+
+  return levels;
+}
+
+export const mapConfig: MapConfig = generateLevel();

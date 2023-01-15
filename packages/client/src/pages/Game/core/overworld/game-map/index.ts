@@ -35,8 +35,8 @@ export class GameMap {
   private readonly resourceHints: ResourceHints;
   private readonly player: Player;
   private readonly gameTheme: GameTheme;
-  private sceneTransition: SceneTransition;
-  private score = 0;
+  private readonly sceneTransition: SceneTransition;
+  private score: number;
   private resources: Resource[] = [];
   private enhancements: Enhancement[] = [];
   private asteroids: Asteroid[] = [];
@@ -55,6 +55,7 @@ export class GameMap {
     this.sceneTransition = config.sceneTransition;
     this.resourceHints = new ResourceHints(this.ctx);
     this.gameTheme = config.gameTheme;
+    this.score = config.score;
 
     this.createStarsBackground();
   }

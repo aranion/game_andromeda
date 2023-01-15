@@ -8,6 +8,7 @@ import {
   configEndGameBtn,
   configNewLevelBtn,
   configGoHomeBtn,
+  defaultState,
 } from './constants';
 import { store } from 'src/store';
 import { gameActions } from 'src/store/game';
@@ -15,7 +16,8 @@ import { SceneTransition } from './overworld/scene-transition';
 import { GameStatusList } from 'src/store/game/type';
 import { GameTheme } from './overworld/game-theme';
 import { Images } from './images';
-import type { GameConfig, GameMapConfig, GameStatus } from './types';
+import { MoveToList } from './entities/player/types';
+import type { GameConfig, GameMapConfig, GameState, GameStatus } from './types';
 
 /**
  * Основной класс, управляет циклом игры, меняет карту уровней.
@@ -34,6 +36,7 @@ export class Game {
   private level = 1;
   private readonly goHome: () => void;
   static instance: Game | null = null;
+  private state: GameState = defaultState;
 
   constructor(config: GameConfig) {
     const { goHome, canvas } = config;
@@ -75,15 +78,13 @@ export class Game {
   }
 
   private createGameEntities(gameMapConfig: GameMapConfig) {
-    if (this.canvas && this.ctx && this.images?.getImages) {
+    if (this.canvas && this.ctx && this.images?.getImages && this.directions) {
       const canvasAndCtx = { canvas: this.canvas, ctx: this.ctx };
-      const direction = this.directions?.getDirections || { x: 0, y: 0 };
-      const defaultPlayerStats = getDefaultPlayerStats(
-        this.images.getImages.player
-      );
+      const direction = this.directions.getDirections;
+      const configPlayer = getDefaultPlayerStats(this.images.player);
       const position = {
         x: this.canvas.width / 2,
-        y: this.canvas.height + defaultPlayerStats.radius * 2,
+        y: this.canvas.height + configPlayer.radius * 2,
       };
 
       this.sceneTransition = new SceneTransition({
@@ -92,10 +93,11 @@ export class Game {
       });
       this.player = new Player({
         ...canvasAndCtx,
-        ...defaultPlayerStats,
+        ...configPlayer,
         sceneTransition: this.sceneTransition,
         direction,
         position,
+        ...this.state.player,
       });
       this.gameTheme = new GameTheme({
         ...canvasAndCtx,
@@ -108,6 +110,7 @@ export class Game {
         player: this.player,
         gameTheme: this.gameTheme,
         images: this.images.getImages,
+        score: this.state.score ?? 0,
       });
     }
   }
@@ -156,14 +159,14 @@ export class Game {
 
   nextLevel() {
     if (this.sceneTransition && this.player) {
-      this.level += 1;
-      this.sceneTransition.darkScreen();
-
       const buttons = [];
-      const isNotLastLevel = this.level <= Object.keys(mapConfig).length;
+      const isNotLastLevel = ++this.level <= Object.keys(mapConfig).length;
+      const direction = isNotLastLevel ? MoveToList.up : MoveToList.center;
+
+      this.sceneTransition.darkScreen();
+      this.player.moveTo(direction);
 
       if (isNotLastLevel) {
-        this.player.moveUp();
         buttons.push(
           this.sceneTransition.addBtn({
             ...configNewLevelBtn,
@@ -173,7 +176,6 @@ export class Game {
           })
         );
       } else {
-        this.player.moveToCenter();
         buttons.push(
           this.sceneTransition.addBtn({
             ...configEndGameBtn,
@@ -195,8 +197,7 @@ export class Game {
   unmount() {
     this.updateGameStatus(GameStatusList.stopped);
     this.directions?.unmount();
-    this.map?.clear();
-    this.sceneTransition?.clear();
+    this.clear();
     window.removeEventListener('resize', this.resize);
     Game.instance = null;
   }
@@ -216,21 +217,39 @@ export class Game {
     store.dispatch(gameActions.setGameStatus(status));
   }
 
-  private startGame = (level?: number) => {
-    let gameConfig: GameMapConfig | null = null;
+  public startGame = (level?: number) => {
+    let newMapConfig: GameMapConfig | null = null;
 
     if (!level) {
+      this.clearState();
       this.level = 1;
-      gameConfig = mapConfig.level_1;
+      newMapConfig = mapConfig.level_1;
     } else {
-      gameConfig = mapConfig[`level_${this.level}`];
+      newMapConfig = mapConfig[`level_${this.level}`];
     }
 
-    this.createGameEntities(gameConfig);
+    this.createGameEntities(newMapConfig);
+
+    if (this.status !== GameStatusList.running) {
+      this.updateGameStatus(GameStatusList.running);
+    }
   };
 
   private async initImages() {
     this.images = new Images();
     await this.images.downloadImages();
+  }
+
+  public setState() {
+    if (this.player && this.map) {
+      this.state = {
+        player: { lives: this.player.getLives },
+        score: this.map.getScore,
+      };
+    }
+  }
+
+  private clearState() {
+    this.state = defaultState;
   }
 }

@@ -12,6 +12,7 @@ import baseSpaceshipHealthyShield from '../assets/spaceship/base_spaceship_healt
 import baseSpaceshipBatteredShield from '../assets/spaceship/base_spaceship_battered_sprite_shield.png';
 import baseSpaceshipDamagedShield from '../assets/spaceship/base_spaceship_damaged_sprite_shield.png';
 import baseSpaceshipWreckedShield from '../assets/spaceship/base_spaceship_wrecked_sprite_shield.png';
+import destroyed from '../assets/spaceship/destroyed.png';
 import enhancementShield from '../assets/enhancement/shield.png';
 import enhancementLives from '../assets/enhancement/lives.png';
 import enhancementSpeed from '../assets/enhancement/speed.png';
@@ -23,6 +24,22 @@ export class Images {
 
   get getImages() {
     return this.images;
+  }
+
+  get player() {
+    return this.images?.player || [];
+  }
+
+  get asteroid() {
+    return this.images?.asteroids || [];
+  }
+
+  get enhancement() {
+    return this.images?.enhancement || [];
+  }
+
+  get resource() {
+    return this.images?.resource || [];
   }
 
   public async downloadImages() {
@@ -41,6 +58,7 @@ export class Images {
       baseSpaceshipBatteredShield,
       baseSpaceshipDamagedShield,
       baseSpaceshipWreckedShield,
+      destroyed,
     ]);
     const enhancement = await dataUrlImages([
       enhancementShield,

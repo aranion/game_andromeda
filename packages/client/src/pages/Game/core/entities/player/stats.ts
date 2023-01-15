@@ -14,6 +14,7 @@ export const getDefaultPlayerStats = (
     baseSpaceshipBatteredShield,
     baseSpaceshipDamagedShield,
     baseSpaceshipWreckedShield,
+    explosion,
   ] = images;
 
   return {
@@ -34,6 +35,9 @@ export const getDefaultPlayerStats = (
         damaged: baseSpaceshipDamagedShield,
         wrecked: baseSpaceshipWreckedShield,
       },
+      destroyed: {
+        explosion,
+      },
     },
   };
 };
@@ -42,7 +46,7 @@ export const defaultMoveTime = 3000;
 
 export const configRestartBtn: OptionsButton = {
   text: 'New Game',
-  cssClassName: 'game-over',
+  cssClassName: 'game__button-game-over',
   label: {
     text: 'Your ship was consumed by the cosmic void...',
     cssClassName: 'game__label-game-over',

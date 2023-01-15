@@ -1,4 +1,5 @@
 import { FPS } from '../../constants';
+import { GameStatusList } from 'src/store/game/type';
 import type { Game } from '../../../core';
 import type {
   SceneTransitionConfig,
@@ -110,6 +111,7 @@ export class SceneTransition {
     if (this.opacity + this.opacitySpeed > 1) {
       this.opacity = 1;
       this.opacitySpeed = 0;
+      this.game.updateGameStatus(GameStatusList.paused);
     } else if (this.opacity + this.opacitySpeed < 0) {
       this.opacity = 0;
       this.opacitySpeed = 0;
@@ -137,8 +139,9 @@ export class SceneTransition {
 
     return {
       text,
-      cssClassName: `game__button-${cssClassName}`,
+      cssClassName,
       handleClick: (game: Game) => {
+        game.setState();
         game.clear();
         cbFn && cbFn();
       },
