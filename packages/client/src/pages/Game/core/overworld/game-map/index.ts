@@ -231,7 +231,7 @@ export class GameMap {
   }
 
   private handleAliens(frame: number) {
-    const isAddAliens = frame % this.spawnInterval.alien === 0;
+    const isAddAliens = frame % this.mapConfig.spawnInterval.alien === 0;
 
     if (isAddAliens) {
       const alienConfig = createAlienConfig();
