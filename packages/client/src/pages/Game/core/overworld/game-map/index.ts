@@ -6,6 +6,7 @@ import { asteroidExplode } from '../../entities/asteroid/particles';
 import { resourceExplode } from '../../entities/resource/particles';
 import { enhancementUse } from '../../entities/enhancement/particles';
 import { createAsteroidConfig } from '../../entities/asteroid/stats';
+import { createAlienConfig } from '../../entities/alien/stats';
 import { Particles } from '../../effects/particles';
 import { getStarsConfig } from './particles';
 import { isOutsideCanvas } from '../../utils/is-outside-canvas';
@@ -16,6 +17,8 @@ import type { SceneTransition } from '../scene-transition';
 import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
 import type { Player } from '../../entities/player';
 import type { Multiplier } from '../../entities/resource/types';
+import { Alien } from '../../entities/alien';
+import { alienExplode } from '../../entities/alien/particles';
 
 /**
  * Карта текущего уровня, настраивается через конфиг. Управляет текущим уровнем и его логикой.
@@ -36,6 +39,7 @@ export class GameMap {
   private resources: Resource[] = [];
   private enhancements: Enhancement[] = [];
   private asteroids: Asteroid[] = [];
+  private aliens: Alien[] = [];
   private particlesGroups: Particles[] = [];
   private multiplier: Multiplier = 1;
   private idTimeoutMultiplier: NodeJS.Timer | null = null;
@@ -228,6 +232,88 @@ export class GameMap {
     }
   }
 
+  private handleAliens(frame: number) {
+    const isAddAliens = frame % this.spawnInterval.alien === 0;
+
+    if (isAddAliens) {
+      const alienConfig = createAlienConfig();
+      this.aliens.push(
+        new Alien({
+          canvas: this.canvas,
+          ctx: this.ctx,
+          ...alienConfig,
+        })
+      );
+    }
+
+    for (let i = 0; i < this.aliens.length; i++) {
+      const alien = this.aliens[i];
+      alien.update(this.player);
+
+      if (isOutsideCanvas({ object: alien, canvas: this.canvas })) {
+        this.aliens.splice(i, 1);
+        i--;
+      }
+      for (let j = 0; j < this.asteroids.length; j++) {
+        const asteroid = this.asteroids[j];
+        if (alien.isCollided(asteroid)) {
+          this.aliens.splice(i, 1);
+          this.enhancements.push(
+            new Enhancement({
+              canvas: this.canvas,
+              ctx: this.ctx,
+              position: {
+                x: alien.getPosition.x,
+                y: alien.getPosition.y,
+              },
+            })
+          );
+          this.particlesGroups.push(
+            new Particles({
+              canvas: this.canvas,
+              ctx: this.ctx,
+              position: {
+                x: alien.getPosition.x,
+                y: alien.getPosition.y,
+              },
+              ...alienExplode(),
+            })
+          );
+          i--;
+          this.asteroids.splice(j, 1);
+          this.particlesGroups.push(
+            new Particles({
+              canvas: this.canvas,
+              ctx: this.ctx,
+              position: {
+                x: asteroid.getPosition.x,
+                y: asteroid.getPosition.y,
+              },
+              ...asteroidExplode(),
+            })
+          );
+          j--;
+        }
+      }
+      if (this.isCollided(alien)) {
+        this.player.updateLives(-1, this.score);
+        this.aliens.splice(i, 1);
+        this.particlesGroups.push(
+          new Particles({
+            canvas: this.canvas,
+            ctx: this.ctx,
+            position: {
+              x: alien.getPosition.x,
+              y: alien.getPosition.y,
+            },
+            ...alienExplode(),
+          })
+        );
+        i--;
+      }
+    }
+  }
+
   private handleParticles() {
     for (let i = 0; i < this.particlesGroups.length; i++) {
       const particles = this.particlesGroups[i];
@@ -242,6 +328,7 @@ export class GameMap {
 
   clear() {
     this.asteroids = [];
+    this.aliens = [];
     this.particlesGroups.splice(1, this.particlesGroups.length - 1); // вырезать всё, кроме звёзд
     this.resources = [];
     this.enhancements = [];
@@ -315,6 +402,7 @@ export class GameMap {
     this.player.update();
     this.handleResources(frame);
     this.handleAsteroids(frame);
+    this.handleAliens(frame);
     this.handleEnhancement(frame);
     this.drawUI();
     this.sceneTransition.update();
