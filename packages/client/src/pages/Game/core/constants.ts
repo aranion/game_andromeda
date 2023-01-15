@@ -1,3 +1,9 @@
+import type { Game } from '.';
+import type {
+  ButtonConfig,
+  LabelConfig,
+} from './overworld/scene-transition/types';
+
 export const styles = {
   font: '30px sans-serif',
   fontColor: '#fff',
@@ -27,3 +33,30 @@ export enum AnimationKey {
   Multiplier = 'multiplier',
   AlienFly = 'alien-fly',
 }
+
+export const endGameLabel: LabelConfig = {
+  text: "You've reached Andromeda",
+  cssClassName: 'game__label-endgame',
+};
+
+export const newGameBtn = (restartGame: () => void): ButtonConfig => {
+  return {
+    text: 'New game',
+    cssClassName: 'game__button-new-game',
+    handleClick: (game: Game) => {
+      game.clear();
+      restartGame();
+    },
+  };
+};
+
+export const toMenuBtn = (navigateToMenu: () => void): ButtonConfig => {
+  return {
+    text: 'Back To the Menu',
+    cssClassName: 'game__button-to-menu',
+    handleClick: (game: Game) => {
+      game.clear();
+      navigateToMenu();
+    },
+  };
+};

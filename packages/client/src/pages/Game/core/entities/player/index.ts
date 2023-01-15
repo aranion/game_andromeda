@@ -9,6 +9,7 @@ import {
   endGameLabel,
   endGameButton,
 } from '../../overworld/scene-transition/stats';
+import { defaultMoveTime } from './stats';
 
 /**
  * Класс игрока. Главная сущность игры в виде космического корабля.
@@ -25,6 +26,7 @@ export class Player extends GameObject {
     shield: null,
     speed: null,
   };
+  private movePosition?: Coordinates;
 
   constructor(config: PlayerConfig) {
     const { skins, shielded, maxLives, lives, direction } = config;
@@ -105,9 +107,7 @@ export class Player extends GameObject {
 
     if (newLives <= 0) {
       this.sceneTransition.createLabel(endGameLabel);
-      this.sceneTransition.createButton(
-        endGameButton(this.sceneTransition.getGame)
-      );
+      this.sceneTransition.createButton(endGameButton());
       this.sceneTransition.darkScreen(2000);
 
       if (score) {
@@ -154,13 +154,34 @@ export class Player extends GameObject {
     }
   }
 
+  moveToCenter(time?: number) {
+    this.movePosition = { x: this.canvas.width / 2, y: this.canvas.height / 2 };
+    setTimeout(() => {
+      this.movePosition = undefined;
+    }, time ?? defaultMoveTime);
+  }
+
+  moveUp(time?: number) {
+    this.movePosition = { x: this.canvas.width / 2, y: -10 };
+    setTimeout(() => {
+      this.movePosition = undefined;
+    }, time ?? defaultMoveTime);
+  }
+
   protected draw() {
-    if (this.status === 'mounted') this.sprite.drawImageLookAt(this.direction);
+    const direction = this.movePosition ?? this.direction;
+    if (this.status === 'mounted') this.sprite.drawImageLookAt(direction);
   }
 
   update() {
-    const distanceX = this.position.x - this.direction.x;
-    const distanceY = this.position.y - this.direction.y;
+    const posToMoveX = this.movePosition
+      ? this.movePosition.x
+      : this.direction.x;
+    const posToMoveY = this.movePosition
+      ? this.movePosition.y
+      : this.direction.y;
+    const distanceX = this.position.x - posToMoveX;
+    const distanceY = this.position.y - posToMoveY;
 
     if (this.direction.x !== this.position.x) {
       this.position.x -= distanceX / this.speed;
