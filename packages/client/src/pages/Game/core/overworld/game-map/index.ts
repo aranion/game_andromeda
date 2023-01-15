@@ -264,6 +264,7 @@ export class GameMap {
 
   private drawUI() {
     this.ctx.fillStyle = styles.fontColor;
+
     const uis = [];
     const bafShield = this.player.getIsShield ? '🛡' : '';
     const bafSpeed = this.player.getSpeed < 100 ? '🗲' : '';
@@ -277,8 +278,8 @@ export class GameMap {
     );
 
     uis.forEach((ui, i) => {
-      const positionY = (i + 1) * 50;
-      this.ctx.fillText(ui, 10, positionY);
+      const positionY = (i + 1) * 35;
+      this.ctx.fillText(ui, 20, positionY);
     });
   }
 
