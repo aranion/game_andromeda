@@ -5,7 +5,7 @@ import type {
 } from './overworld/scene-transition/types';
 
 export const styles = {
-  font: '30px sans-serif',
+  font: '20px audiowide',
   fontColor: '#fff',
 };
 
