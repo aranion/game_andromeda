@@ -6,7 +6,7 @@ export const endGameLabel: LabelConfig = {
   cssClassName: 'game__label-game-over',
 };
 
-export function endGameButton(game: Game): Omit<ButtonConfig, 'position'> {
+export function endGameButton(): Omit<ButtonConfig, 'position'> {
   return {
     text: 'New Game',
     cssClassName: 'game__button-game-over',

@@ -12,3 +12,5 @@ export const defaultPlayerStats: Omit<
   maxLives: 5,
   skins: playerSkins,
 };
+
+export const defaultMoveTime = 3000;

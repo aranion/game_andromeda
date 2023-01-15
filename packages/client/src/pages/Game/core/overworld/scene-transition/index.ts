@@ -120,4 +120,8 @@ export class SceneTransition {
     this.opacity = 0;
     this.opacitySpeed = 0;
   }
+
+  get isActiveBackground() {
+    return this.opacity !== 0;
+  }
 }
