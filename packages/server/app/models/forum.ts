@@ -3,9 +3,7 @@ import type { ModelAttributes } from 'sequelize/types';
 
 export interface IForum {
   id: number | null;
-  forumTitle: string;
-  topicsCount: number | null;
-  commentsCount: number | null;
+  title: string;
 }
 
 export const forumModel: ModelAttributes<Model, IForum> = {
@@ -15,16 +13,8 @@ export const forumModel: ModelAttributes<Model, IForum> = {
     autoIncrement: true,
     allowNull: true,
   },
-  forumTitle: {
+  title: {
     type: DataType.STRING,
     allowNull: false,
-  },
-  topicsCount: {
-    type: DataType.INTEGER,
-    allowNull: true,
-  },
-  commentsCount: {
-    type: DataType.INTEGER,
-    allowNull: true,
   },
 };

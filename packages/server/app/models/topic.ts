@@ -3,11 +3,10 @@ import type { ModelAttributes } from 'sequelize/types';
 
 export interface ITopic {
   id: number | null;
-  topicTitle: string;
-  topicAuthorId: number | null;
-  topicContent: number | null;
-  commentsCount: number | null;
-  forumId: number | null;
+  title: string;
+  authorId: number;
+  content: number | null;
+  forumId: number;
 }
 
 export const topicModel: ModelAttributes<Model, ITopic> = {
@@ -17,24 +16,20 @@ export const topicModel: ModelAttributes<Model, ITopic> = {
     autoIncrement: true,
     allowNull: true,
   },
-  topicTitle: {
+  title: {
     type: DataType.STRING,
     allowNull: false,
   },
-  topicAuthorId: {
+  authorId: {
     type: DataType.INTEGER,
-    allowNull: true,
+    allowNull: false,
   },
-  topicContent: {
-    type: DataType.INTEGER,
-    allowNull: true,
-  },
-  commentsCount: {
+  content: {
     type: DataType.INTEGER,
     allowNull: true,
   },
   forumId: {
     type: DataType.INTEGER,
-    allowNull: true,
+    allowNull: false,
   },
 };

@@ -1,4 +1,4 @@
-import { sequelize } from './models';
+import { sequelize } from './config/db.config';
 import {
   createUser,
   getUserByDisplayName,
@@ -7,6 +7,7 @@ import {
 } from './controllers/user.controller';
 
 export async function dbConnect() {
+  //
   try {
     await sequelize.authenticate(); // Проверка аутентификации в БД
     await sequelize.sync(); // Синхронизация базы данных

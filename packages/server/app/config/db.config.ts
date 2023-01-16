@@ -1,16 +1,16 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 import { userModel } from '../models/user';
-import { userThemeModel } from './userTheme';
-import { siteThemeModel } from './siteTheme';
-import { forumModel } from './forum';
-import { topicModel } from './topic';
-import { commentModel } from './comment';
+import { userThemeModel } from '../models/userTheme';
+import { siteThemeModel } from '../models/siteTheme';
+import { forumModel } from '../models/forum';
+import { topicModel } from '../models/topic';
+import { commentModel } from '../models/comment';
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
   process.env;
 
 const sequelizeOptions: SequelizeOptions = {
-  host: 'localhost',
+  host: 'postgres',
   username: POSTGRES_USER,
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DB,
@@ -49,6 +49,13 @@ Forum.hasMany(Topic, {
   foreignKey: 'forumId',
 });
 Topic.belongsTo(Forum, {
+  foreignKey: 'forumId',
+});
+
+Forum.hasMany(Comment, {
+  foreignKey: 'forumId',
+});
+Comment.belongsTo(Forum, {
   foreignKey: 'forumId',
 });
 
