@@ -10,6 +10,7 @@ import { Particles } from '../../effects/particles';
 import { getStarsConfig } from './particles';
 import { isOutsideCanvas } from '../../utils/is-outside-canvas';
 import { ResourceHints } from '../../effects/resource-hints';
+import { OtherHintType } from '../../effects/resource-hints/types';
 import { EnhancementType } from '../../entities/enhancement/enhancement.config';
 import type { GameTheme } from '../game-theme';
 import type { SceneTransition } from '../scene-transition';
@@ -116,6 +117,7 @@ export class GameMap {
             x: resource.getPosition.x,
             y: resource.getPosition.y,
           },
+          multiplier: this.multiplier,
         });
         i--;
       }
@@ -151,6 +153,11 @@ export class GameMap {
 
         switch (enhancementType) {
           case EnhancementType.Lives:
+            this.resourceHints.addHint({
+              position: enhancement.getPosition,
+              resourceType: OtherHintType.ExtraLife,
+              isFullLives: this.player.getIsFullLives,
+            });
             this.player.updateLives();
             break;
           case EnhancementType.Shield:
@@ -208,19 +215,26 @@ export class GameMap {
       }
 
       if (this.isCollided(asteroid)) {
-        this.player.updateLives(-1, this.score);
+        const position = {
+          x: asteroid.getPosition.x,
+          y: asteroid.getPosition.y,
+        };
+
         this.asteroids.splice(i, 1);
         this.particlesGroups.push(
           new Particles({
             canvas: this.canvas,
             ctx: this.ctx,
-            position: {
-              x: asteroid.getPosition.x,
-              y: asteroid.getPosition.y,
-            },
+            position,
             ...asteroidExplode(),
           })
         );
+        this.resourceHints.addHint({
+          position,
+          resourceType: OtherHintType.Damage,
+          isShield: this.player.getIsShield,
+        });
+        this.player.updateLives(-1, this.score);
         i--;
       }
     }

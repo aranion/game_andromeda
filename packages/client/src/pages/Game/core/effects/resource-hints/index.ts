@@ -1,16 +1,10 @@
 import { FPS } from '../../constants';
-import {
-  hintColors,
-  hintSpeed,
-  hintValues,
-  letterSize,
-  opcityTime,
-} from './constants';
-import type { ResourseHint, ResourseHintConfig } from './types';
+import { hintColors, hintValues, hintConfig } from './constants';
+import { OtherHintType, ResourceHint, ResourceHintConfig } from './types';
 
 class ResourceHints {
   private ctx: CanvasRenderingContext2D;
-  private hints: ResourseHint[];
+  private hints: ResourceHint[];
   private multiplier = 1;
 
   constructor(ctx: CanvasRenderingContext2D) {
@@ -21,38 +15,58 @@ class ResourceHints {
   private draw() {
     this.ctx.save();
     this.hints.forEach(hint => {
-      this.ctx.globalAlpha = hint.opacity;
-      this.ctx.fillStyle = hint.color;
-      this.ctx.font = '20px audiowide';
+      const { opacity, color, position } = hint;
 
-      this.ctx.fillText(
-        (hintValues[hint.resourceType] * this.multiplier).toString(),
-        hint.position.x,
-        hint.position.y
-      );
+      this.ctx.globalAlpha = opacity;
+      this.ctx.fillStyle = color;
+      this.ctx.font = '23px audiowide';
+      this.ctx.fillText(this.selectHints(hint), position.x, position.y);
     });
 
     this.ctx.restore();
   }
 
+  private selectHints(hint: ResourceHint): string {
+    const {
+      isShield,
+      resourceType,
+      multiplier = 1,
+      isFullLives = false,
+    } = hint;
+    const value = hintValues[resourceType] * multiplier;
+
+    switch (resourceType) {
+      case OtherHintType.Damage:
+      case OtherHintType.ExtraLife:
+        if (isFullLives || isShield) {
+          return '';
+        } else {
+          return `${value} ♥`;
+        }
+      default:
+        return `${value}`;
+    }
+  }
+
   update() {
     this.hints.forEach((hint, i) => {
+      const { hintSpeed, letterSize, opacityTime } = hintConfig;
+
       if (
         hint.position.y - hintSpeed < letterSize ||
-        hint.opacity - FPS / opcityTime < 0
+        hint.opacity - FPS / opacityTime < 0
       ) {
         this.hints.splice(i, 1);
       } else {
         hint.position.y -= hintSpeed;
-        hint.opacity -= FPS / opcityTime;
+        hint.opacity -= FPS / opacityTime;
       }
     });
 
     this.draw();
   }
 
-  addHint(hintConfig: ResourseHintConfig) {
-    console.log('method add hint', hintConfig.resourceType);
+  addHint(hintConfig: ResourceHintConfig) {
     this.hints.push({
       opacity: 1,
       color: hintColors[hintConfig.resourceType],
