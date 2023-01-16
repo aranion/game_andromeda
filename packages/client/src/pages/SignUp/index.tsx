@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
 import { useAuth } from 'src/hooks/useAuth';
 import type { RequestSignUp } from 'src/store/auth/type';
+import { routeYandexOauth } from 'src/oauth/oauth';
 
 const configStar = [
   { top: '3%', left: '10%' },
@@ -38,6 +39,9 @@ export default function SignUp() {
 
   const navigate = useNavigate();
   const navigateSignIn = () => navigate(RouterList.SIGN_IN);
+  const handleOnClick = () => {
+    routeYandexOauth();
+  };
 
   useEffect(() => {
     if (isAuth) {
@@ -115,6 +119,8 @@ export default function SignUp() {
         </AuthForm>
 
         <ButtonStar onClick={navigateSignIn}>Sign In</ButtonStar>
+
+        <ButtonStar onClick={handleOnClick}>From Yandex Galaxy!?</ButtonStar>
       </div>
     </>
   );
