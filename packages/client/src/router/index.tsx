@@ -37,7 +37,7 @@ export function Router() {
           <Route path={RouterList.SERVER_ERROR} element={<ServerErrorPage />} />
           <Route path={RouterList.NOT_FOUND} element={<NotFoundPage />} />
           <Route path={RouterList.FORUM}>
-            <Route index element={<ForumPage />} />
+            <Route index element={withPrivateRoute(<ForumPage />)} />
             <Route
               path={RouterParamsForum.forumId}
               element={<ForumItemPage />}
@@ -45,7 +45,7 @@ export function Router() {
           </Route>
           <Route
             path={`${RouterList.FORUM_TOPIC}/${RouterParamsTopic.topicId}`}
-            element={<TopicPage />}
+            element={withPrivateRoute(<TopicPage />)}
           />
           <Route
             path={`${RouterList.PROFILE}/${RouterParamsProfile.userId}`}
