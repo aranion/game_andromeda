@@ -3,18 +3,19 @@ import type { Request, Response } from 'express';
 
 // Создание комментария
 export const createComment = async (req: Request, res: Response) => {
-  const { authorId, content, topicId, forumId } = req.body;
+  const topicId = Number(req.params.topicId);
+  const { authorId, content } = req.body;
 
-  if (!authorId || !content || !topicId || !forumId) {
+  if (!authorId || !content || !topicId) {
     res.status(400).send({
       message: 'Comment cannot be empty!',
     });
     return;
   }
 
-  await Comment.create({ authorId, content, topicId, forumId })
+  await Comment.create({ authorId, content, topicId })
     .then(data => {
-      res.send(data);
+      res.send(JSON.stringify(data));
     })
     .catch(err => {
       res.status(500).send({
@@ -26,7 +27,7 @@ export const createComment = async (req: Request, res: Response) => {
 
 // Обновление комментария по ID
 export const updateCommentById = async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id = Number(req.body.id);
 
   await Comment.update(req.body, { where: { id } })
     .then(num => {
@@ -49,12 +50,12 @@ export const updateCommentById = async (req: Request, res: Response) => {
 
 // Получение комментария по ID
 export const getCommentById = async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id = Number(req.body.id);
 
   await Comment.findByPk(id)
     .then(data => {
       if (data) {
-        res.send(data);
+        res.send(JSON.stringify(data));
       } else {
         res.status(404).send({
           message: `Cannot find comment with id=${id}.`,
@@ -70,7 +71,7 @@ export const getCommentById = async (req: Request, res: Response) => {
 
 // Удаление комментария по ID
 export const deleteCommentById = async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id = Number(req.body.id);
 
   await Comment.destroy({ where: { id } })
     .then(num => {
@@ -97,7 +98,7 @@ export const getAllComments = async (req: Request, res: Response) => {
 
   await Comment.findAll({ where: { topicId } })
     .then(data => {
-      res.send(data);
+      res.send(JSON.stringify(data));
     })
     .catch(err => {
       res.status(500).send({

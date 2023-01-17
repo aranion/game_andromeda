@@ -3,7 +3,8 @@ import type { Request, Response } from 'express';
 
 // Создание темы форума
 export const createTopic = async (req: Request, res: Response) => {
-  const { title, authorId, content, forumId } = req.body;
+  const forumId = Number(req.params.forumId);
+  const { title, authorId, content } = req.body;
 
   if (!title || !authorId || !forumId) {
     res.status(400).send({
@@ -14,7 +15,7 @@ export const createTopic = async (req: Request, res: Response) => {
 
   await Topic.create({ title, authorId, content, forumId })
     .then(data => {
-      res.send(data);
+      res.send(JSON.stringify(data));
     })
     .catch(err => {
       res.status(500).send({
@@ -25,7 +26,7 @@ export const createTopic = async (req: Request, res: Response) => {
 
 // Обновление темы форума по ее ID
 export const updateTopicById = async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id = Number(req.params.topicId);
 
   await Topic.update(req.body, { where: { id } })
     .then(num => {
@@ -48,12 +49,12 @@ export const updateTopicById = async (req: Request, res: Response) => {
 
 // Получение темы форума по ID
 export const getTopicById = async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id = Number(req.params.topicId);
 
   await Topic.findByPk(id)
     .then(data => {
       if (data) {
-        res.send(data);
+        res.send(JSON.stringify(data));
       } else {
         res.status(404).send({
           message: `Cannot find topic with id=${id}.`,
@@ -69,7 +70,7 @@ export const getTopicById = async (req: Request, res: Response) => {
 
 // Удаление темы форума по ID
 export const deleteTopicById = async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id = Number(req.params.topicId);
 
   await Topic.destroy({ where: { id } })
     .then(num => {
@@ -92,11 +93,11 @@ export const deleteTopicById = async (req: Request, res: Response) => {
 
 // Получение всех тем форума по его ID
 export const getAllTopics = async (req: Request, res: Response) => {
-  const forumId = req.params.forumId;
+  const forumId = Number(req.params.forumId);
 
   await Topic.findAll({ where: { forumId } })
     .then(data => {
-      res.send(data);
+      res.send(JSON.stringify(data));
     })
     .catch(err => {
       res.status(500).send({
@@ -107,7 +108,7 @@ export const getAllTopics = async (req: Request, res: Response) => {
 
 // Получение колличества тем форума по его ID
 export const getAllTopicsCount = async (req: Request, res: Response) => {
-  const forumId = req.params.forumId;
+  const forumId = Number(req.params.forumId);
 
   await Topic.findAndCountAll({ where: { forumId } })
     .then(data => {
@@ -122,7 +123,7 @@ export const getAllTopicsCount = async (req: Request, res: Response) => {
 
 // Удаление всех тем форума по его ID
 export const deleteAllTopicsByForumId = async (req: Request, res: Response) => {
-  const forumId = req.params.forumId;
+  const forumId = Number(req.params.forumId);
 
   await Topic.destroy({
     where: { forumId },

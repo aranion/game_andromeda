@@ -14,7 +14,7 @@ export const createForum = async (req: Request, res: Response) => {
 
   await Forum.create({ title })
     .then(data => {
-      res.send(data);
+      res.send(JSON.stringify(data));
     })
     .catch(err => {
       res.status(500).send({
@@ -25,7 +25,7 @@ export const createForum = async (req: Request, res: Response) => {
 
 // Обновление форума по ID
 export const updateForumById = async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id = Number(req.params.forumId);
 
   await Forum.update(req.body, { where: { id } })
     .then(num => {
@@ -48,12 +48,12 @@ export const updateForumById = async (req: Request, res: Response) => {
 
 // Получение форума по ID
 export const getForumById = async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id = Number(req.params.forumId);
 
   await Forum.findByPk(id)
     .then(data => {
       if (data) {
-        res.send(data);
+        res.send(JSON.stringify(data));
       } else {
         res.status(404).send({
           message: `Cannot find forum with id=${id}.`,
@@ -69,7 +69,7 @@ export const getForumById = async (req: Request, res: Response) => {
 
 // Удаление форума по ID
 export const deleteForumById = async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id = Number(req.params.forumId);
 
   await Forum.destroy({ where: { id } })
     .then(num => {
@@ -94,7 +94,7 @@ export const deleteForumById = async (req: Request, res: Response) => {
 export const getAllForums = async (_: any, res: Response) => {
   await Forum.findAll()
     .then(data => {
-      res.send(data);
+      res.send(JSON.stringify(data));
     })
     .catch(err => {
       res.status(500).send({

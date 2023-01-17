@@ -1,29 +1,99 @@
-import { UserTheme } from '../models';
-import type { IUserTheme } from '../models/userTheme';
+import { UserTheme } from '../config/db.config';
+import type { Request, Response } from 'express';
 
 // Создание темы пользователя
-export async function createUserTheme(props: IUserTheme) {
-  const { ownerId } = props;
+export const createUserTheme = async (req: Request, res: Response) => {
+  const { ownerId, themeName } = req.body;
 
-  return UserTheme.findOrCreate({
-    where: { ownerId },
-    defaults: { ...props },
-  }).then(() => {
-    UserTheme.update({ ...props }, { where: { ownerId } });
-  });
-}
+  if (!ownerId || !themeName) {
+    res.status(400).send({
+      message: 'Theme user id not specified',
+    });
+    return;
+  }
 
-// Обновление темы пользователя
-export async function updateUserThemeById(ownerId: number, data: IUserTheme) {
-  return UserTheme.update(data, { where: { ownerId } });
-}
+  await UserTheme.create({ themeName, ownerId })
+    .then(data => {
+      res.send(JSON.stringify(data));
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || 'Some error occurred while creating the theme user.',
+      });
+    });
+};
 
-// Удаление темы пользователя по ID
-export async function deleteUserThemeById(ownerId: number) {
-  return UserTheme.destroy({ where: { ownerId } });
-}
+// Обновление темы пользователя по его ID
+export const updateUserThemeById = async (req: Request, res: Response) => {
+  const { ownerId, themeName } = req.body;
 
-// Получение темы пользователя по ID
-export async function getUserThemeById(ownerId: number) {
-  return UserTheme.findOne({ where: { ownerId } });
-}
+  if (!ownerId || !themeName) {
+    res.status(400).send({
+      message: 'Theme user id not specified',
+    });
+    return;
+  }
+
+  await UserTheme.update({ themeName }, { where: { ownerId }, validate: true })
+    .then(num => {
+      if (num[0] === 1) {
+        res.send({
+          message: 'Theme user was updated successfully.',
+        });
+      } else {
+        res.send({
+          message: `Cannot update theme user with id=${ownerId}. Maybe theme user was not found or req.body is empty!`,
+        });
+      }
+    })
+    .catch(() => {
+      res.status(500).send({
+        message: `Error updating theme user with id=${ownerId}`,
+      });
+    });
+};
+
+// Удаление темы пользователя по его ID
+export const deleteUserThemeById = async (req: Request, res: Response) => {
+  const ownerId = req.params.ownerId;
+
+  await UserTheme.destroy({ where: { ownerId } })
+    .then(num => {
+      if (num === 1) {
+        res.send({
+          message: 'Theme user was deleted successfully!',
+        });
+      } else {
+        res.send({
+          message: `Cannot delete theme user with id=${ownerId}. Maybe comment was not found!`,
+        });
+      }
+    })
+    .catch(() => {
+      res.status(500).send({
+        message: `Could not delete theme user with id=${ownerId}`,
+      });
+    });
+};
+
+// Получение темы пользователя по его ID
+export const getUserThemeById = async (req: Request, res: Response) => {
+  const ownerId = req.params.ownerId;
+
+  await UserTheme.findByPk(ownerId)
+    .then(data => {
+      if (data) {
+        res.send(JSON.stringify(data));
+      } else {
+        res.status(404).send({
+          message: `Cannot find theme user with id=${ownerId}.`,
+        });
+      }
+    })
+    .catch(() => {
+      res.status(500).send({
+        message: `Error retrieving theme user with id=${ownerId}.`,
+      });
+    });
+};

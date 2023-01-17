@@ -15,6 +15,7 @@ export const forumModel: ModelAttributes<Model, IForum> = {
   },
   title: {
     type: DataType.STRING,
+    unique: true,
     allowNull: false,
   },
 };

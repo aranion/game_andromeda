@@ -19,6 +19,7 @@ export const topicModel: ModelAttributes<Model, ITopic> = {
   title: {
     type: DataType.STRING,
     allowNull: false,
+    unique: true,
   },
   authorId: {
     type: DataType.INTEGER,
