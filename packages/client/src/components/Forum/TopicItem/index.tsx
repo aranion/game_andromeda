@@ -4,14 +4,12 @@ import type { TopicProps } from 'src/store/forum/types';
 import styles from './styles.module.css';
 
 export function TopicItem(props: Props) {
-  const { topicId, title, commentCount } = props;
+  const { id, title, commentCount } = props;
 
   return (
     <tr>
       <td className={styles.item}>
-        <Link
-          className={styles.item__link}
-          to={`${RouterList.FORUM_TOPIC}/${topicId}`}>
+        <Link className={styles.item__link} to={`${RouterList.FORUM}/${id}`}>
           <div>{title}</div>
         </Link>
       </td>

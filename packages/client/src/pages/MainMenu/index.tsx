@@ -25,7 +25,7 @@ export default function MainMenu() {
   const { id } = userData;
   const navigateGame = () => navigate(RouterList.GAME);
   const navigateProfile = () => navigate(`${RouterList.PROFILE}/${id}`);
-  const navigateForums = () => navigate(RouterList.FORUM);
+  const navigateForum = () => navigate(RouterList.FORUM);
   const navigateLeaderboards = () => navigate(RouterList.LEADER_BOARD);
 
   return (
@@ -48,8 +48,8 @@ export default function MainMenu() {
           <Button sizeButton='big' onClick={navigateProfile}>
             Profile
           </Button>
-          <Button sizeButton='big' onClick={navigateForums}>
-            Forums
+          <Button sizeButton='big' onClick={navigateForum}>
+            Forum
           </Button>
           <Button sizeButton='big' onClick={navigateLeaderboards}>
             LeaderBoards

@@ -11,6 +11,7 @@ import type {
   TopicProps,
   CommentProps,
   FetchComments,
+  FetchTopic,
 } from 'src/store/forum/types';
 import styles from './styles.module.css';
 
@@ -21,11 +22,11 @@ export default function TopicPage() {
   const [topic, setTopic] = useState<TopicProps>();
   const [comments, setComments] = useState<CommentProps[]>([]);
 
-  const fetchTopic = (topicId: string): TopicProps => {
+  const fetchTopic: FetchTopic = topicId => {
     console.log(topicId);
 
     const topic: TopicProps = {
-      topicId: '111',
+      id: 111,
       title: 'Title of very interesting topic',
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
@@ -40,20 +41,49 @@ export default function TopicPage() {
     const comments: CommentProps[] = [];
     comments.push(
       {
-        id: '1',
+        id: 1,
         author: 'Jane',
         content: 'First interesting comment',
+        parentCommentId: 1,
       },
       {
-        id: '2',
+        id: 2,
         author: 'David',
         content:
           'Second interesting comment (Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.)',
+        parentCommentId: 3,
       },
       {
-        id: '3',
+        id: 3,
+        author: 'Jane',
+        content: 'First interesting comment',
+        parentCommentId: 1,
+      },
+      {
+        id: 4,
+        author: 'David',
+        content:
+          'Second interesting comment (Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.)',
+        parentCommentId: 3,
+      },
+      {
+        id: 5,
+        author: 'Jane',
+        content: 'First interesting comment',
+        parentCommentId: 1,
+      },
+      {
+        id: 6,
+        author: 'David',
+        content:
+          'Second interesting comment (Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.)',
+        parentCommentId: 3,
+      },
+      {
+        id: 7,
         author: 'Kate',
         content: 'Third interesting comment',
+        parentCommentId: 1,
       }
     );
     return comments;
@@ -73,7 +103,9 @@ export default function TopicPage() {
       <ButtonBack />
       <ButtonFullscreen elemRef={fullscrinableElem} />
 
-      <h1 className='main-menu__title'>Community</h1>
+      <h1 className='main-menu__title' id='11111'>
+        Community
+      </h1>
       <Card className={styles.topic__info}>
         <div className={styles.topic__title}>{topic?.title || ''}</div>
         <div className={styles.topic__content}>{topic?.content || ''}</div>
@@ -81,8 +113,16 @@ export default function TopicPage() {
       </Card>
       <div>
         {comments.map(comment => {
-          const { id, content, author } = comment;
-          return <Comment key={id} id={id} content={content} author={author} />;
+          const { id, content, author, parentCommentId } = comment;
+          return (
+            <Comment
+              key={id}
+              id={id}
+              content={content}
+              author={author}
+              parentCommentId={parentCommentId}
+            />
+          );
         })}
       </div>
       <NewCommentButton topicId={topicId} fetchComments={fetchComments} />

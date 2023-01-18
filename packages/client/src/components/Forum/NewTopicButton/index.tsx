@@ -3,7 +3,6 @@ import { Modal, Form, ButtonStar } from 'src/components';
 import type { FetchTopics } from 'src/store/forum/types';
 
 type Props = {
-  forumId?: string;
   fetchTopics: FetchTopics;
 };
 
@@ -25,16 +24,16 @@ export function NewTopicButton(props: Props) {
 
   function submitTopic(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const { fetchTopics, forumId } = props;
+    const { fetchTopics } = props;
 
-    console.log(forumId, title, content, description);
+    console.log(title, content, description);
 
     setTitle('');
     setContent('');
     setDescription('');
 
     handleClose();
-    fetchTopics(forumId);
+    fetchTopics();
   }
 
   return (
