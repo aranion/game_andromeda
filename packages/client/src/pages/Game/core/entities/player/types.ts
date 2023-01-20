@@ -15,9 +15,12 @@ export type PlayerSkin = {
   wrecked: string;
 };
 
+type PlayersDestroyedSkin = { explosion: string };
+
 export type PlayerSkins = {
   base: PlayerSkin;
   shield: PlayerSkin;
+  destroyed: PlayersDestroyedSkin;
 };
 
 export type PlayerConfig = Omit<GameObjectConfig, 'imageSrc'> & {
@@ -34,3 +37,8 @@ export type IdTimeouts = {
   shield: NodeJS.Timeout | null;
   speed: NodeJS.Timeout | null;
 };
+
+export enum MoveToList {
+  center = 'center',
+  up = 'up',
+}

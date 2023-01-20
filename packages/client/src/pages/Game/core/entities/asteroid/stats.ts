@@ -1,11 +1,5 @@
-import asteroid1 from '../../assets/asteroid/asteroid1.png';
-import asteroid2 from '../../assets/asteroid/asteroid2.png';
-import asteroid3 from '../../assets/asteroid/asteroid3.png';
-import asteroid4 from '../../assets/asteroid/asteroid4.png';
 import { randomInteger } from '../../utils/random-integer';
 import type { AsteroidConfig } from './types';
-
-export const images = [asteroid1, asteroid2, asteroid3, asteroid4];
 
 const defaultAsteroidStats = {
   maxSpeed: 10,
@@ -14,15 +8,20 @@ const defaultAsteroidStats = {
   isAnimated: false,
 };
 
-export function createAsteroidConfig(): Omit<AsteroidConfig, 'canvas' | 'ctx'> {
+export function createAsteroidConfig(
+  images: string[]
+): Omit<AsteroidConfig, 'canvas' | 'ctx'> {
   const random = Math.random();
+  const imageSrc = images[randomInteger(0, 3)];
+  const { isAnimated, maxRotateSpeed, maxSpeed, radius } = defaultAsteroidStats;
+
   return {
-    isAnimated: defaultAsteroidStats.isAnimated,
-    radius: defaultAsteroidStats.radius,
-    speed: random * defaultAsteroidStats.maxSpeed,
-    rotateSpeed: random * defaultAsteroidStats.maxRotateSpeed,
+    isAnimated,
+    radius,
+    imageSrc,
+    speed: random * maxSpeed,
+    rotateSpeed: random * maxRotateSpeed,
     rotateVector: random > 0.5 ? 1 : -1,
     moveAngle: random * 2 * Math.PI,
-    imageSrc: images[randomInteger(0, 3)],
   };
 }

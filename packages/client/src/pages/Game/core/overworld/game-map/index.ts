@@ -1,4 +1,4 @@
-import { styles, TIME_ACTIONS_ENHANCEMENT, toMenuBtn } from '../../constants';
+import { styles, TIME_ACTIONS_ENHANCEMENT } from '../../constants';
 import { Resource } from '../../entities/resource';
 import { Enhancement } from '../../entities/enhancement';
 import { Asteroid } from '../../entities/asteroid';
@@ -11,7 +11,11 @@ import { Particles } from '../../effects/particles';
 import { getStarsConfig } from './particles';
 import { isOutsideCanvas } from '../../utils/is-outside-canvas';
 import { ResourceHints } from '../../effects/resource-hints';
-import { EnhancementType } from '../../entities/enhancement/enhancement.config';
+import {
+  EnhancementType,
+  getEnhancementConfig,
+} from '../../entities/enhancement/enhancement.config';
+import { OtherHintType } from '../../effects/resource-hints/types';
 import type { GameTheme } from '../game-theme';
 import type { SceneTransition } from '../scene-transition';
 import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
@@ -19,9 +23,8 @@ import type { Player } from '../../entities/player';
 import type { Multiplier } from '../../entities/resource/types';
 import { Alien } from '../../entities/alien';
 import { alienExplode } from '../../entities/alien/particles';
-import type { GameMapConfig } from '../../types';
-import { delaySceneNewLevel, newLevelBtn, newLevelLabel } from './constants';
-import { GameStatusList } from 'src/store/game/type';
+import type { SpawnInterval } from '../../types';
+import type { ImagesGame } from '../../images/types';
 
 /**
  * Карта текущего уровня, настраивается через конфиг. Управляет текущим уровнем и его логикой.
@@ -29,12 +32,15 @@ import { GameStatusList } from 'src/store/game/type';
 export class GameMap {
   private readonly canvas: HTMLCanvasElement;
   private readonly ctx: CanvasRenderingContext2D;
-  private mapConfig: GameMapConfig;
+  private readonly spawnInterval: SpawnInterval;
+  private readonly images: ImagesGame;
+  private readonly level: number;
+  private readonly maxResource: number;
   private readonly resourceHints: ResourceHints;
-  private sceneTransition: SceneTransition;
-  private score = 0;
   private readonly player: Player;
   private readonly gameTheme: GameTheme;
+  private readonly sceneTransition: SceneTransition;
+  private score: number;
   private resources: Resource[] = [];
   private enhancements: Enhancement[] = [];
   private asteroids: Asteroid[] = [];
@@ -46,11 +52,15 @@ export class GameMap {
   constructor(config: GameMapConstrConfig) {
     this.canvas = config.canvas;
     this.ctx = config.ctx;
-    this.mapConfig = config.mapConfig;
+    this.images = config.images;
+    this.spawnInterval = config.spawnInterval;
+    this.level = config.levelNum;
+    this.maxResource = config.maxResource;
     this.player = config.player;
     this.sceneTransition = config.sceneTransition;
     this.resourceHints = new ResourceHints(this.ctx);
     this.gameTheme = config.gameTheme;
+    this.score = config.score;
 
     this.createStarsBackground();
   }
@@ -80,13 +90,14 @@ export class GameMap {
   }
 
   private handleResources(frame: number) {
-    const isAddResources = frame % this.mapConfig.spawnInterval.resource === 0;
+    const isAddResources = frame % this.spawnInterval.resource === 0;
 
     if (isAddResources) {
       this.resources.push(
         new Resource({
           canvas: this.canvas,
           ctx: this.ctx,
+          imageSrc: this.images.resource[0],
         })
       );
     }
@@ -120,6 +131,7 @@ export class GameMap {
             x: resource.getPosition.x,
             y: resource.getPosition.y,
           },
+          multiplier: this.multiplier,
         });
         i--;
       }
@@ -133,10 +145,13 @@ export class GameMap {
     const isAddEnhancement = frame % spawnInterval === 0;
 
     if (isAddEnhancement) {
+      const enhancementConfig = getEnhancementConfig(this.images.enhancement);
+
       this.enhancements.push(
         new Enhancement({
           canvas: this.canvas,
           ctx: this.ctx,
+          enhancementConfig,
         })
       );
     }
@@ -155,6 +170,11 @@ export class GameMap {
 
         switch (enhancementType) {
           case EnhancementType.Lives:
+            this.resourceHints.addHint({
+              position: enhancement.getPosition,
+              resourceType: OtherHintType.ExtraLife,
+              isFullLives: this.player.getIsFullLives,
+            });
             this.player.updateLives();
             break;
           case EnhancementType.Shield:
@@ -189,10 +209,12 @@ export class GameMap {
   }
 
   private handleAsteroids(frame: number) {
-    const isAddAsteroids = frame % this.mapConfig.spawnInterval.asteroid === 0;
+    const isAddAsteroids = frame % this.spawnInterval.asteroid === 0;
+    const imageAsteroids = this.images.asteroids;
 
     if (isAddAsteroids) {
-      const asteroidConfig = createAsteroidConfig();
+      const asteroidConfig = createAsteroidConfig(imageAsteroids);
+
       this.asteroids.push(
         new Asteroid({
           canvas: this.canvas,
@@ -212,19 +234,26 @@ export class GameMap {
       }
 
       if (this.isCollided(asteroid)) {
-        this.player.updateLives(-1, this.score);
+        const position = {
+          x: asteroid.getPosition.x,
+          y: asteroid.getPosition.y,
+        };
+
         this.asteroids.splice(i, 1);
         this.particlesGroups.push(
           new Particles({
             canvas: this.canvas,
             ctx: this.ctx,
-            position: {
-              x: asteroid.getPosition.x,
-              y: asteroid.getPosition.y,
-            },
-            ...asteroidExplode(),
+            position,
+            ...asteroidExplode(imageAsteroids),
           })
         );
+        this.resourceHints.addHint({
+          position,
+          resourceType: OtherHintType.Damage,
+          isShield: this.player.getIsShield,
+        });
+        this.player.updateLives(-1, this.score);
         i--;
       }
     }
@@ -336,17 +365,23 @@ export class GameMap {
 
   private drawUI() {
     this.ctx.fillStyle = styles.fontColor;
-    this.ctx.font = '30px audiowide';
 
-    this.ctx.fillText(`Score: ${this.score}`, 10, 50);
-    this.ctx.fillText(`Lives: ${'♥'.repeat(this.player.getLives)}`, 10, 100);
-    this.ctx.fillText(`Level: ${this.mapConfig.levelNum}`, 10, 150);
-
+    const uis = [];
     const bafShield = this.player.getIsShield ? '🛡' : '';
     const bafSpeed = this.player.getSpeed < 100 ? '🗲' : '';
     const bafMultiplier = this.multiplier > 1 ? 'X2' : '';
 
-    this.ctx.fillText(`${bafShield}${bafSpeed}${bafMultiplier}`, 10, 200);
+    uis.push(
+      `Score: ${this.score}`,
+      `Lives: ${'♥'.repeat(this.player.getLives)}`,
+      `Level: ${this.level}`,
+      `${bafShield}${bafSpeed}${bafMultiplier}`
+    );
+
+    uis.forEach((ui, i) => {
+      const positionY = (i + 1) * 35;
+      this.ctx.fillText(ui, 20, positionY);
+    });
   }
 
   private draw() {
@@ -368,10 +403,10 @@ export class GameMap {
   }
 
   checkForEndLevel() {
-    if (
-      this.score >= this.mapConfig.maxResource &&
-      !this.sceneTransition.isActiveBackground
-    ) {
+    const isMaxResource = this.score >= this.maxResource;
+    const { isActiveBackground } = this.sceneTransition;
+
+    if (isMaxResource && !isActiveBackground) {
       this.sceneTransition.getGame.nextLevel();
     }
   }

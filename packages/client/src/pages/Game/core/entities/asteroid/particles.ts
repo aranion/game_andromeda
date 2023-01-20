@@ -1,8 +1,7 @@
 import { randomInteger } from '../../utils/random-integer';
-import { images } from './stats';
 import type { ParticlesGroupType } from '../../effects/particles/types';
 
-export function asteroidExplode(): ParticlesGroupType {
+export function asteroidExplode(images: string[]): ParticlesGroupType {
   return {
     type: 'sprite',
     quantity: 10,
