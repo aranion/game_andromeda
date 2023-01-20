@@ -121,7 +121,7 @@ export class Player extends GameObject {
 
       this.updateSkin();
 
-      const button = this.sceneTransition.addBtn({
+      const button = this.sceneTransition.addButton({
         ...configRestartBtn,
         cbFn: this.sceneTransition.getGame.startGame,
       });

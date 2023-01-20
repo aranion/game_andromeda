@@ -132,7 +132,7 @@ export class SceneTransition {
     return this.opacity !== 0;
   }
 
-  public addBtn(optionsButton: OptionsButton): ButtonConfig {
+  public addButton(optionsButton: OptionsButton): ButtonConfig {
     const { cssClassName, text, cbFn, label } = optionsButton;
 
     label && this.createLabel(label);

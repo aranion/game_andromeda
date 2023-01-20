@@ -168,7 +168,7 @@ export class Game {
 
       if (isNotLastLevel) {
         buttons.push(
-          this.sceneTransition.addBtn({
+          this.sceneTransition.addButton({
             ...configNewLevelBtn,
             cbFn: () => {
               this.startGame(this.level);
@@ -177,11 +177,11 @@ export class Game {
         );
       } else {
         buttons.push(
-          this.sceneTransition.addBtn({
+          this.sceneTransition.addButton({
             ...configEndGameBtn,
             cbFn: this.startGame,
           }),
-          this.sceneTransition.addBtn({
+          this.sceneTransition.addButton({
             ...configGoHomeBtn,
             cbFn: this.goHome,
           })

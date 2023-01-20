@@ -8,7 +8,6 @@ export async function dataUrlImages(srcList: string[]) {
     promises.push(
       new Promise((resolve, reject) => {
         img.onload = function () {
-          //   imgsArr.push(getBase64Image(img));
           resolve(getBase64Image(img));
         };
       })
