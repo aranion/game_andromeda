@@ -1,4 +1,3 @@
-import resourceSprite from '../../assets/resource/resource.png';
 import { GameObject } from '../game-object';
 import { randomInteger } from '../../utils/random-integer';
 import { resourceConfig, ResourceType } from './resource.config';
@@ -21,7 +20,6 @@ export class Resource extends GameObject {
 
     super({
       ...config,
-      imageSrc: resourceSprite,
       radius: RADIUS,
       width: 64,
       height: 64,

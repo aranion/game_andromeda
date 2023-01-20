@@ -3,12 +3,14 @@ import type { GameObject } from '../../entities/game-object';
 import type { CanvasProperties, GameMapConfig } from '../../types';
 import type { SceneTransition } from '../scene-transition';
 import type { GameTheme } from '../game-theme';
+import type { ImagesGame } from '../../images/types';
 
-export type GameMapConstrConfig = {
+export type GameMapConstrConfig = GameMapConfig & {
   player: Player;
   sceneTransition: SceneTransition;
-  mapConfig: GameMapConfig;
   gameTheme: GameTheme;
+  images: ImagesGame;
+  score: number;
 } & CanvasProperties;
 
 export type UpdateParams = {

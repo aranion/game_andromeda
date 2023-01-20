@@ -3,7 +3,7 @@ import type { AnimationType } from '../../animations.config';
 import type { AnimationKey } from '../../constants';
 import type { GameObjectConfig } from '../game-object/types';
 
-export type ResourceConfig = Omit<GameObjectConfig, 'imageSrc' | 'position'> & {
+export type ResourceConfig = Omit<GameObjectConfig, 'position'> & {
   type?: ResourceType;
   multiplier?: Multiplier;
 };
