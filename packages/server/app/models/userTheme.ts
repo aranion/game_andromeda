@@ -16,5 +16,6 @@ export const userThemeModel: ModelAttributes<Model, IUserTheme> = {
   ownerId: {
     type: DataType.INTEGER,
     allowNull: false,
+    unique: true,
   },
 };

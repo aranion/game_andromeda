@@ -17,7 +17,6 @@ import styles from './styles.module.css';
 
 export default function TopicPage() {
   const { topicId } = useParams<{ topicId?: string }>();
-  const fullscrinableElem = useRef(null);
 
   const [topic, setTopic] = useState<TopicProps>();
   const [comments, setComments] = useState<CommentProps[]>([]);
@@ -99,10 +98,8 @@ export default function TopicPage() {
   }, []);
 
   return (
-    <div className={styles.topic} ref={fullscrinableElem}>
+    <div className={styles.topic}>
       <ButtonBack />
-      <ButtonFullscreen elemRef={fullscrinableElem} />
-
       <h1 className='main-menu__title' id='11111'>
         Community
       </h1>
