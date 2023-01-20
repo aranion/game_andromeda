@@ -26,7 +26,11 @@ export function NewCommentButton(props: Props) {
     setContent('');
 
     handleClose();
-    fetchComments(topicId);
+    if (topicId) {
+      fetchComments(topicId);
+    } else {
+      console.log('topicId undefined', topicId);
+    }
   }
 
   return (
