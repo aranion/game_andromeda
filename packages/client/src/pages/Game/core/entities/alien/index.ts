@@ -11,15 +11,16 @@ export class Alien extends GameObject {
   private aggroRadius: number;
 
   constructor(config: AlienConfig) {
+    const { radius, canvas, aggroRadius } = config;
     super({
       isAnimated: true,
       position: {
-        x: randomInteger(config.radius, config.canvas.width - config.radius),
-        y: 0 - config.radius * 2,
+        x: randomInteger(radius, canvas.width - radius),
+        y: radius * -2,
       },
       ...config,
     });
-    this.aggroRadius = config.aggroRadius;
+    this.aggroRadius = aggroRadius;
   }
 
   get getDistance() {
@@ -38,7 +39,7 @@ export class Alien extends GameObject {
     if (this.aggro) {
       this.sprite.drawImageLookAt(this.direction);
     } else {
-      this.sprite.drawImageRotate(3.141);
+      this.sprite.drawImageRotate(Math.PI);
     }
   }
 

@@ -18,6 +18,7 @@ import enhancementLives from '../assets/enhancement/lives.png';
 import enhancementSpeed from '../assets/enhancement/speed.png';
 import enhancementDoubling from '../assets/enhancement/multiplier.png';
 import resourceSprite from '../assets/resource/resource.png';
+import baseAlien from '../assets/alien/base_alien.png';
 
 export class Images {
   private images: ImagesGame | null = null;
@@ -40,6 +41,10 @@ export class Images {
 
   get resource() {
     return this.images?.resource || [];
+  }
+
+  get alien() {
+    return this.images?.alien || [];
   }
 
   public async downloadImages() {
@@ -67,12 +72,14 @@ export class Images {
       enhancementDoubling,
     ]);
     const resource = await dataUrlImages([resourceSprite]);
+    const alien = await dataUrlImages([baseAlien]);
 
     this.images = {
       asteroids,
       player,
       enhancement,
       resource,
+      alien,
     };
   }
 }

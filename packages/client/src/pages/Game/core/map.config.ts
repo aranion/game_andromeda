@@ -2,7 +2,6 @@ import type { GameMapConfig } from './types';
 
 type MapConfig = Record<string, GameMapConfig>;
 
-
 function generateLevel(): MapConfig {
   const maxLevel = 15;
   const multiplier = 10;

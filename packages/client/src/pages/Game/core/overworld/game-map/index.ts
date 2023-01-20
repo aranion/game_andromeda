@@ -139,8 +139,6 @@ export class GameMap {
   }
 
   private handleEnhancement(frame: number) {
-    // пока бафы появляются случайно, нужно сделать чтобы они появлялись после уничтожения вражеского корабля
-    // указать координаты(position) и тип бафа(type)
     const spawnInterval = 60;
     const isAddEnhancement = frame % spawnInterval === 0;
 
@@ -260,10 +258,10 @@ export class GameMap {
   }
 
   private handleAliens(frame: number) {
-    const isAddAliens = frame % this.mapConfig.spawnInterval.alien === 0;
+    const isAddAliens = frame % this.spawnInterval.alien === 0;
 
     if (isAddAliens) {
-      const alienConfig = createAlienConfig();
+      const alienConfig = createAlienConfig(this.images.alien);
       this.aliens.push(
         new Alien({
           canvas: this.canvas,
@@ -285,25 +283,35 @@ export class GameMap {
         const asteroid = this.asteroids[j];
         if (alien.isCollided(asteroid)) {
           this.aliens.splice(i, 1);
-          this.enhancements.push(
-            new Enhancement({
-              canvas: this.canvas,
-              ctx: this.ctx,
-              position: {
-                x: alien.getPosition.x,
-                y: alien.getPosition.y,
-              },
-            })
-          );
+          const prob: number = Math.random() * 100;
+          if (prob > 70) {
+            const enhancementConfig = getEnhancementConfig(
+              this.images.enhancement
+            );
+            this.enhancements.push(
+              new Enhancement({
+                canvas: this.canvas,
+                ctx: this.ctx,
+                enhancementConfig,
+                position: { ...alien.getPosition },
+              })
+            );
+          } else if (prob > 30) {
+            this.resources.push(
+              new Resource({
+                canvas: this.canvas,
+                ctx: this.ctx,
+                imageSrc: this.images.resource[0],
+                position: { ...alien.getPosition },
+              })
+            );
+          }
           this.particlesGroups.push(
             new Particles({
               canvas: this.canvas,
               ctx: this.ctx,
-              position: {
-                x: alien.getPosition.x,
-                y: alien.getPosition.y,
-              },
-              ...alienExplode(),
+              position: { ...alien.getPosition },
+              ...alienExplode(this.images.alien),
             })
           );
           i--;
@@ -312,11 +320,8 @@ export class GameMap {
             new Particles({
               canvas: this.canvas,
               ctx: this.ctx,
-              position: {
-                x: asteroid.getPosition.x,
-                y: asteroid.getPosition.y,
-              },
-              ...asteroidExplode(),
+              position: { ...asteroid.getPosition },
+              ...asteroidExplode(this.images.asteroids),
             })
           );
           j--;
@@ -329,11 +334,8 @@ export class GameMap {
           new Particles({
             canvas: this.canvas,
             ctx: this.ctx,
-            position: {
-              x: alien.getPosition.x,
-              y: alien.getPosition.y,
-            },
-            ...alienExplode(),
+            position: { ...alien.getPosition },
+            ...alienExplode(this.images.alien),
           })
         );
         i--;

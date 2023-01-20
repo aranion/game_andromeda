@@ -1,15 +1,13 @@
-import alien from '../../assets/alien/base_alien.png';
 import type { ParticlesGroupType } from '../../effects/particles/types';
 
-export function alienExplode(): ParticlesGroupType {
+export function alienExplode(images: string[]): ParticlesGroupType {
   return {
-    type: 'sprite',
+    type: 'circle',
     quantity: 10,
     particleConfig: {
-      imageSrc: alien,
-      radius: 20,
+      color: 'red',
+      maxRadius: 5,
       maxSpeed: 5,
-      sizeRatio: 0.3,
     },
   };
 }

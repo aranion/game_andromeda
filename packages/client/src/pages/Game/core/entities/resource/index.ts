@@ -24,8 +24,10 @@ export class Resource extends GameObject {
       width: 64,
       height: 64,
       position: {
-        x: randomInteger(RADIUS, config.canvas.width - RADIUS),
-        y: 0 - RADIUS * 2,
+        x:
+          config.position?.x ??
+          randomInteger(RADIUS, config.canvas.width - RADIUS),
+        y: config.position?.y ?? 0 - RADIUS * 2,
       },
       speed: config.speed ?? RANDOM_SPEED,
       currentAnimation: resourceConfig[config.type ?? randomType].animation,

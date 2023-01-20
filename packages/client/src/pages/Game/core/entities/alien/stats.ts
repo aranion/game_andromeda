@@ -1,4 +1,3 @@
-import alien from '../../assets/alien/base_alien.png';
 import type { AlienConfig } from './types';
 
 const defaultAlienStats = {
@@ -7,11 +6,12 @@ const defaultAlienStats = {
   aggroRadius: 200,
 };
 
-export function createAlienConfig(): Omit<AlienConfig, 'canvas' | 'ctx'> {
+export function createAlienConfig(
+  images: string[]
+): Omit<AlienConfig, 'canvas' | 'ctx'> {
+  const imageSrc = images[0];
   return {
-    aggroRadius: defaultAlienStats.aggroRadius,
-    radius: defaultAlienStats.radius,
-    speed: defaultAlienStats.speed,
-    imageSrc: alien,
+    ...defaultAlienStats,
+    imageSrc: imageSrc,
   };
 }
