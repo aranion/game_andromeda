@@ -17,6 +17,8 @@ const sequelizeOptions: SequelizeOptions = {
   dialectOptions: {},
 };
 
+console.log('>>>DEBUG<<<', sequelizeOptions);
+
 // Создаем инстанс Sequelize
 export const sequelize = new Sequelize(sequelizeOptions);
 

@@ -9,10 +9,10 @@ dotenv.config();
 const app = express();
 app.use(cors());
 const port = Number(process.env.SERVER_PORT) || 3001;
-app.use('/forum', forumsRouter);
+app.use('/api/forum', forumsRouter);
 startApp();
 
-app.get('/', (_, res) => {
+app.get('/api', (_, res) => {
   res.json('👋 Howdy from the server :)');
 });
 

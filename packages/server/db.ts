@@ -13,9 +13,12 @@ export const createClientAndConnect = async (): Promise<Client | null> => {
       port: Number(POSTGRES_PORT),
     });
 
+    console.log('>>>DEBUG<<<', client);
+
     await client.connect();
 
     const res = await client.query('SELECT NOW()');
+    console.log('>>>DEBUG<<<', res);
     console.log('  ➜ 🎸 Connected to the database at:', res?.rows?.[0].now);
     client.end();
 
