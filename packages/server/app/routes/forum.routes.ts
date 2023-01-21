@@ -5,18 +5,18 @@ import * as commentController from '../controllers/comment.controller';
 const router = express.Router();
 
 // Получение всех тем форума
-router.get('/topics', topicController.getAllTopics);
+router.get('/', topicController.getAllTopics);
 // Удаление всех тем форума
-router.delete('/topics', topicController.deleteAllTopics);
+router.delete('/', topicController.deleteAllTopics);
 // Создание темы форума
-router.post('/topics', topicController.createTopic);
+router.post('/', topicController.createTopic);
 
 // Обновление темы форума по ее ID
-router.put('/topics/:topicId', topicController.updateTopicById);
+router.put('/topic/:topicId', topicController.updateTopicById);
 // Получение темы форума по ID
-router.get('/topics/:topicId', topicController.getTopicById);
+router.get('/topic/:topicId', topicController.getTopicById);
 // Удаление темы форума по ID
-router.delete('/topics/:topicId', topicController.deleteTopicById);
+router.delete('/topic/:topicId', topicController.deleteTopicById);
 
 // Создание комментария
 router.post('/comment/:topicId', commentController.createComment);
@@ -30,7 +30,10 @@ router.delete('/comment/:topicId', commentController.deleteCommentById);
 // Получение всех комментариев темы по ее Id
 router.get('/comments/:topicId', commentController.getAllComments);
 // Получение колличества комментариев темы по ee ID
-router.get('/comments/:topicId', commentController.getAllTopicCommentsCount);
+router.get(
+  '/comments-count/:topicId',
+  commentController.getAllTopicCommentsCount
+);
 // Удаление всех комментариев темы по ee ID
 router.delete(
   '/comments/:topicId',
