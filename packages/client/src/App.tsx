@@ -75,14 +75,6 @@ function App() {
     addSound({ soundURL: 'shoot2.mp3' });
 
     const fetchServerData = async () => {
-      console.log(
-        'ПРОВЕРКА ( Б-Безопасность :) ) process.env.NODE_ENV = ',
-        process.env.NODE_ENV
-      );
-      console.log(
-        'ПРОВЕРКА process.env.POSTGRES_PORT = ',
-        process.env.POSTGRES_PORT
-      );
       const response = await fetch(URL_SERVER);
       const data = await response.json();
       console.log(data);

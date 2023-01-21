@@ -33,8 +33,11 @@ services:
           POSTGRES_USER: ${POSTGRES_USER}
           POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
           POSTGRES_DB: ${POSTGRES_DB}
+          DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}
           env-file:
             ./.env
+        networks:
+          - awesome
     postgres:
       container_name: postgres
       image: postgres:14
@@ -46,6 +49,9 @@ services:
         POSTGRES_DB: ${POSTGRES_DB}
         PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
         PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+        env-file:
+          ./.env
+      restart: always
       volumes:
         - ./tmp/pgdata:/var/lib/postgresql/data
       networks:
@@ -55,8 +61,12 @@ services:
       image: dpage/pgadmin4
       restart: always
       environment:
+        DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}
         PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
         PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+        PGADMIN_LISTEN_PORT: 80
+        env-file:
+          ./.env
       ports:
         - "5051:80"
       volumes:
