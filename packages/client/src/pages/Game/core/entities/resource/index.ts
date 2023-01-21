@@ -2,7 +2,7 @@ import resourceSprite from '../../assets/resource/resource.png';
 import { GameObject } from '../game-object';
 import { randomInteger } from '../../utils/random-integer';
 import { resourceConfig, ResourceType } from './resource.config';
-import { ResourceConfig } from './types';
+import type { ResourceConfig } from './types';
 
 const RADIUS = 23;
 const RANDOM_SPEED = Math.random() * 2 + 1;
@@ -14,6 +14,7 @@ export class Resource extends GameObject {
   private readonly points: number;
 
   constructor(config: ResourceConfig) {
+    const { speed, canvas, type, position } = config;
     const randomType = resourceKeys[randomInteger(0, resourceKeys.length - 1)];
 
     super({
@@ -23,14 +24,14 @@ export class Resource extends GameObject {
       width: 64,
       height: 64,
       position: {
-        x: randomInteger(RADIUS, config.canvas.width - RADIUS),
-        y: 0 - RADIUS * 2,
+        x: position ? position.x : randomInteger(RADIUS, canvas.width - RADIUS),
+        y: position ? position.y : -RADIUS * 2,
       },
-      speed: config.speed ?? RANDOM_SPEED,
-      currentAnimation: resourceConfig[config.type ?? randomType].animation,
+      speed: speed ?? RANDOM_SPEED,
+      currentAnimation: resourceConfig[type ?? randomType].animation,
     });
 
-    this.points = resourceConfig[config.type ?? randomType].value;
+    this.points = resourceConfig[type ?? randomType].value;
   }
 
   get getDistance() {

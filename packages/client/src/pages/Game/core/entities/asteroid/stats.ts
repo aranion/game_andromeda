@@ -24,5 +24,6 @@ export function createAsteroidConfig(): Omit<AsteroidConfig, 'canvas' | 'ctx'> {
     rotateVector: random > 0.5 ? 1 : -1,
     moveAngle: random * 2 * Math.PI,
     imageSrc: images[randomInteger(0, 3)],
+    lives: randomInteger(1, 2),
   };
 }

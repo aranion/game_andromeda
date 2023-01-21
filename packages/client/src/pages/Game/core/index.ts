@@ -49,6 +49,7 @@ export class Game {
         x: canvas.width / 2,
         y: canvas.height + defaultPlayerStats.radius * 2,
       },
+      pressedKey: this.directions.getPressedKey,
       ...defaultPlayerStats,
     });
   }

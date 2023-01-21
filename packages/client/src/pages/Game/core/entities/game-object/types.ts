@@ -11,4 +11,5 @@ export type GameObjectConfig = {
   isAnimated?: boolean;
   currentAnimation?: AnimationKey;
   sizeRatio?: number;
+  lives?: number;
 } & CanvasProperties;

@@ -1,37 +1,48 @@
 import { GameObject } from '../game-object';
 import { store } from 'src/store';
 import { gameActions } from 'src/store/game';
-import type { PlayerConfig, PlayerSkin } from './types';
-import type { Coordinates } from '../../types';
-import { SceneTransition } from '../../overworld/scene-transition';
 import {
   endGameLabel,
   endGameButton,
 } from '../../overworld/scene-transition/stats';
-import { defaultPlayerStats } from './stats';
+import { GameMap } from '../../overworld/game-map';
+import { WeaponsList } from '../weapon/weapons.config';
+import { Weapon } from '../weapon';
+import type { PlayerConfig, PlayerSkin } from './types';
+import type { Coordinates } from '../../types';
+import type { SceneTransition } from '../../overworld/scene-transition';
+import type { PressedKey } from '../../overworld/directions-input/types';
+import type { TimeoutId } from '@reduxjs/toolkit/dist/query/core/buildMiddleware/types';
 
 /**
  * Класс игрока. Главная сущность игры в виде космического корабля.
  * */
 export class Player extends GameObject {
-  private status: 'mounted' | 'unmounted' = 'unmounted';
-  private direction: Coordinates;
+  private status: 'mounted' | 'unmounted' = 'mounted';
   private lives: number;
-  private maxLives: number;
   private shielded: boolean;
-  private skin: PlayerSkin;
-  private sceneTransition: SceneTransition;
+  private readonly direction: Coordinates;
+  private readonly maxLives: number;
+  private readonly skin: PlayerSkin;
+  private readonly sceneTransition: SceneTransition;
+  private readonly pressedKey: PressedKey;
+  private readonly weapon: Weapon;
+  private idTimeout: TimeoutId | null = null;
 
   constructor(config: PlayerConfig) {
-    super({ ...config, imageSrc: config.imageSrc.healthy });
+    const { canvas, ctx, lives, maxLives, shielded, imageSrc } = config;
 
-    this.status = 'mounted';
+    super({ ...config, imageSrc: imageSrc.healthy });
+
+    this.lives = lives;
+    this.shielded = shielded ?? false;
+    this.maxLives = maxLives;
+    this.skin = imageSrc;
     this.direction = config.direction;
-    this.lives = config.lives;
-    this.maxLives = config.maxLives;
-    this.shielded = config.shielded ?? false;
-    this.skin = config.imageSrc;
     this.sceneTransition = config.sceneTransition;
+    this.pressedKey = config.pressedKey;
+    this.weapon = new Weapon({ canvas, ctx, shooter: this });
+
     this.updateSkin();
   }
 
@@ -41,6 +52,46 @@ export class Player extends GameObject {
 
   get isShielded(): boolean {
     return this.shielded;
+  }
+
+  get getDirection(): Coordinates {
+    return this.direction;
+  }
+
+  get getWeaponParams() {
+    return {
+      ...this.weapon.getWeaponOptions,
+      ...this.weapon.getRechargeOptions,
+    };
+  }
+
+  public updateWeapon() {
+    this.weapon.setWeaponType = WeaponsList.Blaster;
+
+    if (this.idTimeout) {
+      clearTimeout(this.idTimeout);
+    }
+
+    this.idTimeout = setTimeout(() => {
+      this.weapon.setWeaponType = WeaponsList.Rocket;
+    }, 10000);
+  }
+
+  public checkShot(gameMap: GameMap) {
+    const { keydown } = this.pressedKey;
+    const { costProjectiles } = this.weapon.getWeaponOptions;
+    const { isRecharge } = this.weapon.getRechargeOptions;
+
+    if (keydown === ' ') {
+      if (gameMap.getScore + costProjectiles >= 0) {
+        if (!isRecharge) {
+          gameMap.setScore = costProjectiles;
+        }
+        return this.weapon.shot();
+      } else {
+        return null;
+      }
+    }
   }
 
   updateLives(num: number, score: number) {
