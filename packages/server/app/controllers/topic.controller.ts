@@ -3,7 +3,9 @@ import type { Request, Response } from 'express';
 
 // Создание темы
 export const createTopic = async (req: Request, res: Response) => {
-  console.log('>>>DEBUG<<<', req, res);
+  console.log('>>>DEBUG<<<');
+  console.log('>>>DEBUG-req.params<<<', req.params);
+  console.log('>>>DEBUG-req.body<<<', req.body);
   const { title, authorId, content } = req.body;
 
   if (!title || !authorId) {
@@ -26,7 +28,9 @@ export const createTopic = async (req: Request, res: Response) => {
 
 // Обновление темы по ID
 export const updateTopicById = async (req: Request, res: Response) => {
-  console.log('>>>DEBUG<<<', req, res);
+  console.log('>>>DEBUG<<<');
+  console.log('>>>DEBUG-req.params<<<', req.params);
+  console.log('>>>DEBUG-req.body<<<', req.body);
   const id = Number(req.params.topicId);
 
   await Topic.update(req.body, { where: { id } })
@@ -50,7 +54,9 @@ export const updateTopicById = async (req: Request, res: Response) => {
 
 // Получение темы по ID
 export const getTopicById = async (req: Request, res: Response) => {
-  console.log('>>>DEBUG<<<', req, res);
+  console.log('>>>DEBUG<<<');
+  console.log('>>>DEBUG-req.params<<<', req.params);
+  console.log('>>>DEBUG-req.body<<<', req.body);
   const id = Number(req.params.topicId);
 
   await Topic.findByPk(id)
@@ -72,7 +78,9 @@ export const getTopicById = async (req: Request, res: Response) => {
 
 // Удаление темы по ID
 export const deleteTopicById = async (req: Request, res: Response) => {
-  console.log('>>>DEBUG<<<', req, res);
+  console.log('>>>DEBUG<<<');
+  console.log('>>>DEBUG-req.params<<<', req.params);
+  console.log('>>>DEBUG-req.body<<<', req.body);
   const id = Number(req.params.topicId);
 
   await Topic.destroy({ where: { id } })
@@ -96,7 +104,9 @@ export const deleteTopicById = async (req: Request, res: Response) => {
 
 // Получение всех тем форума
 export const getAllTopics = async (_: Request, res: Response) => {
-  console.log('>>>DEBUG<<<', _, res);
+  console.log('>>>DEBUG<<<');
+  console.log('>>>DEBUG-req.params<<<', _.params);
+  console.log('>>>DEBUG-req.body<<<', _.body);
   await Topic.findAll()
     .then(data => {
       res.send(JSON.stringify(data));
@@ -110,7 +120,9 @@ export const getAllTopics = async (_: Request, res: Response) => {
 
 // Удаление всех тем форума
 export const deleteAllTopics = async (_: Request, res: Response) => {
-  console.log('>>>DEBUG<<<', _, res);
+  console.log('>>>DEBUG<<<');
+  console.log('>>>DEBUG-req.params<<<', _.params);
+  console.log('>>>DEBUG-req.body<<<', _.body);
   await Topic.destroy({
     where: {},
     truncate: false,

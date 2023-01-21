@@ -3,7 +3,9 @@ import type { Request, Response } from 'express';
 
 // Создание комментария
 export const createComment = async (req: Request, res: Response) => {
-  console.log('>>>DEBUG<<<', req, res);
+  console.log('>>>DEBUG<<<');
+  console.log('>>>DEBUG-req.params<<<', req.params);
+  console.log('>>>DEBUG-req.body<<<', req.body);
   const topicId = Number(req.params.topicId);
   const { authorId, content } = req.body;
 
@@ -30,7 +32,9 @@ export const createComment = async (req: Request, res: Response) => {
 
 // Обновление комментария по ID
 export const updateCommentById = async (req: Request, res: Response) => {
-  console.log('>>>DEBUG<<<', req, res);
+  console.log('>>>DEBUG<<<');
+  console.log('>>>DEBUG-req.params<<<', req.params);
+  console.log('>>>DEBUG-req.body<<<', req.body);
   const id = Number(req.body.id);
 
   await Comment.update(req.body, { where: { id } })
@@ -55,7 +59,9 @@ export const updateCommentById = async (req: Request, res: Response) => {
 
 // Получение комментария по ID
 export const getCommentById = async (req: Request, res: Response) => {
-  console.log('>>>DEBUG<<<', req, res);
+  console.log('>>>DEBUG<<<');
+  console.log('>>>DEBUG-req.params<<<', req.params);
+  console.log('>>>DEBUG-req.body<<<', req.body);
   const id = Number(req.body.id);
 
   await Comment.findByPk(id)
@@ -78,7 +84,9 @@ export const getCommentById = async (req: Request, res: Response) => {
 
 // Удаление комментария по ID
 export const deleteCommentById = async (req: Request, res: Response) => {
-  console.log('>>>DEBUG<<<', req, res);
+  console.log('>>>DEBUG<<<');
+  console.log('>>>DEBUG-req.params<<<', req.params);
+  console.log('>>>DEBUG-req.body<<<', req.body);
   const id = Number(req.body.id);
 
   await Comment.destroy({ where: { id } })
@@ -103,7 +111,9 @@ export const deleteCommentById = async (req: Request, res: Response) => {
 
 // Получение всех комментариев темы по ее Id
 export const getAllComments = async (req: Request, res: Response) => {
-  console.log('>>>DEBUG<<<', req, res);
+  console.log('>>>DEBUG<<<');
+  console.log('>>>DEBUG-req.params<<<', req.params);
+  console.log('>>>DEBUG-req.body<<<', req.body);
   const topicId = req.params.topicId;
 
   await Comment.findAll({ where: { topicId } })
@@ -121,7 +131,9 @@ export const getAllComments = async (req: Request, res: Response) => {
 
 // Получение колличества комментариев темы по ee ID
 export const getAllTopicCommentsCount = async (req: Request, res: Response) => {
-  console.log('>>>DEBUG<<<', req, res);
+  console.log('>>>DEBUG<<<');
+  console.log('>>>DEBUG-req.params<<<', req.params);
+  console.log('>>>DEBUG-req.body<<<', req.body);
   const topicId = req.params.topicId;
 
   await Comment.findAndCountAll({ where: { topicId } })
@@ -142,7 +154,9 @@ export const deleteAllCommentsByTopicId = async (
   req: Request,
   res: Response
 ) => {
-  console.log('>>>DEBUG<<<', req, res);
+  console.log('>>>DEBUG<<<');
+  console.log('>>>DEBUG-req.params<<<', req.params);
+  console.log('>>>DEBUG-req.body<<<', req.body);
   const topicId = req.params.topicId;
 
   await Comment.destroy({
