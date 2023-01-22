@@ -1,7 +1,6 @@
 import { sequelize } from './config/db.config';
 
 export async function dbConnect() {
-  //
   try {
     await sequelize.authenticate(); // Проверка аутентификации в БД
     await sequelize.sync(); // Синхронизация базы данных

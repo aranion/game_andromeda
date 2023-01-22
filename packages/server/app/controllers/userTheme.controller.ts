@@ -3,6 +3,9 @@ import type { Request, Response } from 'express';
 
 // Создание темы пользователя
 export const createUserTheme = async (req: Request, res: Response) => {
+  console.log('>>>DEBUG<<<');
+  console.log('>>>DEBUG-req.params<<<', req.params);
+  console.log('>>>DEBUG-req.body<<<', req.body);
   const { ownerId, themeName } = req.body;
 
   if (!ownerId || !themeName) {
@@ -26,6 +29,9 @@ export const createUserTheme = async (req: Request, res: Response) => {
 
 // Обновление темы пользователя по его ID
 export const updateUserThemeById = async (req: Request, res: Response) => {
+  console.log('>>>DEBUG<<<');
+  console.log('>>>DEBUG-req.params<<<', req.params);
+  console.log('>>>DEBUG-req.body<<<', req.body);
   const { ownerId, themeName } = req.body;
 
   if (!ownerId || !themeName) {
@@ -56,6 +62,9 @@ export const updateUserThemeById = async (req: Request, res: Response) => {
 
 // Удаление темы пользователя по его ID
 export const deleteUserThemeById = async (req: Request, res: Response) => {
+  console.log('>>>DEBUG<<<');
+  console.log('>>>DEBUG-req.params<<<', req.params);
+  console.log('>>>DEBUG-req.body<<<', req.body);
   const ownerId = req.params.ownerId;
 
   await UserTheme.destroy({ where: { ownerId } })
@@ -79,6 +88,9 @@ export const deleteUserThemeById = async (req: Request, res: Response) => {
 
 // Получение темы пользователя по его ID
 export const getUserThemeById = async (req: Request, res: Response) => {
+  console.log('>>>DEBUG<<<');
+  console.log('>>>DEBUG-req.params<<<', req.params);
+  console.log('>>>DEBUG-req.body<<<', req.body);
   const ownerId = req.params.ownerId;
 
   await UserTheme.findByPk(ownerId)
