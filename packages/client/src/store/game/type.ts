@@ -1,9 +1,8 @@
+import type { GameStatus } from 'src/pages/Game/core/types';
+
 export type InitialState = {
   hightScore: null | number;
-  gameStatus:
-    | GameStatusList.stopped
-    | GameStatusList.paused
-    | GameStatusList.running;
+  gameStatus: GameStatus;
 };
 
 export enum GameStatusList {

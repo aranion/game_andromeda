@@ -16,13 +16,36 @@ export type PlayerSkin = {
   wrecked: string;
 };
 
-export type PlayerConfig = Omit<GameObjectConfig, 'imageSrc'> & {
+type PlayersDestroyedSkin = { explosion: string };
+
+export type PlayerSkins = {
+  base: PlayerSkin;
+  shield: PlayerSkin;
+  destroyed: PlayersDestroyedSkin;
+};
+
+export type PlayerConfig = Omit<GameObjectConfig, 'image'> & {
   direction: Coordinates;
   radius: number;
   lives: number;
   maxLives: number;
   shielded?: boolean;
-  imageSrc: PlayerSkin;
+  skins: PlayerSkins;
   sceneTransition: SceneTransition;
   pressedKey: PressedKey;
+};
+
+export type IdTimeouts = {
+  shield: NodeJS.Timeout | null;
+  speed: NodeJS.Timeout | null;
+};
+
+export enum MoveToList {
+  center = 'center',
+  up = 'up',
+}
+
+export type UpdateLivesParams = {
+  num?: number;
+  score?: number;
 };

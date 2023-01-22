@@ -1,7 +1,8 @@
-import { Player } from './../player/index';
-import { WeaponsConfig } from './types';
 import { weapons, WeaponsList } from './weapons.config';
 import { Projectile } from '../projectile';
+import type { Player } from './../player/index';
+import type { WeaponsConfig } from './types';
+import { Images } from '../../images';
 
 export class Weapon {
   protected readonly canvas: HTMLCanvasElement;

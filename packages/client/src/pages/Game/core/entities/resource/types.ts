@@ -1,10 +1,11 @@
-import { ResourceType } from './resource.config';
-import { AnimationType } from '../../animations.config';
-import { AnimationKey } from '../../constants';
-import { GameObjectConfig } from '../game-object/types';
+import type { ResourceType } from './resource.config';
+import type { AnimationType } from '../../animations.config';
+import type { AnimationKey } from '../../constants';
+import type { GameObjectConfig } from '../game-object/types';
 
-export type ResourceConfig = Omit<GameObjectConfig, 'imageSrc'> & {
+export type ResourceConfig = GameObjectConfig & {
   type?: ResourceType;
+  multiplier?: number;
 };
 
 export type ResourceAnimationKey =

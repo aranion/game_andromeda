@@ -1,5 +1,6 @@
 import { GameObject } from '../game-object';
 import { projectileConfig } from './projectile.config';
+import { Images } from '../../images';
 import type { Coordinates } from './../../types';
 import type { ProjectileConfig } from './types';
 
@@ -11,10 +12,12 @@ export class Projectile extends GameObject {
 
   constructor(config: ProjectileConfig) {
     const { type, direction, valueDamage } = config;
+    const images = new Images().projectiles;
+    const defaultConfig = projectileConfig(images);
 
     super({
       ...config,
-      ...projectileConfig[type],
+      ...defaultConfig[type],
     });
 
     this.direction = direction;

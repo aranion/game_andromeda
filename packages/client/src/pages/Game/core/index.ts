@@ -1,57 +1,55 @@
 import { GameMap } from './overworld/game-map';
 import { DirectionsInput } from './overworld/directions-input';
 import { Player } from './entities/player';
-import { defaultPlayerStats } from './entities/player/stats';
+import { getDefaultPlayerStats } from './entities/player/stats';
 import { mapConfig } from './map.config';
-import { FPS } from './constants';
+import {
+  FPS,
+  configEndGameBtn,
+  configNewLevelBtn,
+  configGoHomeBtn,
+  defaultState,
+} from './constants';
 import { store } from 'src/store';
-import type { CanvasProperties, GameMapConfig } from './types';
 import { gameActions } from 'src/store/game';
 import { SceneTransition } from './overworld/scene-transition';
 import { GameStatusList } from 'src/store/game/type';
-
-type GameConfig = {
-  canvas: HTMLCanvasElement;
-};
-
-type GameStatus =
-  | GameStatusList.stopped
-  | GameStatusList.paused
-  | GameStatusList.running;
+import { GameTheme } from './overworld/game-theme';
+import { Images } from './images';
+import { MoveToList } from './entities/player/types';
+import type { GameConfig, GameMapConfig, GameState, GameStatus } from './types';
 
 /**
  * Основной класс, управляет циклом игры, меняет карту уровней.
  * */
 export class Game {
+  static instance: Game | null = null;
   private canvas: HTMLCanvasElement | null = null;
   private ctx: CanvasRenderingContext2D | null = null;
   private map: GameMap | null = null;
-  private directions: DirectionsInput;
-  private readonly player: Player;
+  private directions: DirectionsInput | null = null;
+  private player: Player | null = null;
+  private sceneTransition: SceneTransition | null = null;
+  private gameTheme: GameTheme | null = null;
+  private images: Images | null = null;
   private status: GameStatus = GameStatusList.stopped;
-  private readonly sceneTransition: SceneTransition;
   private frame = 0;
+  private level = 1;
+  private readonly goHome: () => void;
+  private state: GameState = defaultState;
 
   constructor(config: GameConfig) {
-    const { canvas, ctx } = this.initCanvas(config.canvas);
-    this.directions = new DirectionsInput({ canvas });
-    this.sceneTransition = new SceneTransition({
-      game: this,
-      canvas,
-      ctx,
-    });
-    this.player = new Player({
-      canvas,
-      ctx,
-      sceneTransition: this.sceneTransition,
-      direction: this.directions.getDirections,
-      position: {
-        x: canvas.width / 2,
-        y: canvas.height + defaultPlayerStats.radius * 2,
-      },
-      pressedKey: this.directions.getPressedKey,
-      ...defaultPlayerStats,
-    });
+    const { goHome, canvas } = config;
+    this.goHome = goHome;
+
+    if (!Game.instance) {
+      this.initCanvas(canvas);
+      this.init();
+
+      Game.instance = this;
+    }
+
+    return Game.instance;
   }
 
   private startGameLoop() {
@@ -79,14 +77,46 @@ export class Game {
     step(performance.now());
   }
 
-  private startMap(gameMapConfig: GameMapConfig) {
-    if (this.canvas && this.ctx) {
+  private createGameEntities(gameMapConfig: GameMapConfig) {
+    if (
+      this.canvas &&
+      this.ctx &&
+      this.images?.getImagesGame &&
+      this.directions
+    ) {
+      const canvasAndCtx = { canvas: this.canvas, ctx: this.ctx };
+      const direction = this.directions.getDirections;
+      const configPlayer = getDefaultPlayerStats(this.images.player);
+      const position = {
+        x: this.canvas.width / 2,
+        y: this.canvas.height + configPlayer.radius * 2,
+      };
+
+      this.sceneTransition = new SceneTransition({
+        ...canvasAndCtx,
+        game: this,
+      });
+      this.player = new Player({
+        ...canvasAndCtx,
+        ...configPlayer,
+        sceneTransition: this.sceneTransition,
+        direction,
+        position,
+        pressedKey: this.directions.getPressedKey,
+        ...this.state.player,
+      });
+      this.gameTheme = new GameTheme({
+        ...canvasAndCtx,
+        player: this.player,
+      });
       this.map = new GameMap({
         ...gameMapConfig,
+        ...canvasAndCtx,
         sceneTransition: this.sceneTransition,
-        canvas: this.canvas,
-        ctx: this.ctx,
         player: this.player,
+        gameTheme: this.gameTheme,
+        imagesGame: this.images.getImagesGame,
+        score: this.state.score ?? 0,
       });
     }
   }
@@ -99,7 +129,7 @@ export class Game {
     }
   };
 
-  private initCanvas(canvas: HTMLCanvasElement): CanvasProperties {
+  private initCanvas(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
@@ -110,8 +140,6 @@ export class Game {
         'The canvas context has not been created. The game cannot be initialized!'
       );
     }
-
-    return { canvas: this.canvas, ctx: this.ctx };
   }
 
   private render() {
@@ -119,8 +147,11 @@ export class Game {
   }
 
   private mount() {
-    this.directions.mount();
-    window.addEventListener('resize', this.resize);
+    if (this.canvas) {
+      this.directions = new DirectionsInput({ canvas: this.canvas });
+      this.directions.mount();
+      window.addEventListener('resize', this.resize);
+    }
   }
 
   set setStatus(gameStatus: GameStatus) {
@@ -129,27 +160,102 @@ export class Game {
 
   clear() {
     this.map?.clear();
-    this.sceneTransition.clear();
+    this.sceneTransition?.clear();
+  }
+
+  nextLevel() {
+    if (this.sceneTransition && this.player) {
+      const buttons = [];
+      const isNotLastLevel = ++this.level <= Object.keys(mapConfig).length;
+      const direction = isNotLastLevel ? MoveToList.up : MoveToList.center;
+
+      this.sceneTransition.darkScreen();
+      this.player.moveTo(direction);
+
+      if (isNotLastLevel) {
+        buttons.push(
+          this.sceneTransition.addButton({
+            ...configNewLevelBtn,
+            cbFn: () => {
+              this.startGame(this.level);
+            },
+          })
+        );
+      } else {
+        buttons.push(
+          this.sceneTransition.addButton({
+            ...configEndGameBtn,
+            cbFn: this.startGame,
+          }),
+          this.sceneTransition.addButton({
+            ...configGoHomeBtn,
+            cbFn: this.goHome,
+          })
+        );
+      }
+
+      buttons.forEach(btn => {
+        this.sceneTransition?.createButton(btn);
+      });
+    }
   }
 
   unmount() {
     this.updateGameStatus(GameStatusList.stopped);
-    this.directions.unmount();
-    this.map?.clear();
-    this.sceneTransition.clear();
+    this.directions?.unmount();
+    this.clear();
     window.removeEventListener('resize', this.resize);
+    Game.instance = null;
   }
 
-  init() {
+  async init() {
+    await this.initImages();
     this.mount();
-    this.startMap(mapConfig.level_1);
+    this.startGame();
     this.startGameLoop();
   }
 
   public updateGameStatus(status: GameStatus) {
     this.status = status;
   }
+
   private dispatchStatus(status: GameStatus) {
     store.dispatch(gameActions.setGameStatus(status));
+  }
+
+  public startGame = (level?: number) => {
+    let newMapConfig: GameMapConfig | null = null;
+
+    if (!level) {
+      this.clearState();
+      this.level = 1;
+      newMapConfig = mapConfig.level_1;
+    } else {
+      newMapConfig = mapConfig[`level_${this.level}`];
+    }
+
+    this.createGameEntities(newMapConfig);
+
+    if (this.status !== GameStatusList.running) {
+      this.updateGameStatus(GameStatusList.running);
+    }
+  };
+
+  private async initImages() {
+    this.images = new Images();
+    await this.images.downloadImages();
+  }
+
+  public setState() {
+    if (this.player && this.map) {
+      this.state = {
+        player: { lives: this.player.getLives },
+        score: this.map.getScore,
+      };
+    }
+  }
+
+  private clearState() {
+    this.state = defaultState;
   }
 }

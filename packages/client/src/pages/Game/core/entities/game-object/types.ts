@@ -1,5 +1,5 @@
-import { AnimationKey } from '../../constants';
-import { CanvasProperties, Coordinates } from '../../types';
+import type { AnimationKey } from '../../constants';
+import type { CanvasProperties, Coordinates } from '../../types';
 
 export type GameObjectConfig = {
   position?: Coordinates;
@@ -7,7 +7,7 @@ export type GameObjectConfig = {
   radius?: number;
   width?: number;
   height?: number;
-  imageSrc: string;
+  image: string;
   isAnimated?: boolean;
   currentAnimation?: AnimationKey;
   sizeRatio?: number;

@@ -1,5 +1,5 @@
-import { Coordinates } from '../../types';
-import { AnimationKey } from '../../constants';
+import type { Coordinates } from '../../types';
+import type { AnimationKey } from '../../constants';
 
 export type ParticleTypes = 'circle' | 'sprite';
 
@@ -10,7 +10,7 @@ export type ParticleConfig = {
   type: ParticleTypes;
   moveAngle: number;
   radius: number;
-  imageSrc?: string;
+  images?: string;
   color?: string;
   sizeRatio?: number;
   isAnimated?: boolean;

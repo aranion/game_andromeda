@@ -1,7 +1,6 @@
 import { INITIAL_RADIUS, INITIAL_SPEED } from '../../constants';
 import { Sprite } from '../sprite';
-import type { Coordinates } from '../../types';
-import { GameEntityInterface } from '../../types';
+import type { Coordinates, GameEntityInterface } from '../../types';
 import type { GameObjectConfig } from './types';
 
 /**
@@ -26,7 +25,7 @@ export abstract class GameObject implements GameEntityInterface {
 
     this.sprite = new Sprite({
       ctx: this.ctx,
-      src: config.imageSrc,
+      src: config.image,
       position: this.position,
       radius: this.radius,
       width: config.width,

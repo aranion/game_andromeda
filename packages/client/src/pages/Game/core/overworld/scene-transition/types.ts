@@ -1,5 +1,5 @@
-import { Game } from '../../../core';
-import { CanvasProperties, Coordinates } from '../../types';
+import type { Game } from '../../../core';
+import type { CanvasProperties } from '../../types';
 
 export type SceneTransitionConfig = CanvasProperties & {
   game: Game;
@@ -21,4 +21,11 @@ export type Button = {
   handleClick: (game: Game) => void;
   cssClassName: string;
   deleteDelay?: number;
+};
+
+export type OptionsButton = {
+  text: string;
+  cssClassName: string;
+  cbFn?: () => void;
+  label?: LabelConfig;
 };

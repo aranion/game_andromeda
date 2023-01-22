@@ -1,0 +1,26 @@
+.intro {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.intro__content {
+  width: 70%;
+  padding: 30px;
+  border-spacing: 20px;
+  color: var(--color-light);
+  background: var(--color-normal);
+  box-shadow: 2px 2px 2px var(--color-normal), 0px 0px 40px var(--color-normal);
+  border-radius: 30px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .intro__content {
+    width: 90%;
+  }
+}

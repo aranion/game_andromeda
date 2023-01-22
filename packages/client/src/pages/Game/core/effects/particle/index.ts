@@ -1,12 +1,12 @@
 import { Sprite } from '../../entities/sprite';
-import { ParticleConfig, ParticleTypes } from './types';
-import { Coordinates, GameEntityInterface } from '../../types';
+import type { ParticleConfig, ParticleTypes } from './types';
+import type { Coordinates, GameEntityInterface } from '../../types';
 
 export class Particle implements GameEntityInterface {
   private ctx: CanvasRenderingContext2D;
   private readonly moveAngle: number;
   private readonly type: ParticleTypes;
-  private readonly imageSrc?: string;
+  private readonly images?: string;
   private readonly radius: number;
   private readonly color: string;
   private readonly speed: number;
@@ -22,13 +22,13 @@ export class Particle implements GameEntityInterface {
     this.moveAngle = config.moveAngle;
     this.speed = config.speed;
     this.type = config.type;
-    this.imageSrc = config.imageSrc;
+    this.images = config.images;
     this.color = config.color ?? 'grey';
 
-    if (this.type === 'sprite' && this.imageSrc) {
+    if (this.type === 'sprite' && this.images) {
       this.sprite = new Sprite({
         ctx: config.ctx,
-        src: this.imageSrc,
+        src: this.images,
         position: this.position,
         radius: config.radius,
         isAnimated: config.isAnimated ?? false,
