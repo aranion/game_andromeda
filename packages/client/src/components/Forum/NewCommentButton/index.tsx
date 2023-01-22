@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Modal, Form, ButtonStar } from 'src/components';
-import type { FetchComments } from 'src/store/forum/types';
+import type { FetchComments } from 'src/store/forum/type';
 
 type Props = {
-  topicId?: string;
+  topicId: string;
+  parentCommentId?: number;
   fetchComments: FetchComments;
 };
 
@@ -19,9 +20,12 @@ export function NewCommentButton(props: Props) {
 
   function submitComment(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const { fetchComments, topicId } = props;
+    const { fetchComments, topicId, parentCommentId } = props;
 
-    console.log(topicId, content);
+    //todo send new comment data
+    // let authorId???
+    // console.log(topicId, content, parentCommentId, authorId);
+    console.log(topicId, content, parentCommentId);
 
     setContent('');
 

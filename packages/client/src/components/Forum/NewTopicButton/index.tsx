@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Modal, Form, ButtonStar } from 'src/components';
-import type { FetchTopics } from 'src/store/forum/types';
+import type { FetchTopics } from 'src/store/forum/type';
 
 type Props = {
   fetchTopics: FetchTopics;
@@ -9,7 +9,6 @@ type Props = {
 export function NewTopicButton(props: Props) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [description, setDescription] = useState('');
   const [isModalActive, setIsModalActive] = useState(false);
 
   const handleOpen = () => setIsModalActive(true);
@@ -17,8 +16,6 @@ export function NewTopicButton(props: Props) {
 
   const handleSetTitle = (e: React.ChangeEvent<HTMLInputElement>) =>
     setTitle(e.target.value);
-  const handleSetDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-    setDescription(e.target.value);
   const handleSetContent = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
     setContent(e.target.value);
 
@@ -26,11 +23,13 @@ export function NewTopicButton(props: Props) {
     e.preventDefault();
     const { fetchTopics } = props;
 
-    console.log(title, content, description);
+    //todo send new comment data
+    // let authorId???
+    // console.log(title, content, authorId);
+    console.log(title, content);
 
     setTitle('');
     setContent('');
-    setDescription('');
 
     handleClose();
     fetchTopics();
@@ -51,13 +50,6 @@ export function NewTopicButton(props: Props) {
             placeholder='Topic title'
             value={title}
             onChange={handleSetTitle}
-          />
-          <Form.Input
-            typeComponent='textarea'
-            placeholder='Topic description'
-            name='description'
-            value={description}
-            onChange={handleSetDescription}
           />
           <Form.Input
             typeComponent='textarea'

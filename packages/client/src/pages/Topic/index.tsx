@@ -1,22 +1,16 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  Card,
-  ButtonBack,
-  NewCommentButton,
-  Comment,
-  ButtonFullscreen,
-} from 'src/components';
+import { Card, ButtonBack, NewCommentButton, Comment } from 'src/components';
 import type {
   TopicProps,
   CommentProps,
   FetchComments,
   FetchTopic,
-} from 'src/store/forum/types';
+} from 'src/store/forum/type';
 import styles from './styles.module.css';
 
 export default function TopicPage() {
-  const { topicId } = useParams<{ topicId?: string }>();
+  const { topicId } = useParams<{ topicId: string }>();
 
   const [topic, setTopic] = useState<TopicProps>();
   const [comments, setComments] = useState<CommentProps[]>([]);
@@ -37,55 +31,57 @@ export default function TopicPage() {
   const fetchComments: FetchComments = topicId => {
     console.log(topicId);
 
-    const comments: CommentProps[] = [];
-    comments.push(
+    const comments: CommentProps[] = [
       {
         id: 1,
         author: 'Jane',
         content: 'First interesting comment',
-        parentCommentId: 1,
       },
       {
         id: 2,
         author: 'David',
         content:
           'Second interesting comment (Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.)',
-        parentCommentId: 3,
       },
       {
         id: 3,
         author: 'Jane',
         content: 'First interesting comment',
-        parentCommentId: 1,
       },
       {
         id: 4,
         author: 'David',
         content:
           'Second interesting comment (Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.)',
-        parentCommentId: 3,
       },
       {
         id: 5,
         author: 'Jane',
         content: 'First interesting comment',
-        parentCommentId: 1,
+        parentCommentId: 2,
       },
       {
         id: 6,
         author: 'David',
         content:
           'Second interesting comment (Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.)',
-        parentCommentId: 3,
       },
       {
         id: 7,
         author: 'Kate',
         content: 'Third interesting comment',
-        parentCommentId: 1,
+      },
+    ];
+
+    return comments.map(comment => {
+      const { parentCommentId } = comment;
+      if (parentCommentId) {
+        const parent = comments.find(comment => comment.id === parentCommentId);
+        comment.parentCommentAuthor = parent?.author;
+        comment.parentCommentPreview = `${parent?.content.substring(0, 90)}...`;
       }
-    );
-    return comments;
+      return comment;
+    });
   };
 
   useEffect(() => {
@@ -110,19 +106,32 @@ export default function TopicPage() {
       </Card>
       <div>
         {comments.map(comment => {
-          const { id, content, author, parentCommentId } = comment;
+          const {
+            id,
+            content,
+            author,
+            parentCommentId,
+            parentCommentPreview,
+            parentCommentAuthor,
+          } = comment;
           return (
             <Comment
               key={id}
               id={id}
               content={content}
               author={author}
+              topicId={topicId}
+              fetchComments={fetchComments}
               parentCommentId={parentCommentId}
+              parentCommentPreview={parentCommentPreview}
+              parentCommentAuthor={parentCommentAuthor}
             />
           );
         })}
       </div>
-      <NewCommentButton topicId={topicId} fetchComments={fetchComments} />
+      {topicId ? (
+        <NewCommentButton topicId={topicId} fetchComments={fetchComments} />
+      ) : null}
     </div>
   );
 }

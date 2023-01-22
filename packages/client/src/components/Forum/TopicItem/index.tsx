@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
-import type { TopicProps } from 'src/store/forum/types';
+import type { TopicProps } from 'src/store/forum/type';
 import styles from './styles.module.css';
 
 export function TopicItem(props: Props) {

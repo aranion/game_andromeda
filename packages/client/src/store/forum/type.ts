@@ -1,7 +1,12 @@
+export type InitialState = {
+  topics: TopicProps[];
+};
+
 export type TopicProps = Partial<{
   id: number;
   title: string;
-  author: string;
+  authorId: number;
+  authorName: string;
   content: string;
   commentCount: number;
 }>;
@@ -13,5 +18,7 @@ export type CommentProps = {
   content: string;
   author: string;
   parentCommentId?: number | null;
+  parentCommentPreview?: string | null;
+  parentCommentAuthor?: string | null;
 };
 export type FetchComments = (topicId: string) => CommentProps[];

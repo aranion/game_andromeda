@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { TopicProps, FetchTopics } from 'src/store/forum/types';
+import type { TopicProps, FetchTopics } from 'src/store/forum/type';
 import { ButtonBack, TopicItem, NewTopicButton } from 'src/components';
 import styles from './styles.module.css';
 
