@@ -70,9 +70,10 @@ function App() {
     startStarts();
     addSound({ soundURL: 'maintheme.wav', playWhenLoaded: 'continuous' });
     addSound({ soundURL: 'spark.mp3' });
-    addSound({ soundURL: 'bosstheme.wav' });
     addSound({ soundURL: 'shoot1.mp3' });
     addSound({ soundURL: 'shoot2.mp3' });
+
+    document.querySelector('#initialloader')?.remove();
 
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`;
