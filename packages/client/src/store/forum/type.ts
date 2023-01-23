@@ -9,7 +9,9 @@ export type TopicProps = Partial<{
   authorName: string;
   content: string;
   commentCount: number;
+  comments: CommentProps[];
 }>;
+
 export type FetchTopic = (topicId: string) => TopicProps;
 export type FetchTopics = () => TopicProps[];
 
@@ -21,4 +23,5 @@ export type CommentProps = {
   parentCommentPreview?: string | null;
   parentCommentAuthor?: string | null;
 };
+
 export type FetchComments = (topicId: string) => CommentProps[];

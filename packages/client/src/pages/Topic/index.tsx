@@ -1,137 +1,103 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Card, ButtonBack, NewCommentButton, Comment } from 'src/components';
-import type {
-  TopicProps,
-  CommentProps,
-  FetchComments,
-  FetchTopic,
-} from 'src/store/forum/type';
-import styles from './styles.module.css';
+import {
+  ButtonBack,
+  NewCommentButton,
+  CommentsList,
+  Modal,
+  Form,
+} from 'src/components';
+import type { TopicProps, FetchTopic } from 'src/store/forum/type';
+import cls from './styles.module.css';
+import classNames from 'classnames';
+
+import { mockTopicPage } from 'src/constants/mockData';
 
 export default function TopicPage() {
-  const { topicId } = useParams<{ topicId: string }>();
+  const { topicId, commentId } = useParams<{
+    topicId: string;
+    commentId: string;
+  }>();
 
-  const [topic, setTopic] = useState<TopicProps>();
-  const [comments, setComments] = useState<CommentProps[]>([]);
+  const [topic, setTopic] = useState<TopicProps>({});
+  const [content, setContent] = useState('');
+  const [isModalActive, setIsModalActive] = useState(false);
+
+  const handleOpen = () => setIsModalActive(true);
+  const handleClose = () => setIsModalActive(false);
+  const handleSetContent = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setContent(e.target.value);
+
+  function submitComment(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    //todo send new comment data
+    // let authorId???
+    // console.log(topicId, content, parentCommentId, authorId);
+    console.log(topicId, content, commentId);
+
+    setContent('');
+
+    handleClose();
+    if (topicId) {
+      fetchTopic(topicId);
+    } else {
+      console.log('TopicId', topicId);
+    }
+  }
 
   const fetchTopic: FetchTopic = topicId => {
+    //todo send new comment data
+    // let authorId???
     console.log(topicId);
 
-    const topic: TopicProps = {
-      id: 111,
-      title: 'Title of very interesting topic',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      author: 'Amanda',
-    };
+    const topic: TopicProps = mockTopicPage;
     return topic;
   };
 
-  const fetchComments: FetchComments = topicId => {
-    console.log(topicId);
-
-    const comments: CommentProps[] = [
-      {
-        id: 1,
-        author: 'Jane',
-        content: 'First interesting comment',
-      },
-      {
-        id: 2,
-        author: 'David',
-        content:
-          'Second interesting comment (Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.)',
-      },
-      {
-        id: 3,
-        author: 'Jane',
-        content: 'First interesting comment',
-      },
-      {
-        id: 4,
-        author: 'David',
-        content:
-          'Second interesting comment (Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.)',
-      },
-      {
-        id: 5,
-        author: 'Jane',
-        content: 'First interesting comment',
-        parentCommentId: 2,
-      },
-      {
-        id: 6,
-        author: 'David',
-        content:
-          'Second interesting comment (Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.)',
-      },
-      {
-        id: 7,
-        author: 'Kate',
-        content: 'Third interesting comment',
-      },
-    ];
-
-    return comments.map(comment => {
-      const { parentCommentId } = comment;
-      if (parentCommentId) {
-        const parent = comments.find(comment => comment.id === parentCommentId);
-        comment.parentCommentAuthor = parent?.author;
-        comment.parentCommentPreview = `${parent?.content.substring(0, 90)}...`;
-      }
-      return comment;
-    });
-  };
+  const clsTopicInfo = classNames('card', cls.topic__info);
 
   useEffect(() => {
     if (topicId) {
       const topic = fetchTopic(topicId);
-      const comments = fetchComments(topicId);
       setTopic(topic);
-      setComments(comments);
     }
-  }, []);
+  }, [topic]);
 
   return (
-    <div className={styles.topic}>
+    <div className={cls.topic}>
       <ButtonBack />
-      <h1 className='main-menu__title' id='11111'>
-        Community
-      </h1>
-      <Card className={styles.topic__info}>
-        <div className={styles.topic__title}>{topic?.title || ''}</div>
-        <div className={styles.topic__content}>{topic?.content || ''}</div>
-        <div className={styles.topic__author}>{topic?.author || ''}</div>
-      </Card>
-      <div>
-        {comments.map(comment => {
-          const {
-            id,
-            content,
-            author,
-            parentCommentId,
-            parentCommentPreview,
-            parentCommentAuthor,
-          } = comment;
-          return (
-            <Comment
-              key={id}
-              id={id}
-              content={content}
-              author={author}
-              topicId={topicId}
-              fetchComments={fetchComments}
-              parentCommentId={parentCommentId}
-              parentCommentPreview={parentCommentPreview}
-              parentCommentAuthor={parentCommentAuthor}
-            />
-          );
-        })}
+      <h1 className='main-menu__title'>Community</h1>
+      <div className={clsTopicInfo}>
+        {topic.title ? (
+          <div className={cls.topic__title}>{topic.title}</div>
+        ) : null}
+        {topic.content ? (
+          <div className={cls.topic__content}>{topic.content}</div>
+        ) : null}
+        {topic.authorName ? (
+          <div className={cls.topic__author}>{topic.authorName}</div>
+        ) : null}
       </div>
-      {topicId ? (
-        <NewCommentButton topicId={topicId} fetchComments={fetchComments} />
+      {topic.comments ? (
+        <CommentsList list={topic.comments} handleOpen={handleOpen} />
       ) : null}
+
+      <NewCommentButton handleOpen={handleOpen} />
+
+      <Modal
+        active={isModalActive}
+        setActive={setIsModalActive}
+        title='New Comment'>
+        <Form title='Submit' onSubmit={submitComment}>
+          <Form.Input
+            typeComponent='textarea'
+            name='content'
+            value={content}
+            onChange={handleSetContent}
+          />
+        </Form>
+      </Modal>
     </div>
   );
 }

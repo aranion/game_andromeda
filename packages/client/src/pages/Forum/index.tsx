@@ -1,43 +1,36 @@
 import { useEffect, useState } from 'react';
 import type { TopicProps, FetchTopics } from 'src/store/forum/type';
 import { ButtonBack, TopicItem, NewTopicButton } from 'src/components';
-import styles from './styles.module.css';
+import cls from './styles.module.css';
+import classNames from 'classnames';
+
+import { mockForumPage } from 'src/constants/mockData';
 
 export default function ForumPage() {
   const [topics, setTopics] = useState<TopicProps[]>([]);
 
   const fetchTopics: FetchTopics = () => {
-    const topics: TopicProps[] = [];
-    topics.push(
-      {
-        id: 111,
-        title: 'Test toppic title',
-        commentCount: 1111,
-      },
-      {
-        id: 222,
-        title:
-          'Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title ',
-        commentCount: 1,
-      }
-    );
+    // const topics: TopicProps[] = [];
+    const topics: TopicProps[] = mockForumPage;
     return topics;
   };
+
+  const clsTTable = classNames('card', cls.table);
 
   useEffect(() => {
     setTopics(fetchTopics());
   }, []);
 
   return (
-    <div className={styles.forum}>
+    <div className={cls.forum}>
       <ButtonBack />
 
       <h1 className='main-menu__title'>Community</h1>
-      <table className={styles.table}>
+      <table className={clsTTable}>
         <thead>
           <tr>
-            <th className={styles.table__th}>Topics</th>
-            <th className={styles.table__th}>Comments</th>
+            <th className={cls.table__th}>Topics</th>
+            <th className={cls.table__th}>Comments</th>
           </tr>
         </thead>
         <tbody>

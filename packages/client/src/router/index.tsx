@@ -35,6 +35,10 @@ export function Router() {
               path={RouterParamsTopic.topicId}
               element={withPrivateRoute(<TopicPage />)}
             />
+            <Route
+              path={`${RouterParamsTopic.topicId}/${RouterParamsTopic.commentId}`}
+              element={withPrivateRoute(<TopicPage />)}
+            />
           </Route>
           <Route
             path={`${RouterList.PROFILE}/${RouterParamsProfile.userId}`}

@@ -1,9 +1,18 @@
 .comment {
   margin: 10px 0;
   text-align: start;
+  display: flex;
+  flex-direction: column;
   &__content {
     margin-bottom: 10px;
     font-size: 0.85rem;
+  }
+  & button {
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  &:hover button {
+    opacity: 1;
   }
   &__parentLink {
     font-size: 0.85rem;

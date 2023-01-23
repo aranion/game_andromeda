@@ -1,10 +1,10 @@
-import type { CommentProps, FetchComments } from 'src/store/forum/type';
-import { Card, NewCommentButton } from 'src/components';
-import styles from './styles.module.css';
+import cls from './styles.module.css';
+import classNames from 'classnames';
+import type { CommentProps } from 'src/store/forum/type';
+import { NewCommentButton } from 'src/components';
 
 type Props = {
-  topicId: string;
-  fetchComments: FetchComments;
+  handleOpen: () => void;
 } & CommentProps;
 
 export const Comment = (props: Props) => {
@@ -15,26 +15,23 @@ export const Comment = (props: Props) => {
     parentCommentId,
     parentCommentPreview,
     parentCommentAuthor,
-    topicId,
-    fetchComments,
+    handleOpen,
   } = props;
 
+  const clsList = classNames('card', cls.comment);
+
   return (
-    <Card className={styles.comment} id={`${id}`}>
+    <li className={clsList} id={`${id}`}>
       {parentCommentId ? (
-        <a href={`#${parentCommentId}`} className={styles.comment__parentLink}>
+        <a href={`#${parentCommentId}`} className={cls.comment__parentLink}>
           {parentCommentAuthor}
           <br></br>
-          {parentCommentPreview}
+          {`${parentCommentPreview?.substring(0, 200)}...`}
         </a>
       ) : null}
-      <div className={styles.comment__content}>{content}</div>
-      <div className={styles.comment__author}>{author}</div>
-      <NewCommentButton
-        topicId={topicId}
-        fetchComments={fetchComments}
-        parentCommentId={id}
-      />
-    </Card>
+      <div className={cls.comment__content}>{content}</div>
+      <div className={cls.comment__author}>{author}</div>
+      <NewCommentButton handleOpen={handleOpen} commentId={id} />
+    </li>
   );
 };

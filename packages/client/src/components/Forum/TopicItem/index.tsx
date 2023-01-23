@@ -1,19 +1,22 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
+import classnames from 'classnames';
 import type { TopicProps } from 'src/store/forum/type';
-import styles from './styles.module.css';
+import cls from './styles.module.css';
 
 export function TopicItem(props: Props) {
   const { id, title, commentCount } = props;
+  const classNames = classnames(cls.item, cls.item__link);
+
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate(`${RouterList.FORUM}/${id}`);
+  };
 
   return (
-    <tr>
-      <td className={styles.item}>
-        <Link className={styles.item__link} to={`${RouterList.FORUM}/${id}`}>
-          <div>{title}</div>
-        </Link>
-      </td>
-      <td className={styles.item}>{commentCount}</td>
+    <tr onClick={handleNavigate}>
+      <td className={classNames}>{title}</td>
+      <td className={cls.item}>{commentCount}</td>
     </tr>
   );
 }

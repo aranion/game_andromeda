@@ -18,7 +18,7 @@
 }
 
 .item__link:hover {
-  color: var(--color-normal);
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 640px) {

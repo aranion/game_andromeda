@@ -4,7 +4,7 @@ import './styles.css';
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   typeButton?: 'danger';
-  positionButton?: 'absolute';
+  positionButton?: 'absolute' | 'right';
   sizeButton?: 'small' | 'normal' | 'big';
 };
 

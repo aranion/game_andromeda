@@ -36,6 +36,9 @@
         opacity: 1;
       }
     }
+    &_right {
+      align-self: flex-end;
+    }
   }
 
   &_size_big {
