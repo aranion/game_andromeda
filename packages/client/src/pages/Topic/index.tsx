@@ -7,11 +7,16 @@ import {
   Modal,
   Form,
 } from 'src/components';
-import type { TopicProps, FetchTopic } from 'src/store/forum/type';
+import type {
+  TopicProps,
+  FetchTopic,
+  FetchComments,
+  CommentProps,
+} from 'src/store/forum/type';
 import cls from './styles.module.css';
 import classNames from 'classnames';
 
-import { mockTopicPage } from 'src/constants/mockData';
+import { mockTopic, mockComments } from 'src/constants/mockData';
 
 export default function TopicPage() {
   const { topicId, commentId } = useParams<{
@@ -20,6 +25,7 @@ export default function TopicPage() {
   }>();
 
   const [topic, setTopic] = useState<TopicProps>({});
+  const [comments, setComments] = useState<CommentProps[]>([]);
   const [content, setContent] = useState('');
   const [isModalActive, setIsModalActive] = useState(false);
 
@@ -51,8 +57,24 @@ export default function TopicPage() {
     // let authorId???
     console.log(topicId);
 
-    const topic: TopicProps = mockTopicPage;
+    const topic: TopicProps = mockTopic;
     return topic;
+  };
+
+  const fetchComments: FetchComments = topicId => {
+    console.log(topicId);
+
+    const comments: CommentProps[] = mockComments;
+
+    return comments.map(comment => {
+      const { parentCommentId } = comment;
+      if (parentCommentId) {
+        const parent = comments.find(comment => comment.id === parentCommentId);
+        comment.parentCommentAuthor = parent?.author;
+        comment.parentCommentPreview = `${parent?.content.substring(0, 90)}...`;
+      }
+      return comment;
+    });
   };
 
   const clsTopicInfo = classNames('card', cls.topic__info);
@@ -60,9 +82,11 @@ export default function TopicPage() {
   useEffect(() => {
     if (topicId) {
       const topic = fetchTopic(topicId);
+      const comments = fetchComments(topicId);
       setTopic(topic);
+      setComments(comments);
     }
-  }, [topic]);
+  }, [topic, comments]);
 
   return (
     <div className={cls.topic}>

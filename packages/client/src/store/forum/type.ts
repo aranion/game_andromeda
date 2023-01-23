@@ -25,3 +25,6 @@ export type CommentProps = {
 };
 
 export type FetchComments = (topicId: string) => CommentProps[];
+
+export type ForumData = { data: TopicProps };
+export type ResponseForum = ForumData[];
