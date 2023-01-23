@@ -1,17 +1,23 @@
 import { useEffect, useState } from 'react';
-import type { TopicProps } from 'src/store/forum/type';
+import type { TopicProps, FetchTopics } from 'src/store/forum/type';
 import { ButtonBack, TopicItem, Modal, Form, ButtonStar } from 'src/components';
 import cls from './styles.module.css';
 import classNames from 'classnames';
-import { useTypeSelector } from 'src/hooks/useTypeSelector';
-import { forumSelectors } from 'src/store/forum';
+// import { useTypeSelector } from 'src/hooks/useTypeSelector';
+// import { forumSelectors } from 'src/store/forum';
 
-// import { mockForumPage } from 'src/constants/mockData';
+import { mockForumPage } from 'src/constants/mockData';
 
 export default function ForumPage() {
   const [topics, setTopics] = useState<TopicProps[]>([]);
 
-  const forumData = useTypeSelector(forumSelectors.topics);
+  // const forumData = useTypeSelector(forumSelectors.topics);
+  const fetchTopics: FetchTopics = () => {
+    // const topics: TopicProps[] = [];
+
+    const topics = mockForumPage;
+    return topics;
+  };
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -41,10 +47,10 @@ export default function ForumPage() {
   }
 
   useEffect(() => {
-    setTopics(forumData);
-  }, [forumData]);
-  //   setTopics(mockForumPage);
-  // }, [mockForumPage]);
+    //   setTopics(forumData);
+    // }, [forumData]);
+    setTopics(mockForumPage);
+  }, [mockForumPage]);
 
   return (
     <div className={cls.forum}>

@@ -103,8 +103,8 @@ export default function TopicPage() {
           <div className={cls.topic__author}>{topic.authorName}</div>
         ) : null}
       </div>
-      {topic.comments ? (
-        <CommentsList list={topic.comments} handleOpen={handleOpen} />
+      {comments ? (
+        <CommentsList list={comments} handleOpen={handleOpen} />
       ) : null}
 
       <NewCommentButton handleOpen={handleOpen} />
