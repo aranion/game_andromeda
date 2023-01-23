@@ -73,8 +73,6 @@ function App() {
     addSound({ soundURL: 'shoot1.mp3' });
     addSound({ soundURL: 'shoot2.mp3' });
 
-    document.querySelector('#initialloader')?.remove();
-
     const fetchServerData = async () => {
       const url = `http://localhost:${__SERVER_PORT__}`;
       const response = await fetch(url);
