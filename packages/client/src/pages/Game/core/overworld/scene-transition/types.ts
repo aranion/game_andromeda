@@ -22,3 +22,10 @@ export type Button = {
   cssClassName: string;
   deleteDelay?: number;
 };
+
+export type OptionsButton = {
+  text: string;
+  cssClassName: string;
+  cbFn?: () => void;
+  label?: LabelConfig;
+};
