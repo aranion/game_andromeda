@@ -9,9 +9,11 @@ dotenv.config();
 startApp();
 
 const app = express();
-app.use(cors());
 const port = Number(process.env.SERVER_PORT) || 3001;
 
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(cors());
 app.use('/api/forum', forumsRouter);
 
 app.get('/api', (_, res) => {
