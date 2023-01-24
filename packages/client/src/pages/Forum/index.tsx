@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { TopicProps, FetchTopics } from 'src/store/forum/type';
+import type { Topic, FetchTopics } from 'src/store/forum/type';
 import { ButtonBack, TopicItem, Modal, Form, ButtonStar } from 'src/components';
 import cls from './styles.module.css';
 import classNames from 'classnames';
@@ -9,11 +9,11 @@ import classNames from 'classnames';
 import { mockForumPage } from 'src/constants/mockData';
 
 export default function ForumPage() {
-  const [topics, setTopics] = useState<TopicProps[]>([]);
+  const [topics, setTopics] = useState<Topic[]>([]);
 
   // const forumData = useTypeSelector(forumSelectors.topics);
   const fetchTopics: FetchTopics = () => {
-    // const topics: TopicProps[] = [];
+    // const topics: Topic[] = [];
 
     const topics = mockForumPage;
     return topics;

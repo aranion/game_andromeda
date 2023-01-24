@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { RouterList } from 'src/router/routerList';
 import classnames from 'classnames';
-import type { TopicProps } from 'src/store/forum/type';
+import type { Topic as Props } from 'src/store/forum/type';
 import cls from './styles.module.css';
 
 export function TopicItem(props: Props) {
@@ -20,5 +20,3 @@ export function TopicItem(props: Props) {
     </tr>
   );
 }
-
-type Props = TopicProps;

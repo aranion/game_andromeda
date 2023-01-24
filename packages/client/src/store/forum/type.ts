@@ -1,30 +1,55 @@
 export type InitialState = {
-  topics: TopicProps[];
+  topics: Topic[];
+  activeTopicComments: {
+    topicId: number | undefined;
+    comments: Comment[];
+  };
 };
 
-export type TopicProps = Partial<{
+export type Topic = Partial<{
   id: number;
   title: string;
   authorId: number;
   authorName: string;
   content: string;
   commentCount: number;
-  comments: CommentProps[];
 }>;
 
-export type FetchTopic = (topicId: string) => TopicProps;
-export type FetchTopics = () => TopicProps[];
+export type FetchTopic = (topicId: string) => Topic;
+export type FetchTopics = () => Topic[];
 
-export type CommentProps = {
+export type Comment = {
   id: number;
   content: string;
-  author: string;
+  authorId: number;
+  authorName: string;
   parentCommentId?: number | null;
   parentCommentPreview?: string | null;
   parentCommentAuthor?: string | null;
 };
 
-export type FetchComments = (topicId: string) => CommentProps[];
+export type Comments = {
+  topicId: number;
+  comments: Comment[];
+};
 
-export type ForumData = { data: TopicProps };
-export type ResponseForum = ForumData[];
+export type CommentsCount = {
+  topicId: number;
+  commentCount: number;
+};
+
+export type FetchComments = (topicId: string) => Comment[];
+
+export type ResponseForum = Topic[];
+export type ResponseComments = Comment[];
+
+export type RequestAddNewTopic = {
+  title: string;
+  content: string;
+};
+export type RequestAddNewComment = {
+  content: string;
+  parentCommentId?: number | null;
+  parentCommentPreview?: string | null;
+  parentCommentAuthor?: string | null;
+};

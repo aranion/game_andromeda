@@ -8,10 +8,10 @@ import {
   Form,
 } from 'src/components';
 import type {
-  TopicProps,
+  Topic,
   FetchTopic,
   FetchComments,
-  CommentProps,
+  Comment,
 } from 'src/store/forum/type';
 import cls from './styles.module.css';
 import classNames from 'classnames';
@@ -24,8 +24,8 @@ export default function TopicPage() {
     commentId: string;
   }>();
 
-  const [topic, setTopic] = useState<TopicProps>({});
-  const [comments, setComments] = useState<CommentProps[]>([]);
+  const [topic, setTopic] = useState<Topic>({});
+  const [comments, setComments] = useState<Comment[]>([]);
   const [content, setContent] = useState('');
   const [isModalActive, setIsModalActive] = useState(false);
 
@@ -57,14 +57,14 @@ export default function TopicPage() {
     // let authorId???
     console.log(topicId);
 
-    const topic: TopicProps = mockTopic;
+    const topic: Topic = mockTopic;
     return topic;
   };
 
   const fetchComments: FetchComments = topicId => {
     console.log(topicId);
 
-    const comments: CommentProps[] = mockComments;
+    const comments: Comment[] = mockComments;
 
     return comments.map(comment => {
       const { parentCommentId } = comment;

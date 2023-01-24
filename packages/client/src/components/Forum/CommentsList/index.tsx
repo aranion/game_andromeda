@@ -1,4 +1,4 @@
-import type { CommentProps } from 'src/store/forum/type';
+import type { Comment as CommentProps } from 'src/store/forum/type';
 import { Comment } from 'src/components';
 import cls from './styles.module.css';
 

@@ -1,6 +1,6 @@
 import cls from './styles.module.css';
 import classNames from 'classnames';
-import type { CommentProps } from 'src/store/forum/type';
+import type { Comment as CommentProps } from 'src/store/forum/type';
 import { NewCommentButton } from 'src/components';
 
 type Props = {
