@@ -11,26 +11,21 @@ export const CommentsList = (props: Props) => {
   const { list, handleOpen } = props;
 
   return (
-    <>
-      <ul className={cls.list}>
-        {list.map(comment => {
-          const { id, content, author, parentCommentId } = comment;
-          const parent = list.find(comment => comment.id === parentCommentId);
+    <ul className={cls.list}>
+      {list.map(comment => {
+        const { id, parentCommentId } = comment;
+        const parent = list.find(comment => comment.id === parentCommentId);
 
-          return (
-            <Comment
-              key={id}
-              id={id}
-              content={content}
-              author={author}
-              handleOpen={handleOpen}
-              parentCommentId={parentCommentId}
-              parentCommentPreview={parent?.content}
-              parentCommentAuthor={parent?.author}
-            />
-          );
-        })}
-      </ul>
-    </>
+        return (
+          <Comment
+            {...comment}
+            handleOpen={handleOpen}
+            key={id}
+            parentCommentPreview={parent?.content}
+            parentCommentAuthor={parent?.authorName}
+          />
+        );
+      })}
+    </ul>
   );
 };

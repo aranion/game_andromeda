@@ -11,7 +11,7 @@ export const Comment = (props: Props) => {
   const {
     id,
     content,
-    author,
+    authorName,
     parentCommentId,
     parentCommentPreview,
     parentCommentAuthor,
@@ -25,12 +25,12 @@ export const Comment = (props: Props) => {
       {parentCommentId ? (
         <a href={`#${parentCommentId}`} className={cls.comment__parentLink}>
           {parentCommentAuthor}
-          <br></br>
+          <br />
           {`${parentCommentPreview?.substring(0, 200)}...`}
         </a>
       ) : null}
       <div className={cls.comment__content}>{content}</div>
-      <div className={cls.comment__author}>{author}</div>
+      <div className={cls.comment__author}>{authorName}</div>
       <NewCommentButton handleOpen={handleOpen} commentId={id} />
     </li>
   );
