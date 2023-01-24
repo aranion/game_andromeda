@@ -1,23 +1,26 @@
 import { useEffect, useState } from 'react';
-import type { Topic, FetchTopics } from 'src/store/forum/type';
-import { ButtonBack, TopicItem, Modal, Form, ButtonStar } from 'src/components';
+import type { Topic } from 'src/store/forum/type';
+import {
+  ButtonBack,
+  TopicItem,
+  Modal,
+  Form,
+  ButtonStar,
+  Loader,
+} from 'src/components';
 import cls from './styles.module.css';
 import classNames from 'classnames';
-// import { useTypeSelector } from 'src/hooks/useTypeSelector';
-// import { forumSelectors } from 'src/store/forum';
-
-import { mockForumPage } from 'src/constants/mockData';
+import { useTypeSelector } from 'src/hooks/useTypeSelector';
+import { forumSelectors } from 'src/store/forum';
+import { useForum } from 'src/hooks/useForum';
 
 export default function ForumPage() {
   const [topics, setTopics] = useState<Topic[]>([]);
 
-  // const forumData = useTypeSelector(forumSelectors.topics);
-  const fetchTopics: FetchTopics = () => {
-    // const topics: Topic[] = [];
+  const forumData = useTypeSelector(forumSelectors.topics);
 
-    const topics = mockForumPage;
-    return topics;
-  };
+  const { getAllTopics, addNewTopic, isLoadingAllTopics, isLoadingAddTopic } =
+    useForum();
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -34,29 +37,26 @@ export default function ForumPage() {
 
   function submitTopic(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    //todo send new comment data
-    // let authorId???
-    // console.log(title, content, authorId);
-    console.log(title, content);
-
+    addNewTopic({ title, content });
     setTitle('');
     setContent('');
     handleClose();
-
-    fetchTopics();
   }
 
   useEffect(() => {
-    //   setTopics(forumData);
-    // }, [forumData]);
-    setTopics(mockForumPage);
-  }, [mockForumPage]);
+    getAllTopics();
+  }, []);
+
+  useEffect(() => {
+    setTopics(forumData);
+  }, [forumData]);
 
   return (
     <div className={cls.forum}>
       <ButtonBack />
 
       <h1 className='main-menu__title'>Community</h1>
+      {isLoadingAllTopics && isLoadingAddTopic && <Loader />}
 
       <table className={clsTable}>
         <thead>

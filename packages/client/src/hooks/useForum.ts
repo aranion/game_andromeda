@@ -23,7 +23,7 @@ export const useForum = () => {
 
   const { setTopics, setTopicComments, setTopicCommentsCount } = useActions();
 
-  const [fetchAllForum, { isLoading: isLoadingForum }] =
+  const [fetchAllForum, { isLoading: isLoadingAllTopics }] =
     useLazyFetchAllForumQuery();
   const [fetchTopicComments, { isLoading: isLoadingTopicComments }] =
     useLazyFetchTopicCommentsQuery();
@@ -140,7 +140,7 @@ export const useForum = () => {
     getTopicCommentsCount,
     isLoadingTopicComments,
     isLoadingTopicCommentsCount,
-    isLoadingForum,
+    isLoadingAllTopics,
     isLoadingAddTopic,
     isLoadingAddComment,
   };
