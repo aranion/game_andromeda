@@ -70,7 +70,7 @@ export default function TopicPage() {
       const { parentCommentId } = comment;
       if (parentCommentId) {
         const parent = comments.find(comment => comment.id === parentCommentId);
-        comment.parentCommentAuthor = parent?.author;
+        comment.parentCommentAuthor = parent?.authorName;
         comment.parentCommentPreview = `${parent?.content.substring(0, 90)}...`;
       }
       return comment;
