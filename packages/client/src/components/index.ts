@@ -10,7 +10,6 @@ export * from './Button';
 export * from './ButtonBack';
 export * from './Star';
 export * from './AuthForm';
-export * from './Card';
 export * from './Modal';
 export * from './Form';
 export * from './Forum';

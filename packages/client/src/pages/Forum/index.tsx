@@ -1,43 +1,68 @@
 import { useEffect, useState } from 'react';
-import type { TopicProps, FetchTopics } from 'src/store/forum/types';
-import { ButtonBack, TopicItem, NewTopicButton } from 'src/components';
-import styles from './styles.module.css';
+import type { Topic } from 'src/store/forum/type';
+import {
+  ButtonBack,
+  TopicItem,
+  Modal,
+  Form,
+  ButtonStar,
+  Loader,
+} from 'src/components';
+import cls from './styles.module.css';
+import classNames from 'classnames';
+import { useTypeSelector } from 'src/hooks/useTypeSelector';
+import { forumSelectors } from 'src/store/forum';
+import { useForum } from 'src/hooks/useForum';
 
 export default function ForumPage() {
-  const [topics, setTopics] = useState<TopicProps[]>([]);
+  const [topics, setTopics] = useState<Topic[]>([]);
 
-  const fetchTopics: FetchTopics = () => {
-    const topics: TopicProps[] = [];
-    topics.push(
-      {
-        id: 111,
-        title: 'Test toppic title',
-        commentCount: 1111,
-      },
-      {
-        id: 222,
-        title:
-          'Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title Test toppic title ',
-        commentCount: 1,
-      }
-    );
-    return topics;
-  };
+  const forumData = useTypeSelector(forumSelectors.topics);
+
+  const { getAllTopics, addNewTopic, isLoadingAllTopics, isLoadingAddTopic } =
+    useForum();
+
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [isModalActive, setIsModalActive] = useState(false);
+
+  const handleOpen = () => setIsModalActive(true);
+  const handleClose = () => setIsModalActive(false);
+  const handleSetTitle = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setTitle(e.target.value);
+  const handleSetContent = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setContent(e.target.value);
+
+  const clsTable = classNames('card', cls.table);
+
+  function submitTopic(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    addNewTopic({ title, content });
+    setTitle('');
+    setContent('');
+    handleClose();
+  }
 
   useEffect(() => {
-    setTopics(fetchTopics());
+    getAllTopics();
   }, []);
 
+  useEffect(() => {
+    setTopics(forumData);
+  }, [forumData]);
+
   return (
-    <div className={styles.forum}>
+    <div className={cls.forum}>
       <ButtonBack />
 
       <h1 className='main-menu__title'>Community</h1>
-      <table className={styles.table}>
+      {isLoadingAllTopics && isLoadingAddTopic && <Loader />}
+
+      <table className={clsTable}>
         <thead>
           <tr>
-            <th className={styles.table__th}>Topics</th>
-            <th className={styles.table__th}>Comments</th>
+            <th className={cls.table__th}>Topics</th>
+            <th className={cls.table__th}>Comments</th>
           </tr>
         </thead>
         <tbody>
@@ -54,7 +79,30 @@ export default function ForumPage() {
           })}
         </tbody>
       </table>
-      <NewTopicButton fetchTopics={fetchTopics} />
+
+      <ButtonStar onClick={handleOpen}>New Topic</ButtonStar>
+
+      <Modal
+        active={isModalActive}
+        setActive={setIsModalActive}
+        title='New topic'>
+        <Form title='Submit' onSubmit={submitTopic}>
+          <Form.Input
+            typeComponent='input'
+            name='title'
+            placeholder='Topic title'
+            value={title}
+            onChange={handleSetTitle}
+          />
+          <Form.Input
+            typeComponent='textarea'
+            placeholder='Topic content'
+            name='content'
+            value={content}
+            onChange={handleSetContent}
+          />
+        </Form>
+      </Modal>
     </div>
   );
 }

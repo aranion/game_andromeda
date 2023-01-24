@@ -19,4 +19,5 @@ export enum RouterParamsProfile {
 
 export enum RouterParamsTopic {
   topicId = ':topicId',
+  commentId = ':commentId',
 }

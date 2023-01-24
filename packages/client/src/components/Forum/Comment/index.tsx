@@ -1,18 +1,37 @@
-import classnames from 'classnames';
-import { Link } from 'react-router-dom';
-import type { CommentProps } from 'src/store/forum/types';
-import { Card } from 'src/components';
-import styles from './styles.module.css';
+import cls from './styles.module.css';
+import classNames from 'classnames';
+import type { Comment as CommentProps } from 'src/store/forum/type';
+import { NewCommentButton } from 'src/components';
 
-export const Comment = (props: CommentProps) => {
-  const { id, content, author, parentCommentId } = props;
-  const classNames = classnames('comment__child', styles.comment);
+type Props = {
+  handleOpen: () => void;
+} & CommentProps;
+
+export const Comment = (props: Props) => {
+  const {
+    id,
+    content,
+    author,
+    parentCommentId,
+    parentCommentPreview,
+    parentCommentAuthor,
+    handleOpen,
+  } = props;
+
+  const clsList = classNames('card', cls.comment);
 
   return (
-    <Card className={classNames} id={`${id}`}>
-      {parentCommentId ? <a href={`#${parentCommentId}`}>fggdgdg</a> : null}
-      <div className={styles.comment__content}>{content}</div>
-      <div className={styles.comment__author}>{author}</div>
-    </Card>
+    <li className={clsList} id={`${id}`}>
+      {parentCommentId ? (
+        <a href={`#${parentCommentId}`} className={cls.comment__parentLink}>
+          {parentCommentAuthor}
+          <br></br>
+          {`${parentCommentPreview?.substring(0, 200)}...`}
+        </a>
+      ) : null}
+      <div className={cls.comment__content}>{content}</div>
+      <div className={cls.comment__author}>{author}</div>
+      <NewCommentButton handleOpen={handleOpen} commentId={id} />
+    </li>
   );
 };
