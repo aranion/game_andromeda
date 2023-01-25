@@ -5,6 +5,7 @@ export enum EnhancementType {
   Lives = 'lives',
   Speed = 'speed',
   Multiplier = 'multiplier',
+  Blaster = 'blaster',
 }
 
 export const getEnhancementConfig = (images: string[]) => {
@@ -13,28 +14,34 @@ export const getEnhancementConfig = (images: string[]) => {
     enhancementLives,
     enhancementSpeed,
     enhancementDoubling,
+    enhancementBlaster,
   ] = images;
 
   return {
     [EnhancementType.Shield]: {
       value: 0,
       currentAnimation: AnimationKey.Shield,
-      imageSrc: enhancementShield,
+      image: enhancementShield,
     },
     [EnhancementType.Lives]: {
       value: 0,
       currentAnimation: AnimationKey.Lives,
-      imageSrc: enhancementLives,
+      image: enhancementLives,
     },
     [EnhancementType.Speed]: {
       value: 0,
       currentAnimation: AnimationKey.Speed,
-      imageSrc: enhancementSpeed,
+      image: enhancementSpeed,
     },
     [EnhancementType.Multiplier]: {
       value: 0,
       currentAnimation: AnimationKey.Multiplier,
-      imageSrc: enhancementDoubling,
+      image: enhancementDoubling,
+    },
+    [EnhancementType.Blaster]: {
+      value: 0,
+      currentAnimation: AnimationKey.Blaster,
+      image: enhancementBlaster,
     },
   };
 };

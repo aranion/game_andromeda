@@ -23,6 +23,7 @@ import type { GameConfig, GameMapConfig, GameState, GameStatus } from './types';
  * Основной класс, управляет циклом игры, меняет карту уровней.
  * */
 export class Game {
+  static instance: Game | null = null;
   private canvas: HTMLCanvasElement | null = null;
   private ctx: CanvasRenderingContext2D | null = null;
   private map: GameMap | null = null;
@@ -35,7 +36,6 @@ export class Game {
   private frame = 0;
   private level = 1;
   private readonly goHome: () => void;
-  static instance: Game | null = null;
   private state: GameState = defaultState;
 
   constructor(config: GameConfig) {
@@ -78,7 +78,12 @@ export class Game {
   }
 
   private createGameEntities(gameMapConfig: GameMapConfig) {
-    if (this.canvas && this.ctx && this.images?.getImages && this.directions) {
+    if (
+      this.canvas &&
+      this.ctx &&
+      this.images?.getImagesGame &&
+      this.directions
+    ) {
       const canvasAndCtx = { canvas: this.canvas, ctx: this.ctx };
       const direction = this.directions.getDirections;
       const configPlayer = getDefaultPlayerStats(this.images.player);
@@ -97,6 +102,7 @@ export class Game {
         sceneTransition: this.sceneTransition,
         direction,
         position,
+        pressedKey: this.directions.getPressedKey,
         ...this.state.player,
       });
       this.gameTheme = new GameTheme({
@@ -109,7 +115,7 @@ export class Game {
         sceneTransition: this.sceneTransition,
         player: this.player,
         gameTheme: this.gameTheme,
-        images: this.images.getImages,
+        imagesGame: this.images.getImagesGame,
         score: this.state.score ?? 0,
       });
     }

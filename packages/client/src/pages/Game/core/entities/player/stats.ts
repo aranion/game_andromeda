@@ -4,7 +4,10 @@ import type { PlayerConfig } from './types';
 
 export const getDefaultPlayerStats = (
   images: string[]
-): Omit<PlayerConfig, 'canvas' | 'ctx' | 'direction' | 'sceneTransition'> => {
+): Omit<
+  PlayerConfig,
+  'canvas' | 'ctx' | 'direction' | 'sceneTransition' | 'pressedKey'
+> => {
   const [
     baseSpaceshipHealthy,
     baseSpaceshipBattered,
@@ -21,7 +24,7 @@ export const getDefaultPlayerStats = (
     speed: INITIAL_SPEED,
     radius: 34,
     lives: 4,
-    maxLives: 5,
+    maxLives: 6,
     skins: {
       base: {
         healthy: baseSpaceshipHealthy,

@@ -7,6 +7,7 @@ export class Asteroid extends GameObject {
   private readonly rotateSpeed: number;
   private readonly moveAngle: number;
   private distance = 0;
+  private lives;
 
   constructor(config: AsteroidConfig) {
     super({
@@ -24,6 +25,7 @@ export class Asteroid extends GameObject {
       ...config,
     });
     this.rotateAngle = 0;
+    this.lives = config.lives ?? 1;
     this.moveAngle = config.moveAngle; // от 0 до 2PI
     this.rotateVector = config.rotateVector; // направление вращения астероида
     this.rotateSpeed = config.rotateSpeed;
@@ -40,6 +42,10 @@ export class Asteroid extends GameObject {
     return this.distance;
   }
 
+  get getLives() {
+    return this.lives;
+  }
+
   protected draw() {
     this.sprite.drawImageRotate(this.rotateAngle);
   }
@@ -54,5 +60,14 @@ export class Asteroid extends GameObject {
         (target.getPosition.y - this.position.y) ** 2
     );
     this.draw();
+  }
+
+  public updateLives(damageValue: number) {
+    const newLives = this.lives + damageValue;
+    this.lives = newLives >= 1 ? newLives : 0;
+  }
+
+  public checkDestroy() {
+    return this.lives === 0;
   }
 }

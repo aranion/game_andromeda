@@ -7,8 +7,9 @@ export type GameObjectConfig = {
   radius?: number;
   width?: number;
   height?: number;
-  imageSrc: string;
+  image: string;
   isAnimated?: boolean;
   currentAnimation?: AnimationKey;
   sizeRatio?: number;
+  lives?: number;
 } & CanvasProperties;

@@ -23,7 +23,7 @@ export class Enhancement extends GameObject {
     const enhancementKeys = Object.keys(enhancementConfig) as EnhancementType[];
     const enhancementType =
       type ?? enhancementKeys[randomInteger(0, enhancementKeys.length - 1)];
-    const { imageSrc, currentAnimation, value } =
+    const { image, currentAnimation, value } =
       enhancementConfig[enhancementType];
     const position = {
       x: XY?.x ?? randomInteger(RADIUS, canvas.width - RADIUS),
@@ -32,7 +32,7 @@ export class Enhancement extends GameObject {
     super({
       ...defaultConfig,
       ...config,
-      imageSrc,
+      image,
       position,
       currentAnimation,
     });

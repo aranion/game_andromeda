@@ -9,6 +9,7 @@ export const hintColors: HintColors = {
   titan: '#A0A0A0',
   damage: '#AD0303',
   extraLife: '#58ab4b',
+  shot: '#ffffff',
 };
 
 const listHintValues: HintValues = (
@@ -23,6 +24,7 @@ export const hintValues: HintValues = {
   ...listHintValues,
   damage: -1,
   extraLife: 1,
+  shot: 1,
 };
 
 export const hintConfig = {

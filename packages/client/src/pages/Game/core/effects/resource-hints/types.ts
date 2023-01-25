@@ -1,5 +1,4 @@
 import type { ResourceType } from '../../entities/resource/resource.config';
-import type { Multiplier } from '../../entities/resource/types';
 import type { Coordinates } from '../../types';
 
 export type ResourceHintsConfig = {
@@ -9,6 +8,7 @@ export type ResourceHintsConfig = {
 export enum OtherHintType {
   Damage = 'damage',
   ExtraLife = 'extraLife',
+  Shot = 'shot',
 }
 
 export type ResourceHint = {
@@ -16,7 +16,7 @@ export type ResourceHint = {
   resourceType: ResourceType | OtherHintType;
   opacity: number;
   color: string;
-  multiplier?: Multiplier;
+  multiplier?: number;
   isShield?: boolean;
   isFullLives?: boolean;
 };

@@ -24,7 +24,7 @@ export type ParticlesConfig = CanvasProperties & {
     maxRadius?: number;
     radius?: number;
     color?: string;
-    imageSrc?: string;
+    image?: string;
     sizeRatio?: number;
   };
 };

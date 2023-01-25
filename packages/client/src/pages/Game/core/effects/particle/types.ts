@@ -10,7 +10,7 @@ export type ParticleConfig = {
   type: ParticleTypes;
   moveAngle: number;
   radius: number;
-  imageSrc?: string;
+  images?: string;
   color?: string;
   sizeRatio?: number;
   isAnimated?: boolean;
