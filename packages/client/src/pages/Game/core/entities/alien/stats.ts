@@ -9,9 +9,9 @@ const defaultAlienStats = {
 export function createAlienConfig(
   images: string[]
 ): Omit<AlienConfig, 'canvas' | 'ctx'> {
-  const imageSrc = images[0];
+  const image = images[0];
   return {
     ...defaultAlienStats,
-    imageSrc: imageSrc,
+    image,
   };
 }

@@ -131,6 +131,18 @@ export class GameMap {
     );
   }
 
+  private addAlien() {
+    const alienConfig = createAlienConfig(this.imagesGame.alien);
+
+    this.aliens.push(
+      new Alien({
+        canvas: this.canvas,
+        ctx: this.ctx,
+        ...alienConfig,
+      })
+    );
+  }
+
   private addHint(configHint: ResourceHintConfig) {
     this.resourceHints.addHint({
       multiplier: this.multiplier,
@@ -202,6 +214,27 @@ export class GameMap {
           i--;
         }
       }
+      for (let g = 0; g < this.aliens.length; g++) {
+        const alien = this.aliens[g];
+
+        projectile.calcDistance(alien);
+
+        if (this.isCollided(projectile, alien) && !projectile.isCounted) {
+          this.addEnhancement({ position: { ...alien.getPosition } });
+          this.addParticle({
+            position: { ...alien.getPosition },
+            ...alienExplode(this.imagesGame.alien),
+          });
+          this.aliens.splice(g, 1);
+
+          this.addParticle({
+            position: { ...projectile.getPosition },
+          });
+
+          this.projectiles.splice(i, 1);
+          i--;
+        }
+      }
     }
   }
 
@@ -239,14 +272,7 @@ export class GameMap {
     }
   }
 
-  private handleEnhancement(frame: number) {
-    const spawnInterval = 60;
-    const isAddEnhancement = frame % spawnInterval === 0;
-
-    if (isAddEnhancement) {
-      this.addEnhancement();
-    }
-
+  private handleEnhancement() {
     for (let i = 0; i < this.enhancements.length; i++) {
       const enhancement = this.enhancements[i];
       enhancement.update(this.player);
@@ -341,14 +367,7 @@ export class GameMap {
     const isAddAliens = frame % this.spawnInterval.alien === 0;
 
     if (isAddAliens) {
-      const alienConfig = createAlienConfig(this.images.alien);
-      this.aliens.push(
-        new Alien({
-          canvas: this.canvas,
-          ctx: this.ctx,
-          ...alienConfig,
-        })
-      );
+      this.addAlien();
     }
 
     for (let i = 0; i < this.aliens.length; i++) {
@@ -363,61 +382,27 @@ export class GameMap {
         const asteroid = this.asteroids[j];
         if (alien.isCollided(asteroid)) {
           this.aliens.splice(i, 1);
-          const prob: number = Math.random() * 100;
-          if (prob > 70) {
-            const enhancementConfig = getEnhancementConfig(
-              this.images.enhancement
-            );
-            this.enhancements.push(
-              new Enhancement({
-                canvas: this.canvas,
-                ctx: this.ctx,
-                enhancementConfig,
-                position: { ...alien.getPosition },
-              })
-            );
-          } else if (prob > 30) {
-            this.resources.push(
-              new Resource({
-                canvas: this.canvas,
-                ctx: this.ctx,
-                imageSrc: this.images.resource[0],
-                position: { ...alien.getPosition },
-              })
-            );
-          }
-          this.particlesGroups.push(
-            new Particles({
-              canvas: this.canvas,
-              ctx: this.ctx,
-              position: { ...alien.getPosition },
-              ...alienExplode(this.images.alien),
-            })
-          );
           i--;
+          this.addEnhancement({ position: { ...alien.getPosition } });
+          this.addParticle({
+            position: { ...alien.getPosition },
+            ...alienExplode(this.imagesGame.alien),
+          });
           this.asteroids.splice(j, 1);
-          this.particlesGroups.push(
-            new Particles({
-              canvas: this.canvas,
-              ctx: this.ctx,
-              position: { ...asteroid.getPosition },
-              ...asteroidExplode(this.images.asteroids),
-            })
-          );
+          this.addParticle({
+            position: { ...asteroid.getPosition },
+            ...asteroidExplode(this.imagesGame.asteroids),
+          });
           j--;
         }
       }
       if (this.isCollided(alien)) {
-        this.player.updateLives(-1, this.score);
+        this.player.updateLives({ num: -1, score: this.score });
         this.aliens.splice(i, 1);
-        this.particlesGroups.push(
-          new Particles({
-            canvas: this.canvas,
-            ctx: this.ctx,
-            position: { ...alien.getPosition },
-            ...alienExplode(this.images.alien),
-          })
-        );
+        this.addParticle({
+          position: { ...alien.getPosition },
+          ...alienExplode(this.imagesGame.alien),
+        });
         i--;
       }
     }
@@ -505,7 +490,7 @@ export class GameMap {
     this.handleProjectiles();
     this.handleAsteroids(frame);
     this.handleAliens(frame);
-    this.handleEnhancement(frame);
+    this.handleEnhancement();
     this.drawUI();
     this.sceneTransition.update();
     this.resourceHints.update();

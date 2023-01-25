@@ -14,12 +14,13 @@ function generateLevel(): MapConfig {
     const renderingFrequency = {
       asteroid: 110,
       resource: 200,
+      alien: 200,
     };
     maxResource += i * multiplier;
 
     levels[`level_${i}`] = {
       spawnInterval: {
-        alien: renderingFrequency.resource + newMultiplier,
+        alien: renderingFrequency.alien - newMultiplier / 2,
         asteroid: renderingFrequency.asteroid - newMultiplier / 2,
         resource: renderingFrequency.resource + newMultiplier,
       },

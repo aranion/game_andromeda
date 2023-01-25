@@ -60,7 +60,7 @@ export class Images {
   }
 
   get alien() {
-    return this.images?.alien || [];
+    return this.imagesGame?.alien || [];
   }
 
   public async downloadImages() {
