@@ -17,30 +17,46 @@ import enhancementShield from '../assets/enhancement/shield.png';
 import enhancementLives from '../assets/enhancement/lives.png';
 import enhancementSpeed from '../assets/enhancement/speed.png';
 import enhancementDoubling from '../assets/enhancement/multiplier.png';
+import enhancementBlaster from '../assets/enhancement/blaster.png';
 import resourceSprite from '../assets/resource/resource.png';
 import baseAlien from '../assets/alien/base_alien.png';
+import projectileBlaster from '../assets/projectile/projectile-blaster.png';
+import projectileRocket from '../assets/projectile/projectile-rocket.png';
 
 export class Images {
-  private images: ImagesGame | null = null;
+  static instance: Images | null = null;
+  private imagesGame: ImagesGame | null = null;
 
-  get getImages() {
-    return this.images;
+  constructor() {
+    if (!Images.instance) {
+      Images.instance = this;
+    }
+
+    return Images.instance;
+  }
+
+  get getImagesGame() {
+    return this.imagesGame;
   }
 
   get player() {
-    return this.images?.player || [];
+    return this.imagesGame?.players || [];
   }
 
   get asteroid() {
-    return this.images?.asteroids || [];
+    return this.imagesGame?.asteroids || [];
   }
 
   get enhancement() {
-    return this.images?.enhancement || [];
+    return this.imagesGame?.enhancements || [];
   }
 
   get resource() {
-    return this.images?.resource || [];
+    return this.imagesGame?.resources || [];
+  }
+
+  get projectiles() {
+    return this.imagesGame?.projectiles || [];
   }
 
   get alien() {
@@ -70,15 +86,21 @@ export class Images {
       enhancementLives,
       enhancementSpeed,
       enhancementDoubling,
+      enhancementBlaster,
     ]);
     const resource = await dataUrlImages([resourceSprite]);
     const alien = await dataUrlImages([baseAlien]);
+    const projectiles = await dataUrlImages([
+      projectileBlaster,
+      projectileRocket,
+    ]);
 
-    this.images = {
+    this.imagesGame = {
       asteroids,
-      player,
-      enhancement,
-      resource,
+      players: player,
+      enhancements: enhancement,
+      resources: resource,
+      projectiles,
       alien,
     };
   }

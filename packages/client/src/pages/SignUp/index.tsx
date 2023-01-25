@@ -41,7 +41,7 @@ export default function SignUp() {
 
   useEffect(() => {
     if (isAuth) {
-      navigate(RouterList.HOME);
+      navigate(RouterList.MAINMENU);
     }
   }, [isAuth]);
 

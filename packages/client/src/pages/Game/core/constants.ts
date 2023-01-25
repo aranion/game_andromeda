@@ -24,11 +24,14 @@ export enum AnimationKey {
   TitanOreFly = 'titan-ore-fly',
   GoldOreFly = 'gold-ore-fly',
   PlatinumOreFly = 'platinum-ore-fly',
+  ProjectileBlaster = 'projectile-blaster',
+  ProjectileRocket = 'projectile-rocket',
   Shield = 'effect-shield',
   Lives = 'add-lives',
   Speed = 'add-speed',
   Multiplier = 'multiplier',
   AlienFly = 'alien-fly',
+  Blaster = 'blaster',
 }
 
 export const defaultState: GameState = {

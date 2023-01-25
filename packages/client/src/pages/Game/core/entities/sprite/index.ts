@@ -8,7 +8,7 @@ import type { SpriteConfig } from './types';
  * */
 export class Sprite {
   private readonly ctx: CanvasRenderingContext2D;
-  private readonly image: HTMLImageElement;
+  private readonly imageElement: HTMLImageElement;
   private isLoaded = false;
   private position: Coordinates;
   private readonly radius: number;
@@ -24,8 +24,8 @@ export class Sprite {
 
   constructor(config: SpriteConfig) {
     this.ctx = config.ctx;
-    this.image = new Image();
-    this.imageSrc = config.src;
+    this.imageElement = new Image();
+    this.image = config.src;
     this.sizeRatio = config.sizeRatio ?? 1;
     this.position = config.position;
     this.radius = config.radius * this.sizeRatio;
@@ -47,10 +47,10 @@ export class Sprite {
     return [0, 0];
   }
 
-  set imageSrc(src: string) {
+  set image(src: string) {
     this.isLoaded = false;
-    this.image.src = src;
-    this.image.onload = () => {
+    this.imageElement.src = src;
+    this.imageElement.onload = () => {
       this.isLoaded = true;
     };
   }
@@ -82,7 +82,7 @@ export class Sprite {
     const [frameX, frameY] = this.frame;
 
     this.ctx.drawImage(
-      this.image,
+      this.imageElement,
       frameX * (this.width / this.sizeRatio),
       frameY * (this.height / this.sizeRatio),
       this.width / this.sizeRatio,
@@ -99,7 +99,7 @@ export class Sprite {
   }
 
   draw() {
-    if (this.image && this.isLoaded) {
+    if (this.imageElement && this.isLoaded) {
       this.drawImage({
         x: this.position.x - this.width / 2,
         y: this.position.y - this.height / 2,
@@ -108,7 +108,7 @@ export class Sprite {
   }
 
   drawImageLookAt(target: Coordinates) {
-    if (this.image && this.isLoaded) {
+    if (this.imageElement && this.isLoaded) {
       this.ctx.setTransform(1, 0, 0, 1, this.position.x, this.position.y);
       // + 90deg по часовой стрелке, чтобы выровнять изображение
       this.ctx.rotate(
@@ -124,7 +124,7 @@ export class Sprite {
   }
 
   drawImageRotate(rotateAngle: number) {
-    if (this.image && this.isLoaded) {
+    if (this.imageElement && this.isLoaded) {
       this.ctx.setTransform(1, 0, 0, 1, this.position.x, this.position.y);
       this.ctx.rotate(Math.atan2(Math.sin(rotateAngle), Math.cos(rotateAngle)));
 

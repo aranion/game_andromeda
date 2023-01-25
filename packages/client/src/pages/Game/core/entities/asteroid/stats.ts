@@ -12,16 +12,19 @@ export function createAsteroidConfig(
   images: string[]
 ): Omit<AsteroidConfig, 'canvas' | 'ctx'> {
   const random = Math.random();
-  const imageSrc = images[randomInteger(0, 3)];
+  const indexImage = randomInteger(0, 3);
+  const image = images[indexImage];
+  const lives = indexImage === 3 || indexImage === 0 ? 2 : 1;
   const { isAnimated, maxRotateSpeed, maxSpeed, radius } = defaultAsteroidStats;
 
   return {
     isAnimated,
     radius,
-    imageSrc,
+    image,
     speed: random * maxSpeed,
     rotateSpeed: random * maxRotateSpeed,
     rotateVector: random > 0.5 ? 1 : -1,
     moveAngle: random * 2 * Math.PI,
+    lives,
   };
 }

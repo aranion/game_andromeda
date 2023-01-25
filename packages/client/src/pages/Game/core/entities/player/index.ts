@@ -2,27 +2,36 @@ import { INITIAL_SPEED, TIME_ACTIONS_ENHANCEMENT } from './../../constants';
 import { GameObject } from '../game-object';
 import { store } from 'src/store';
 import { gameActions } from 'src/store/game';
+import { WeaponsList } from '../weapon/weapons.config';
+import { Weapon } from '../weapon';
+import type { GameMap } from '../../overworld/game-map';
+import type { Coordinates } from '../../types';
+import type { SceneTransition } from '../../overworld/scene-transition';
+import type { PressedKey } from '../../overworld/directions-input/types';
+import type { TimeoutId } from '@reduxjs/toolkit/dist/query/core/buildMiddleware/types';
 import { configRestartBtn, defaultMoveTime } from './stats';
 import type {
   IdTimeouts,
   MoveToList,
   PlayerConfig,
   PlayerSkins,
+  UpdateLivesParams,
 } from './types';
-import type { Coordinates } from '../../types';
-import type { SceneTransition } from '../../overworld/scene-transition';
 
 /**
  * Класс игрока. Главная сущность игры в виде космического корабля.
  * */
 export class Player extends GameObject {
-  private status: 'mounted' | 'unmounted' = 'unmounted';
-  private direction: Coordinates;
+  private status: 'mounted' | 'unmounted' = 'mounted';
   private lives: number;
-  private maxLives: number;
   private shielded: boolean;
+  private direction: Coordinates;
+  private readonly maxLives: number;
+  private readonly sceneTransition: SceneTransition;
+  private readonly pressedKey: PressedKey;
+  private readonly weapon: Weapon;
+  private idTimeout: TimeoutId | null = null;
   private skins: PlayerSkins;
-  private sceneTransition: SceneTransition;
   private idTimeouts: IdTimeouts = {
     shield: null,
     speed: null,
@@ -31,17 +40,19 @@ export class Player extends GameObject {
   private isImmortal = false;
 
   constructor(config: PlayerConfig) {
-    const { skins, shielded, maxLives, lives, direction } = config;
+    const { skins, shielded, maxLives, lives, direction, canvas, ctx } = config;
 
-    super({ ...config, imageSrc: skins.base.healthy });
+    super({ ...config, image: skins.base.healthy });
 
-    this.status = 'mounted';
     this.direction = direction;
     this.lives = lives;
     this.maxLives = maxLives;
     this.shielded = shielded ?? false;
     this.skins = skins;
     this.sceneTransition = config.sceneTransition;
+    this.pressedKey = config.pressedKey;
+    this.weapon = new Weapon({ canvas, ctx, shooter: this });
+
     this.updateSkin();
   }
 
@@ -53,12 +64,52 @@ export class Player extends GameObject {
     return this.shielded;
   }
 
+  get getDirection(): Coordinates {
+    return this.direction;
+  }
+
+  get getWeaponParams() {
+    return {
+      ...this.weapon.getWeaponOptions,
+      ...this.weapon.getRechargeOptions,
+    };
+  }
+
   get getSpeed(): number {
     return this.speed;
   }
 
   get getIsFullLives(): boolean {
     return this.lives === this.maxLives;
+  }
+
+  public updateWeapon() {
+    this.weapon.setWeaponType = WeaponsList.Blaster;
+
+    if (this.idTimeout) {
+      clearTimeout(this.idTimeout);
+    }
+
+    this.idTimeout = setTimeout(() => {
+      this.weapon.setWeaponType = WeaponsList.Rocket;
+    }, 10000);
+  }
+
+  public checkShot(gameMap: GameMap) {
+    const { keydown } = this.pressedKey;
+    const { costProjectiles } = this.weapon.getWeaponOptions;
+    const { isRecharge } = this.weapon.getRechargeOptions;
+
+    if (keydown === ' ') {
+      if (gameMap.getScore + costProjectiles >= 0) {
+        if (!isRecharge) {
+          gameMap.setScore = costProjectiles;
+        }
+        return this.weapon.shot();
+      } else {
+        return null;
+      }
+    }
   }
 
   private destroyShield() {
@@ -102,7 +153,8 @@ export class Player extends GameObject {
     }, TIME_ACTIONS_ENHANCEMENT.shield);
   }
 
-  public updateLives(num = 1, score?: number) {
+  public updateLives(params?: UpdateLivesParams) {
+    const { num = 1, score } = params || { num: 1 };
     const newLives = this.lives + num;
     const isSubtractLives = num < 0;
 
@@ -144,19 +196,19 @@ export class Player extends GameObject {
     const { wrecked, damaged, battered, healthy } = skins;
 
     if (this.lives === 0) {
-      this.sprite.imageSrc = destroyed.explosion;
+      this.sprite.image = destroyed.explosion;
     }
     if (this.lives === 1) {
-      this.sprite.imageSrc = wrecked;
+      this.sprite.image = wrecked;
     }
     if (this.lives === 2) {
-      this.sprite.imageSrc = damaged;
+      this.sprite.image = damaged;
     }
     if (this.lives === 3) {
-      this.sprite.imageSrc = battered;
+      this.sprite.image = battered;
     }
     if (this.lives > 3) {
-      this.sprite.imageSrc = healthy;
+      this.sprite.image = healthy;
     }
   }
 
@@ -218,7 +270,7 @@ export class Player extends GameObject {
   }
 
   public clear() {
-    this.updateLives(this.maxLives - this.lives - 1, 0);
+    this.updateLives({ num: this.maxLives - this.lives - 1 });
     this.position.x = this.canvas.width / 2;
     this.position.y = this.canvas.height;
   }

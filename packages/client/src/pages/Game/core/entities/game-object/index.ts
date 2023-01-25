@@ -25,7 +25,7 @@ export abstract class GameObject implements GameEntityInterface {
 
     this.sprite = new Sprite({
       ctx: this.ctx,
-      src: config.imageSrc,
+      src: config.image,
       position: this.position,
       radius: this.radius,
       width: config.width,
