@@ -1,0 +1,31 @@
+.input,
+.textarea {
+  background: var(--color-light);
+  box-shadow: var(--inputShadow);
+  color: var(--color-normal);
+  line-height: 1rem;
+  border: none;
+  padding: 5px 20px;
+
+  &::placeholder {
+    color: var(--color-grey);
+    opacity: 1;
+    transition: 0.2s opacity;
+  }
+
+  &:focus::placeholder {
+    opacity: 0;
+  }
+
+  &:focus {
+    outline: 2px solid rgba(255, 255, 237, 0.8);
+  }
+}
+
+.input {
+  border-radius: 30px;
+}
+
+.textarea {
+  border-radius: 20px;
+}

@@ -24,19 +24,57 @@ services:
             args:
               SERVER_PORT: ${SERVER_PORT}
         restart: always
+        depends_on:
+          - postgres
         ports:
             - "${SERVER_PORT}:${SERVER_PORT}"
         environment:
           SERVER_PORT: ${SERVER_PORT}
-
+          POSTGRES_USER: ${POSTGRES_USER}
+          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+          POSTGRES_DB: ${POSTGRES_DB}
+          DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}
+          env-file:
+            ./.env
+        networks:
+          - awesome
     postgres:
-      image: postgres:14     
+      container_name: postgres
+      image: postgres:14
       ports:
         - "${POSTGRES_PORT}:${POSTGRES_PORT}"
       environment:
-        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         POSTGRES_DB: ${POSTGRES_DB}
+        PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+        PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+        env-file:
+          ./.env
+      restart: always
       volumes:
         - ./tmp/pgdata:/var/lib/postgresql/data
+      networks:
+        - awesome
+    pgadmin:
+      container_name: pgadmin
+      image: dpage/pgadmin4:4.18
+      restart: always
+      environment:
+        PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+        PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+        PGADMIN_LISTEN_PORT: 80
+      ports:
+        - "8080:80"
+      volumes:
+        - pgadmin-data:/var/lib/pgadmin
+      depends_on:
+        - postgres
+      networks:
+        - awesome
+volumes:
+  pgadmin-data:
 
+networks:
+  awesome:
+    driver: bridge

@@ -1,0 +1,48 @@
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100vh;
+  image-rendering: pixelated;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+}
+
+.game {
+  &__label-new-level,
+  &__label-game-over,
+  &__button-game-over,
+  &__button-new-level,
+  &__button-to-menu,
+  &__button-new-game,
+  &__label-endgame {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    margin-top: 300px;
+    color: var(--mainColor);
+    font-size: 30px;
+  }
+
+  &__button-game-over,
+  &__button-new-level,
+  &__button-to-menu,
+  &__button-new-game {
+    margin-top: 500px;
+    width: 250px;
+    height: 35px;
+    font-size: 20px;
+    color: var(--color-space);
+  }
+
+  &__button-to-menu {
+    margin-top: 600px;
+  }
+
+  &__button-new-game {
+    margin-top: 450px;
+  }
+}

@@ -13,8 +13,17 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 11,
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'prettier'],
   rules: {
-    '@typescript-eslint/ban-ts-comment': 1,
+    'prettier/prettier': 'error',
+    eqeqeq: 2,
+    quotes: ['warn', 'single'],
+    semi: ['warn', 'always'],
+    'no-debugger': 'warn',
+    'prefer-const': 'warn',
+    'jsx-quotes': ['warn', 'prefer-single'],
+    'comma-dangle': ['warn', 'only-multiline'],
+    '@typescript-eslint/ban-ts-comment': 0,
   },
-}
+  ignorePatterns: ['**/dist/*'],
+};

@@ -1,0 +1,58 @@
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  margin: 25px auto;
+  background: var(--color-normal);
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.22),
+    0px 0px 40px rgba(255, 255, 237, 0.1);
+  border-radius: 30px;
+  flex-basis: 50%;
+  width: 900px;
+
+  &__avatar {
+    width: 14rem;
+    height: 14rem;
+  }
+
+  &__nickname {
+    font-size: 2.5rem;
+    margin: 25px;
+    width: 80%;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+  }
+
+  &__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 40px;
+
+    &_width {
+      min-width: 200px;
+    }
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .profile {
+    width: 600px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .profile {
+    width: 100%;
+  }
+}
