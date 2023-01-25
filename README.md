@@ -1,76 +1,52 @@
-### Как запускать?
+# ✨Journey to the Andromeda✨
 
-1. Убедитесь что у вас установлен `node` и `docker`
-2. Выполните команду `yarn bootstrap` - это обязательный шаг, без него ничего работать не будет :)
-3. Выполните команду `yarn dev`
-3. Выполните команду `yarn dev --scope=client` чтобы запустить только клиент
-4. Выполните команду `yarn dev --scope=server` чтобы запустить только server
+<img align="right" width="95" height="95"
+     alt="Game logo"
+     src="https://github.com/HereHaveTheseFlowers/game_andromeda/blob/develop/packages/client/public/imgs/icons/vite-128.svg">
 
 
-### Как добавить зависимости?
-В этом проекте используется `monorepo` на основе [`lerna`](https://github.com/lerna/lerna)
+Учебный проект, разработанный в рамках курса [Мидл фронтенд-разработчик](https://practicum.yandex.ru/middle-frontend/)
 
-Чтобы добавить зависимость для клиента 
-```yarn lerna add {your_dep} --scope client```
-
-Для сервера
-```yarn lerna add {your_dep} --scope server```
-
-И для клиента и для сервера
-```yarn lerna add {your_dep}```
-
-
-Если вы хотите добавить dev зависимость, проделайте то же самое, но с флагом `dev`
-```yarn lerna add {your_dep} --dev --scope server```
+## Стек технологий
+* `React` главный инструмент работы. В связке с ним были использованы `Redux`, `TS` и прочие библиотеки react'а
+* `PostCSS` вместо препроцессоров CSS
+* `Nginx` для раздачи статики, проксрования
+* `Docker`, `Docker-Compose` для автоматической развёртки приложения
+* `Canvas` игра написана на чистом canvas без примеменения сторонных библиотек
+* `Node Js` для api приложения
+* `Postgres` используется для хранения чатов форума
 
 
-### Тесты
+<img align="right" width="500" height="300"
+     alt="Game img"
+     src="https://github.com/Melekh11/test-md/blob/main/Снимок%20экрана%202023-01-26%20в%2000.09.17.png">
 
-Для клиента используется [`react-testing-library`](https://testing-library.com/docs/react-testing-library/intro/)
-
-```yarn test```
-
-### Линтинг
-
-```yarn lint```
-
-### Форматирование prettier
-
-```yarn format```
-
-### Production build
-
-```yarn build```
-
-И чтобы посмотреть что получилось
+## Web Api
+* `WebWorkers` - на случаи, когда нету интернета :'(
+* `Fullscreen` - всегда удобно, особенно для игры!
+* `Geolocation` для определения языка пользоателя
+* `Audio` куда же в игре без музыки
 
 
-`yarn preview --scope client`
-`yarn preview --scope server`
+## Деплой
+* [`vite`](https://game-andromeda-client.vercel.app/) использовался в начале разработки
+* [`Яндекс.Облако`](https://andromeda-andromeda-19.ya-praktikum.tech) - финальное решение размещения пректа
+     
+## Хочется рассказать
+* В проект добавлена темизация
+* Весь контент странциц адаптивен для мобильных устройств
 
-## Хуки
-В проекте используется [lefthook](https://github.com/evilmartians/lefthook)
-Если очень-очень нужно пропустить проверки, используйте `--no-verify` (но не злоупотребляйте :)
+<img align="right" width="400" height="250"
+     alt="Game img"
+     src="https://github.com/Melekh11/test-md/blob/main/Снимок%20экрана%202023-01-25%20в%2023.45.00.png">
 
-## Ой, ничего не работает :(
-
-Откройте issue, я приду :)
-
-## Автодеплой статики на vercel
-Зарегистрируйте аккаунт на [vercel](https://vercel.com/)
-Следуйте [инструкции](https://vitejs.dev/guide/static-deploy.html#vercel-for-git)
-В качестве `root directory` укажите `packages/client`
-
-Все ваши PR будут автоматически деплоиться на vercel. URL вам предоставит деплоящий бот
-
-## Production окружение в докере
-Перед первым запуском выполните `node init.js`
+## Участники команды
+* Максим - Ментор-Джедай
+* Евгений - Генерал-Джедай
+* Катя - Рыцарь-Джедай
+* Сережа - Падаван
+* Алена - Йода
 
 
-`docker compose up` - запустит три сервиса
-1. nginx, раздающий клиентскую статику (client)
-2. node, ваш сервер (server)
-3. postgres, вашу базу данных (postgres)
-
-Если вам понадобится только один сервис, просто уточните какой в команде
-`docker compose up {sevice_name}`, например `docker compose up server`
+## Демо
+https://user-images.githubusercontent.com/91600159/214702245-c0aa0fc9-2278-4c87-aea0-a749ef636eee.mp4
