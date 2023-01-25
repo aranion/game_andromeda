@@ -30,6 +30,7 @@ export enum AnimationKey {
   Lives = 'add-lives',
   Speed = 'add-speed',
   Multiplier = 'multiplier',
+  AlienFly = 'alien-fly',
   Blaster = 'blaster',
 }
 

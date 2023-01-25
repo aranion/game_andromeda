@@ -6,6 +6,7 @@ import { resourceExplode } from '../../entities/resource/particles';
 import { projectileExplode } from '../../entities/projectile/particles';
 import { enhancementUse } from '../../entities/enhancement/particles';
 import { createAsteroidConfig } from '../../entities/asteroid/stats';
+import { createAlienConfig } from '../../entities/alien/stats';
 import { Particles } from '../../effects/particles';
 import { getStarsConfig } from './particles';
 import { isOutsideCanvas } from '../../utils/is-outside-canvas';
@@ -29,6 +30,8 @@ import type { GameTheme } from '../game-theme';
 import type { SceneTransition } from '../scene-transition';
 import type { Collide, GameMapConstrConfig, UpdateParams } from './types';
 import type { Player } from '../../entities/player';
+import { Alien } from '../../entities/alien';
+import { alienExplode } from '../../entities/alien/particles';
 import type { SpawnInterval } from '../../types';
 import type { ImagesGame } from '../../images/types';
 
@@ -50,6 +53,7 @@ export class GameMap {
   private resources: Resource[] = [];
   private enhancements: Enhancement[] = [];
   private asteroids: Asteroid[] = [];
+  private aliens: Alien[] = [];
   private particlesGroups: Particles[] = [];
   private projectiles: Projectile[] = [];
   private multiplier = 1;
@@ -127,6 +131,18 @@ export class GameMap {
     );
   }
 
+  private addAlien() {
+    const alienConfig = createAlienConfig(this.imagesGame.alien);
+
+    this.aliens.push(
+      new Alien({
+        canvas: this.canvas,
+        ctx: this.ctx,
+        ...alienConfig,
+      })
+    );
+  }
+
   private addHint(configHint: ResourceHintConfig) {
     this.resourceHints.addHint({
       multiplier: this.multiplier,
@@ -198,6 +214,27 @@ export class GameMap {
           i--;
         }
       }
+      for (let g = 0; g < this.aliens.length; g++) {
+        const alien = this.aliens[g];
+
+        projectile.calcDistance(alien);
+
+        if (this.isCollided(projectile, alien) && !projectile.isCounted) {
+          this.addEnhancement({ position: { ...alien.getPosition } });
+          this.addParticle({
+            position: { ...alien.getPosition },
+            ...alienExplode(this.imagesGame.alien),
+          });
+          this.aliens.splice(g, 1);
+
+          this.addParticle({
+            position: { ...projectile.getPosition },
+          });
+
+          this.projectiles.splice(i, 1);
+          i--;
+        }
+      }
     }
   }
 
@@ -235,16 +272,7 @@ export class GameMap {
     }
   }
 
-  private handleEnhancement(frame: number) {
-    // пока бафы появляются случайно, нужно сделать чтобы они появлялись после уничтожения вражеского корабля
-    // указать координаты(position) и тип бафа(type)
-    const spawnInterval = 60;
-    const isAddEnhancement = frame % spawnInterval === 0;
-
-    if (isAddEnhancement) {
-      this.addEnhancement();
-    }
-
+  private handleEnhancement() {
     for (let i = 0; i < this.enhancements.length; i++) {
       const enhancement = this.enhancements[i];
       enhancement.update(this.player);
@@ -335,6 +363,51 @@ export class GameMap {
     }
   }
 
+  private handleAliens(frame: number) {
+    const isAddAliens = frame % this.spawnInterval.alien === 0;
+
+    if (isAddAliens) {
+      this.addAlien();
+    }
+
+    for (let i = 0; i < this.aliens.length; i++) {
+      const alien = this.aliens[i];
+      alien.update(this.player);
+
+      if (isOutsideCanvas({ object: alien, canvas: this.canvas })) {
+        this.aliens.splice(i, 1);
+        i--;
+      }
+      for (let j = 0; j < this.asteroids.length; j++) {
+        const asteroid = this.asteroids[j];
+        if (alien.isCollided(asteroid)) {
+          this.aliens.splice(i, 1);
+          i--;
+          this.addEnhancement({ position: { ...alien.getPosition } });
+          this.addParticle({
+            position: { ...alien.getPosition },
+            ...alienExplode(this.imagesGame.alien),
+          });
+          this.asteroids.splice(j, 1);
+          this.addParticle({
+            position: { ...asteroid.getPosition },
+            ...asteroidExplode(this.imagesGame.asteroids),
+          });
+          j--;
+        }
+      }
+      if (this.isCollided(alien)) {
+        this.player.updateLives({ num: -1, score: this.score });
+        this.aliens.splice(i, 1);
+        this.addParticle({
+          position: { ...alien.getPosition },
+          ...alienExplode(this.imagesGame.alien),
+        });
+        i--;
+      }
+    }
+  }
+
   private handleParticles() {
     for (let i = 0; i < this.particlesGroups.length; i++) {
       const particles = this.particlesGroups[i];
@@ -349,6 +422,7 @@ export class GameMap {
 
   public clear() {
     this.asteroids = [];
+    this.aliens = [];
     this.particlesGroups.splice(1, this.particlesGroups.length - 1); // вырезать всё, кроме звёзд
     this.resources = [];
     this.projectiles = [];
@@ -415,7 +489,8 @@ export class GameMap {
     this.handleResources(frame);
     this.handleProjectiles();
     this.handleAsteroids(frame);
-    this.handleEnhancement(frame);
+    this.handleAliens(frame);
+    this.handleEnhancement();
     this.drawUI();
     this.sceneTransition.update();
     this.resourceHints.update();
