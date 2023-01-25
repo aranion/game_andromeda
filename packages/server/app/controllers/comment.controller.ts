@@ -139,7 +139,7 @@ export const getAllTopicCommentsCount = async (req: Request, res: Response) => {
   await Comment.findAndCountAll({ where: { topicId } })
     .then(data => {
       console.log('>>>DEBUG<<<', data);
-      res.send(data.count);
+      res.send({ count: data.count });
     })
     .catch(err => {
       res.status(500).send({

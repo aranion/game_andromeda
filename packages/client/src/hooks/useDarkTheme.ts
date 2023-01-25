@@ -1,8 +1,8 @@
 import { useTypeSelector } from './useTypeSelector';
 import { useState, useEffect } from 'react';
 import {
-  useLazyCreateStyleThemeQuery,
   useLazyFetchStyleThemeQuery,
+  useLazyUpdateStyleThemeQuery,
 } from 'src/store/forum';
 import { userSelectors } from 'src/store/user';
 
@@ -18,7 +18,7 @@ export const useDarkTheme = (): [string, boolean, () => void] => {
   const { userData } = useTypeSelector(userSelectors.all);
 
   const [fetchStyleTheme] = useLazyFetchStyleThemeQuery();
-  const [createStyleTheme] = useLazyCreateStyleThemeQuery();
+  const [updateStyleTheme] = useLazyUpdateStyleThemeQuery();
 
   const setMode = (mode: ThemeList) => {
     window.localStorage.setItem(varTheme, mode);
@@ -34,7 +34,7 @@ export const useDarkTheme = (): [string, boolean, () => void] => {
       : setMode(ThemeList.Light);
 
     if (userData.id) {
-      createStyleTheme({ ownerId: userData.id, themeName: theme }).catch(
+      updateStyleTheme({ ownerId: userData.id, themeName: theme }).catch(
         err => {
           setMode(tempTheme);
           console.error(err);

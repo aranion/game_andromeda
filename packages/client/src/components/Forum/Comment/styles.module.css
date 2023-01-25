@@ -3,6 +3,7 @@
   text-align: start;
   display: flex;
   flex-direction: column;
+  position: relative;
   &__content {
     margin-bottom: 10px;
     font-size: 0.85rem;
@@ -25,5 +26,10 @@
       background-color: white;
       color: var(--color-light);
     }
+  }
+
+  &__button {
+    width: 180px;
+    margin-left: auto;
   }
 }

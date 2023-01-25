@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   ButtonBack,
   NewCommentButton,
@@ -14,14 +14,18 @@ import cls from './styles.module.css';
 import classNames from 'classnames';
 import {
   useLazyCreateCommentByIdQuery,
+  useLazyDeleteTopicByIdQuery,
   useLazyFetchTopicAllCommentsQuery,
   useLazyFetchTopicByIdQuery,
 } from 'src/store/forum';
 import { useTypeSelector } from 'src/hooks/useTypeSelector';
 import { useLazyFetchUserDataQuery, userSelectors } from 'src/store/user';
+import { RouterList } from 'src/router/routerList';
 
 export default function TopicPage() {
   const { topicId } = useParams<ParamsUrl>();
+
+  const navigate = useNavigate();
 
   const [topic, setTopic] = useState<Topic | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
@@ -37,6 +41,8 @@ export default function TopicPage() {
     useLazyFetchTopicAllCommentsQuery();
   const [createComment] = useLazyCreateCommentByIdQuery();
   const [fetchUser] = useLazyFetchUserDataQuery();
+  const [deleteTopic, { isLoading: isLoadingDeleteTopic }] =
+    useLazyDeleteTopicByIdQuery();
 
   const handleOpen = () => setIsModalActive(true);
   const handleClose = () => setIsModalActive(false);
@@ -97,6 +103,16 @@ export default function TopicPage() {
     }
   }
 
+  const handleDeleteTopic = () => {
+    if (topicId && !isNaN(+topicId)) {
+      deleteTopic(+topicId)
+        .then(() => {
+          navigate(RouterList.FORUM);
+        })
+        .catch(console.error);
+    }
+  };
+
   const clsTopicInfo = classNames('card', cls.topic__info);
 
   useEffect(() => {
@@ -112,6 +128,7 @@ export default function TopicPage() {
       <TitlePage>Community</TitlePage>
       {(isLoadingTopic || isLoadingComments) && <Loader />}
       <div className={clsTopicInfo}>
+        {isLoadingDeleteTopic && <Loader position='absolute' />}
         {topic?.title ? (
           <div className={cls.topic__title}>{topic.title}</div>
         ) : null}
@@ -121,12 +138,22 @@ export default function TopicPage() {
         {topic?.content ? (
           <div className={cls.topic__content}>{topic?.content}</div>
         ) : null}
+        {topic?.authorId === userData.id && (
+          <button onClick={handleDeleteTopic} className={cls.topic__close}>
+            X
+          </button>
+        )}
       </div>
-      {comments ? (
-        <CommentsList list={comments} handleOpen={handleOpen} />
-      ) : null}
 
       <NewCommentButton handleOpen={handleOpen} />
+
+      {comments ? (
+        <CommentsList
+          list={comments}
+          handleOpen={handleOpen}
+          getComments={getComments}
+        />
+      ) : null}
 
       <Modal
         active={isModalActive}
