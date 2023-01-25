@@ -65,7 +65,7 @@ export const deleteUserThemeById = async (req: Request, res: Response) => {
   console.log('>>>DEBUG<<<');
   console.log('>>>DEBUG-req.params<<<', req.params);
   console.log('>>>DEBUG-req.body<<<', req.body);
-  const ownerId = req.params.ownerId;
+  const ownerId = Number(req.params.ownerId);
 
   await UserTheme.destroy({ where: { ownerId } })
     .then(num => {
@@ -91,7 +91,7 @@ export const getUserThemeById = async (req: Request, res: Response) => {
   console.log('>>>DEBUG<<<');
   console.log('>>>DEBUG-req.params<<<', req.params);
   console.log('>>>DEBUG-req.body<<<', req.body);
-  const ownerId = req.params.ownerId;
+  const ownerId = Number(req.params.ownerId);
 
   await UserTheme.findByPk(ownerId)
     .then(data => {

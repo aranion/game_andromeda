@@ -1,6 +1,7 @@
 import express from 'express';
 import * as topicController from '../controllers/topic.controller';
 import * as commentController from '../controllers/comment.controller';
+import * as userThemeController from '../controllers/userTheme.controller';
 
 const router = express.Router();
 
@@ -39,5 +40,10 @@ router.delete(
   '/comments/:topicId',
   commentController.deleteAllCommentsByTopicId
 );
+
+router.get('/style-theme/:ownerId', userThemeController.getUserThemeById);
+router.delete('/style-theme/:ownerId', userThemeController.deleteUserThemeById);
+router.post('/style-theme', userThemeController.createUserTheme);
+router.put('/style-theme', userThemeController.updateUserThemeById);
 
 export default router;

@@ -64,6 +64,7 @@ input {
     0px 0px 40px rgba(255, 255, 237, 0.1);
   border-radius: 30px;
   color: var(--color-light);
+  width: 100%;
 }
 
 @media only screen and (max-width: 600px) {

@@ -13,17 +13,8 @@ export const CommentsList = (props: Props) => {
   return (
     <ul className={cls.list}>
       {list.map(comment => {
-        const { id, parentCommentId } = comment;
-        const parent = list.find(comment => comment.id === parentCommentId);
-
         return (
-          <Comment
-            {...comment}
-            handleOpen={handleOpen}
-            key={id}
-            parentCommentPreview={parent?.content}
-            parentCommentAuthor={parent?.authorName}
-          />
+          <Comment {...comment} handleOpen={handleOpen} key={comment.id} />
         );
       })}
     </ul>

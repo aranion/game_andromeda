@@ -25,5 +25,5 @@ module.exports = {
     'comma-dangle': ['warn', 'only-multiline'],
     '@typescript-eslint/ban-ts-comment': 0,
   },
-  ignorePatterns: ["**/dist/*"],
+  ignorePatterns: ['**/dist/*'],
 };

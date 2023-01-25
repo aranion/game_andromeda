@@ -1,55 +1,54 @@
+import type { ThemeList } from 'src/hooks/useDarkTheme';
+
 export type InitialState = {
   topics: Topic[];
-  activeTopicComments: {
-    topicId: number | undefined;
-    comments: Comment[];
-  };
 };
 
-export type Topic = Partial<{
+export type Topic = {
+  authorId: number;
+  content: number;
+  createdAt: string;
   id: number;
   title: string;
-  authorId: number;
-  authorName: string;
-  content: string;
-  commentCount: number;
-}>;
-
-export type FetchTopic = (topicId: string) => Topic;
-export type FetchTopics = () => Topic[];
+  updatedAt: string;
+};
 
 export type Comment = {
-  id: number;
-  content: string;
   authorId: number;
-  authorName: string;
-  parentCommentId?: number | null;
-  parentCommentPreview?: string | null;
-  parentCommentAuthor?: string | null;
-};
-
-export type Comments = {
+  content: string;
+  createdAt: string;
+  id: number;
   topicId: number;
-  comments: Comment[];
+  updatedAt: string;
 };
 
-export type CommentsCount = {
-  topicId: number;
-  commentCount: number;
-};
-
-export type FetchComments = (topicId: string) => Comment[];
-
-export type ResponseForum = Topic[];
-export type ResponseComments = Comment[];
+export type ResponseComment = Comment;
+export type ResponseTopic = Topic;
+export type ResponseMessage = { message: string };
+export type ResponseUpdateTopicById = unknown;
+export type ResponseFetchTopicById = Topic;
+export type ResponseDeleteTopicById = unknown;
+export type ResponseCreateComment = unknown;
+export type ResponseUpdateComment = unknown;
+export type ResponseDeleteTopics = string;
+export type ResponseAllComments = Comment[];
 
 export type RequestAddNewTopic = {
   title: string;
   content: string;
 };
-export type RequestAddNewComment = {
-  content: string;
-  parentCommentId?: number | null;
-  parentCommentPreview?: string | null;
-  parentCommentAuthor?: string | null;
+export type RequestTopic = RequestAddNewTopic & {
+  authorId: number;
+};
+export type RequestCreateComment = {
+  topicId: number;
+  body: Pick<Comment, 'authorId' | 'content'>;
+};
+export type RequestUpdateComment = {
+  topicId: number;
+  body: Pick<Comment, 'id' | 'content'>;
+};
+export type RequestCreateStyleTheme = {
+  themeName: ThemeList;
+  ownerId: number;
 };

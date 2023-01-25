@@ -6,101 +6,120 @@ import {
   CommentsList,
   Modal,
   Form,
+  TitlePage,
+  Loader,
 } from 'src/components';
-import type {
-  Topic,
-  FetchTopic,
-  FetchComments,
-  Comment,
-} from 'src/store/forum/type';
+import type { Topic, Comment } from 'src/store/forum/type';
 import cls from './styles.module.css';
 import classNames from 'classnames';
-
-import { mockTopic, mockComments } from 'src/constants/mockData';
+import {
+  useLazyCreateCommentByIdQuery,
+  useLazyFetchTopicAllCommentsQuery,
+  useLazyFetchTopicByIdQuery,
+} from 'src/store/forum';
+import { useTypeSelector } from 'src/hooks/useTypeSelector';
+import { useLazyFetchUserDataQuery, userSelectors } from 'src/store/user';
 
 export default function TopicPage() {
-  const { topicId, commentId } = useParams<{
-    topicId: string;
-    commentId: string;
-  }>();
+  const { topicId } = useParams<ParamsUrl>();
 
-  const [topic, setTopic] = useState<Topic>({});
+  const [topic, setTopic] = useState<Topic | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [content, setContent] = useState('');
   const [isModalActive, setIsModalActive] = useState(false);
+  const [authorNameTopic, setAuthorNameTopic] = useState('');
+
+  const { userData } = useTypeSelector(userSelectors.all);
+
+  const [fetchTopicById, { isLoading: isLoadingTopic }] =
+    useLazyFetchTopicByIdQuery();
+  const [fetchAllComments, { isLoading: isLoadingComments }] =
+    useLazyFetchTopicAllCommentsQuery();
+  const [createComment] = useLazyCreateCommentByIdQuery();
+  const [fetchUser] = useLazyFetchUserDataQuery();
 
   const handleOpen = () => setIsModalActive(true);
   const handleClose = () => setIsModalActive(false);
   const handleSetContent = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
     setContent(e.target.value);
 
+  const getComments = (topicId: number) => {
+    fetchAllComments(topicId)
+      .then(res => {
+        if (res?.data) {
+          setComments(res.data);
+        }
+      })
+      .catch(console.error);
+  };
+
+  const getTopic = (topicId: number) => {
+    fetchTopicById(topicId)
+      .then(res => {
+        if (res?.data) {
+          setTopic(res.data);
+
+          fetchUser(`${res.data.authorId}`)
+            .then(resUser => {
+              if (resUser?.data) {
+                setAuthorNameTopic(resUser.data.login);
+              }
+            })
+            .catch(console.error);
+        }
+      })
+      .catch(console.error);
+  };
+
+  const setComment = (topicId: number) => {
+    if (userData.id) {
+      createComment({
+        body: { authorId: userData.id, content },
+        topicId,
+      })
+        .then(res => {
+          if (res?.data) {
+            getTopic(topicId);
+            getComments(topicId);
+            setContent('');
+            handleClose();
+          }
+        })
+        .catch(console.error);
+    }
+  };
+
   function submitComment(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    //todo send new comment data
-    // let authorId???
-    // console.log(topicId, content, parentCommentId, authorId);
-    console.log(topicId, content, commentId);
-
-    setContent('');
-
-    handleClose();
-    if (topicId) {
-      fetchTopic(topicId);
-    } else {
-      console.log('TopicId', topicId);
+    if (topicId && !isNaN(+topicId)) {
+      setComment(Number(topicId));
     }
   }
-
-  const fetchTopic: FetchTopic = topicId => {
-    //todo send new comment data
-    // let authorId???
-    console.log(topicId);
-
-    const topic: Topic = mockTopic;
-    return topic;
-  };
-
-  const fetchComments: FetchComments = topicId => {
-    console.log(topicId);
-
-    const comments: Comment[] = mockComments;
-
-    return comments.map(comment => {
-      const { parentCommentId } = comment;
-      if (parentCommentId) {
-        const parent = comments.find(comment => comment.id === parentCommentId);
-        comment.parentCommentAuthor = parent?.authorName;
-        comment.parentCommentPreview = `${parent?.content.substring(0, 90)}...`;
-      }
-      return comment;
-    });
-  };
 
   const clsTopicInfo = classNames('card', cls.topic__info);
 
   useEffect(() => {
-    if (topicId) {
-      const topic = fetchTopic(topicId);
-      const comments = fetchComments(topicId);
-      setTopic(topic);
-      setComments(comments);
+    if (topicId && !isNaN(+topicId)) {
+      getTopic(+topicId);
+      getComments(+topicId);
     }
-  }, [topic, comments]);
+  }, []);
 
   return (
     <div className={cls.topic}>
       <ButtonBack />
-      <h1 className='main-menu__title'>Community</h1>
+      <TitlePage>Community</TitlePage>
+      {(isLoadingTopic || isLoadingComments) && <Loader />}
       <div className={clsTopicInfo}>
-        {topic.title ? (
+        {topic?.title ? (
           <div className={cls.topic__title}>{topic.title}</div>
         ) : null}
-        {topic.content ? (
-          <div className={cls.topic__content}>{topic.content}</div>
-        ) : null}
-        {topic.authorName ? (
-          <div className={cls.topic__author}>{topic.authorName}</div>
+        <div className={cls.topic__author}>
+          Author: {authorNameTopic || 'Name not found...'}
+        </div>
+        {topic?.content ? (
+          <div className={cls.topic__content}>{topic?.content}</div>
         ) : null}
       </div>
       {comments ? (
@@ -125,3 +144,7 @@ export default function TopicPage() {
     </div>
   );
 }
+
+type ParamsUrl = {
+  topicId: string;
+};

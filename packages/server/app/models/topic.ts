@@ -5,7 +5,7 @@ export interface ITopic {
   id: number | null;
   title: string;
   authorId: number;
-  content: number | null;
+  content: string | null;
 }
 
 export const topicModel: ModelAttributes<Model, ITopic> = {
@@ -25,7 +25,7 @@ export const topicModel: ModelAttributes<Model, ITopic> = {
     allowNull: false,
   },
   content: {
-    type: DataType.INTEGER,
+    type: DataType.STRING,
     allowNull: true,
   },
 };

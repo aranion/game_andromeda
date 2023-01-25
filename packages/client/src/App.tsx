@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { Router } from './router';
 import { useAuth } from './hooks/useAuth';
 import { useDarkTheme } from './hooks/useDarkTheme';
-import { CONFIG_STARS_PARAMS, URL_SERVER } from './constants/vars';
+import { CONFIG_STARS_PARAMS } from './constants/vars';
 import { useLocation } from 'react-router-dom';
 import { RouterList } from './router/routerList';
 import {
@@ -73,13 +73,6 @@ function App() {
     addSound({ soundURL: 'bosstheme.wav' });
     addSound({ soundURL: 'shoot1.mp3' });
     addSound({ soundURL: 'shoot2.mp3' });
-
-    const fetchServerData = async () => {
-      const response = await fetch(URL_SERVER);
-      const data = await response.json();
-      console.log(data);
-    };
-    fetchServerData();
   }, []);
 
   useEffect(() => {

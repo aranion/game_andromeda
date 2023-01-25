@@ -87,7 +87,7 @@ export const deleteCommentById = async (req: Request, res: Response) => {
   console.log('>>>DEBUG<<<');
   console.log('>>>DEBUG-req.params<<<', req.params);
   console.log('>>>DEBUG-req.body<<<', req.body);
-  const id = Number(req.body.id);
+  const id = Number(req.params.topicId);
 
   await Comment.destroy({ where: { id } })
     .then(num => {

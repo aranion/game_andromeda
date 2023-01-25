@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import type { Topic } from 'src/store/forum/type';
 import {
   ButtonBack,
   TopicItem,
@@ -7,20 +6,30 @@ import {
   Form,
   ButtonStar,
   Loader,
+  TitlePage,
 } from 'src/components';
 import cls from './styles.module.css';
 import classNames from 'classnames';
 import { useTypeSelector } from 'src/hooks/useTypeSelector';
-import { forumSelectors } from 'src/store/forum';
-import { useForum } from 'src/hooks/useForum';
+import {
+  forumSelectors,
+  useLazyAddTopicQuery,
+  useLazyFetchAllTopicsQuery,
+} from 'src/store/forum';
+import { useActions } from 'src/hooks/useActions';
+import { userSelectors } from 'src/store/user';
 
 export default function ForumPage() {
-  const [topics, setTopics] = useState<Topic[]>([]);
+  const topics = useTypeSelector(forumSelectors.topics);
+  const { userData } = useTypeSelector(userSelectors.all);
+  const { id: authorId } = userData;
 
-  const forumData = useTypeSelector(forumSelectors.topics);
+  const { setTopics } = useActions();
 
-  const { getAllTopics, addNewTopic, isLoadingAllTopics, isLoadingAddTopic } =
-    useForum();
+  const [fetchAllTopics, { isLoading: isLoadingTopics }] =
+    useLazyFetchAllTopicsQuery();
+  const [fetchAddTopic, { isLoading: isLoadingAddTopic }] =
+    useLazyAddTopicQuery();
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -35,28 +44,54 @@ export default function ForumPage() {
 
   const clsTable = classNames('card', cls.table);
 
-  function submitTopic(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    addNewTopic({ title, content });
+  const getTopics = () => {
+    fetchAllTopics(false)
+      .then(res => {
+        if (res?.data) {
+          setTopics(res.data);
+        } else {
+          if (res.error && 'data' in res.error) {
+            throw new Error((res.error.data as Error).message);
+          }
+        }
+      })
+      .catch(console.error);
+  };
+
+  const clearFieldsModal = () => {
     setTitle('');
     setContent('');
-    handleClose();
+  };
+
+  function submitTopic(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (authorId) {
+      fetchAddTopic({ authorId, title, content })
+        .then(res => {
+          if (res.error && 'data' in res.error) {
+            throw new Error((res.error.data as Error).message);
+          } else {
+            clearFieldsModal();
+            handleClose();
+            getTopics();
+          }
+        })
+        .catch(console.error);
+    }
   }
 
   useEffect(() => {
-    getAllTopics();
+    getTopics();
   }, []);
 
-  useEffect(() => {
-    setTopics(forumData);
-  }, [forumData]);
+  if (isLoadingTopics) {
+    return <Loader />;
+  }
 
   return (
     <div className={cls.forum}>
       <ButtonBack />
-
-      <h1 className='main-menu__title'>Community</h1>
-      {isLoadingAllTopics && isLoadingAddTopic && <Loader />}
+      <TitlePage>Community</TitlePage>
 
       <table className={clsTable}>
         <thead>
@@ -66,17 +101,9 @@ export default function ForumPage() {
           </tr>
         </thead>
         <tbody>
-          {topics.map(topic => {
-            const { id, title, commentCount } = topic;
-            return (
-              <TopicItem
-                key={id}
-                id={id}
-                title={title}
-                commentCount={commentCount}
-              />
-            );
-          })}
+          {topics.map(topic => (
+            <TopicItem key={topic.id} {...topic} />
+          ))}
         </tbody>
       </table>
 
@@ -86,6 +113,7 @@ export default function ForumPage() {
         active={isModalActive}
         setActive={setIsModalActive}
         title='New topic'>
+        {isLoadingAddTopic && <Loader position='absolute' />}
         <Form title='Submit' onSubmit={submitTopic}>
           <Form.Input
             typeComponent='input'
