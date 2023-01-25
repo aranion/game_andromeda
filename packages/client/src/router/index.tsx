@@ -2,7 +2,6 @@ import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { withPrivateRoute } from './withPrivateRoute';
 import {
-  RouterParamsForum,
   RouterParamsProfile,
   RouterList,
   RouterParamsTopic,
@@ -14,12 +13,11 @@ const MainMenuPage = lazy(() => import('src/pages/MainMenu'));
 const GamePage = lazy(() => import('src/pages/Game'));
 const SignInPage = lazy(() => import('src/pages/SignIn'));
 const SignUpPage = lazy(() => import('src/pages/SignUp'));
-const ForumPage = lazy(() => import('src/pages/Forum'));
 const ProfilePage = lazy(() => import('src/pages/Profile'));
 const LeaderBoardPage = lazy(() => import('src/pages/LeaderBoard'));
 const ServerErrorPage = lazy(() => import('src/pages/ServerError'));
 const NotFoundPage = lazy(() => import('src/pages/NotFound'));
-const ForumItemPage = lazy(() => import('src/pages/ForumItem'));
+const ForumPage = lazy(() => import('src/pages/Forum'));
 const TopicPage = lazy(() => import('src/pages/Topic'));
 
 export function Router() {
@@ -39,14 +37,14 @@ export function Router() {
           <Route path={RouterList.FORUM}>
             <Route index element={withPrivateRoute(<ForumPage />)} />
             <Route
-              path={RouterParamsForum.forumId}
-              element={<ForumItemPage />}
+              path={RouterParamsTopic.topicId}
+              element={withPrivateRoute(<TopicPage />)}
+            />
+            <Route
+              path={`${RouterParamsTopic.topicId}/${RouterParamsTopic.commentId}`}
+              element={withPrivateRoute(<TopicPage />)}
             />
           </Route>
-          <Route
-            path={`${RouterList.FORUM_TOPIC}/${RouterParamsTopic.topicId}`}
-            element={withPrivateRoute(<TopicPage />)}
-          />
           <Route
             path={`${RouterList.PROFILE}/${RouterParamsProfile.userId}`}
             element={withPrivateRoute(<ProfilePage />)}

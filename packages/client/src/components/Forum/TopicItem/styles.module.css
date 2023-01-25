@@ -2,6 +2,7 @@
   background-color: var(--color-light);
   box-shadow: 0px 0px 7px rgba(255, 255, 202, 0.8);
   border-radius: 30px;
+  color: var(--color-normal);
 }
 
 .item:not(:first-child) {
@@ -17,7 +18,7 @@
 }
 
 .item__link:hover {
-  color: var(--color-normal);
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 640px) {

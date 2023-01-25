@@ -1,9 +1,35 @@
 .comment {
   margin: 10px 0;
   text-align: start;
-}
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  &__content {
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+  }
+  & button {
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  &:hover button {
+    opacity: 1;
+  }
+  &__parentLink {
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-left: 5px solid var(--color-light);
+    opacity: 0.75;
+    &:hover {
+      background-color: white;
+      color: var(--color-light);
+    }
+  }
 
-.comment__content {
-  margin-bottom: 10px;
-  font-size: 0.85rem;
+  &__button {
+    width: 180px;
+    margin-left: auto;
+  }
 }

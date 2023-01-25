@@ -1,91 +1,177 @@
-import { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
-  Card,
   ButtonBack,
   NewCommentButton,
-  Comment,
-  ButtonFullscreen,
+  CommentsList,
+  Modal,
+  Form,
+  TitlePage,
+  Loader,
 } from 'src/components';
-import type {
-  TopicProps,
-  CommentProps,
-  FetchComments,
-} from 'src/store/forum/types';
-import styles from './styles.module.css';
+import type { Topic, Comment } from 'src/store/forum/type';
+import cls from './styles.module.css';
+import classNames from 'classnames';
+import {
+  useLazyCreateCommentByIdQuery,
+  useLazyDeleteTopicByIdQuery,
+  useLazyFetchTopicAllCommentsQuery,
+  useLazyFetchTopicByIdQuery,
+} from 'src/store/forum';
+import { useTypeSelector } from 'src/hooks/useTypeSelector';
+import { useLazyFetchUserDataQuery, userSelectors } from 'src/store/user';
+import { RouterList } from 'src/router/routerList';
 
 export default function TopicPage() {
-  const { topicId } = useParams<{ topicId?: string }>();
-  const fullscrinableElem = useRef(null);
+  const { topicId } = useParams<ParamsUrl>();
 
-  const [topic, setTopic] = useState<TopicProps>();
-  const [comments, setComments] = useState<CommentProps[]>([]);
+  const navigate = useNavigate();
 
-  const fetchTopic = (topicId: string): TopicProps => {
-    console.log(topicId);
+  const [topic, setTopic] = useState<Topic | null>(null);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [content, setContent] = useState('');
+  const [isModalActive, setIsModalActive] = useState(false);
+  const [authorNameTopic, setAuthorNameTopic] = useState('');
 
-    const topic: TopicProps = {
-      topicId: '111',
-      title: 'Title of very interesting topic',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      author: 'Amanda',
-    };
-    return topic;
+  const { userData } = useTypeSelector(userSelectors.all);
+
+  const [fetchTopicById, { isLoading: isLoadingTopic }] =
+    useLazyFetchTopicByIdQuery();
+  const [fetchAllComments, { isLoading: isLoadingComments }] =
+    useLazyFetchTopicAllCommentsQuery();
+  const [createComment] = useLazyCreateCommentByIdQuery();
+  const [fetchUser] = useLazyFetchUserDataQuery();
+  const [deleteTopic, { isLoading: isLoadingDeleteTopic }] =
+    useLazyDeleteTopicByIdQuery();
+
+  const handleOpen = () => setIsModalActive(true);
+  const handleClose = () => setIsModalActive(false);
+  const handleSetContent = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setContent(e.target.value);
+
+  const getComments = (topicId: number) => {
+    fetchAllComments(topicId)
+      .then(res => {
+        if (res?.data) {
+          setComments(res.data);
+        }
+      })
+      .catch(console.error);
   };
 
-  const fetchComments: FetchComments = topicId => {
-    console.log(topicId);
+  const getTopic = (topicId: number) => {
+    fetchTopicById(topicId)
+      .then(res => {
+        if (res?.data) {
+          setTopic(res.data);
 
-    const comments: CommentProps[] = [];
-    comments.push(
-      {
-        id: '1',
-        author: 'Jane',
-        content: 'First interesting comment',
-      },
-      {
-        id: '2',
-        author: 'David',
-        content:
-          'Second interesting comment (Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.)',
-      },
-      {
-        id: '3',
-        author: 'Kate',
-        content: 'Third interesting comment',
-      }
-    );
-    return comments;
+          fetchUser(`${res.data.authorId}`)
+            .then(resUser => {
+              if (resUser?.data) {
+                setAuthorNameTopic(resUser.data.login);
+              }
+            })
+            .catch(console.error);
+        }
+      })
+      .catch(console.error);
   };
+
+  const setComment = (topicId: number) => {
+    if (userData.id) {
+      createComment({
+        body: { authorId: userData.id, content },
+        topicId,
+      })
+        .then(res => {
+          if (res?.data) {
+            getTopic(topicId);
+            getComments(topicId);
+            setContent('');
+            handleClose();
+          }
+        })
+        .catch(console.error);
+    }
+  };
+
+  function submitComment(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (topicId && !isNaN(+topicId)) {
+      setComment(Number(topicId));
+    }
+  }
+
+  const handleDeleteTopic = () => {
+    if (topicId && !isNaN(+topicId)) {
+      deleteTopic(+topicId)
+        .then(() => {
+          navigate(RouterList.FORUM);
+        })
+        .catch(console.error);
+    }
+  };
+
+  const clsTopicInfo = classNames('card', cls.topic__info);
 
   useEffect(() => {
-    if (topicId) {
-      const topic = fetchTopic(topicId);
-      const comments = fetchComments(topicId);
-      setTopic(topic);
-      setComments(comments);
+    if (topicId && !isNaN(+topicId)) {
+      getTopic(+topicId);
+      getComments(+topicId);
     }
   }, []);
 
   return (
-    <div className={styles.topic} ref={fullscrinableElem}>
+    <div className={cls.topic}>
       <ButtonBack />
-      <ButtonFullscreen elemRef={fullscrinableElem} />
-
-      <h1 className='main-menu__title'>Community</h1>
-      <Card className={styles.topic__info}>
-        <div className={styles.topic__title}>{topic?.title || ''}</div>
-        <div className={styles.topic__content}>{topic?.content || ''}</div>
-        <div className={styles.topic__author}>{topic?.author || ''}</div>
-      </Card>
-      <div>
-        {comments.map(comment => {
-          const { id, content, author } = comment;
-          return <Comment key={id} id={id} content={content} author={author} />;
-        })}
+      <TitlePage>Community</TitlePage>
+      {(isLoadingTopic || isLoadingComments) && <Loader />}
+      <div className={clsTopicInfo}>
+        {isLoadingDeleteTopic && <Loader position='absolute' />}
+        {topic?.title ? (
+          <div className={cls.topic__title}>{topic.title}</div>
+        ) : null}
+        <div className={cls.topic__author}>
+          Author: {authorNameTopic || 'Name not found...'}
+        </div>
+        {topic?.content ? (
+          <div className={cls.topic__content}>{topic?.content}</div>
+        ) : null}
+        {topic?.authorId === userData.id && (
+          <button onClick={handleDeleteTopic} className={cls.topic__close}>
+            X
+          </button>
+        )}
       </div>
-      <NewCommentButton topicId={topicId} fetchComments={fetchComments} />
+
+      <NewCommentButton handleOpen={handleOpen} />
+
+      {comments ? (
+        <CommentsList
+          list={comments}
+          handleOpen={handleOpen}
+          getComments={getComments}
+        />
+      ) : null}
+
+      <Modal
+        active={isModalActive}
+        setActive={setIsModalActive}
+        title='New Comment'>
+        <Form title='Submit' onSubmit={submitComment}>
+          <Form.Input
+            typeComponent='textarea'
+            name='content'
+            value={content}
+            onChange={handleSetContent}
+          />
+        </Form>
+      </Modal>
     </div>
   );
 }
+
+type ParamsUrl = {
+  topicId: string;
+};

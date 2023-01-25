@@ -1,17 +1,22 @@
 import dotenv from 'dotenv';
 import cors from 'cors';
+import express from 'express';
+import { startApp } from './app';
+import forumsRouter from './app/routes/forum.routes';
+
 dotenv.config();
 
-import express from 'express';
-import { createClientAndConnect } from './db';
+startApp();
 
 const app = express();
-app.use(cors());
 const port = Number(process.env.SERVER_PORT) || 3001;
 
-createClientAndConnect();
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(cors());
+app.use('/api/forum', forumsRouter);
 
-app.get('/', (_, res) => {
+app.get('/api', (_, res) => {
   res.json('👋 Howdy from the server :)');
 });
 

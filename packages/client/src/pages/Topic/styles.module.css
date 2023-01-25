@@ -6,10 +6,32 @@
   gap: 20px;
   height: 100vh;
   overflow-y: scroll;
+
+  &__close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: 1px solid;
+    color: #cc2525;
+    border-radius: 50%;
+    opacity: 0.1;
+
+    &:hover {
+      background: #cc2525;
+      color: var(--color-normal);
+      cursor: pointer;
+    }
+  }
 }
 
 .topic__info {
   margin: 10px 0 30px;
+  position: relative;
+}
+
+.topic__info:hover .topic__close {
+  opacity: 0.9;
 }
 
 .topic__title {

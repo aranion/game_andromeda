@@ -1,76 +1,136 @@
 import { useEffect, useState } from 'react';
-import type { ForumProps, FetchForums } from 'src/store/forum/types';
-import { ButtonBack, ForumItem, NewForumButton } from 'src/components';
-import styles from './styles.module.css';
+import {
+  ButtonBack,
+  TopicItem,
+  Modal,
+  Form,
+  ButtonStar,
+  Loader,
+  TitlePage,
+} from 'src/components';
+import cls from './styles.module.css';
+import classNames from 'classnames';
+import { useTypeSelector } from 'src/hooks/useTypeSelector';
+import {
+  forumSelectors,
+  useLazyAddTopicQuery,
+  useLazyFetchAllTopicsQuery,
+} from 'src/store/forum';
+import { useActions } from 'src/hooks/useActions';
+import { userSelectors } from 'src/store/user';
 
 export default function ForumPage() {
-  const [forums, setForums] = useState<ForumProps[]>([]);
+  const topics = useTypeSelector(forumSelectors.topics);
+  const { userData } = useTypeSelector(userSelectors.all);
+  const { id: authorId } = userData;
 
-  const fetchForums: FetchForums = () => {
-    const forums: ForumProps[] = [];
-    forums.push(
-      {
-        forumId: '111',
-        title: 'Game Devlog - News',
-        topicsCount: '1',
-        commentsCount: '12',
-      },
-      {
-        forumId: '222',
-        title: 'Feedback Forum',
-        topicsCount: '126',
-        commentsCount: '12',
-      },
-      {
-        forumId: '333',
-        title: 'Cavern',
-        topicsCount: '12',
-        commentsCount: '12',
-      },
-      {
-        forumId: '444',
-        title: 'Game Devlog - test forum',
-        topicsCount: '12',
-        commentsCount: '12',
-      }
-    );
+  const { setTopics } = useActions();
 
-    return forums;
+  const [fetchAllTopics, { isLoading: isLoadingTopics }] =
+    useLazyFetchAllTopicsQuery();
+  const [fetchAddTopic, { isLoading: isLoadingAddTopic }] =
+    useLazyAddTopicQuery();
+
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [isModalActive, setIsModalActive] = useState(false);
+
+  const handleOpen = () => setIsModalActive(true);
+  const handleClose = () => setIsModalActive(false);
+  const handleSetTitle = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setTitle(e.target.value);
+  const handleSetContent = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+    setContent(e.target.value);
+
+  const clsTable = classNames('card', cls.table);
+
+  const getTopics = () => {
+    fetchAllTopics(false)
+      .then(res => {
+        if (res?.data) {
+          setTopics(res.data);
+        } else {
+          if (res.error && 'data' in res.error) {
+            throw new Error((res.error.data as Error).message);
+          }
+        }
+      })
+      .catch(console.error);
   };
 
+  const clearFieldsModal = () => {
+    setTitle('');
+    setContent('');
+  };
+
+  function submitTopic(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (authorId) {
+      fetchAddTopic({ authorId, title, content })
+        .then(res => {
+          if (res.error && 'data' in res.error) {
+            throw new Error((res.error.data as Error).message);
+          } else {
+            clearFieldsModal();
+            handleClose();
+            getTopics();
+          }
+        })
+        .catch(console.error);
+    }
+  }
+
   useEffect(() => {
-    setForums(fetchForums());
+    getTopics();
   }, []);
 
-  return (
-    <div className={styles.forum}>
-      <ButtonBack />
+  if (isLoadingTopics) {
+    return <Loader />;
+  }
 
-      <h1 className='main-menu__title'>Community</h1>
-      <table className={styles.table}>
+  return (
+    <div className={cls.forum}>
+      <ButtonBack />
+      <TitlePage>Community</TitlePage>
+
+      <table className={clsTable}>
         <thead>
           <tr>
-            <th className={styles.table__th}>Forums</th>
-            <th className={styles.table__th}>Topics</th>
-            <th className={styles.table__th}>Comments</th>
+            <th className={cls.table__th}>Topics</th>
+            <th className={cls.table__th}>Comments</th>
           </tr>
         </thead>
         <tbody>
-          {forums.map(forum => {
-            const { forumId, title, topicsCount, commentsCount } = forum;
-            return (
-              <ForumItem
-                key={forumId}
-                forumId={forumId}
-                title={title}
-                topicsCount={topicsCount}
-                commentsCount={commentsCount}
-              />
-            );
-          })}
+          {topics.map(topic => (
+            <TopicItem key={topic.id} {...topic} />
+          ))}
         </tbody>
       </table>
-      <NewForumButton fetchForums={fetchForums} />
+
+      <ButtonStar onClick={handleOpen}>New Topic</ButtonStar>
+
+      <Modal
+        active={isModalActive}
+        setActive={setIsModalActive}
+        title='New topic'>
+        {isLoadingAddTopic && <Loader position='absolute' />}
+        <Form title='Submit' onSubmit={submitTopic}>
+          <Form.Input
+            typeComponent='input'
+            name='title'
+            placeholder='Topic title'
+            value={title}
+            onChange={handleSetTitle}
+          />
+          <Form.Input
+            typeComponent='textarea'
+            placeholder='Topic content'
+            name='content'
+            value={content}
+            onChange={handleSetContent}
+          />
+        </Form>
+      </Modal>
     </div>
   );
 }
