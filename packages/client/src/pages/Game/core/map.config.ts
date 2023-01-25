@@ -14,7 +14,7 @@ function generateLevel(): MapConfig {
     const renderingFrequency = {
       asteroid: 110,
       resource: 200,
-      alien: 200,
+      alien: 170,
     };
     maxResource += i * multiplier;
 
