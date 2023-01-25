@@ -23,7 +23,7 @@ export function TopicItem(props: Props) {
     fetchCommentsCount(id)
       .then(res => {
         if (res?.data) {
-          setCount(res?.data);
+          setCount(res?.data.count);
         }
       })
       .catch(console.error);

@@ -111,7 +111,7 @@ export const forumApi = createApi({
         url: `/comments/${topicId}`,
       }),
     }),
-    fetchTopicCommentsCount: build.query<number, number>({
+    fetchTopicCommentsCount: build.query<{ count: number }, number>({
       query: topicId => ({
         method: 'GET',
         url: `/comments-count/${topicId}`,
