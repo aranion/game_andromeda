@@ -10,7 +10,7 @@ export function ErrorSample(props: Props) {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    const navParam = typeButton === 'back' ? (-1 as To) : RouterList.HOME;
+    const navParam = typeButton === 'back' ? (-1 as To) : RouterList.MAINMENU;
 
     navigate(navParam);
   };

@@ -21,7 +21,7 @@ export function PauseMenu() {
 
   const { id } = userData;
   const isGamePage = pathname === '/game';
-  const isNotHomePage = pathname !== '/';
+  const isNotHomePage = pathname !== '/main';
   const isNotLeaderBoardPage = pathname !== '/leader-board';
   const isNotProfile = !pathname.includes('/profile');
   const isNotForum = !pathname.includes('/forum');
@@ -50,7 +50,7 @@ export function PauseMenu() {
   };
 
   const navigateHome = () => {
-    navigate(RouterList.HOME);
+    navigate(RouterList.MAINMENU);
     handleTogglePauseMenu();
   };
 

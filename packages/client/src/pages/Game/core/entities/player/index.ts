@@ -2,44 +2,57 @@ import { INITIAL_SPEED, TIME_ACTIONS_ENHANCEMENT } from './../../constants';
 import { GameObject } from '../game-object';
 import { store } from 'src/store';
 import { gameActions } from 'src/store/game';
-import type { IdTimeouts, PlayerConfig, PlayerSkins } from './types';
+import { WeaponsList } from '../weapon/weapons.config';
+import { Weapon } from '../weapon';
+import type { GameMap } from '../../overworld/game-map';
 import type { Coordinates } from '../../types';
 import type { SceneTransition } from '../../overworld/scene-transition';
-import {
-  endGameLabel,
-  endGameButton,
-} from '../../overworld/scene-transition/stats';
-import { defaultMoveTime } from './stats';
+import type { PressedKey } from '../../overworld/directions-input/types';
+import type { TimeoutId } from '@reduxjs/toolkit/dist/query/core/buildMiddleware/types';
+import { configRestartBtn, defaultMoveTime } from './stats';
+import type {
+  IdTimeouts,
+  MoveToList,
+  PlayerConfig,
+  PlayerSkins,
+  UpdateLivesParams,
+} from './types';
 
 /**
  * Класс игрока. Главная сущность игры в виде космического корабля.
  * */
 export class Player extends GameObject {
-  private status: 'mounted' | 'unmounted' = 'unmounted';
-  private direction: Coordinates;
+  private status: 'mounted' | 'unmounted' = 'mounted';
   private lives: number;
-  private maxLives: number;
   private shielded: boolean;
+  private direction: Coordinates;
+  private readonly maxLives: number;
+  private readonly sceneTransition: SceneTransition;
+  private readonly pressedKey: PressedKey;
+  private readonly weapon: Weapon;
+  private idTimeout: TimeoutId | null = null;
   private skins: PlayerSkins;
-  private sceneTransition: SceneTransition;
   private idTimeouts: IdTimeouts = {
     shield: null,
     speed: null,
   };
   private movePosition?: Coordinates;
+  private isImmortal = false;
 
   constructor(config: PlayerConfig) {
-    const { skins, shielded, maxLives, lives, direction } = config;
+    const { skins, shielded, maxLives, lives, direction, canvas, ctx } = config;
 
-    super({ ...config, imageSrc: skins.base.healthy });
+    super({ ...config, image: skins.base.healthy });
 
-    this.status = 'mounted';
     this.direction = direction;
     this.lives = lives;
     this.maxLives = maxLives;
     this.shielded = shielded ?? false;
     this.skins = skins;
     this.sceneTransition = config.sceneTransition;
+    this.pressedKey = config.pressedKey;
+    this.weapon = new Weapon({ canvas, ctx, shooter: this });
+
     this.updateSkin();
   }
 
@@ -51,6 +64,17 @@ export class Player extends GameObject {
     return this.shielded;
   }
 
+  get getDirection(): Coordinates {
+    return this.direction;
+  }
+
+  get getWeaponParams() {
+    return {
+      ...this.weapon.getWeaponOptions,
+      ...this.weapon.getRechargeOptions,
+    };
+  }
+
   get getSpeed(): number {
     return this.speed;
   }
@@ -59,7 +83,36 @@ export class Player extends GameObject {
     return this.lives === this.maxLives;
   }
 
-  destroyShield() {
+  public updateWeapon() {
+    this.weapon.setWeaponType = WeaponsList.Blaster;
+
+    if (this.idTimeout) {
+      clearTimeout(this.idTimeout);
+    }
+
+    this.idTimeout = setTimeout(() => {
+      this.weapon.setWeaponType = WeaponsList.Rocket;
+    }, 10000);
+  }
+
+  public checkShot(gameMap: GameMap) {
+    const { keydown } = this.pressedKey;
+    const { costProjectiles } = this.weapon.getWeaponOptions;
+    const { isRecharge } = this.weapon.getRechargeOptions;
+
+    if (keydown === ' ') {
+      if (gameMap.getScore + costProjectiles >= 0) {
+        if (!isRecharge) {
+          gameMap.setScore = costProjectiles;
+        }
+        return this.weapon.shot();
+      } else {
+        return null;
+      }
+    }
+  }
+
+  private destroyShield() {
     const { shield } = this.idTimeouts;
     this.shielded = false;
     this.updateSkin();
@@ -69,7 +122,7 @@ export class Player extends GameObject {
     }
   }
 
-  updateSpeed(value = 50) {
+  public updateSpeed(value = 50) {
     const { speed } = this.idTimeouts;
     const newSpeed = this.speed - value;
     const maxSpeed = 50;
@@ -85,7 +138,7 @@ export class Player extends GameObject {
     }, TIME_ACTIONS_ENHANCEMENT.speed);
   }
 
-  updateShield() {
+  public updateShield() {
     const { shield } = this.idTimeouts;
     this.shielded = true;
     this.updateSkin();
@@ -100,9 +153,14 @@ export class Player extends GameObject {
     }, TIME_ACTIONS_ENHANCEMENT.shield);
   }
 
-  updateLives(num = 1, score?: number) {
+  public updateLives(params?: UpdateLivesParams) {
+    const { num = 1, score } = params || { num: 1 };
     const newLives = this.lives + num;
     const isSubtractLives = num < 0;
+
+    if (this.isImmortal) {
+      return;
+    }
 
     if (isSubtractLives && this.shielded) {
       this.destroyShield();
@@ -110,8 +168,16 @@ export class Player extends GameObject {
     }
 
     if (newLives <= 0) {
-      this.sceneTransition.createLabel(endGameLabel);
-      this.sceneTransition.createButton(endGameButton());
+      this.lives = 0;
+      this.direction = this.position;
+
+      this.updateSkin();
+
+      const button = this.sceneTransition.addButton({
+        ...configRestartBtn,
+        cbFn: this.sceneTransition.getGame.startGame,
+      });
+      this.sceneTransition.createButton(button);
       this.sceneTransition.darkScreen(2000);
 
       if (score) {
@@ -125,21 +191,24 @@ export class Player extends GameObject {
   }
 
   private updateSkin() {
-    const { shield, base } = this.skins;
+    const { shield, base, destroyed } = this.skins;
     const skins = this.shielded ? shield : base;
     const { wrecked, damaged, battered, healthy } = skins;
 
+    if (this.lives === 0) {
+      this.sprite.image = destroyed.explosion;
+    }
     if (this.lives === 1) {
-      this.sprite.imageSrc = wrecked;
+      this.sprite.image = wrecked;
     }
     if (this.lives === 2) {
-      this.sprite.imageSrc = damaged;
+      this.sprite.image = damaged;
     }
     if (this.lives === 3) {
-      this.sprite.imageSrc = battered;
+      this.sprite.image = battered;
     }
     if (this.lives > 3) {
-      this.sprite.imageSrc = healthy;
+      this.sprite.image = healthy;
     }
   }
 
@@ -158,17 +227,18 @@ export class Player extends GameObject {
     }
   }
 
-  moveToCenter(time?: number) {
-    this.movePosition = { x: this.canvas.width / 2, y: this.canvas.height / 2 };
-    setTimeout(() => {
-      this.movePosition = undefined;
-    }, time ?? defaultMoveTime);
-  }
+  public moveTo(direction: MoveToList, time?: number) {
+    const movePosition: Record<keyof typeof MoveToList, Coordinates> = {
+      center: { x: this.canvas.width / 2, y: this.canvas.height / 2 },
+      up: { x: this.canvas.width / 2, y: -10 },
+    };
 
-  moveUp(time?: number) {
-    this.movePosition = { x: this.canvas.width / 2, y: -10 };
+    this.isImmortal = true;
+    this.movePosition = movePosition[direction];
+
     setTimeout(() => {
       this.movePosition = undefined;
+      this.isImmortal = false;
     }, time ?? defaultMoveTime);
   }
 
@@ -177,7 +247,7 @@ export class Player extends GameObject {
     if (this.status === 'mounted') this.sprite.drawImageLookAt(direction);
   }
 
-  update() {
+  public update() {
     const posToMoveX = this.movePosition
       ? this.movePosition.x
       : this.direction.x;
@@ -199,8 +269,8 @@ export class Player extends GameObject {
     this.draw();
   }
 
-  clear() {
-    this.updateLives(this.maxLives - this.lives - 1, 0);
+  public clear() {
+    this.updateLives({ num: this.maxLives - this.lives - 1 });
     this.position.x = this.canvas.width / 2;
     this.position.y = this.canvas.height;
   }

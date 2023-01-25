@@ -16,15 +16,15 @@ export class GameTheme {
 
   drawBackground() {
     const isDarkTheme = this.isDarkTheme();
-    const isSoonGameOver = this.player.getLives === 1;
+    const isSoonGameOver = this.player.getLives <= 2;
 
     if (isSoonGameOver) {
       this.addGradient('#160000', '#150404');
     } else {
       if (isDarkTheme) {
-        this.addGradient('#010406', '#08192a');
-      } else {
         this.gradient = '#000';
+      } else {
+        this.addGradient('#010406', '#08192a');
       }
     }
 
