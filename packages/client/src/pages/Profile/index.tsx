@@ -35,7 +35,7 @@ export default function Profile() {
   const isEditProfile = pathname === RouterList.PROFILE_EDIT || isEditPassword;
   const isNotMyProfile = !!(userId && !!id && id !== +userId);
 
-  /*   useEffect(() => {
+  useEffect(() => {
     if (isEditPassword) {
       const fieldsPassword = preparePasswordProfileFields();
 
@@ -46,8 +46,8 @@ export default function Profile() {
       setFields(fields);
       setProfileData(userData);
     }
-  }, [isEditPassword, userData]); */
-  /* 
+  }, [isEditPassword, userData]);
+
   useEffect(() => {
     if (!isEditProfile && isCorrectUserId) {
       setFields([]);
@@ -67,33 +67,19 @@ export default function Profile() {
         })
         .catch(console.log);
     }
-  }, [userId]); */
+  }, [userId]);
 
   if (!isEditProfile && !isCorrectUserId) {
     return <TitlePage>ID пользователя указан не верно</TitlePage>;
   }
 
-  const handleEditProfile: any = () => {
+  const handleEditProfile = () => {
     navigate(RouterList.PROFILE_EDIT, { replace: true });
   };
 
-  const handleEditPassword: any = () => {
+  const handleEditPassword = () => {
     navigate(RouterList.PROFILE_EDIT_PASSWORD, { replace: true });
   };
-
-  /*   useEffect(() => {
-    return () => {
-      handleEditProfile = null;
-      handleEditPassword = null;
-      console.log('cleaned up');
-      nickname = '';
-      userData = null;
-      navigate = null;
-      logout = null;
-      setFields([]);
-      setProfileData(null);
-    };
-  }, []); */
 
   return (
     <div className={cls.wrapper}>

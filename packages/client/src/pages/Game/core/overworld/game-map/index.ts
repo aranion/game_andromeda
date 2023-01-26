@@ -278,6 +278,7 @@ export class GameMap {
 
   private drawUI() {
     this.ctx.fillStyle = styles.fontColor;
+
     const uis = [];
     const bafShield = this.player.getIsShield ? '🛡' : '';
     const bafSpeed = this.player.getSpeed < 100 ? '🗲' : '';
