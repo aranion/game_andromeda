@@ -4,6 +4,10 @@
      alt="Game logo"
      src="https://github.com/HereHaveTheseFlowers/game_andromeda/blob/develop/packages/client/public/imgs/icons/vite-128.svg">
 
+<p align="center">
+  <span>Русский</span> |
+  <a href="https://github.com/aranion/game_andromeda/blob/main/README.en.md">English</a>
+</p>
 
 Учебный проект, разработанный в рамках курса [Мидл фронтенд-разработчик](https://practicum.yandex.ru/middle-frontend/)
 
@@ -41,12 +45,12 @@
      src="https://github.com/Melekh11/test-md/blob/main/Снимок%20экрана%202023-01-25%20в%2023.45.00.png">
 
 ## Участники команды
-* Максим - Ментор-Джедай
-* Евгений - Генерал-Джедай
-* Катя - Рыцарь-Джедай
-* Сережа - Падаван
-* Алена - Йода
-
+* <a href="https://github.com/practicum-maxim-zyryanov">Максим</a> - Ментор-Джедай
+* <a href="https://github.com/aranion">Евгений</a> - Генерал-Джедай
+* <a href="https://github.com/EkaHvo">Катя</a> - Рыцарь-Джедай
+* <a href="https://github.com/HereHaveTheseFlowers">Сережа</a> - Падаван
+* <a href="https://github.com/Melekh11">Матвей</a> - Младший Джедай
+* <a href="https://github.com/elaineir">Алена</a> - Йода
 
 ## Демо
 https://user-images.githubusercontent.com/91600159/214702245-c0aa0fc9-2278-4c87-aea0-a749ef636eee.mp4
